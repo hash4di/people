@@ -13,7 +13,7 @@ module Api
       end
 
       def potential
-        object.project.project_potential
+        object.project.potential
       end
     end
   end
