@@ -2,7 +2,7 @@ module Api
   module V3
     class MembershipSerializer < ActiveModel::Serializer
       attributes :project_name, :starts_at, :ends_at, :role_name, :project_internal, :booked,
-        :potential
+        :potential, :billable
 
       def project_name
         object.project.name
