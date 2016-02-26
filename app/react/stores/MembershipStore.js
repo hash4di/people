@@ -41,6 +41,21 @@ class MembershipStore {
     return false;
   }
 
+  delete(params) {
+    const deleteMembership = (data) => {
+      const membershipsIds = this.memberships.map(membership => membership.id);
+      const membershipIndex = membershipsIds.indexOf(data.id);
+      this.memberships.splice(membershipIndex, 1)
+      Messenger().success("Membership deleted!");
+      this.emitChange();
+    };
+    const failedToDelete = () => {
+      console.log("FAILED TO DELETE");
+    };
+    MembershipSource.delete(params).done(deleteMembership).fail(failedToDelete);
+    return false;
+  }
+
   static billableMemberships(projectId) {
     return this.memberships(projectId)
       .filter(membership => membership.billable === true &&
