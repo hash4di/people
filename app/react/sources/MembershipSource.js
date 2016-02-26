@@ -30,4 +30,15 @@ export default class MembershipSource {
       }
     });
   }
+
+  static delete(params) {
+    return $.ajax({
+      url: Routes.membership_path(params.id),
+      method: 'DELETE',
+      dataType: 'json',
+      data: {
+        membership: params
+      }
+    });
+  }
 }

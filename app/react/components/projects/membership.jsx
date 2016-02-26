@@ -25,7 +25,11 @@ export default class Membership extends React.Component {
       id: this.props.membership.id,
       ends_at: gon.currentTime
     };
-    MembershipActions.update(params);
+    if(this.props.membership.project_potential) {
+      MembershipActions.delete(params);
+    } else {
+      MembershipActions.update(params);
+    }
   }
 
   _showNonBillableSign() {

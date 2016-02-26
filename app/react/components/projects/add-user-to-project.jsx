@@ -16,7 +16,8 @@ export default class AddUserToProject extends React.Component {
     MembershipActions.create({
       userId: userId,
       projectId: this.props.project.id,
-      billable: billableRole
+      billable: billableRole,
+      project_potential: this.props.project.potential
     });
   }
 
