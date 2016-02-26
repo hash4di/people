@@ -1,3 +1,3 @@
 object membership
 extends 'memberships/base'
-attributes :project_potential
+attributes :project_potential, :booked
