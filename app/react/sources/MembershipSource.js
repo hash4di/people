@@ -2,7 +2,7 @@ import ProjectUsersStore from '../stores/ProjectUsersStore';
 
 export default class MembershipSource {
   static create(params) {
-    const { userId, projectId, billable } = params;
+    const { userId, projectId, billable, project_potential, booked } = params;
     const roleId = ProjectUsersStore.getUser(userId).primary_roles[0].id;
     return $.ajax({
       url: Routes.memberships_path(),
@@ -14,7 +14,9 @@ export default class MembershipSource {
           project_id: projectId,
           billable: billable,
           starts_at: new Date(),
-          role_id: roleId
+          role_id: roleId,
+          project_potential: project_potential,
+          booked: booked
         }
       }
     });
