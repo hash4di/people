@@ -19,7 +19,7 @@ class MembershipStore {
       this.emitChange();
     };
     const failedToSave = () => {
-      console.log("FAILED TO SAVE");
+      console.log('FAILED TO SAVE');
     };
     MembershipSource.create(params).done(savedMembership).fail(failedToSave);
     return false;
@@ -31,11 +31,11 @@ class MembershipStore {
       const membershipsIds = memberships.map(membership => membership.id);
       const membershipIndex = membershipsIds.indexOf(data.id);
       memberships[membershipIndex] = data;
-      Messenger().success("Membership updated!");
+      Messenger().success('Membership updated!');
       this.emitChange();
     };
     const failedToUpdate = () => {
-      console.log("FAILED TO UPDATE");
+      console.log('FAILED TO UPDATE');
     };
     MembershipSource.update(params).done(updatedMembership).fail(failedToUpdate);
     return false;
@@ -45,12 +45,12 @@ class MembershipStore {
     const deleteMembership = (data) => {
       const membershipsIds = this.memberships.map(membership => membership.id);
       const membershipIndex = membershipsIds.indexOf(data.id);
-      this.memberships.splice(membershipIndex, 1)
-      Messenger().success("Membership deleted!");
+      this.memberships.splice(membershipIndex, 1);
+      Messenger().success('Membership deleted!');
       this.emitChange();
     };
     const failedToDelete = () => {
-      console.log("FAILED TO DELETE");
+      console.log('FAILED TO DELETE');
     };
     MembershipSource.delete(params).done(deleteMembership).fail(failedToDelete);
     return false;
