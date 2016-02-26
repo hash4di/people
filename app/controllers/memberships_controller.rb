@@ -38,7 +38,9 @@ class MembershipsController < ApplicationController
   end
 
   def destroy
+    data = { project: membership.project, user: membership.user }
     if membership.destroy
+      SendMailWithUserJob.perform_async(MembershipMailer, :deleted, data, current_user.id)
       respond_on_success request.referer
     else
       respond_on_failure membership.errors
