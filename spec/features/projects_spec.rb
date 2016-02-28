@@ -17,11 +17,16 @@ describe 'Projects page', js: true do
   let!(:note) { create(:note) }
 
   before do
+    Capybara.javascript_driver = :selenium
     allow_any_instance_of(SendMailJob).to receive(:perform)
     page.set_rack_session 'warden.user.user.key' => User
       .serialize_into_session(admin_user).unshift('User')
 
     visit '/dashboard' # Projects tab
+  end
+
+  after do
+    Capybara.use_default_driver
   end
 
   describe 'tabs' do
