@@ -1,6 +1,9 @@
 machine:
   ruby:
     version: 2.1.5
+  node:
+    version: 4.3.1
+
 deployment:
   master:
     branch: master
