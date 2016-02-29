@@ -10,7 +10,7 @@ describe 'Potential project', js: true do
       .serialize_into_session(admin_user).unshift('User')
   end
 
-  context 'when \'stays\' is unchecked' do
+  context "when 'stays' is unchecked" do
     let!(:membership) { create :membership, project: project, user: user }
 
     before do
@@ -31,7 +31,7 @@ describe 'Potential project', js: true do
     end
   end
 
-  context 'when \'stays\' is checked' do
+  context "when 'stays' is checked" do
     let!(:membership) { create :membership, project: project, user: user }
 
     before do
@@ -42,7 +42,7 @@ describe 'Potential project', js: true do
       expect(page).to have_content("#{user.decorate.name}")
     end
 
-    it 'doesn\'t delete membership when project is updated to nonpotential' do
+    it "doesn't delete membership when project is updated to nonpotential" do
       uncheck('Potential')
       click_button('Save')
       visit user_path(user)
