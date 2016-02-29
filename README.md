@@ -25,7 +25,7 @@ You need ImageMagick installed on your system, on OS X this is a simple as:
 ```
 On other systems check out the official [ImageMagick](http://www.imagemagick.org/script/binary-releases.php) documentation.
 
-Since the app uses capybara-webkit for running feature specs, you need to have `qt` installed on your machine (preferably v5 or higher) before running the setup script.
+Since the app uses Selenium webdriver for running feature specs, make sure you have Firefox installed on your machine.
 
 ## Project setup
 
