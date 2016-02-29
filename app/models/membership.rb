@@ -59,7 +59,7 @@ class Membership < ActiveRecord::Base
   end
 
   def terminated?
-    ends_at.try('<', Time.current) || false
+    ends_at.try('<', Date.current) || false
   end
 
   def active?
@@ -67,7 +67,7 @@ class Membership < ActiveRecord::Base
   end
 
   def end_now!
-    update(ends_at: Date.today)
+    update(ends_at: Date.today) if starts_at < Date.today && (ends_at.nil? || ends_at > Date.today)
   end
 
   def duration_in_months

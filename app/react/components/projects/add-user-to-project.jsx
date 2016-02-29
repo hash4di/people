@@ -10,14 +10,23 @@ export default class AddUserToProject extends React.Component {
   }
 
   createMembership(userId) {
-    MembershipActions.create({
+    const user = ProjectUsersStore.getUser(userId);
+    const billableRole = user.primary_roles[0].billable;
+    let params = {
       userId: userId,
-      projectId: this.props.project.id
-    });
+      projectId: this.props.project.id,
+      billable: billableRole,
+      project_potential: this.props.project.potential
+    };
+
+    if(this.props.project.potential) {
+      params.booked = true;
+    }
+    MembershipActions.create(params);
   }
 
   render() {
-    const users = ProjectUsersStore.getUsersWithoutProject(this.props.project.id);
+    const users = ProjectUsersStore.getUsersNotInProjectNow(this.props.project.id);
     const options = users.map(user => {
       return { label: `${user.last_name} ${user.first_name}`, value: user.id };
     });

@@ -19,7 +19,7 @@ class MembershipStore {
       this.emitChange();
     };
     const failedToSave = () => {
-      console.log("FAILED TO SAVE");
+      console.log('FAILED TO SAVE');
     };
     MembershipSource.create(params).done(savedMembership).fail(failedToSave);
     return false;
@@ -31,26 +31,43 @@ class MembershipStore {
       const membershipsIds = memberships.map(membership => membership.id);
       const membershipIndex = membershipsIds.indexOf(data.id);
       memberships[membershipIndex] = data;
-      Messenger().success("Membership updated!");
+      Messenger().success('Membership updated!');
       this.emitChange();
     };
     const failedToUpdate = () => {
-      console.log("FAILED TO UPDATE");
+      console.log('FAILED TO UPDATE');
     };
     MembershipSource.update(params).done(updatedMembership).fail(failedToUpdate);
+    return false;
+  }
+
+  delete(params) {
+    const deleteMembership = (data) => {
+      const membershipsIds = this.memberships.map(membership => membership.id);
+      const membershipIndex = membershipsIds.indexOf(data.id);
+      this.memberships.splice(membershipIndex, 1);
+      Messenger().success('Membership deleted!');
+      this.emitChange();
+    };
+    const failedToDelete = () => {
+      console.log('FAILED TO DELETE');
+    };
+    MembershipSource.delete(params).done(deleteMembership).fail(failedToDelete);
     return false;
   }
 
   static billableMemberships(projectId) {
     return this.memberships(projectId)
       .filter(membership => membership.billable === true &&
-        (membership.ends_at === null || Moment(membership.ends_at) > Moment()));
+        (membership.ends_at === null ||
+          Moment(membership.ends_at).endOf('day') >= Moment().endOf('day')));
   }
 
   static nonBillableMemberships(projectId) {
     return this.memberships(projectId)
       .filter(membership => membership.billable === false &&
-        (membership.ends_at === null || Moment(membership.ends_at) > Moment()));
+        (membership.ends_at === null ||
+          Moment(membership.ends_at).endOf('day') >= Moment().endOf('day')));
   }
 
   static memberships(projectId) {
@@ -66,8 +83,18 @@ class MembershipStore {
     const membership = this.state.memberships.filter(membership => {
       return membership.user_id == userId && membership.project_id == projectId;
     });
+
+    const compare = (a, b) => {
+      if (a.starts_at < b.starts_at) {
+        return -1;
+      } else if (a.starts_at > b.starts_at) {
+        return 1;
+      }
+      return 0;
+    }
+
     if(membership.length > 0) {
-      return membership[0];
+      return membership.sort(compare)[membership.length - 1];
     }
     return null;
   }

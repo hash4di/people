@@ -19,4 +19,13 @@ class MembershipMailer < BaseMailer
     subject = "Time span for #{@user.name} in #{@project.name} has been changed"
     mail(to: to, subject: subject, project: @project)
   end
+
+  def deleted(data, current_user)
+    @user = data[:user].decorate
+    @project = data[:project]
+    @current_user = current_user.decorate
+    to = mail_receivers(current_user, @user)
+    subject = "Membership for user #{@user.name} in potential project #{@project.name} has been deleted"
+    mail(to: to, subject: subject, project: @project)
+  end
 end

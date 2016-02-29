@@ -1,0 +1,8 @@
+%p
+  Membership for user
+  = link_to @user.name, user_url(@user.object)
+  in potential project
+  = link_to @project.name, project_url(@project)
+  was deleted
+
+= render 'shared/performed_by', current_user: @current_user

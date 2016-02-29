@@ -10,10 +10,12 @@
 
   .col-sm-6
     - if current_user.admin?
-      = render 'new_membership_form', membership_page: new_membership_page
-    = render 'positions', details_page: user_details_page
+      .user-new-membership
+        = render 'new_membership_form', membership_page: new_membership_page
+    .user-positions
+      = render 'positions', details_page: user_details_page
 
-    .list-group
+    .list-group.user-projects
       - user_show_page.user_all_memberships.each do |membership|
         - unless membership.project.potential? && !membership.booked?
           = render partial: 'membership', locals: { membership: membership }
