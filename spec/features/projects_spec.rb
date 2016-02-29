@@ -190,7 +190,7 @@ describe 'Projects page', js: true do
 
   describe 'managing people in project' do
     describe 'adding member to project' do
-      it 'adds member to project correctly' do
+      xit 'adds member to project correctly' do
         within('.projects-types') do
           find('li.active').click
         end
@@ -210,7 +210,7 @@ describe 'Projects page', js: true do
 
       before { visit '/dashboard' }
 
-      it 'removes member from project correctly' do
+      xit 'removes member from project correctly' do
         within('.projects-types') do
           find('li.active').click
         end
