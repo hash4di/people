@@ -1,8 +1,9 @@
 machine:
   ruby:
     version: 2.1.5
-  environment:
-    QMAKE: /opt/qt54/bin/qmake
+  node:
+    version: 4.3.1
+
 deployment:
   master:
     branch: master
@@ -12,16 +13,12 @@ deployment:
     branch: production
     commands:
       - bundle exec cap production deploy
+
 dependencies:
   pre:
-    - sudo apt-get install apt -y
-    - sudo add-apt-repository ppa:beineri/opt-qt542 -y
-    - sudo apt-get update -y; true
-    - sudo apt-get install -y qt54webkit libwebkit-dev libgstreamer0.10-dev
-    - echo "/opt/qt54/bin/qt54-env.sh" >> ~/.circlerc
-  override:
-    - bundle install
+    - cp config/sec_config.yml.sample config/sec_config.yml
   post:
-    - npm run build
+    - npm install webpack -g
+    - webpack
   cache_directories:
     - "node_modules"

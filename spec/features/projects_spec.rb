@@ -43,18 +43,18 @@ describe 'Projects page', js: true do
         end
       end
 
-      xit 'displays action icon (archive) when hovered' do
+      it 'displays action icon (archive) when hovered' do
         expect(page.find('.archive')).to be_visible
       end
 
-      xit 'displays proper projects' do
+      it 'displays proper projects' do
         expect(page).to have_content(active_project.name)
         expect(page).not_to have_content(potential_project.name)
         expect(page).not_to have_content(archived_project.name)
         expect(page).not_to have_content(potential_archived_project.name)
       end
 
-      xit 'allows adding memberships to an active project' do
+      it 'allows adding memberships to an active project' do
         expect(page).to have_selector('.Select-placeholder')
       end
 
@@ -64,7 +64,7 @@ describe 'Projects page', js: true do
         end
 
         context 'when checked' do
-          xit 'shows future memberships' do
+          it 'shows future memberships' do
             visit '/dashboard'
             check 'show-next'
             expect(page).to have_content(future_membership.user.last_name)
