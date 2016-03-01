@@ -186,10 +186,7 @@ describe 'Projects page', js: true do
           find('li.active').click
         end
 
-        within('.project') do
-          find('.Select-control').click
-          find( 'div.Select-option', text: admin_user.decorate.name ).click
-        end
+        react_select('.project .Select-control', admin_user.decorate.name)
 
         billable_count = find('.billable .count')
         expect(billable_count).to have_content('1')
