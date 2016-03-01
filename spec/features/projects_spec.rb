@@ -1,19 +1,13 @@
 require 'spec_helper'
 
 describe 'Projects page', js: true do
-  let!(:pm_role) { create(:role, name: 'pm') }
-  let!(:qa_role) { create(:role, name: 'qa') }
   let!(:dev_role) { create(:role, name: 'developer', technical: true, billable: true) }
   let!(:active_project) { create(:project) }
   let!(:potential_project) { create(:project, :potential) }
   let!(:archived_project) { create(:project, :archived) }
   let!(:potential_archived_project) { create(:project, :potential, :archived) }
   let!(:admin_user) { create(:user, :admin, primary_role: dev_role) }
-  let!(:pm_user) { create(:user, primary_role: pm_role) }
-  let!(:qa_user) { create(:user, primary_role: qa_role) }
   let!(:dev_position) { create(:position, :primary, user: admin_user, role: dev_role) }
-  let!(:pm_position) { create(:position, :primary, user: pm_user, role: pm_role) }
-  let!(:qa_position) { create(:position, :primary, user: qa_user, role: qa_role) }
   let!(:note) { create(:note) }
 
   before do
@@ -205,8 +199,8 @@ describe 'Projects page', js: true do
       end
     end
 
-    describe 'removing member from project' do
-      let!(:membership) { create(:membership, user: pm_user, project: active_project) }
+    describe 'ending membership in a regular project' do
+      let!(:membership) { create(:membership, user: admin_user, project: active_project, ends_at: nil) }
 
       before { visit '/dashboard' }
 
@@ -244,7 +238,7 @@ describe 'Projects page', js: true do
 
     describe 'remove note' do
       before do
-        create(:note, user: pm_user, project: active_project)
+        create(:note, user: admin_user, project: active_project)
         find('.projects-types li.active').click
         find('.show-notes').click
       end
