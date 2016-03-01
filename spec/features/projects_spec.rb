@@ -239,7 +239,7 @@ describe 'Projects page', js: true do
         expect(page).to have_selector('div.note-group')
         expect(page).to have_content(note.text)
 
-        find('.note-remove').click()
+        find('.note-remove').click
         expect(page).not_to have_selector('project-notes-wrapper')
         expect(page).not_to have_content(note.text)
       end

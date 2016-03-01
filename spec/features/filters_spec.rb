@@ -41,8 +41,9 @@ describe 'Dashboard filters', js: true do
     context 'when user has not started a project' do
       let!(:junior_role) { create(:role, name: 'junior') }
       let!(:future_dev) { create(:user, primary_role: junior_role) }
-      let!(:future_membership) { create(:membership, user: future_dev, starts_at: 1.week.from_now,
-        project: project_zztop) }
+      let!(:future_membership) do
+        create(:membership, user: future_dev, starts_at: 1.week.from_now, project: project_zztop)
+      end
 
       it 'does not show the project' do
 
