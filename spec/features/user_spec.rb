@@ -10,13 +10,6 @@ describe 'Profile page', js: true do
     page.set_rack_session 'warden.user.user.key' => User.serialize_into_session(user).unshift('User')
   }
 
-  context 'is not displayed by users without access' do
-    let(:other) { create(:user) }
-    before { visit user_path(other.id) }
-
-    xit { expect(page).to have_content('Permission denied!') }
-  end
-
   context 'has billable role' do
     before do
       user.primary_role.update_attribute(:billable, true)
