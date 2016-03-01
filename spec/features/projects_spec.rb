@@ -15,7 +15,7 @@ describe 'Projects page', js: true do
     page.set_rack_session 'warden.user.user.key' => User
       .serialize_into_session(admin_user).unshift('User')
 
-    visit '/dashboard' # Projects tab
+    visit '/dashboard'
   end
 
   describe 'tabs' do
@@ -244,8 +244,7 @@ describe 'Projects page', js: true do
         expect(page).to have_selector('div.note-group')
         expect(page).to have_content(note.text)
 
-        # HACK: because capybara has problems clicking links with empty body
-        execute_script "$('.note-remove').click()"
+        find('.note-remove').click()
         expect(page).not_to have_selector('project-notes-wrapper')
         expect(page).not_to have_content(note.text)
       end
