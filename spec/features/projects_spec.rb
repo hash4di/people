@@ -188,7 +188,7 @@ describe 'Projects page', js: true do
 
         within('.project') do
           find('.Select-control').click
-          find('.Select-menu-outer').click
+          find( 'div.Select-option', text: admin_user.decorate.name ).click
         end
 
         billable_count = find('.billable .count')
