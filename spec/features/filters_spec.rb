@@ -28,7 +28,7 @@ describe 'Dashboard filters', js: true do
 
   describe 'users filter' do
     it 'returns only matched projects when user name provided' do
-      react_select('.filter.users .Select-control', 'Developer Daisy')
+      react_select('.filter.users', 'Developer Daisy')
       expect(page).to have_text('test')
       expect(page).to_not have_text('zztop')
     end
@@ -50,7 +50,7 @@ describe 'Dashboard filters', js: true do
         visit '/dashboard'
 
         expect(page).to have_text('zztop')
-        react_select('.filter.users .Select-control', full_name)
+        react_select('.filter.users', full_name)
 
         expect(page).to_not have_text('zztop')
       end
@@ -66,7 +66,7 @@ describe 'Dashboard filters', js: true do
     end
 
     it 'shows only matched projects when project name provided' do
-      react_select('.filter.projects .Select-control', 'zztop')
+      react_select('.filter.projects', 'zztop')
 
       within '#projects-users' do
         expect(page).to have_text('zztop')

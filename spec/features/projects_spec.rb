@@ -113,7 +113,6 @@ describe 'Projects page', js: true do
 
     context 'when on Archived tab' do
       before { page.find('li.archived').click }
-      end
 
       it 'displays all archived projects' do
         expect(page.find_link(archived_project.name)).to be_visible
@@ -130,7 +129,7 @@ describe 'Projects page', js: true do
       end
 
       it 'does not allow adding memberships to an archived project' do
-        within('.project-details') do
+        within('#projects-users') do
           expect(page).to have_no_selector('.Select-placeholder')
         end
       end
@@ -185,7 +184,7 @@ describe 'Projects page', js: true do
           find('li.active').click
         end
 
-        react_select('.project .Select-control', admin_user.decorate.name)
+        react_select('.project', admin_user.decorate.name)
 
         billable_count = find('.billable .count')
         expect(billable_count).to have_content('1')

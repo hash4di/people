@@ -33,7 +33,7 @@ def select_option(id, text)
 end
 
 def react_select(selector, text)
-  find(selector).click
+  find("#{selector} .Select-control").click
   find('div.Select-option', text: text).click
 end
 
