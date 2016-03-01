@@ -33,7 +33,6 @@ describe 'Projects page', js: true do
       before do
         within(find('.projects-types')) do
           page.find('li.active').click
-          wait_for_ajax
         end
       end
 
@@ -93,7 +92,6 @@ describe 'Projects page', js: true do
     context 'when on Potential tab' do
       before do
         page.find('li.potential').click
-        wait_for_ajax
       end
 
       it 'displays action icon (archive) when hovered' do
@@ -116,7 +114,6 @@ describe 'Projects page', js: true do
     context 'when on Archived tab' do
       before do
         page.find('li.archived').click
-        wait_for_ajax
       end
 
       it 'displays all archived projects' do
