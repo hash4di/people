@@ -181,13 +181,13 @@ describe 'Projects page', js: true do
 
   describe 'managing people in project' do
     describe 'adding member to project' do
-      xit 'adds member to project correctly' do
+      it 'adds member to project correctly' do
         within('.projects-types') do
           find('li.active').click
         end
 
         within('.project') do
-          find('.Select-placeholder').click
+          find('.Select-control').click
           find('.Select-menu-outer').click
         end
 
@@ -201,19 +201,19 @@ describe 'Projects page', js: true do
 
       before { visit '/dashboard' }
 
-      xit 'removes member from project correctly' do
+      it 'sets and end date for a membership' do
         within('.projects-types') do
           find('li.active').click
         end
 
+        expect(page).to_not have_selector('.label.label-default.time-to')
+
         within('div.project') do
-          # HACK: because capybara has problems hovering over elements with empty body
-          execute_script "$('span.icons .remove').append('make me visible to capybara')"
-          find('span.icons a.remove').hover
-          find('span.icons a.remove').click
+          find('.member-name').hover
+          find('.icons .remove').click
         end
 
-        expect(find('div.project div.non-billable')).to have_no_selector('div.membership')
+        expect(page).to have_selector('.label.label-default.time-to')
       end
     end
   end
