@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe 'Projects page', js: true do
-  let!(:dev_role) { create(:role, name: 'developer', technical: true) }
   let!(:pm_role) { create(:role, name: 'pm') }
   let!(:qa_role) { create(:role, name: 'qa') }
+  let!(:dev_role) { create(:role, name: 'developer', technical: true, billable: true) }
   let!(:active_project) { create(:project) }
   let!(:potential_project) { create(:project, :potential) }
   let!(:archived_project) { create(:project, :archived) }
