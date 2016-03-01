@@ -31,9 +31,7 @@ describe 'Projects page', js: true do
   describe 'project row' do
     context 'when on Active tab' do
       before do
-        within(find('.projects-types')) do
-          page.find('li.active').click
-        end
+        within('.projects-types') { page.find('li.active').click }
       end
 
       it 'displays action icon (archive) when hovered' do
@@ -48,7 +46,9 @@ describe 'Projects page', js: true do
       end
 
       it 'allows adding memberships to an active project' do
-        expect(page).to have_selector('.Select-placeholder')
+        within('.project-details') do
+          expect(page).to have_selector('.Select-placeholder')
+        end
       end
 
       describe 'show next' do
@@ -90,9 +90,7 @@ describe 'Projects page', js: true do
     end
 
     context 'when on Potential tab' do
-      before do
-        page.find('li.potential').click
-      end
+      before { page.find('li.potential').click }
 
       it 'displays action icon (archive) when hovered' do
         expect(page.find('.archive')).to be_visible
@@ -107,13 +105,14 @@ describe 'Projects page', js: true do
       end
 
       it 'allows adding memberships to a potential project' do
-        expect(page).to have_selector('.Select-placeholder')
+        within('.project-details') do
+          expect(page).to have_selector('.Select-placeholder')
+        end
       end
     end
 
     context 'when on Archived tab' do
-      before do
-        page.find('li.archived').click
+      before { page.find('li.archived').click }
       end
 
       it 'displays all archived projects' do
@@ -131,7 +130,7 @@ describe 'Projects page', js: true do
       end
 
       it 'does not allow adding memberships to an archived project' do
-        within('#projects-users') do
+        within('.project-details') do
           expect(page).to have_no_selector('.Select-placeholder')
         end
       end
