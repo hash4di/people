@@ -1,19 +1,13 @@
 require 'spec_helper'
 
 describe 'Projects page', js: true do
-  let!(:dev_role) { create(:role, name: 'developer', technical: true) }
-  let!(:pm_role) { create(:role, name: 'pm') }
-  let!(:qa_role) { create(:role, name: 'qa') }
+  let!(:dev_role) { create(:role, name: 'developer', technical: true, billable: true) }
   let!(:active_project) { create(:project) }
   let!(:potential_project) { create(:project, :potential) }
   let!(:archived_project) { create(:project, :archived) }
   let!(:potential_archived_project) { create(:project, :potential, :archived) }
   let!(:admin_user) { create(:user, :admin, primary_role: dev_role) }
-  let!(:pm_user) { create(:user, primary_role: pm_role) }
-  let!(:qa_user) { create(:user, primary_role: qa_role) }
   let!(:dev_position) { create(:position, :primary, user: admin_user, role: dev_role) }
-  let!(:pm_position) { create(:position, :primary, user: pm_user, role: pm_role) }
-  let!(:qa_position) { create(:position, :primary, user: qa_user, role: qa_role) }
   let!(:note) { create(:note) }
 
   before do
@@ -21,7 +15,7 @@ describe 'Projects page', js: true do
     page.set_rack_session 'warden.user.user.key' => User
       .serialize_into_session(admin_user).unshift('User')
 
-    visit '/dashboard' # Projects tab
+    visit '/dashboard'
   end
 
   describe 'tabs' do
@@ -37,10 +31,7 @@ describe 'Projects page', js: true do
   describe 'project row' do
     context 'when on Active tab' do
       before do
-        within(find('.projects-types')) do
-          page.find('li.active').click
-          wait_for_ajax
-        end
+        within('.projects-types') { page.find('li.active').click }
       end
 
       it 'displays action icon (archive) when hovered' do
@@ -55,13 +46,13 @@ describe 'Projects page', js: true do
       end
 
       it 'allows adding memberships to an active project' do
-        expect(page).to have_selector('.Select-placeholder')
+        within('.project-details') do
+          expect(page).to have_selector('.Select-placeholder')
+        end
       end
 
       describe 'show next' do
-        let!(:future_membership) do
-          create(:membership, starts_at: 1.month.from_now, user: admin_user)
-        end
+        let!(:future_membership) { create(:membership, :future, user: admin_user) }
 
         context 'when checked' do
           it 'shows future memberships' do
@@ -84,9 +75,7 @@ describe 'Projects page', js: true do
 
       describe 'people in project' do
         let!(:project_membership) { create(:membership, project: active_project) }
-        let!(:future_project_membership) do
-          create(:membership, project: active_project, starts_at: Time.now + 2.weeks)
-        end
+        let!(:future_project_membership) { create(:membership, :future, project: active_project) }
 
         it 'shows number of present people in project' do
           visit '/dashboard'
@@ -97,10 +86,7 @@ describe 'Projects page', js: true do
     end
 
     context 'when on Potential tab' do
-      before do
-        page.find('li.potential').click
-        wait_for_ajax
-      end
+      before { page.find('li.potential').click }
 
       it 'displays action icon (archive) when hovered' do
         expect(page.find('.archive')).to be_visible
@@ -115,15 +101,14 @@ describe 'Projects page', js: true do
       end
 
       it 'allows adding memberships to a potential project' do
-        expect(page).to have_selector('.Select-placeholder')
+        within('.project-details') do
+          expect(page).to have_selector('.Select-placeholder')
+        end
       end
     end
 
     context 'when on Archived tab' do
-      before do
-        page.find('li.archived').click
-        wait_for_ajax
-      end
+      before { page.find('li.archived').click }
 
       it 'displays all archived projects' do
         expect(page.find_link(archived_project.name)).to be_visible
@@ -190,39 +175,36 @@ describe 'Projects page', js: true do
 
   describe 'managing people in project' do
     describe 'adding member to project' do
-      xit 'adds member to project correctly' do
+      it 'adds member to project correctly' do
         within('.projects-types') do
           find('li.active').click
         end
 
-        within('.project') do
-          find('.Select-placeholder').click
-          find('.Select-menu-outer').click
-        end
+        react_select('.project', admin_user.decorate.name)
 
         billable_count = find('.billable .count')
         expect(billable_count).to have_content('1')
       end
     end
 
-    describe 'removing member from project' do
-      let!(:membership) { create(:membership, user: pm_user, project: active_project) }
+    describe 'ending membership in a regular project' do
+      let!(:membership) { create(:membership, user: admin_user, project: active_project, ends_at: nil) }
 
       before { visit '/dashboard' }
 
-      xit 'removes member from project correctly' do
+      it 'sets and end date for a membership' do
         within('.projects-types') do
           find('li.active').click
         end
 
+        expect(page).to_not have_selector('.label.label-default.time-to')
+
         within('div.project') do
-          # HACK: because capybara has problems hovering over elements with empty body
-          execute_script "$('span.icons .remove').append('make me visible to capybara')"
-          find('span.icons a.remove').hover
-          find('span.icons a.remove').click
+          find('.member-name').hover
+          find('.icons .remove').click
         end
 
-        expect(find('div.project div.non-billable')).to have_no_selector('div.membership')
+        expect(page).to have_selector('.label.label-default.time-to')
       end
     end
   end
@@ -244,7 +226,7 @@ describe 'Projects page', js: true do
 
     describe 'remove note' do
       before do
-        create(:note, user: pm_user, project: active_project)
+        create(:note, user: admin_user, project: active_project)
         find('.projects-types li.active').click
         find('.show-notes').click
       end
@@ -253,8 +235,7 @@ describe 'Projects page', js: true do
         expect(page).to have_selector('div.note-group')
         expect(page).to have_content(note.text)
 
-        # HACK: because capybara has problems clicking links with empty body
-        execute_script "$('.note-remove').click()"
+        find('.note-remove').click
         expect(page).not_to have_selector('project-notes-wrapper')
         expect(page).not_to have_content(note.text)
       end

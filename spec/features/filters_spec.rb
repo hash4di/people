@@ -4,7 +4,8 @@ describe 'Dashboard filters', js: true do
   let(:admin_user) { create(:user, :admin) }
   let(:dev_role) { create(:role, name: 'developer') }
   let(:role) { create(:role_billable) }
-  let!(:dev_position) { create(:position, user: dev_user, role: dev_role) }
+  let!(:dev_position) { create(:position, :primary, user: dev_user, role: dev_role) }
+  let!(:admin_dev_position) { create(:position, :primary, user: admin_user, role: dev_role) }
 
   let!(:dev_user) do
     create(:user, :admin, last_name: 'Developer', primary_role: dev_role,
@@ -26,13 +27,13 @@ describe 'Dashboard filters', js: true do
   end
 
   describe 'users filter' do
-    xit 'returns only matched projects when user name provided' do
-      select_option('users', 'Developer Daisy')
+    it 'returns only matched projects when user name provided' do
+      react_select('.filter.users', 'Developer Daisy')
       expect(page).to have_text('test')
       expect(page).to_not have_text('zztop')
     end
 
-    xit 'returns all projects when no selectize provided' do
+    it 'returns all projects when no selectize provided' do
       expect(page).to have_text('zztop')
       expect(page).to have_text('test')
     end
@@ -40,92 +41,38 @@ describe 'Dashboard filters', js: true do
     context 'when user has not started a project' do
       let!(:junior_role) { create(:role, name: 'junior') }
       let!(:future_dev) { create(:user, primary_role: junior_role) }
-      let!(:future_membership) { create(:membership, user: future_dev, starts_at: 1.week.from_now) }
+      let!(:future_membership) do
+        create(:membership, :future, user: future_dev, project: project_zztop)
+      end
 
-      xit 'shows the user' do
+      it 'does not show the project' do
+
         full_name = "#{future_dev.last_name} #{future_dev.first_name}"
         visit '/dashboard'
-        select_option('users', full_name)
 
-        if page.has_css?('.invisible')
-          within '.invisible' do
-            expect(page).not_to have_text(full_name)
-          end
-        end
+        expect(page).to have_text('zztop')
+        react_select('.filter.users', full_name)
 
-        within '#projects-users' do
-          expect(page).to have_text(full_name)
-        end
+        expect(page).to_not have_text('zztop')
       end
     end
   end
 
   describe 'projects filter' do
-    xit 'shows all projects when empty string provided' do
+    it 'shows all projects when empty string provided' do
       within '#projects-users' do
         expect(page).to have_text('zztop')
         expect(page).to have_text('test')
       end
     end
 
-    xit 'shows only matched projects when project name provided' do
-      select_option 'projects', 'zztop'
+    it 'shows only matched projects when project name provided' do
+      react_select('.filter.projects', 'zztop')
 
       within '#projects-users' do
         expect(page).to have_text('zztop')
         expect(page).not_to have_text('test')
       end
-    end
-  end
-
-  describe 'abilities filter' do
-    let(:rails) { create(:ability, name: 'Rails') }
-    let(:ember) { create(:ability, name: 'Ember') }
-    let!(:backend_developer)    { create(:user, abilities: [rails]) }
-    let!(:frontend_developer)   { create(:user, abilities: [ember]) }
-    let!(:full_stack_developer) { create(:user, abilities: [rails, ember]) }
-
-    before { visit '/users' }
-
-    xit 'returns users with given ability' do
-      select_option('abilities', 'Rails')
-
-      expect(page).to have_text backend_developer.last_name
-      expect(page).not_to have_text frontend_developer.last_name
-    end
-
-    context 'with multiple abilities' do
-      xit 'returns users with all abilities' do
-        select_option('abilities', 'Rails')
-        select_option('abilities', 'Ember')
-
-        expect(page).to have_text full_stack_developer.last_name
-        expect(page).not_to have_text backend_developer.last_name
-        expect(page).not_to have_text frontend_developer.last_name
-      end
-    end
-  end
-
-  describe 'User sorts filtered list' do
-    let(:junior_role) { create(:role, technical: true, name: 'junior') }
-    let(:junior_dev) do
-      u = create(:user)
-      u.primary_role = junior_role
-      u.save
-      u
-    end
-    let!(:junior_position) do
-      create(:position, user: junior_dev, role: junior_role, primary: true)
-    end
-
-    xit 'does not disable the filter' do
-      visit scheduling_path
-      expect(page).to have_text junior_dev.last_name
-      select_option('roles', 'junior')
-      find('div.up[data-sort="name"]').trigger 'click'
-
-      expect(page).to have_text junior_dev.last_name
-      expect(page).not_to have_text dev_user.last_name
     end
   end
 end

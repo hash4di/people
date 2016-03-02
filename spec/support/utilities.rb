@@ -32,6 +32,11 @@ def select_option(id, text)
   end
 end
 
+def react_select(selector, text)
+  find("#{selector} .Select-control").click
+  find('div.Select-option', text: text).click
+end
+
 def set_text(id, text)
   selectize_within(id) do
     first('div.selectize-input input').set(text)
