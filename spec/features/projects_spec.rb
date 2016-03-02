@@ -52,9 +52,7 @@ describe 'Projects page', js: true do
       end
 
       describe 'show next' do
-        let!(:future_membership) do
-          create(:membership, starts_at: 1.month.from_now, user: admin_user)
-        end
+        let!(:future_membership) { create(:membership, :future, user: admin_user) }
 
         context 'when checked' do
           it 'shows future memberships' do
@@ -77,9 +75,7 @@ describe 'Projects page', js: true do
 
       describe 'people in project' do
         let!(:project_membership) { create(:membership, project: active_project) }
-        let!(:future_project_membership) do
-          create(:membership, project: active_project, starts_at: Time.now + 2.weeks)
-        end
+        let!(:future_project_membership) { create(:membership, :future, project: active_project) }
 
         it 'shows number of present people in project' do
           visit '/dashboard'

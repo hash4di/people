@@ -42,7 +42,7 @@ describe 'Dashboard filters', js: true do
       let!(:junior_role) { create(:role, name: 'junior') }
       let!(:future_dev) { create(:user, primary_role: junior_role) }
       let!(:future_membership) do
-        create(:membership, user: future_dev, starts_at: 1.week.from_now, project: project_zztop)
+        create(:membership, :future, user: future_dev, project: project_zztop)
       end
 
       it 'does not show the project' do
