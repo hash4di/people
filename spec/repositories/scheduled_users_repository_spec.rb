@@ -70,7 +70,7 @@ describe ScheduledUsersRepository do
     end
 
     it 'includes devs in internal projects with internal projects scheduled,'\
-        'except currently unavailable' do
+        ' except currently unavailable' do
       expect(subject).to include(
         internal_project[:dev_without_due_date][:with_internal_project_scheduled])
       expect(subject).to include(
