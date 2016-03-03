@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'profile', js: true do
-  let!(:junior_role) { create(:role, name: 'junior') }
+  let!(:junior_role) { create(:junior_role) }
   let!(:developer_role) { create(:role, name: 'developer') }
   let(:position) { create(:position, role: junior_role, primary: false) }
 
