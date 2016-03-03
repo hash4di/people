@@ -94,3 +94,7 @@ group :test do
   gem 'timecop'
   gem 'webmock'
 end
+
+group :staging, :production do
+  gem 'lograge'
+end

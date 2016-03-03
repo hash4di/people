@@ -17,6 +17,11 @@ Hrguru::Application.configure do
   GA.tracker = 'UA-35395053-13'
   config.active_record.raise_in_transactional_callbacks = true
 
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    { params: event.payload[:params].reject { |k| %w(controller action).include? k } }
+  end
+
   ActionMailer::Base.smtp_settings = {
     :address        => 'smtp.sendgrid.net',
     :port           => '587',
