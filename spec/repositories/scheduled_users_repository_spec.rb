@@ -47,8 +47,7 @@ describe ScheduledUsersRepository do
         commercial_project_without_due_date[:dev_without_due_date][:with_nothing_scheduled])
     end
 
-    # TODO fix specs after bug fixes
-    xit 'includes a dev without a due date in a commercial project without due date who has' \
+    it 'includes a dev without a due date in a commercial project without due date who has' \
       ' an internal project scheduled' do
       expect(subject).to include(
         commercial_project_without_due_date[:dev_without_due_date][
@@ -70,7 +69,8 @@ describe ScheduledUsersRepository do
         internal_project[:dev_with_due_date][:with_nothing_scheduled])
     end
 
-    it 'includes devs in internal projects with internal projects scheduled, except currently unavailable' do
+    it 'includes devs in internal projects with internal projects scheduled,'\
+        'except currently unavailable' do
       expect(subject).to include(
         internal_project[:dev_without_due_date][:with_internal_project_scheduled])
       expect(subject).to include(
