@@ -1,4 +1,4 @@
-FROM quay.io/netguru/ng-ruby:2.1.7
+FROM quay.io/netguru/ng-ruby:2.3.0
 
 RUN /opt/passenger/install
 RUN /opt/node/install
