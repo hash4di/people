@@ -23,7 +23,7 @@ describe 'Scheduling page', js: true do
   end
 
   describe 'filters' do
-    xit 'allows to filter by abilities' do
+    it 'allows to filter by abilities' do
       expect(page).to have_content angular_dev.last_name
       expect(page).to have_content dev_with_no_skillz.last_name
 
@@ -59,11 +59,11 @@ describe 'Scheduling page', js: true do
     let!(:pm_role) { create(:pm_role) }
     let!(:pm) { create(:user, primary_role: pm_role) }
 
-    xit 'displays users' do
+    it 'displays users' do
       expect(page).to have_content another_dev.last_name
     end
 
-    xit 'displays only technical users' do
+    it 'displays only technical users' do
       expect(page).not_to have_content pm.last_name
     end
   end
