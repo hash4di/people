@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'Scheduling page', js: true do
-  let(:admin_user) { create(:user, :admin) }
+  let(:admin_user) { create(:user, :admin, :developer) }
   let!(:angular_ability) { create(:ability, name: 'AngularJS') }
-  let!(:dev_with_no_skillz) { create(:user) }
-  let!(:angular_dev) { create(:user, abilities: [angular_ability]) }
-  let!(:another_dev) { create(:user) }
+  let!(:dev_with_no_skillz) { create(:user, :developer) }
+  let!(:angular_dev) { create(:user, :developer, abilities: [angular_ability]) }
+  let!(:another_dev) { create(:user, :developer) }
   let!(:developer) { create(:developer_in_project, :with_project_scheduled_with_due_date) }
   let!(:next_membership_for_developer) do
     create(:membership, {
