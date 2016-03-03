@@ -33,8 +33,7 @@ describe 'Scheduling page', js: true do
   end
 
   describe 'table with users' do
-    let!(:pm_role) { create(:pm_role) }
-    let!(:pm) { create(:user, primary_role: pm_role) }
+    let!(:pm) { create(:pm_user) }
 
     it 'displays users' do
       expect(page).to have_content another_dev.last_name
