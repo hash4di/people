@@ -45,14 +45,9 @@ describe 'Scheduling page', js: true do
   end
 
   describe 'next project same as current' do
-    # TODO fix specs after bug fixes
-    xit 'displays project only once for specific user' do
+    it 'displays project twice for a specific user' do
       within('.scheduled-users') do
-        ends_at = next_membership_for_developer.ends_at.to_s(:ymd)
-
-        expect(page.all('a', text: next_membership_for_developer.project.name).size).to eql(1)
-        expect(page.find('.projects-region .project-dates .time', text: ends_at)).to be_visible
-        expect(page.first('.next-projects-region .project-dates .time', text: ends_at)).to be_nil
+        expect(page.all('a', text: next_membership_for_developer.project.name).size).to eql(2)
       end
     end
   end
