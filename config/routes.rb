@@ -18,6 +18,7 @@ Hrguru::Application.routes.draw do
   end
 
   resources :scheduling, only: [:index], path: 'scheduling' do
+    get nil, on: :collection, to: 'scheduling#all'
     get 'all', on: :collection
     get 'juniors_and_interns', on: :collection
     get 'to_rotate', on: :collection
