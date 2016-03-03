@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-
+ruby '2.3.0'
 gem 'rails', '4.2.5'
 
 gem 'acts_as_list'
@@ -93,4 +93,8 @@ group :test do
   gem 'shoulda'
   gem 'timecop'
   gem 'webmock'
+end
+
+group :staging, :production do
+  gem 'lograge'
 end

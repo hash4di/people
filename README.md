@@ -14,7 +14,7 @@ The main table shows the current teams in each project, but you can also add peo
 ## Technology stack
 
 * Rails 4.2.5
-* Ruby 2.1.5
+* Ruby 2.3.0
 * ReactJS 0.14.2
 * PostgreSQL
 

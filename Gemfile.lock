@@ -384,6 +384,10 @@ GEM
     listen (3.0.5)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
+    lograge (0.3.6)
+      actionpack (>= 3)
+      activesupport (>= 3)
+      railties (>= 3)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.10)
@@ -688,6 +692,7 @@ DEPENDENCIES
   js_stack
   konf
   letter_opener
+  lograge
   messengerjs-rails
   mini_magick
   netguru_theme
@@ -726,6 +731,3 @@ DEPENDENCIES
   versionist
   webmock
   whenever
-
-BUNDLED WITH
-   1.11.2
