@@ -44,7 +44,7 @@ class AddUserToTeam extends React.Component {
       return { label: user.name, value: user.id };
     });
     return (
-      <footer>
+      <footer className="add-user-to-team">
         <Select
             name="form-field-name"
             options={options}
