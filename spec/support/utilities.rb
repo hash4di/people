@@ -19,6 +19,11 @@ def sign_in(user)
   click_link_or_button 'Sign up with Google'
 end
 
+def log_in_as(user)
+  page.set_rack_session 'warden.user.user.key' => User
+    .serialize_into_session(user).unshift('User')
+end
+
 def selectize_click(id)
   selectize_within(id) do
     first('div.selectize-input').click
