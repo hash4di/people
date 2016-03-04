@@ -20,9 +20,7 @@ describe 'Dashboard filters', js: true do
   let!(:project_test) { create(:project, name: 'test') }
 
   before(:each) do
-    page.set_rack_session 'warden.user.user.key' => User
-      .serialize_into_session(admin_user).unshift('User')
-
+    log_in_as(admin_user)
     visit '/dashboard'
   end
 

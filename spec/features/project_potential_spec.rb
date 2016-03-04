@@ -6,8 +6,7 @@ describe 'Potential project', js: true do
   let!(:user) { create :user }
 
   before do
-    page.set_rack_session 'warden.user.user.key' => User
-      .serialize_into_session(admin_user).unshift('User')
+    log_in_as(admin_user)
   end
 
   context "when 'stays' is unchecked" do

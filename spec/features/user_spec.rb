@@ -6,9 +6,9 @@ describe 'Profile page', js: true do
   let(:role) { create(:role) }
   let(:user) { create(:user, :admin, primary_role: role) }
 
-  before {
-    page.set_rack_session 'warden.user.user.key' => User.serialize_into_session(user).unshift('User')
-  }
+  before do
+    log_in_as(user)
+  end
 
   context 'has billable role' do
     before do

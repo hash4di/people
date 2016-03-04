@@ -7,7 +7,7 @@ describe 'Role page', js: true do
   let!(:user) { create(:user, :admin) }
 
   before do
-    page.set_rack_session 'warden.user.user.key' => User.serialize_into_session(user).unshift('User')
+    log_in_as(user)
   end
 
   context 'role destroying' do

@@ -7,7 +7,7 @@ describe 'Users page', js: true do
   let!(:position) { create(:position, user: developer, role: role, primary: true) }
 
   before(:each) do
-    page.set_rack_session 'warden.user.user.key' => User.serialize_into_session(user).unshift('User')
+    log_in_as(user)
     visit '/users'
   end
 

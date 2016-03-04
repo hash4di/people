@@ -12,9 +12,7 @@ describe 'Projects page', js: true do
 
   before do
     allow_any_instance_of(SendMailJob).to receive(:perform)
-    page.set_rack_session 'warden.user.user.key' => User
-      .serialize_into_session(admin_user).unshift('User')
-
+    log_in_as(admin_user)
     visit '/dashboard'
   end
 
