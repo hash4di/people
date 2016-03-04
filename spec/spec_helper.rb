@@ -8,6 +8,8 @@ require 'sucker_punch/testing/inline'
 require 'capybara/rspec'
 require 'rack_session_access/capybara'
 require 'database_cleaner'
+require 'selenium-webdriver'
+require 'site_prism'
 
 
 ENV['RAILS_ENV'] ||= 'test'
