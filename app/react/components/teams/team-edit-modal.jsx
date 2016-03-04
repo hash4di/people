@@ -19,7 +19,7 @@ export default class TeamEditModal extends React.Component {
     if (this.state.newTeamName) {
       TeamActions.update({ editedTeam: this.props.editedTeam, name: this.state.newTeamName });
     } else {
-      Messenger().error('New name not provided');
+      Messenger().error(`New name not provided`);
     }
   }
 
