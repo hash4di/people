@@ -9,8 +9,16 @@ describe 'team view', js: true do
   let!(:dev_role) { create(:role, name: 'developer') }
   let!(:junior_role) { create(:role, name: 'junior', billable: false) }
 
+  let(:added_user_first_name) { 'Developer' }
+  let(:added_user_last_name) { 'Daisy' }
   let!(:dev_user) do
-    create(:user, :admin, first_name: 'Developer', last_name: 'Daisy', primary_role: billable_role)
+    create(
+      :user,
+      :admin,
+      first_name: added_user_first_name,
+      last_name: added_user_last_name,
+      primary_role: billable_role
+    )
   end
   let!(:dev_position) { create(:position, :primary, user: dev_user, role: billable_role) }
 
@@ -103,6 +111,10 @@ describe 'team view', js: true do
       expect(page).not_to have_css('ul.team-members.empty')
       expect(page).to have_css('ul.team-members.filled')
       expect(page).to have_content(success_msg)
+      # select another user as a leader
+      find('.js-promote-leader', match: :first).click
+      expect(page).to have_css('ul.team-members.filled')
+      expect(page).to have_content(success_msg)
     end
   end
 
@@ -144,20 +156,17 @@ describe 'team view', js: true do
     end
 
     context 'when current_user is an admin' do
+      let(:added_user_name) { "#{added_user_last_name} #{added_user_first_name}" }
+
       it 'is visible' do
         expect(page).to have_css('footer.add-user-to-team')
       end
 
-      let(:added_user) { [dev_user, non_dev_user].sort_by(&:last_name).first.decorate }
-      let(:success_msg) do
-        "User #{added_user.name} added to team"
-      end
-
       it 'adds a new member to the team' do
         expect(page).to have_css('.membership', count: 2)
-        react_select('footer.add-user-to-team', 'Daisy Developer')
+        react_select('footer.add-user-to-team', added_user_name)
         expect(page).to have_css('.membership', count: 3)
-        expect(page).to have_content(success_msg)
+        expect(page).to have_content("User #{added_user_name} added to team")
       end
     end
   end
