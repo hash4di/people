@@ -123,21 +123,30 @@ describe 'team view', js: true do
       find('.js-edit-team').click
     end
 
+    let(:new_team_name) { 'Relatively OK team' }
+
+    let(:success_msg) do
+      "Team #{new_team_name} changed successfully"
+    end
+
+    let(:error_msg) do
+      'New name not provided'
+    end
+
     it 'shows edit form' do
       expect(page).to have_css('.modal-dialog.edit-team')
     end
 
     it 'updates team name' do
-      new_team_name = 'Relatively OK team'
       find('input.new-name').set(new_team_name)
       find('button.save').click
       expect(page).to have_content(new_team_name)
-      expect(page).to have_content("Team #{new_team_name} changed successfully")
+      expect(page).to have_content(success_msg)
     end
 
     it 'fails to update team name' do
       find('button.save').click
-      expect(page).to have_content('New name not provided')
+      expect(page).to have_content(error_msg)
     end
 
     it 'closes edit form' do
