@@ -93,6 +93,7 @@ group :test do
   gem 'shoulda'
   gem 'timecop'
   gem 'webmock'
+  gem 'site_prism'
 end
 
 group :staging, :production do

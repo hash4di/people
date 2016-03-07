@@ -4,8 +4,7 @@ describe 'Project show view', js: true do
   let!(:dev_role) { create(:role, name: 'developer', technical: true) }
   let!(:admin_user) { create(:user, :admin, primary_role: dev_role) }
   before do
-    page.set_rack_session 'warden.user.user.key' => User
-      .serialize_into_session(admin_user).unshift('User')
+    log_in_as(admin_user)
   end
 
   describe 'rendering timeline on profile' do

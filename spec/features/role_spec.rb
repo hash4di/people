@@ -6,16 +6,12 @@ describe 'Role page', js: true do
   let!(:role) { create(:role) }
   let!(:user) { create(:user, :admin) }
 
-  before do
-    page.set_rack_session 'warden.user.user.key' => User.serialize_into_session(user).unshift('User')
-  end
+  before { log_in_as(user) }
 
   context 'role destroying' do
     let!(:membership) { create(:membership, role: role) }
 
-    before do
-      visit role_path(role)
-    end
+    before { visit role_path(role) }
 
     it 'cant delete if there are any memberships associated with this role' do
       expect(page).to have_content(I18n.t('roles.show.destroy_info'))

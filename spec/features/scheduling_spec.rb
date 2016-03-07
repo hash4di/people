@@ -17,8 +17,7 @@ describe 'Scheduling page', js: true do
   end
 
   before do
-    page.set_rack_session 'warden.user.user.key' => User
-      .serialize_into_session(admin_user).unshift('User')
+    log_in_as(admin_user)
     visit all_scheduling_index_path
   end
 

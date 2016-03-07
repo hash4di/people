@@ -6,8 +6,7 @@ describe 'profile', js: true do
   let(:position) { create(:position, role: junior_role, primary: false) }
 
   before do
-    page.set_rack_session 'warden.user.user.key' => User
-      .serialize_into_session(position.user).unshift('User')
+    log_in_as(position.user)
   end
 
   describe 'setting primary role' do

@@ -1,41 +1,35 @@
 require 'spec_helper'
 
 describe 'Projects page', js: true do
-  let!(:dev_role) { create(:role, name: 'developer', technical: true, billable: true) }
+  let!(:admin_user) { create(:user, :admin, :developer) }
   let!(:active_project) { create(:project) }
   let!(:potential_project) { create(:project, :potential) }
   let!(:archived_project) { create(:project, :archived) }
   let!(:potential_archived_project) { create(:project, :potential, :archived) }
-  let!(:admin_user) { create(:user, :admin, primary_role: dev_role) }
-  let!(:dev_position) { create(:position, :primary, user: admin_user, role: dev_role) }
   let!(:note) { create(:note) }
+
+  let(:projects_page) { App.new.projects_page }
 
   before do
     allow_any_instance_of(SendMailJob).to receive(:perform)
-    page.set_rack_session 'warden.user.user.key' => User
-      .serialize_into_session(admin_user).unshift('User')
-
-    visit '/dashboard'
+    log_in_as admin_user
+    projects_page.load
   end
 
   describe 'tabs' do
     it 'has Active/Potential/Archived tabs' do
-      within(find('.projects-types')) do
-        page.find('li.active').click
-        page.find('li.potential').click
-        page.find('li.archived').click
-      end
+      expect(projects_page).to have_active_tab
+      expect(projects_page).to have_potential_tab
+      expect(projects_page).to have_archived_tab
     end
   end
 
   describe 'project row' do
     context 'when on Active tab' do
-      before do
-        within('.projects-types') { page.find('li.active').click }
-      end
+      before { projects_page.active_tab.click }
 
-      it 'displays action icon (archive) when hovered' do
-        expect(page.find('.archive')).to be_visible
+      it 'has action icon (archive)' do
+        expect(projects_page).to have_archive_icons
       end
 
       it 'displays proper projects' do
@@ -46,29 +40,25 @@ describe 'Projects page', js: true do
       end
 
       it 'allows adding memberships to an active project' do
-        within('.project-details') do
-          expect(page).to have_selector('.Select-placeholder')
-        end
+        expect(projects_page).to have_member_dropdowns
       end
 
       describe 'show next' do
         let!(:future_membership) { create(:membership, :future, user: admin_user) }
 
+        before { projects_page.active_tab.click }
+
         context 'when checked' do
           it 'shows future memberships' do
-            visit '/dashboard'
             check 'show-next'
-            time_elements = all('time')
-            expect(time_elements.size).to_not eq 0
+            expect(projects_page.time_from_elements.size).to_not eq 0
           end
         end
 
         context 'when unchecked' do
           it 'does not show future memberships' do
-            visit '/dashboard'
             uncheck 'show-next'
-            time_elements = all('time.from-date')
-            expect(time_elements.size).to eq 0
+            expect(projects_page.time_from_elements.size).to eq 0
           end
         end
       end
@@ -77,19 +67,19 @@ describe 'Projects page', js: true do
         let!(:project_membership) { create(:membership, project: active_project) }
         let!(:future_project_membership) { create(:membership, :future, project: active_project) }
 
+        before { projects_page.active_tab.click }
+
         it 'shows number of present people in project' do
-          visit '/dashboard'
-          non_billable_count = find('.non-billable .count')
-          expect(non_billable_count).to have_content('1')
+          expect(projects_page.non_billable_counters.first).to have_content('1')
         end
       end
     end
 
     context 'when on Potential tab' do
-      before { page.find('li.potential').click }
+      before { projects_page.potential_tab.click }
 
       it 'displays action icon (archive) when hovered' do
-        expect(page.find('.archive')).to be_visible
+        expect(projects_page).to have_archive_icons
       end
 
       it 'displays proper projects' do
@@ -101,14 +91,12 @@ describe 'Projects page', js: true do
       end
 
       it 'allows adding memberships to a potential project' do
-        within('.project-details') do
-          expect(page).to have_selector('.Select-placeholder')
-        end
+        expect(projects_page).to have_member_dropdowns
       end
     end
 
     context 'when on Archived tab' do
-      before { page.find('li.archived').click }
+      before { projects_page.archived_tab.click }
 
       it 'displays all archived projects' do
         expect(page.find_link(archived_project.name)).to be_visible
@@ -121,13 +109,11 @@ describe 'Projects page', js: true do
       end
 
       it 'displays action icon (unarchive) when hovered' do
-        expect(page).to have_selector('.unarchive')
+        expect(projects_page).to have_unarchive_icons
       end
 
       it 'does not allow adding memberships to an archived project' do
-        within('#projects-users') do
-          expect(page).to have_no_selector('.Select-placeholder')
-        end
+        expect(projects_page).to have_no_member_dropdowns
       end
     end
   end
@@ -176,35 +162,29 @@ describe 'Projects page', js: true do
   describe 'managing people in project' do
     describe 'adding member to project' do
       it 'adds member to project correctly' do
-        within('.projects-types') do
-          find('li.active').click
-        end
+        projects_page.active_tab.click
 
         react_select('.project', admin_user.decorate.name)
 
-        billable_count = find('.billable .count')
-        expect(billable_count).to have_content('1')
+        expect(projects_page.billable_counters.first).to have_content('1')
       end
     end
 
     describe 'ending membership in a regular project' do
       let!(:membership) { create(:membership, user: admin_user, project: active_project, ends_at: nil) }
 
-      before { visit '/dashboard' }
+      before { projects_page.active_tab.click }
 
       it 'sets and end date for a membership' do
-        within('.projects-types') do
-          find('li.active').click
-        end
-
-        expect(page).to_not have_selector('.label.label-default.time-to')
+        expect(projects_page.time_to_elements.size).to eq 0
 
         within('div.project') do
           find('.member-name').hover
           find('.icons .remove').click
+          wait_for_ajax
         end
 
-        expect(page).to have_selector('.label.label-default.time-to')
+        expect(projects_page.time_to_elements.size).to_not eq 0
       end
     end
   end
@@ -212,7 +192,7 @@ describe 'Projects page', js: true do
   describe 'managing notes' do
     describe 'add a new note' do
       before do
-        find('.projects-types li.active').click
+        projects_page.active_tab.click
         find('.show-notes').click
       end
 
@@ -227,7 +207,7 @@ describe 'Projects page', js: true do
     describe 'remove note' do
       before do
         create(:note, user: admin_user, project: active_project)
-        find('.projects-types li.active').click
+        projects_page.active_tab.click
         find('.show-notes').click
       end
 
