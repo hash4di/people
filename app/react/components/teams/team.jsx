@@ -51,12 +51,12 @@ class Team extends React.Component {
 
   visibleRoles() {
     return this.props.roles.filter(role => {
-      return role.show_in_team === true
+      return role.show_in_team === true;
     });
   }
 
   visibleUsers() {
-    let visibleRolesIds = this.visibleRoles().map((role) => role.id);
+    const visibleRolesIds = this.visibleRoles().map((role) => role.id);
     return this.props.teamUsers.filter(user => {
       return user.primary_role_ids.some(roleId => {
         return visibleRolesIds.indexOf(roleId) > -1;

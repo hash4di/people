@@ -137,7 +137,7 @@ describe 'team view', js: true do
       expect(page).to have_css('.modal-dialog.edit-team')
     end
 
-    # TODO find out why failing on circle
+    # TODO: find out why failing on circle
     xit 'updates team name' do
       find('input.new-name').set(new_team_name)
       find('button.save').click
