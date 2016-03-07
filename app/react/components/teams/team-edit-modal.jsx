@@ -8,6 +8,7 @@ export default class TeamEditModal extends React.Component {
     super(props);
     this.removeTeam = this.removeTeam.bind(this);
     this.updateTeam = this.updateTeam.bind(this);
+    this.state = { newTeamName: '' };
   }
 
   removeTeam() {
@@ -15,7 +16,11 @@ export default class TeamEditModal extends React.Component {
   }
 
   updateTeam() {
-    TeamActions.update({ editedTeam: this.props.editedTeam, name: this.state.newTeamName });
+    if (this.state.newTeamName) {
+      TeamActions.update({ editedTeam: this.props.editedTeam, name: this.state.newTeamName });
+    } else {
+      Messenger().error(`New name not provided`);
+    }
   }
 
   render() {
@@ -33,7 +38,7 @@ export default class TeamEditModal extends React.Component {
     };
     return(
       <Modal
-        className="Modal__Bootstrap modal-dialog"
+        className="Modal__Bootstrap modal-dialog edit-team"
         closeTimeoutMS={150}
         isOpen={true}
         onRequestClose={this.props.closeModalCallback}
@@ -47,12 +52,12 @@ export default class TeamEditModal extends React.Component {
         </div>
         <div className="modal-body">
           <h4>New name: </h4>
-          <input type="text" onChange={updateNewTeamName}></input>
+          <input className="new-name" type="text" onChange={updateNewTeamName}></input>
         </div>
         <div className="modal-footer">
-          <button type="button" className="btn btn-danger" onClick={this.removeTeam}>Remove</button>
-          <button type="button" className="btn btn-default" onClick={this.props.closeModalCallback}>Close</button>
-          <button type="button" className="btn btn-primary" onClick={this.updateTeam}>Save changes</button>
+          <button type="button" className="btn btn-danger remove" onClick={this.removeTeam}>Remove</button>
+          <button type="button" className="btn btn-default cancel" onClick={this.props.closeModalCallback}>Close</button>
+          <button type="button" className="btn btn-primary save" onClick={this.updateTeam}>Save changes</button>
         </div>
       </Modal>
     );

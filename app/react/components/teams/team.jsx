@@ -49,6 +49,21 @@ class Team extends React.Component {
     return items;
   }
 
+  visibleRoles() {
+    return this.props.roles.filter(role => {
+      return role.show_in_team === true;
+    });
+  }
+
+  visibleUsers() {
+    const visibleRolesIds = this.visibleRoles().map((role) => role.id);
+    return this.props.teamUsers.filter(user => {
+      return user.primary_role_ids.some(roleId => {
+        return visibleRolesIds.indexOf(roleId) > -1;
+      }) && (user.archived === false || (user.archived === true && user.team_ids != null));
+    });
+  }
+
   billableUsers() {
     let billableRolesIds = this.billableRoles().map(role => role.id);
 
@@ -72,7 +87,7 @@ class Team extends React.Component {
   }
 
   nonLeaderUsers() {
-    return this.props.teamUsers.filter(user => user.id != this.props.team.user_id);
+    return this.visibleUsers().filter(user => user.id != this.props.team.user_id);
   }
 
   nonBillableRoles() {
