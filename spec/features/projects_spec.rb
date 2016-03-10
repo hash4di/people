@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Projects page', js: true do
+describe 'Projects dashboard page', js: true do
   let!(:admin_user) { create(:user, :admin, :developer) }
   let!(:active_project) { create(:project) }
   let!(:potential_project) { create(:project, :potential) }
