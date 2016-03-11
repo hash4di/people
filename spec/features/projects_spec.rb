@@ -17,7 +17,6 @@ describe 'Projects dashboard page', js: true do
 
   describe 'sections' do
     it 'has all the expected sections' do
-      expect(projects_page).to have_menu
       expect(projects_page).to have_project_types
       expect(projects_page).to have_project_filters
       expect(projects_page).to have_projects
