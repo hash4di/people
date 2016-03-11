@@ -1,7 +1,6 @@
 class ProjectsPage < SitePrism::Page
   set_url '/dashboard'
 
-  section :menu, MenuSection, '.navbar-static-top'
   section :project_types, ProjectTypesSection, '.projects-types'
   section :project_filters, ProjectFiltersSection, '#filters'
 
