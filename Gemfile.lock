@@ -339,7 +339,7 @@ GEM
       haml (>= 4.0.6, < 5.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
-    hashdiff (0.2.3)
+    hashdiff (0.3.0)
     hashie (3.4.3)
     hike (1.2.3)
     html2haml (2.0.0)
@@ -633,7 +633,7 @@ GEM
       yard (~> 0.7)
     warden (1.2.5)
       rack (>= 1.0)
-    webmock (1.22.6)
+    webmock (1.24.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff

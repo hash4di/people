@@ -92,7 +92,7 @@ group :test do
   gem 'rspec-its'
   gem 'shoulda'
   gem 'timecop'
-  gem 'webmock'
+  gem 'webmock', require: false
   gem 'site_prism'
 end
 
