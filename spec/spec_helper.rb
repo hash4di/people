@@ -21,7 +21,7 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   I18n.enforce_available_locales = false
-  WebMock.disable_net_connect!(allow_localhost: true, allow:'codeclimate.com')
+  WebMock.disable_net_connect!(allow_localhost: true, allow: 'codeclimate.com')
 
   config.include FactoryGirl::Syntax::Methods
   config.include Devise::TestHelpers, type: :controller
