@@ -209,4 +209,21 @@ describe User do
       end
     end
   end
+
+  describe "#unavailable" do
+    let!(:unavailable_project) { create(:project, name: "unavailable", internal: true) }
+    let!(:unavailable_user) { create(:user) }
+    let!(:unavailable_membership) do
+      create(:membership,
+        starts_at: 3.days.ago, user: unavailable_user, project: unavailable_project)
+    end
+
+    context "when current date is the same as end date for unavailable project membership" do
+      before { unavailable_membership.update_attribute(:ends_at, Date.today) }
+
+      it "returns the user who ends unavailable project today" do
+        expect(User.unavailable.to_a).to eq([unavailable_user])
+      end
+    end
+  end
 end
