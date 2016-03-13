@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   scope :available, -> { where.not(id: unavailable.select(:id)) }
   scope :unavailable, -> do
     joins(memberships: :project).where("lower(projects.name) = 'unavailable'")
-      .where('(memberships.ends_at IS NULL) OR (memberships.ends_at > ?)', Time.current)
+      .where('(memberships.ends_at IS NULL) OR (memberships.ends_at >= ?)', Time.current)
       .merge(Membership.started)
   end
   scope :active, -> { where(archived: false) }
