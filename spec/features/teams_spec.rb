@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'team view', js: true do
+describe 'Team view', js: true do
   let(:admin_user) { create(:user, :admin, email: AppConfig.emails.admin[0]) }
   let(:billable_role) { create(:role_billable, name: 'ror') }
   let(:non_dev_role) { create(:role, name: 'junior qa') }
@@ -21,55 +21,26 @@ describe 'team view', js: true do
     )
   end
   let!(:dev_position) { create(:position, :primary, user: dev_user, role: billable_role) }
-
-  let!(:non_dev_user) do
-    create(:user, first_name: 'Nondev Nigel', primary_role: non_dev_role)
-  end
+  let!(:non_dev_user) { create(:user, first_name: 'Nondev Nigel', primary_role: non_dev_role) }
   let!(:non_dev_position) { create(:position, :primary, user: non_dev_user, role: non_dev_role) }
-
-  let!(:archived_user) do
-    create(:user, first_name: 'Archived Arthur', archived: true)
-  end
-
+  let!(:archived_user) { create(:user, first_name: 'Archived Arthur', archived: true) }
   let!(:no_role_user) { create(:user, first_name: 'Norole Nicola') }
-
-  let!(:hidden_user) do
-    create(
-      :user,
-      first_name: 'Hidden Amanda', primary_role: hidden_role, teams: [team]
-    )
-  end
+  let!(:hidden_user) { create(:user, first_name: 'Hidden Amanda', primary_role: hidden_role, teams: [team]) }
   let!(:hidden_user_position) { create(:position, :primary, user: hidden_user, role: hidden_role) }
-
-  let!(:team_user) do
-    create(
-      :user,
-      first_name: 'Developer Dave', primary_role: billable_role, teams: [team]
-    )
-  end
+  let!(:team_user) { create(:user, first_name: 'Developer Dave', primary_role: billable_role, teams: [team]) }
   let!(:team_user_position) { create(:position, :primary, user: team_user, role: billable_role) }
+  let!(:junior_team_user) { create(:user, first_name: 'Junior Jake', primary_role: junior_role, teams: [team]) }
+  let!(:junior_user_position) {create(:position, :primary, user: junior_team_user, role: junior_role) }
 
-  let!(:junior_team_user) do
-    create(
-      :user,
-      first_name: 'Junior Jake', primary_role: junior_role, teams: [team]
-    )
-  end
-  let!(:junior_user_position) do
-    create(:position, :primary, user: junior_team_user, role: junior_role)
-  end
+  let!(:teams_page) { App.new.teams_page }
 
-  before(:each) do
-    page.set_rack_session 'warden.user.user.key' => User
-      .serialize_into_session(admin_user).unshift('User')
-
-    visit '/teams'
+  before do
+    log_in_as admin_user
+    teams_page.load
   end
 
   describe '.show-users button' do
-    before(:each) do
-      find('.show-users').click
-    end
+    before { find('.show-users').click }
 
     it "doesn't show archived users" do
       expect(page).not_to have_content archived_user.first_name
@@ -81,9 +52,7 @@ describe 'team view', js: true do
   end
 
   describe '.new-team-add' do
-    before(:each) do
-      find('.new-team-add').click
-    end
+    before { find('.new-team-add').click }
 
     it 'shows new team form' do
       expect(page).to have_css('.js-new-team-form')
@@ -101,9 +70,7 @@ describe 'team view', js: true do
 
   describe '.js-promote-leader' do
     let(:promoted_user) { [team_user, junior_team_user].sort_by(&:last_name).first.decorate }
-    let(:success_msg) do
-      'New leader promoted!'
-    end
+    let(:success_msg) { 'New leader promoted!' }
 
     it 'promotes member to leader' do
       find('.js-promote-leader', match: :first, visible: false).hover
@@ -119,19 +86,11 @@ describe 'team view', js: true do
   end
 
   describe '.js-edit-team' do
-    before(:each) do
-      find('.js-edit-team').click
-    end
+    before { find('.js-edit-team').click }
 
     let(:new_team_name) { 'Relatively OK team' }
-
-    let(:success_msg) do
-      "Team #{new_team_name} changed successfully"
-    end
-
-    let(:error_msg) do
-      'New name not provided'
-    end
+    let(:success_msg) { "Team #{new_team_name} changed successfully" }
+    let(:error_msg) { 'New name not provided' }
 
     it 'shows edit form' do
       expect(page).to have_css('.modal-dialog.edit-team')
@@ -159,8 +118,7 @@ describe 'team view', js: true do
   describe '.add-user-to-team' do
     context 'when current_user is not an admin' do
       it 'is not visible' do
-        page.set_rack_session 'warden.user.user.key' => User
-          .serialize_into_session(dev_user).unshift('User')
+        log_in_as dev_user
         expect(page).not_to have_css('footer.add-user-to-team')
       end
     end
