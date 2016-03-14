@@ -47,9 +47,7 @@ describe 'Scheduling page', js: true do
 
   describe 'next project same as current' do
     it 'displays project twice for a specific user' do
-      within('.scheduled-users') do
-        expect(page.all('a', text: next_membership_for_developer.project.name).size).to eql(2)
-      end
+      expect(page.all('a', text: next_membership_for_developer.project.name).size).to eql(2)
     end
   end
 end
