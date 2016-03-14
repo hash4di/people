@@ -25,8 +25,8 @@ describe 'Team view', js: true do
     teams_page.load
   end
 
-  describe '.show-users button' do
-    before { find('.show-users').click }
+  describe "'show users without team' button" do
+    before { teams_page.show_users_button.click }
 
     it "doesn't show archived users" do
       expect(page).not_to have_content archived_user.first_name
@@ -37,49 +37,45 @@ describe 'Team view', js: true do
     end
   end
 
-  describe '.new-team-add' do
-    before { find('.new-team-add').click }
+  describe "'new team' button" do
+    before { teams_page.new_team_button.click }
 
     it 'shows new team form' do
-      expect(page).to have_css('.js-new-team-form')
+      expect(teams_page).to have_new_team_form
       expect(page).to have_content 'Add team'
     end
 
     it 'adds new team' do
       expect(Team.count).to eq 1
-      find('.js-new-team-form .form-control.name').set('teamX')
-      find('a.new-team-submit').click
+      teams_page.new_team_name_input.set('teamX')
+      teams_page.save_team_button.click
       expect(page).to have_content 'teamX has been created'
       expect(Team.count).to eq 2
     end
   end
 
-  describe '.js-promote-leader' do
+  describe "'promote to leader' button" do
     let(:promoted_user) { [team_user, junior_team_user].sort_by(&:last_name).first.decorate }
     let(:success_msg) { 'New leader promoted!' }
 
     it 'promotes member to leader' do
-      find('.js-promote-leader', match: :first, visible: false).hover
-      find('.js-promote-leader', match: :first).click
-      expect(page).not_to have_css('ul.team-members.empty')
-      expect(page).to have_css('ul.team-members.filled')
-      expect(page).to have_content(success_msg)
-      # select another user as a leader
-      find('.js-promote-leader', match: :first).click
-      expect(page).to have_css('ul.team-members.filled')
-      expect(page).to have_content(success_msg)
+      teams_page.memberships.first.hover
+      teams_page.promote_to_leader_icons.first.click
+      wait_for_ajax
+      expect(teams_page).not_to have_empty_leader_rows
+      expect(teams_page).to have_filled_leader_rows
     end
   end
 
   describe '.js-edit-team' do
-    before { find('.js-edit-team').click }
+    before { teams_page.edit_team_icons.first.click }
 
     let(:new_team_name) { 'Relatively OK team' }
     let(:success_msg) { "Team #{new_team_name} changed successfully" }
     let(:error_msg) { 'New name not provided' }
 
     it 'shows edit form' do
-      expect(page).to have_css('.modal-dialog.edit-team')
+      expect(teams_page).to have_edit_team_modal
     end
 
     # TODO: find out why failing on circle
@@ -96,28 +92,29 @@ describe 'Team view', js: true do
     end
 
     it 'closes edit form' do
-      find('button.cancel').click
-      expect(page).to_not have_css('.modal-dialog.edit-team')
+      teams_page.edit_team_modal.cancel_button.click
+      expect(teams_page).to have_no_edit_team_modal
     end
   end
 
-  describe '.add-user-to-team' do
+  describe "'add user to team' dropdown" do
     context 'when current_user is not an admin' do
       it 'is not visible' do
         log_in_as dev_user
-        expect(page).not_to have_css('footer.add-user-to-team')
+        expect(teams_page).to have_no_add_user_dropdowns
       end
     end
 
     context 'when current_user is an admin' do
       it 'is visible' do
-        expect(page).to have_css('footer.add-user-to-team')
+        expect(teams_page).to have_add_user_dropdowns
       end
 
       it 'adds a new member to the team' do
-        expect(page).to have_css('.membership', count: 2)
+        expect(teams_page.memberships.count).to eq 2
         react_select('footer.add-user-to-team', dev_user.decorate.name)
-        expect(page).to have_css('.membership', count: 3)
+        wait_for_ajax
+        expect(teams_page.memberships.count).to eq 3
         expect(page).to have_content("User #{dev_user.decorate.name} added to team")
       end
     end
@@ -126,18 +123,15 @@ describe 'Team view', js: true do
   describe '.member-details' do
     it 'displays archived label for archived users' do
       team_user.update_attribute(:archived, true)
-      visit current_path
+      teams_page.load
       expect(page).to have_content('archived')
     end
   end
 
   describe '.devs-indicator' do
     it 'shows number of users in team' do
-      indicator = first('.devs-indicator')
-      devs_indicator = indicator.first('.devs').text
-      jnrs_indicator = indicator.first('.jnrs').text
-      expect(devs_indicator).to eq '1'
-      expect(jnrs_indicator).to eq '1'
+      expect(teams_page.billable_indicators.first.text).to eq '1'
+      expect(teams_page.non_billable_indicators.first.text).to eq '1'
     end
   end
 end
