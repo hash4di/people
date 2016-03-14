@@ -7,6 +7,7 @@ describe 'Scheduling page', js: true do
   let!(:angular_dev) { create(:user, :developer, abilities: [angular_ability]) }
   let!(:another_dev) { create(:user, :developer) }
   let!(:developer) { create(:developer_in_project, :with_project_scheduled_with_due_date) }
+  let!(:pm) { create(:pm_user) }
   let!(:next_membership_for_developer) do
     create(:membership, {
       starts_at: Time.current + 12.months,
@@ -34,7 +35,6 @@ describe 'Scheduling page', js: true do
   end
 
   describe 'table with users' do
-    let!(:pm) { create(:pm_user) }
 
     it 'displays users' do
       expect(page).to have_content another_dev.last_name
