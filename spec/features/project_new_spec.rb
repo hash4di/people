@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Adding new project', js: true do
   let!(:admin_user) { create :user, :admin }
 
-  let!(:project_new_page) { ProjectNewPage.new }
+  let!(:project_new_page) { App.new.project_new_page }
 
   before do
     log_in_as admin_user

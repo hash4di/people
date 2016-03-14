@@ -5,7 +5,7 @@ describe 'Project show view', js: true do
   let!(:project) { create(:project) }
   let!(:membership) { create(:membership, project: project) }
 
-  let!(:project_show_page) { ProjectShowPage.new }
+  let!(:project_show_page) { App.new.project_show_page }
 
   before do
     log_in_as admin_user

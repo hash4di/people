@@ -7,7 +7,7 @@ describe 'Project editing', js: true do
   let!(:potential_project) { create :project, :potential }
   let!(:membership) { create :membership, project: potential_project, user: user }
 
-  let!(:project_edit_page) { ProjectEditPage.new }
+  let!(:project_edit_page) { App.new.project_edit_page }
 
   before do
     log_in_as admin_user
