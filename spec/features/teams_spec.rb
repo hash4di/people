@@ -2,35 +2,21 @@ require 'spec_helper'
 
 describe 'Team view', js: true do
   let(:admin_user) { create(:user, :admin, email: AppConfig.emails.admin[0]) }
-  let(:billable_role) { create(:role_billable, name: 'ror') }
-  let(:non_dev_role) { create(:role, name: 'junior qa') }
   let(:hidden_role) { create(:role, show_in_team: false) }
   let(:team) { create(:team) }
-  let!(:dev_role) { create(:role, name: 'developer') }
-  let!(:junior_role) { create(:role, name: 'junior', billable: false) }
 
   let(:added_user_first_name) { 'Developer' }
   let(:added_user_last_name) { 'Daisy' }
-  let!(:dev_user) do
-    create(
-      :user,
-      :admin,
-      first_name: added_user_first_name,
-      last_name: added_user_last_name,
-      primary_role: billable_role
-    )
-  end
-  let!(:dev_position) { create(:position, :primary, user: dev_user, role: billable_role) }
-  let!(:non_dev_user) { create(:user, first_name: 'Nondev Nigel', primary_role: non_dev_role) }
-  let!(:non_dev_position) { create(:position, :primary, user: non_dev_user, role: non_dev_role) }
+  let!(:dev_user) { create(:user, :admin, :developer, first_name: added_user_first_name,
+      last_name: added_user_last_name) }
+  let!(:non_dev_user) { create(:user, :intern, first_name: 'Nondev Nigel') }
   let!(:archived_user) { create(:user, first_name: 'Archived Arthur', archived: true) }
   let!(:no_role_user) { create(:user, first_name: 'Norole Nicola') }
-  let!(:hidden_user) { create(:user, first_name: 'Hidden Amanda', primary_role: hidden_role, teams: [team]) }
+  let!(:hidden_user) { create(:user, first_name: 'Hidden Amanda', primary_role: hidden_role,
+    teams: [team]) }
   let!(:hidden_user_position) { create(:position, :primary, user: hidden_user, role: hidden_role) }
-  let!(:team_user) { create(:user, first_name: 'Developer Dave', primary_role: billable_role, teams: [team]) }
-  let!(:team_user_position) { create(:position, :primary, user: team_user, role: billable_role) }
-  let!(:junior_team_user) { create(:user, first_name: 'Junior Jake', primary_role: junior_role, teams: [team]) }
-  let!(:junior_user_position) {create(:position, :primary, user: junior_team_user, role: junior_role) }
+  let!(:team_user) { create(:user, :developer, first_name: 'Developer Dave', teams: [team]) }
+  let!(:junior_team_user) { create(:user, :junior, first_name: 'Junior Jake', teams: [team]) }
 
   let!(:teams_page) { App.new.teams_page }
 
@@ -124,17 +110,15 @@ describe 'Team view', js: true do
     end
 
     context 'when current_user is an admin' do
-      let(:added_user_name) { "#{added_user_last_name} #{added_user_first_name}" }
-
       it 'is visible' do
         expect(page).to have_css('footer.add-user-to-team')
       end
 
       it 'adds a new member to the team' do
         expect(page).to have_css('.membership', count: 2)
-        react_select('footer.add-user-to-team', added_user_name)
+        react_select('footer.add-user-to-team', dev_user.decorate.name)
         expect(page).to have_css('.membership', count: 3)
-        expect(page).to have_content("User #{added_user_name} added to team")
+        expect(page).to have_content("User #{dev_user.decorate.name} added to team")
       end
     end
   end
