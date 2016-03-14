@@ -18,7 +18,6 @@ dependencies:
   pre:
     - cp config/sec_config.yml.sample config/sec_config.yml
   post:
-    - npm install webpack -g
-    - webpack
+    - npm start
   cache_directories:
     - "node_modules"
