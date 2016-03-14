@@ -11,6 +11,18 @@ class App < SitePrism::Page
     ProjectsPage.new
   end
 
+  def project_show_page
+    ProjectShowPage.new
+  end
+
+  def project_edit_page
+    ProjectEditPage.new
+  end
+
+  def project_new_page
+    ProjectNewPage.new
+  end
+
   def roles_page
     RolesPage.new
   end

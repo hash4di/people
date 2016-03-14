@@ -40,7 +40,7 @@ export default class NewNoteForm extends React.Component {
           placeholder='Type your note...'
           onChange={changeNoteText} />
         <span className='input-group-btn' onClick={this.saveNote}>
-          <a className='btn btn-primary new-project-note-submit'>Save changes</a>
+          <a className='btn btn-primary new-project-note-submit'>Save</a>
         </span>
       </div>
     );
