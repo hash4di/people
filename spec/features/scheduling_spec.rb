@@ -16,9 +16,11 @@ describe 'Scheduling page', js: true do
     })
   end
 
+  let!(:scheduling_page) { App.new.scheduling_page }
+
   before do
-    log_in_as(admin_user)
-    visit all_scheduling_index_path
+    log_in_as admin_user
+    scheduling_page.load
   end
 
   describe 'filters' do
