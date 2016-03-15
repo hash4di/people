@@ -6,6 +6,9 @@ class TeamsPage < SitePrism::Page
   element :new_team_form, '.js-new-team-form'
   element :new_team_name_input, '.js-new-team-form .form-control.name'
   element :save_team_button, 'a.new-team-submit'
+  element :cancel_button, '.modal-dialog.edit-team .btn.btn-default.cancel'
+  element :save_button, '.modal-dialog.edit-team .btn.btn-primary.save'
+  element :new_name_input, '.modal-dialog.edit-team input.new-name'
 
   elements :empty_leader_rows, 'ul.team-members.empty'
   elements :filled_leader_rows, 'ul.team-members.filled'
@@ -15,7 +18,6 @@ class TeamsPage < SitePrism::Page
   elements :non_billable_indicators, '.devs-indicator .jnrs'
   elements :add_user_dropdowns, 'footer.add-user-to-team'
   elements :edit_team_icons, '.js-edit-team'
-  element :cancel_button, '.modal-dialog.edit-team .btn.btn-default.cancel'
 
   section :edit_team_modal, EditTeamModalSection, '.modal-dialog.edit-team'
 end
