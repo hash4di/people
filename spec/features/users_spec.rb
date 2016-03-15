@@ -1,25 +1,25 @@
 require 'spec_helper'
 
 describe 'Users page', js: true do
-  let(:role) { create(:role) }
-  let(:user) { create(:user) }
-  let!(:developer) { create(:user) }
-  let!(:position) { create(:position, user: developer, role: role, primary: true) }
+  let!(:developer) { create(:user, :developer) }
 
-  before(:each) do
-    log_in_as(user)
-    visit '/users'
+  let!(:users_page) { App.new.users_page }
+
+  before do
+    log_in_as developer
+    users_page.load
   end
 
-  it 'shows user role' do
-    names = developer.primary_roles.pluck(:name).join(', ')
-    expect(page).to have_content(names)
+  it 'shows user roles' do
+    developer.primary_roles.each { |role| expect(page).to have_content(role.name) }
   end
 
-  context 'role names' do
+  context 'position names' do
     let!(:previous_position) { create(:position, user: developer, primary: false) }
 
-    it 'shows only current role name' do
+    before { users_page.load }
+
+    it 'shows only current position name' do
       expect(page).not_to have_content(previous_position.role.name)
     end
   end
@@ -28,12 +28,45 @@ describe 'Users page', js: true do
     let!(:project) { create(:project, :internal) }
     let!(:membership) { create(:membership, project: project, user: developer) }
 
+    before { users_page.load }
+
     it "doesn't show nonbillable sign" do
-      visit '/users'
-      within '.projects-region', match: :first do
-        nonbillable_signs = all('.glyphicon.glyphicon-exclamation-sign.notbillable')
-        expect(nonbillable_signs.size).to eq 0
+      expect(users_page).to have_no_nonbillable_signs
+    end
+  end
+
+  context 'commercial project' do
+    let!(:project) { create(:project, :commercial) }
+
+    context 'billable membership' do
+      let!(:membership) { create(:membership, :billable, project: project, user: developer) }
+
+      before { users_page.load }
+
+      it "doesn't show nonbillable sign" do
+        expect(users_page).to have_no_nonbillable_signs
       end
+    end
+
+    context 'non-billable membership' do
+      let!(:membership) { create(:membership, project: project, user: developer) }
+
+      before { users_page.load }
+
+      it 'shows nonbillable sign' do
+        expect(users_page).to have_nonbillable_signs
+      end
+    end
+  end
+
+  context 'potential booked project' do
+    let!(:potential_project) { create(:project, :potential) }
+    let!(:membership) { create(:membership, :booked, project: potential_project, user: developer) }
+
+    before { users_page.load }
+
+    it "shows potential sign" do
+      expect(users_page).to have_potential_signs
     end
   end
 end
