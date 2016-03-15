@@ -79,6 +79,7 @@ describe 'Team view', js: true do
     it 'updates team name' do
       teams_page.new_name_input.set new_team_name
       teams_page.save_button.click
+      wait_for_ajax
       teams_page.load
       expect(page).to have_content(new_team_name)
       expect(teams_page).to_not have_content(team.name)
