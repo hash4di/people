@@ -1,28 +1,28 @@
 require 'spec_helper'
 
-describe 'profile', js: true do
+describe 'User profile', js: true do
+  let!(:user) { create(:user, :admin) }
   let!(:junior_role) { create(:junior_role) }
-  let!(:developer_role) { create(:role, name: 'developer') }
-  let(:position) { create(:position, role: junior_role, primary: false) }
+  let!(:developer_role) { create(:dev_role) }
+  let!(:position) { create(:position, user: user, role: junior_role, primary: false) }
+
+  let!(:user_profile_page) { App.new.user_profile_page }
 
   before do
-    log_in_as(position.user)
+    log_in_as user
+    user_profile_page.load user_id: user.id
   end
 
   describe 'setting primary role' do
-    before { visit user_path(position.user.id) }
-
     it 'sets role as primary using a slider' do
-      find('.primary-slider').click
+      expect(position.primary).to be false
+      user_profile_page.primary_role_sliders.first.click
       wait_for_ajax
-
       expect(position.reload.primary).to be true
     end
   end
 
   describe 'adding positions' do
-    before { visit user_path(position.user.id) }
-
     it 'adds a position to user' do
       within('.user-positions') do
         expect(page).to have_text(junior_role.name)
@@ -54,5 +54,19 @@ describe 'profile', js: true do
     before { visit user_path(user.id) }
     it_behaves_like 'has timeline visible'
     it_behaves_like 'has timeline event visible'
+  end
+
+  describe 'label and checkbox are both clickable' do
+    it 'checkbox sets value to true' do
+      check('membership_billable')
+
+      expect(page.find('#membership_billable')).to be_checked
+    end
+
+    it 'label sets value to true' do
+      page.find('label', text: 'Billable').click
+
+      expect(page.find('#membership_billable')).to be_checked
+    end
   end
 end
