@@ -7,6 +7,7 @@ describe 'Scheduling page', js: true do
   let!(:angular_dev) { create(:user, :developer, abilities: [angular_ability]) }
   let!(:another_dev) { create(:user, :developer) }
   let!(:developer) { create(:developer_in_project, :with_project_scheduled_with_due_date) }
+  let!(:pm) { create(:pm_user) }
   let!(:next_membership_for_developer) do
     create(:membership, {
       starts_at: Time.current + 12.months,
@@ -16,9 +17,11 @@ describe 'Scheduling page', js: true do
     })
   end
 
+  let!(:scheduling_page) { App.new.scheduling_page }
+
   before do
-    log_in_as(admin_user)
-    visit all_scheduling_index_path
+    log_in_as admin_user
+    scheduling_page.load
   end
 
   describe 'filters' do
@@ -32,7 +35,6 @@ describe 'Scheduling page', js: true do
   end
 
   describe 'table with users' do
-    let!(:pm) { create(:pm_user) }
 
     it 'displays users' do
       expect(page).to have_content another_dev.last_name
@@ -45,9 +47,7 @@ describe 'Scheduling page', js: true do
 
   describe 'next project same as current' do
     it 'displays project twice for a specific user' do
-      within('.scheduled-users') do
-        expect(page.all('a', text: next_membership_for_developer.project.name).size).to eql(2)
-      end
+      expect(page.all('a', text: next_membership_for_developer.project.name).size).to eql(2)
     end
   end
 end
