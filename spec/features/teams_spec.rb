@@ -67,28 +67,28 @@ describe 'Team view', js: true do
     end
   end
 
-  describe '.js-edit-team' do
+  describe "'edit team' button" do
     before { teams_page.edit_team_icons.first.click }
 
     let(:new_team_name) { 'Relatively OK team' }
-    let(:success_msg) { "Team #{new_team_name} changed successfully" }
-    let(:error_msg) { 'New name not provided' }
 
     it 'shows edit form' do
       expect(teams_page).to have_edit_team_modal
     end
 
-    # TODO: find out why failing on circle
-    xit 'updates team name' do
-      find('input.new-name').set(new_team_name)
-      find('button.save').click
+    it 'updates team name' do
+      teams_page.new_name_input.set new_team_name
+      teams_page.save_button.click
+      wait_for_ajax
+      expect(teams_page).to have_no_edit_team_modal
+      teams_page.load
       expect(page).to have_content(new_team_name)
-      expect(page).to have_content(success_msg)
+      expect(teams_page).to_not have_content(team.name)
     end
 
-    xit 'fails to update team name' do
-      find('button.save').click
-      expect(page).to have_content(error_msg)
+    it 'does not close the modal when new name is not given' do
+      teams_page.save_button.click
+      expect(teams_page).to have_edit_team_modal
     end
 
     it 'closes edit form' do
