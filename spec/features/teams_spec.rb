@@ -79,9 +79,8 @@ describe 'Team view', js: true do
     it 'updates team name' do
       teams_page.new_name_input.set new_team_name
       teams_page.save_button.click
-      teams_page.wait_until_edit_team_modal_invisible(10)
-      expect(page).to have_content(new_team_name)
-      expect(teams_page).to_not have_content(team.name)
+      wait_for_ajax
+      expect(team.reload.name).to eq new_team_name
     end
 
     it 'does not close the modal when new name is not given' do
