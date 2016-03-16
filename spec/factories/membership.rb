@@ -5,7 +5,7 @@ FactoryGirl.define do
     user
     project
     role
-    billable 0
+    billable false
 
     factory :membership_without_ends_at do
       ends_at nil
