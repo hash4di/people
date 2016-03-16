@@ -1,7 +1,0 @@
-.member-photo
-  %img.img-circle{ src: @user.gravatar }
-.member-name!= @profile_link(@user, Routes.user_path(@user.id))
-.member-details
-  %span.label.label-default.time-to
-    From
-    %time= moment(@starts_at).format('DD.MM')
