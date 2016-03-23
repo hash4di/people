@@ -40,7 +40,7 @@ class ScheduledUsersRepository
     @with_rotations_in_progress ||=
       not_booked_billable_users
       .joins(memberships: :project)
-      .merge(Project.active.unfinished.started.commercial.not_maintenance)
+      .merge(Project.active.unfinished.commercial.not_maintenance)
       .merge(Membership.not_started.active.not_internal)
   end
 
