@@ -122,7 +122,7 @@ describe 'Team view', js: true do
     it 'displays archived label for archived users' do
       team_user.update_attribute(:archived, true)
       teams_page.load
-      expect(page).to have_content('archived')
+      expect(page).to have_content('unavailable')
     end
   end
 
