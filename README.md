@@ -62,22 +62,7 @@ Note that emails->internal is required if you want to sign up in the app and sho
 
 ### Integrations
 
-Trello integration is optional, but **without Slack integration, the app will throw errors** every time you do something that sends Slack notifications (most actions in the app).
-
-#### Trello integration
-
-1. Get your developer key from https://trello.com/1/appKey/generate
-2. Use the developer key to obtain a token with read/write privileges: https://trello.com/1/authorize?key=DEV_KEY&name=APP_NAME&expiration=never&response_type=token&scope=read,write
-3. Make sure that everything works fine https://api.trello.com/1/board/BOARD_ID?key=APP_KEY&token=MEMBER_TOKEN
-4. Add credentials to `sec_config.yml`
-
-```yaml
-  trello:
-    enabled:              true
-    developer_public_key: DEV_KEY
-    member_token:         MEMBER_TOKEN
-    schedule_board_id:    BOARD_ID
-```
+**Without Slack integration, the app will throw errors** every time you do something that sends Slack notifications (most actions in the app).
 
 #### Slack integration
 

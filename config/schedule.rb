@@ -26,12 +26,6 @@ every :hour do
   rake 'scheduling:remove_expired_booked_memberships'
 end
 
-if AppConfig.trello.enabled
-  every 1.day, at: '6:00 am' do
-    rake 'trello:board_sync'
-  end
-end
-
 if AppConfig.fetching_abilities
   every 1.day, at: '12pm' do
     rake 'netguru_api:profile:fetch_users_abilities'

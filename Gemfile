@@ -43,7 +43,6 @@ gem 'rabl'
 gem 'rack-mini-profiler', require: false
 gem 'render_anywhere', require: false
 gem 'rollbar'
-gem 'ruby-trello'
 gem 'sass-rails'
 gem 'searchlight'
 gem 'selectize-rails'
