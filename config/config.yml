@@ -25,11 +25,6 @@ heroku_settings: &heroku_settings
         weekday:          monday
   rollbar:
     access_token:         token
-  trello:
-    enabled:              false
-    developer_public_key: key
-    member_token:         token
-    schedule_board_id:    id
   slack:
     webhook_url:          webhook_url
     username:             PeopleApp
