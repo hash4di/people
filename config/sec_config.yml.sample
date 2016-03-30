@@ -1,4 +1,5 @@
 defaults: &defaults
+  devise_secret_key:
   google_client_id:       go_to_google_dev_console_add_new_app
   google_secret:          and_paste_config_here
   google_domain:          fill_in_your_domain

@@ -1,5 +1,4 @@
 class PositionCountRepository
-
   METHODS = {
     senior_android_devs: 'senior_android',
     senior_ios_devs: 'senior iOS',
@@ -12,9 +11,8 @@ class PositionCountRepository
     ios_devs: 'iOS',
     ror_devs: 'developer RoR',
     frontend_devs: 'frontend',
-    designers:'designer/UX',
+    designers: 'designer/UX',
     project_managers: 'PM',
-    quality_assurance: 'QA',
     quality_assurance: 'QA',
     interns: 'intern',
     junior_ror: 'junior RoR',
@@ -24,7 +22,7 @@ class PositionCountRepository
     junior_project_managers: 'junior PM',
     junior_quality_assurance: 'junior qa',
     support_developers: 'support'
-  }
+  }.freeze
 
   # def senior_android_devs, def senior_ios_devs, def senior_ror_devs, def senior_frontend_devs,
   # def senior_designers, def senior_project_managers, def senior_quality_assurance,

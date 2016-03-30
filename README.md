@@ -77,6 +77,10 @@ Note that emails->internal is required if you want to sign up in the app and sho
 
 ## Dev auth setup
 
+### Devise setup
+
+Make sure you generate `devise_secret_key` and provide it in `sec_config.yml`. You can generate a new secret with: `rake secret`.
+
 ### Google Auth
 
   * goto [https://console.cloud.google.com/](https://console.cloud.google.com/)

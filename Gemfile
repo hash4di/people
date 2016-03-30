@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.3.0'
-gem 'rails', '4.2.5'
+gem 'rails', '~>4.2'
 
 gem 'acts_as_list'
 gem 'animate-scss'

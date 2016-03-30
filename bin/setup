@@ -25,7 +25,8 @@ Dir.chdir APP_ROOT do
   system 'bin/rake db:setup'
   system 'bin/rake db:test:prepare'
 
-  puts "\n==start rails app and webpack: =="
+  puts "\n== Make sure you fill in sec_config.yml =="
+  puts "\n== To start rails app and webpack: =="
   puts 'bundle exec rails s'
   puts 'webpack'
 end
