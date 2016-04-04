@@ -46,7 +46,7 @@ namespace :mailer do
 
   desc 'Email upcoming changes to projects'
   task changes_digest: :environment do
-    digest_days = AppConfig.emails.notifications.changes_digest
+    digest_days = AppConfig.emails.notifications.changes_digest.days
     ProjectDigest.upcoming_changes(digest_days).each do |project|
       SendMailJob.perform_async(ProjectMailer, :upcoming_changes, project, digest_days)
     end
