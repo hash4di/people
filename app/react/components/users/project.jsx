@@ -7,7 +7,7 @@ export default class Project extends React.Component {
     const membership = MembershipStore.getMembershipForUserInProject(user.id, project.id);
     let showNonBillableSign = false;
     let projectPotential = false;
-    if(user.primary_roles[0].technical) {
+    if(user.primary_roles && user.primary_roles[0].technical) {
       if(project.potential) {
         projectPotential = true;
       }
