@@ -154,7 +154,10 @@ describe UserMembershipsRepository do
       create(:project, archived: false, potential: false)
     end
     let!(:not_potential_or_archived_project2) do
-      create(:project, archived: false, potential: false, end_at: '2014-11-11')
+      create(
+        :project,
+        archived: false, potential: false, starts_at: Time.local(2013), end_at: '2014-11-11'
+      )
     end
 
     let!(:current_membership_with_end_date) do
@@ -198,13 +201,17 @@ describe UserMembershipsRepository do
       create(:project, archived: false, potential: false)
     end
     let(:ended_project) do
-      create(:project, archived: false, potential: false, end_at: Time.local(2014))
+      create(
+        :project,
+        archived: false, potential: false, starts_at: Time.local(2013), end_at: Time.local(2014)
+      )
     end
     let!(:not_potential_or_archived_project2) do
       create(:project, archived: false, potential: false)
     end
     let!(:next_membership_with_end_date) do
-      create(:membership,
+      create(
+        :membership,
         user: user, starts_at: Time.local(2014, 12, 30), ends_at: Time.local(2015, 1, 30),
         project: not_potential_or_archived_project1)
     end

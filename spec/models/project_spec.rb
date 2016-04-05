@@ -67,7 +67,7 @@ describe Project do
       let(:slack_config) { OpenStruct.new(webhook_url: 'webhook_url', username: 'PeopleApp') }
       let(:notifier) { Slack::Notifier.new(slack_config.webhook_url, username: slack_config.username) }
       let(:response_ok) { Net::HTTPOK.new('1.1', 200, 'OK') }
-      let(:project) { create(:project) }
+      let(:project) { create(:project, end_at: 2.months.from_now) }
 
       before do
         allow(AppConfig).to receive(:slack).and_return(slack_config)
@@ -85,7 +85,7 @@ describe Project do
       end
 
       it 'notifies with proper message if starts_at changed' do
-        new_date = project.end_at + 1.day
+        new_date = project.starts_at + 1.day
         expected_notification = "Dates in project *#{project.name}* has been updated."
         expected_notification += "\n*Starts at* changed to _#{new_date.to_s(:ymd)}_."
 
@@ -127,6 +127,28 @@ describe Project do
         expect(notifier).to receive(:ping).exactly(0).times
         project.update(name: 'aaaaa')
       end
+    end
+  end
+
+  context 'date chronology validation' do
+    it 'is a valid model when end at date is after starts at date' do
+      subject = build(:project, starts_at: Date.current, end_at: 2.days.ago)
+      expect(subject).to_not be_valid
+    end
+
+    it 'is a valid model when end at date is nil' do
+      subject = build(:project, starts_at: Date.current, end_at: nil)
+      expect(subject).to be_valid
+    end
+
+    it 'is a valid model when starts at date is nil' do
+      subject = build(:project, starts_at: nil, end_at: 3.days.from_now)
+      expect(subject).to be_valid
+    end
+
+    it 'is not a valid model when end at date is before starts at date' do
+      subject = build(:project, starts_at: 2.days.ago, end_at: Date.current)
+      expect(subject).to be_valid
     end
   end
 end
