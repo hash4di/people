@@ -19,6 +19,7 @@ class Project < ActiveRecord::Base
   validates :potential, inclusion: { in: [true, false] }
   validates :project_type, inclusion: { in: POSSIBLE_TYPES }
   validates :maintenance_since, presence: true, if: 'maintenance?'
+  validates_with ::Project::DatesChronologyValidator
 
   scope :active, -> { where(archived: false) }
   scope :nonpotential, -> { active.where(potential: false) }
