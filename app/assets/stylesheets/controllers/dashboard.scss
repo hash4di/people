@@ -94,6 +94,7 @@ body.dashboard {
     border: 1px solid $gray-light;
     border-radius: 4px;
     background: $white;
+    overflow: scroll;
   }
 
   .note-remove, .note-close {
