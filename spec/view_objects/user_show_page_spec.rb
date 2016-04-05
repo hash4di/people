@@ -3,19 +3,29 @@ require 'spec_helper'
 describe UserShowPage do
   let(:user) { create(:developer_in_project) }
   let(:active_project) { create(:project) }
-  let(:booked_project) { create(:project) }
+  let(:booked_project) { create(:project, end_at: nil) }
   let(:archived_project) { create(:project, :archived) }
   let!(:active_membership) do
     create(:membership, user: user, project: active_project, role: user.roles.first)
   end
   let!(:archived_membership) do
-    create(:membership, user: user, project: archived_project, role: user.roles.first,
+    create(
+      :membership,
+      user: user,
+      project: archived_project,
+      role: user.roles.first,
       project_archived: true
     )
   end
   let!(:booked_membership) do
-    create(:membership, :booked, user: user, project: booked_project, role: user.roles.first,
-      starts_at: Time.current + 12.months, ends_at: Time.current + 14.months
+    create(
+      :membership,
+      :booked,
+      user: user,
+      project: booked_project,
+      role: user.roles.first,
+      starts_at: Time.current + 12.months,
+      ends_at: nil
     )
   end
 

@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe MembershipsRepository do
   describe '.upcoming_changes' do
-    let(:days) { 30 }
+    let(:days) { 14 }
     let!(:membership1) { create(:membership, starts_at: 1.week.from_now) }
     let!(:membership2) { create(:membership, starts_at: 1.week.from_now) }
     let!(:future_membership) do
       create(
         :membership,
-        starts_at: 1.year.from_now,
-        ends_at: 2.years.from_now
+        starts_at: 15.days.from_now,
+        ends_at: nil
       )
     end
 

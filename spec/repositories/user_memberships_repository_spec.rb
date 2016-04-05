@@ -5,9 +5,15 @@ describe UserMembershipsRepository do
   let!(:user) { create(:user) }
 
   context 'potential' do
-    let!(:potential_project) { create(:project, potential: true) }
-    let!(:not_potential_project) { create(:project, potential: false) }
-    let(:potential_membership) { create(:membership, project: potential_project, user: user) }
+    let!(:potential_project) do
+      create(:project, potential: true, starts_at: nil, end_at: nil)
+    end
+    let!(:not_potential_project) do
+      create(:project, potential: false, starts_at: nil, end_at: nil)
+    end
+    let(:potential_membership) do
+      create(:membership, project: potential_project, user: user)
+    end
     let(:not_potential_membership) do
       create(:membership, project: not_potential_project, user: user)
     end
@@ -151,29 +157,38 @@ describe UserMembershipsRepository do
 
   describe '#current' do
     let!(:not_potential_or_archived_project1) do
-      create(:project, archived: false, potential: false)
+      create(
+        :project,
+        archived: false,
+        potential: false,
+        starts_at: Time.local(2013, 11, 30),
+        end_at: Time.local(2015, 12, 25))
     end
     let!(:not_potential_or_archived_project2) do
       create(
         :project,
-        archived: false, potential: false, starts_at: Time.local(2013), end_at: '2014-11-11'
+        archived: false,
+        potential: false,
+        starts_at: Time.local(2013),
+        end_at: Time.local(2014, 12, 25)
       )
     end
 
     let!(:current_membership_with_end_date) do
       create(:membership,
-        user: user, starts_at: Time.local(2014, 11, 30), ends_at: Time.local(2014, 12, 25),
-        project: not_potential_or_archived_project1)
+             user: user, starts_at: Time.local(2014, 11, 30), ends_at: Time.local(2014, 12, 25),
+             project: not_potential_or_archived_project1)
     end
     let!(:current_membership_without_end_date) do
       create(:membership,
-        user: user, starts_at: Time.local(2014, 11, 30), ends_at: nil,
-        project: not_potential_or_archived_project2)
+             user: user, starts_at: Time.local(2014, 11, 30), ends_at: nil,
+             project: not_potential_or_archived_project2)
     end
     let!(:not_started_membership) do
       create(:membership,
-        user: user, starts_at: Time.local(2014, 12, 30), ends_at: Time.local(2015, 1, 30),
-        project: not_potential_or_archived_project1)
+             user: user, starts_at: Time.local(2014, 12, 30),
+             ends_at: Time.local(2015, 1, 30),
+             project: not_potential_or_archived_project1)
     end
     let!(:booked_membership) do
       create(:membership,
@@ -186,8 +201,12 @@ describe UserMembershipsRepository do
     end
 
     it 'returns current memberships' do
-      expect(subject.current.items.to_a).to match_array([
-        current_membership_with_end_date, current_membership_without_end_date])
+      expect(subject.current.items.to_a).to match_array(
+        [
+          current_membership_with_end_date,
+          current_membership_without_end_date
+        ]
+      )
     end
 
     it 'returns memberships which are not potential, not booked, not archived, started and not ended' do
@@ -198,7 +217,11 @@ describe UserMembershipsRepository do
 
   describe '#next' do
     let!(:not_potential_or_archived_project1) do
-      create(:project, archived: false, potential: false)
+      create(
+        :project,
+        archived: false,
+        potential: false,
+        starts_at: Time.local(2014, 12, 30), end_at: Time.local(2015, 6, 30))
     end
     let(:ended_project) do
       create(
@@ -217,18 +240,18 @@ describe UserMembershipsRepository do
     end
     let!(:next_membership_without_end_date) do
       create(:membership,
-        user: user, starts_at: Time.local(2014, 12, 30), ends_at: nil,
-        project: not_potential_or_archived_project2)
+             user: user, starts_at: Time.local(2014, 12, 30), ends_at: nil,
+             project: not_potential_or_archived_project2)
     end
     let!(:started_membership) do
       create(:membership,
-        user: user, starts_at: Time.local(2014, 11, 30), ends_at: Time.local(2014, 12, 29),
-        project: not_potential_or_archived_project1)
+             user: user, starts_at: Time.local(2014, 11, 30), ends_at: Time.local(2014, 12, 29),
+             project: not_potential_or_archived_project1)
     end
     let!(:next_membership) do
       create(:membership,
-        user: user, starts_at: Time.local(2014, 12, 30), ends_at: nil,
-        project: ended_project)
+             user: user, starts_at: Time.local(2013, 12, 30), ends_at: nil,
+             project: ended_project)
     end
 
     before do
@@ -237,9 +260,9 @@ describe UserMembershipsRepository do
 
     it 'returns next memberships' do
       expect(subject.next.items.to_a).to match_array([
-        next_membership_with_end_date,
-        next_membership_without_end_date,
-        next_membership])
+                                                       next_membership_with_end_date,
+                                                       next_membership_without_end_date,
+                                                     ])
     end
 
     it 'returns memberships which are not started, not ended, not potential and not booked' do
