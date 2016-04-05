@@ -53,3 +53,6 @@ en:
   messages:
     success: "%{object_name} %{type}d!"
     error:  'Something went wrong. %{type} unsuccessful'
+  validators:
+    dates:
+      chronology: "End date precedes start date!"
