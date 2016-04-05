@@ -10,11 +10,11 @@ describe 'Scheduling page', js: true do
   let!(:pm) { create(:pm_user) }
   let!(:next_membership_for_developer) do
     create(:membership, {
-      starts_at: Time.current + 12.months,
-      ends_at: Time.current + 14.months,
-      user: developer,
-      project: developer.projects.first
-    })
+             starts_at: Time.current + 2.months,
+             ends_at: nil,
+             user: developer,
+             project: developer.projects.first
+           })
   end
 
   let!(:scheduling_page) { App.new.scheduling_page }
@@ -35,7 +35,6 @@ describe 'Scheduling page', js: true do
   end
 
   describe 'table with users' do
-
     it 'displays users' do
       expect(page).to have_content another_dev.last_name
     end

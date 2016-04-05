@@ -56,3 +56,4 @@ en:
   validators:
     dates:
       chronology: "End date precedes start date!"
+      membership_starts_after_project_end_date: "Can't start after project has ended."
