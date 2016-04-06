@@ -40,24 +40,61 @@ describe UserDecorator do
     let!(:project) { create(:project, name: 'google') }
 
     it "returns projects list to include 'google' project" do
-      create(:membership, starts_at: time(2013, 11, 1),
-             ends_at: Date.today + 1.year, user: subject, project: project)
+      create(
+        :membership,
+        starts_at: 2.weeks.ago,
+        ends_at: 2.weeks.from_now,
+        user: subject,
+        project: project
+      )
       expect(subject.current_projects_with_memberships_json.first[:project]).to eq project
     end
 
     it 'returns no projects' do
-      create(:membership, starts_at: time(2012, 1, 1),
-             ends_at: Date.yesterday, user: subject, project: project)
+      create(
+        :membership,
+        starts_at: 2.weeks.ago,
+        ends_at: Date.yesterday,
+        user: subject,
+        project: project
+      )
       expect(subject.current_projects_with_memberships_json).to be_empty
     end
 
     it 'returns projects array to include 2 projects' do
-      create(:membership, starts_at: time(2011, 1, 1),
-             ends_at: time(2012, 1, 1), user: subject, role: create(:role, name: 'pm1'))
-      create(:membership, starts_at: time(2012, 1, 1),
-             ends_at: Date.today + 1.year, user: subject, role: create(:role, name: 'pm2'))
-      create(:membership_without_ends_at, starts_at: time(2013, 1, 1),
-             user: subject, role: create(:role, name: 'pm3'))
+      project = create(
+        :project,
+        starts_at: time(2010, 12, 1),
+        end_at: nil
+      )
+      project2 = create(
+        :project,
+        starts_at: time(2010, 12, 1),
+        end_at: nil
+      )
+      create(
+        :membership,
+        project: project,
+        starts_at: time(2011, 1, 1),
+        ends_at: time(2012, 1, 1),
+        user: subject,
+        role: create(:role, name: 'pm1')
+      )
+      create(
+        :membership,
+        project: project2,
+        starts_at: time(2012, 1, 2),
+        ends_at: 1.year.from_now,
+        user: subject,
+        role: create(:role, name: 'pm2')
+      )
+      create(
+        :membership_without_ends_at,
+        project: project,
+        starts_at: time(2013, 1, 5),
+        user: subject,
+        role: create(:role, name: 'pm3')
+      )
       expect(subject.current_projects_with_memberships_json.count).to eq 2
     end
   end
@@ -82,7 +119,7 @@ describe UserDecorator do
                             user: subject, project: project_potential)
       end
 
-      it "returns no potential project" do
+      it 'returns no potential project' do
         expect(subject.potential_projects_json).to be_empty
       end
     end

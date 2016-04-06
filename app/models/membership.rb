@@ -12,6 +12,7 @@ class Membership < ActiveRecord::Base
   validate :validate_starts_at_ends_at
   validate :validate_duplicate_project
   validates_with Membership::StartDateValidator
+  validates_with Membership::EndDateValidator
 
   after_create :notify_slack_on_create
   after_save :check_fields

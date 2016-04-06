@@ -57,3 +57,4 @@ en:
     dates:
       chronology: "End date precedes start date!"
       membership_starts_after_project_end_date: "Can't start after project has ended."
+      membership_ends_after_project_ended: "Membership ends after project end date"
