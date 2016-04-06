@@ -1,6 +1,6 @@
 module Scheduling
   module Sorting
-    class ByCurrentMembershipEndDate < Base
+    class ByCurrentMembershipEndDate < Scheduling::Sorting::Base
       def self.node_date(node)
         date = closest_end_date(node)
         date = closest_project_end_date(node) if date.nil?

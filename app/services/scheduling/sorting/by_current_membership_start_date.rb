@@ -1,6 +1,6 @@
 module Scheduling
   module Sorting
-    class ByCurrentMembershipStartDate < Base
+    class ByCurrentMembershipStartDate < Scheduling::Sorting::Base
       def self.node_date(node)
         date = Date.today
         date = node.longest_current_membership.starts_at unless starts_at_set?(node)
