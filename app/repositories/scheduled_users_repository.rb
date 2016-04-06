@@ -57,7 +57,7 @@ class ScheduledUsersRepository
   end
 
   def booked
-    @booked ||= billable_users.booked
+    @booked ||= billable_users.available.booked
   end
 
   def unavailable

@@ -163,14 +163,14 @@ describe ScheduledUsersRepository do
         internal_project[:dev_without_due_date][:booked])
       expect(subject).to include(
         internal_project[:dev_with_due_date][:booked])
-      expect(subject).to include(
+      expect(subject).to_not include(
         unavailable[:dev_without_due_date][:booked])
-      expect(subject).to include(
+      expect(subject).to_not include(
         unavailable[:dev_with_due_date][:booked])
     end
 
     it 'doesn\'t include others' do
-      expect(subject.length).to eq(8)
+      expect(subject.length).to eq(6)
     end
   end
 
