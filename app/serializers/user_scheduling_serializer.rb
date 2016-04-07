@@ -18,10 +18,10 @@ class UserSchedulingSerializer < ActiveModel::Serializer
       if object.longest_current_membership
         object.longest_current_membership.starts_at
       else
-        Date.today
+        Date.current
       end
 
-    months_in_project = (Date.today - membership_start_date) / 30.to_f
+    months_in_project = (Date.current - membership_start_date.to_date) / 30.to_f
     return 'rotation-needed-danger' if months_in_project >= 8.0
     return 'rotation-needed-warning' if months_in_project >= 7.0
     return 'rotation-needed' if months_in_project >= 6.0

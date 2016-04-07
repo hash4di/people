@@ -15,12 +15,12 @@ describe Notification::Membership::Updated do
 
     it 'returns proper string when starts_at and ends_at changed' do
       new_starts_at = membership_without_ends_at.starts_at + 1.day
-      new_ends_at = Date.current + 2.days
+      new_ends_at = DateTime.current + 2.days
 
       expected_notification = "Time span for *#{user.last_name} #{user.first_name}*"\
         " in *#{project.name}* has been changed."\
-        "\nStarts at changed from _#{membership_without_ends_at.starts_at}_ to _#{new_starts_at}_."\
-        "\nEnds at changed from _not specified_ to _#{new_ends_at}_."
+        "\nStarts at changed from _#{membership_without_ends_at.starts_at.to_date}_ to _#{new_starts_at.to_date}_."\
+        "\nEnds at changed from _not specified_ to _#{new_ends_at.to_date}_."
 
       membership_without_ends_at.starts_at = new_starts_at
       membership_without_ends_at.ends_at = new_ends_at
@@ -33,7 +33,7 @@ describe Notification::Membership::Updated do
 
       expected_notification = "Time span for *#{user.last_name} #{user.first_name}*"\
         " in *#{project.name}* has been changed."\
-        "\nStarts at changed from _#{membership.starts_at}_ to _#{new_starts_at}_."
+        "\nStarts at changed from _#{membership.starts_at.to_date}_ to _#{new_starts_at.to_date}_."
 
       membership.starts_at = new_starts_at
 

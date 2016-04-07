@@ -24,7 +24,7 @@ describe Memberships::UpdateBookedAt do
 
         it 'changes booked_at to starts_at date' do
           subject
-          expect(membership.booked_at.to_date).to eq membership.starts_at
+          expect(membership.booked_at.to_date).to eq membership.starts_at.to_date
         end
       end
     end

@@ -78,7 +78,7 @@ describe User do
     after { Timecop.return }
 
     def time(year, month, day)
-      Time.new(year, month, day).end_of_day - 1.second
+      DateTime.new(year, month, day).end_of_day - 1.second
     end
 
     context 'when user gets archived' do
@@ -170,7 +170,7 @@ describe User do
   describe "#booked_memberships" do
     let!(:project_current) { create(:project, name: "google", potential: true) }
     let!(:project_next) { create(:project, name: "facebook", potential: false) }
-    let!(:project_future) { create(:project, name: "estimote", potential: false) }
+    let!(:project_future) { create(:project, name: "estimote", potential: false, end_at: nil) }
     let(:first_memb) do
       create(:membership,
         starts_at: Time.now, ends_at: nil, user: subject, project: project_current)
@@ -219,7 +219,7 @@ describe User do
     end
 
     context "when current date is the same as end date for unavailable project membership" do
-      before { unavailable_membership.update_attribute(:ends_at, Date.today) }
+      before { unavailable_membership.update_attribute(:ends_at, DateTime.current) }
 
       it "returns the user who ends unavailable project today" do
         expect(User.unavailable.to_a).to eq([unavailable_user])

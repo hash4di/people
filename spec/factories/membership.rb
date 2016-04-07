@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :membership do
-    starts_at { Time.now - 5.weeks }
-    ends_at { Time.now + 1.month }
+    starts_at { DateTime.now - 5.weeks }
+    ends_at { DateTime.now + 1.month }
     user
     project
     role
@@ -21,7 +21,7 @@ FactoryGirl.define do
 
     trait :booked do
       booked true
-      booked_at { Time.now }
+      booked_at { DateTime.now }
     end
 
     trait :billable do
@@ -29,12 +29,12 @@ FactoryGirl.define do
     end
 
     trait :future do
-      starts_at { Time.now + 1.month }
+      starts_at { DateTime.now + 1.month }
     end
 
     trait :booked_expired do
       booked true
-      booked_at { Time.now - 8.days }
+      booked_at { DateTime.now - 8.days }
     end
   end
 end
