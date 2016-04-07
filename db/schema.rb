@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151119070248) do
+ActiveRecord::Schema.define(version: 20160406205203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "abilities", force: true do |t|
+  create_table "abilities", force: :cascade do |t|
     t.string   "name"
     t.string   "icon"
     t.datetime "created_at"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
 
   add_index "abilities", ["name_downcase"], name: "index_abilities_on_name_downcase", using: :btree
 
-  create_table "abilities_users", id: false, force: true do |t|
+  create_table "abilities_users", id: false, force: :cascade do |t|
     t.integer "ability_id", null: false
     t.integer "user_id",    null: false
   end
@@ -35,14 +35,14 @@ ActiveRecord::Schema.define(version: 20151119070248) do
   add_index "abilities_users", ["ability_id"], name: "index_abilities_users_on_ability_id", using: :btree
   add_index "abilities_users", ["user_id"], name: "index_abilities_users_on_user_id", using: :btree
 
-  create_table "contract_types", force: true do |t|
+  create_table "contract_types", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "mongo_id"
   end
 
-  create_table "features", force: true do |t|
+  create_table "features", force: :cascade do |t|
     t.string   "key"
     t.boolean  "enabled"
     t.datetime "created_at"
@@ -50,19 +50,19 @@ ActiveRecord::Schema.define(version: 20151119070248) do
     t.string   "mongo_id"
   end
 
-  create_table "locations", force: true do |t|
+  create_table "locations", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "mongo_id"
   end
 
-  create_table "memberships", force: true do |t|
+  create_table "memberships", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "project_id"
     t.integer  "role_id"
-    t.date     "starts_at"
-    t.date     "ends_at"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
     t.boolean  "billable"
     t.boolean  "project_archived",  default: false
     t.boolean  "project_potential", default: true
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
   add_index "memberships", ["role_id"], name: "index_memberships_on_role_id", using: :btree
   add_index "memberships", ["user_id"], name: "index_memberships_on_user_id", using: :btree
 
-  create_table "notes", force: true do |t|
+  create_table "notes", force: :cascade do |t|
     t.integer  "project_id"
     t.integer  "user_id"
     t.text     "text"
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
   add_index "notes", ["project_id"], name: "index_notes_on_project_id", using: :btree
   add_index "notes", ["user_id"], name: "index_notes_on_user_id", using: :btree
 
-  create_table "positions", force: true do |t|
+  create_table "positions", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "role_id"
     t.datetime "starts_at"
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
   add_index "positions", ["role_id"], name: "index_positions_on_role_id", using: :btree
   add_index "positions", ["user_id"], name: "index_positions_on_user_id", using: :btree
 
-  create_table "projects", force: true do |t|
+  create_table "projects", force: :cascade do |t|
     t.string   "name"
     t.datetime "end_at"
     t.boolean  "archived",          default: false
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
     t.boolean  "synchronize",       default: true,  null: false
   end
 
-  create_table "roles", force: true do |t|
+  create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.string   "color"
     t.integer  "priority",      default: 1
@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
     t.integer  "user_ids",      default: [],                 array: true
   end
 
-  create_table "roles_users", id: false, force: true do |t|
+  create_table "roles_users", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
   end
@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
   add_index "roles_users", ["role_id"], name: "index_roles_users_on_role_id", using: :btree
   add_index "roles_users", ["user_id"], name: "index_roles_users_on_user_id", using: :btree
 
-  create_table "teams", force: true do |t|
+  create_table "teams", force: :cascade do |t|
     t.string   "name"
     t.string   "initials"
     t.string   "color"
@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
 
   add_index "teams", ["user_id"], name: "index_teams_on_user_id", using: :btree
 
-  create_table "teams_users", id: false, force: true do |t|
+  create_table "teams_users", id: false, force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "team_id", null: false
   end
@@ -166,7 +166,7 @@ ActiveRecord::Schema.define(version: 20151119070248) do
   add_index "teams_users", ["team_id"], name: "index_teams_users_on_team_id", using: :btree
   add_index "teams_users", ["user_id"], name: "index_teams_users_on_user_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "encrypted_password"
     t.integer  "sign_in_count",      default: 0
     t.datetime "current_sign_in_at"
