@@ -39,8 +39,8 @@ describe Api::V2::UserSerializer do
       let(:hash) { described_class.new(some_user).serializable_hash }
 
       it 'returns only one, newset membership' do
-        expect(hash[:memberships][0][:starts_at]).to eq(membership2.starts_at)
-        expect(hash[:memberships][0][:ends_at]).to eq(membership2.ends_at)
+        expect(hash[:memberships][0][:starts_at].to_date).to eq(membership2.starts_at.to_date)
+        expect(hash[:memberships][0][:ends_at].to_date).to eq(membership2.ends_at.to_date)
         expect(hash[:memberships][0][:role]).to eq(membership2.role.name)
       end
     end

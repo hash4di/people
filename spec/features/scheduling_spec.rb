@@ -8,12 +8,13 @@ describe 'Scheduling page', js: true do
   let!(:another_dev) { create(:user, :developer) }
   let!(:developer) { create(:developer_in_project, :with_project_scheduled_with_due_date) }
   let!(:pm) { create(:pm_user) }
+  let!(:next_project) { create(:project, starts_at: DateTime.now, end_at: nil) }
   let!(:next_membership_for_developer) do
     create(:membership, {
-             starts_at: Time.current + 2.months,
+             starts_at: DateTime.current + 2.months,
              ends_at: nil,
              user: developer,
-             project: developer.projects.first
+             project: next_project
            })
   end
 
@@ -46,7 +47,8 @@ describe 'Scheduling page', js: true do
 
   describe 'next project same as current' do
     it 'displays project twice for a specific user' do
-      expect(page.all('a', text: next_membership_for_developer.project.name).size).to eql(2)
+      expect(page.all('a', text: next_membership_for_developer.project.name).size).to eql(1)
+      expect(page.all('a', text: next_project.name).size).to eql(1)
     end
   end
 end

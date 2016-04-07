@@ -78,7 +78,7 @@ describe MembershipsController do
       it 'saves ends_at value as end of day' do
         attributes = params.merge(starts_at: Date.new(2002, 8, 12).to_s, ends_at: Date.new(2002, 10, 26).to_s)
         post :create, membership: attributes
-        expect(Membership.last.ends_at).to eq Date.new(2002, 10, 26)
+        expect(Membership.last.ends_at.to_date).to eq Date.new(2002, 10, 26)
       end
     end
 
@@ -155,7 +155,7 @@ describe MembershipsController do
         attributes = { ends_at: Date.new(2002, 10, 26).to_s }
         put :update, id: membership, membership: attributes
         membership.reload
-        expect(membership.ends_at).to eq Date.new(2002, 10, 26)
+        expect(membership.ends_at.to_date).to eq Date.new(2002, 10, 26)
       end
     end
 

@@ -11,14 +11,14 @@ describe Notification::Membership::Created do
   describe '#message' do
     it 'returns proper string when ends_at value is present' do
       expected_notification = "*#{user.last_name} #{user.first_name}* has been added to"\
-      " *#{project.name}* since _#{membership.starts_at}_ to _#{membership.ends_at}_."
+      " *#{project.name}* since _#{membership.starts_at.to_date}_ to _#{membership.ends_at.to_date}_."
 
       expect(described_class.new(membership).message).to eql(expected_notification)
     end
 
     it 'returns proper string when ends_at value is not specified' do
       expected_notification = "*#{user.last_name} #{user.first_name}* has been added to"\
-      " *#{project.name}* since _#{membership_without_ends_at.starts_at}_."
+      " *#{project.name}* since _#{membership_without_ends_at.starts_at.to_date}_."
 
       expect(described_class.new(membership_without_ends_at).message).to eql(expected_notification)
     end
