@@ -65,8 +65,20 @@ describe 'Users page', js: true do
 
     before { users_page.load }
 
-    it "shows potential sign" do
+    it 'shows potential sign' do
       expect(users_page).to have_potential_signs
     end
+  end
+
+  context 'hide toggle admin column if not admin' do
+    it { expect(users_page.has_toggle_admin_checkboxes?).to eq(false) }
+  end
+
+  context 'show toggle admin column if not admin' do
+    before do
+      developer.update(admin: true)
+      users_page.load
+    end
+    it { expect(users_page.has_toggle_admin_checkboxes?).to eq(true) }
   end
 end
