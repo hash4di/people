@@ -16,7 +16,8 @@ export default class Users extends React.Component {
     MembershipStore.setInitialState(this.props.memberships);
     RoleStore.setInitialState(this.props.roles);
     this.state = {
-      users: UserStore.getState().users
+      users: UserStore.getState().users,
+      isAdmin: false
     }
     this._usersChanged = this._usersChanged.bind(this);
     this._filtersChanged = this._filtersChanged.bind(this);
@@ -63,12 +64,12 @@ export default class Users extends React.Component {
 
   render() {
     let i = 1;
-    const userRows = this.state.users.map(user => <User key={user.id} number={i++} user={user} />);
+    const userRows = this.state.users.map(user => <User key={user.id} number={i++} user={user} isAdmin={this.props.isAdmin} />);
     return(
       <div>
         <Filters/>
         <table id='users' className='table table-striped table-hover'>
-          <UsersTableHeader />
+          <UsersTableHeader isAdmin={this.props.isAdmin} />
           <tbody>
             {userRows}
           </tbody>
