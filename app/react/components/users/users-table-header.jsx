@@ -15,7 +15,7 @@ export default class UsersTableHeader extends React.Component {
           </th>
           <th>Employment</th>
           <th>Projects</th>
-          <th>Admin Role</th>
+          <th>{ this.props.isAdmin ? "Admin Role" : "" }</th>
         </tr>
       </thead>
     );
