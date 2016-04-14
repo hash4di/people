@@ -1,10 +1,11 @@
 class UserIndexPage
-  def react_props
+  def react_props(current_user)
     {
       projects: serialized_projects,
       users: serialized_users,
       memberships: serialized_memberships,
-      roles: serialized_roles
+      roles: serialized_roles,
+      isAdmin: current_user.admin?
     }
   end
 
