@@ -28,6 +28,8 @@ export default class User extends React.Component {
 
     const userPrimaryRoleName = user.primary_roles[0] ? user.primary_roles[0].name : 'No primary role';
 
+    const toggleAdminSection = <input className="admin form-control" type="checkbox" checked={user.admin} onChange={toggleAdminForUser} />
+
     return(
       <tr style={styles}>
         <td>{this.props.number}</td>
@@ -69,8 +71,7 @@ export default class User extends React.Component {
             </div>
         </td>
         <td>
-            <input className="admin form-control" type="checkbox" checked={user.admin}
-              onChange={toggleAdminForUser} />
+          { this.props.isAdmin ? toggleAdminSection : "" }
         </td>
     </tr>
     );
