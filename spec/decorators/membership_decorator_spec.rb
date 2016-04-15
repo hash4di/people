@@ -2,14 +2,20 @@ require 'spec_helper'
 
 describe MembershipDecorator do
   let(:membership) { create(:membership).decorate }
-  let(:old_membership) {create(:membership, starts_at: '2002-10-01', ends_at: '2002-11-02').decorate }
+  let(:old_membership) do
+    create(:membership, starts_at: '2002-10-01', ends_at: '2002-11-02').decorate
+  end
+  let(:ending_today_membership) do
+    create(:membership, starts_at: '2002-10-01', ends_at: DateTime.now).decorate
+  end
 
   describe '#user_name' do
     it { expect(membership.user_name).to eq("#{membership.user.name}") }
   end
 
   describe '#duration_in_words' do
-    it { expect(old_membership.duration_in_words).to eq("about 1 month") }
+    it { expect(old_membership.duration_in_words).to eq('about 1 month') }
+    it { expect(ending_today_membership.duration_in_words).to eq('current') }
   end
 
   describe '#date_range' do
