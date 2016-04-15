@@ -57,11 +57,11 @@ class Membership < ActiveRecord::Base
   end
 
   def started?
-    starts_at <= Date.today && !booked
+    starts_at <= Date.current && !booked
   end
 
   def terminated?
-    ends_at.try('<', Date.current) || false
+    ends_at&.to_date.try('<', Date.current) || false
   end
 
   def active?
@@ -69,7 +69,9 @@ class Membership < ActiveRecord::Base
   end
 
   def end_now!
-    update(ends_at: Date.today) if starts_at < Date.today && (ends_at.nil? || ends_at > Date.today)
+    if starts_at < Date.current && (ends_at.nil? || ends_at > Date.current)
+      update(ends_at: Date.current)
+    end
   end
 
   def duration_in_months
@@ -80,14 +82,18 @@ class Membership < ActiveRecord::Base
 
   def check_fields
     if project_state_changed?
-      update_columns(project_potential: project.potential, project_archived: project.archived,
+      update_columns(
+        project_potential: project.potential,
+        project_archived: project.archived,
         project_internal: project.internal
       )
     end
   end
 
   def project_state_changed?
-    project_potential != project.potential || project_archived != project.archived || project_internal != project.internal
+    (project_potential != project.potential) ||
+      (project_archived != project.archived) ||
+      (project_internal != project.internal)
   end
 
   def validate_starts_at_ends_at
