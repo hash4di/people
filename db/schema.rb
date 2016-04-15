@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406205203) do
+ActiveRecord::Schema.define(version: 20160415090408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20160406205203) do
     t.datetime "starts_at"
     t.datetime "maintenance_since"
     t.boolean  "synchronize",       default: true,  null: false
+    t.string   "sf_id"
   end
 
   create_table "roles", force: :cascade do |t|

@@ -12,6 +12,7 @@
     = f.input :maintenance_since, as: :date_picker, wrapper: :prepend, required: true, label_html: { class: 'input-group-addon'},
       wrapper_html: { id: 'maintenance_wrapper', class: f.object.maintenance_visibility }
     = f.input :toggl_bookmark
+    = f.input :sf_id
     = f.button :submit, "Save", class: "btn-success"
     = link_to "Back", :back, class: "btn btn-default btn-sm"
     - if project.persisted?
