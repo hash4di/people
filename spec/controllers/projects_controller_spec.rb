@@ -139,5 +139,21 @@ describe ProjectsController do
         expect(project.name).to eq 'hrguru'
       end
     end
+
+    context 'archiving project' do
+      let(:memberships) { [create(:membership, :without_end), create(:membership, :without_end)] }
+      let(:project) { create(:project, memberships: memberships) }
+      let(:params) { { id: project.id, project: { archived: 'true' } } }
+
+      before do
+        expect_any_instance_of(Projects::EndCurrentMemberships).to receive(:call)
+      end
+
+      it 'changes archived to true' do
+        put :update, params
+        project.reload
+        expect(project.archived).to eq true
+      end
+    end
   end
 end
