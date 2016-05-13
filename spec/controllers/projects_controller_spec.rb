@@ -73,6 +73,7 @@ describe ProjectsController do
         allow_any_instance_of(Membership).to receive(:notify_slack_on_create)
         allow_any_instance_of(Membership).to receive(:notify_slack_on_update)
         expect_any_instance_of(Slack::Notifier).to receive(:ping).and_return(response_ok)
+        expect_any_instance_of(Memberships::UpdateBooked).to receive(:call)
         new_project.memberships << [current_membership, old_membership]
         put :update, id: new_project, project: attributes_for(:project, potential: false)
         new_project.reload
@@ -102,6 +103,7 @@ describe ProjectsController do
         new_project.memberships << [current_membership, old_membership]
         allow(AppConfig).to receive(:slack).and_return(slack_config)
         expect_any_instance_of(Slack::Notifier).to receive(:ping).and_return(response_ok)
+        expect_any_instance_of(Memberships::UpdateBooked).to_not receive(:call)
       end
 
       it 'return all memberships' do
