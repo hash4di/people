@@ -21,6 +21,8 @@ class ProjectsController < ApplicationController
 
   def update
     Memberships::UpdateStays.new(project.id, params[:project][:membership_ids]).call
+    Projects::EndCurrentMemberships.new(project).call if params['project']['archived'] == 'true'
+
     if project.save
       respond_on_success project
     else
@@ -39,9 +41,13 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:name, :starts_at, :end_at, :archived, :potential,
-      :synchronize, :kickoff, :project_type, :toggl_bookmark, :internal, :maintenance_since,
-      :color, memberships_attributes: [:id, :stays, :user_id, :role_id, :starts_at, :billable])
+    params
+      .require(:project)
+      .permit(
+        :name, :starts_at, :end_at, :archived, :potential,
+        :synchronize, :kickoff, :project_type, :toggl_bookmark, :internal, :maintenance_since,
+        :color, memberships_attributes: [:id, :stays, :user_id, :role_id, :starts_at, :billable]
+      )
   end
 
   def get_events
