@@ -20,8 +20,8 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    Memberships::UpdateStays.new(project.id, params[:project][:membership_ids]).call
-    Projects::EndCurrentMemberships.new(project).call if params['project']['archived'] == 'true'
+    Memberships::UpdateStays.new(project.id, project_params[:membership_ids]).call
+    Projects::EndCurrentMemberships.new(project).call if project_params[:archived] == 'true'
 
     if project.save
       respond_on_success project
