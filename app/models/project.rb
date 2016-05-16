@@ -97,7 +97,7 @@ class Project < ActiveRecord::Base
   end
 
   def set_proper_membership_dates
-    memberships.each do |membership|
+    memberships.reload.each do |membership|
       if membership.stays
         membership.update(starts_at: Date.today)
       else
