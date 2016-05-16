@@ -20,8 +20,7 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    Memberships::UpdateStays.new(project.id, project_params[:membership_ids]).call
-    Projects::EndCurrentMemberships.new(project).call if project_params[:archived] == 'true'
+    update_associated_memberships
 
     if project.save
       respond_on_success project
@@ -40,14 +39,32 @@ class ProjectsController < ApplicationController
 
   private
 
+  def update_associated_memberships
+    Memberships::UpdateStays.new(project.id, project_params[:membership_ids]).call
+    update_current_memberships
+    update_booked_memberships
+  end
+
+  def update_current_memberships
+    if project.archived_changed?(from: false, to: true)
+      Projects::EndCurrentMemberships.new(project).call
+    end
+  end
+
+  def update_booked_memberships
+    if project.potential_changed?(from: true, to: false)
+      Memberships::UpdateBooked.new(params[:project][:membership_ids]).call(false)
+    end
+  end
+
   def project_params
-    params
-      .require(:project)
-      .permit(
-        :name, :starts_at, :end_at, :archived, :potential,
-        :synchronize, :kickoff, :project_type, :toggl_bookmark, :internal, :maintenance_since,
-        :color, memberships_attributes: [:id, :stays, :user_id, :role_id, :starts_at, :billable]
-      )
+    params.require(:project).permit(
+      :name, :starts_at, :end_at, :archived, :potential,
+      :synchronize, :kickoff, :project_type, :toggl_bookmark, :internal,
+      :maintenance_since, :color, :sf_id,
+      membership_ids: [],
+      memberships_attributes: [:id, :stays, :user_id, :role_id, :starts_at, :billable]
+    )
   end
 
   def get_events
