@@ -30,7 +30,7 @@ class Membership < ActiveRecord::Base
     joins(:project)
       .where(
         'COALESCE(projects.end_at, :now) >= :now AND COALESCE(memberships.ends_at, :now) >= :now',
-        now: Time.current
+        now: Date.current.beginning_of_day
       )
   end
   scope :started, -> { where('memberships.starts_at <= NOW()') }
