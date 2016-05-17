@@ -159,6 +159,7 @@ describe ProjectsController do
         put :update, params
         project.reload
         expect(project.archived).to eq true
+        expect(project.end_at.to_i).to eq Date.current.end_of_day.to_i
       end
     end
   end
