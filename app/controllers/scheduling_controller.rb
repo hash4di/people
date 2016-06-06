@@ -21,18 +21,7 @@ class SchedulingController < ApplicationController
   end
 
   expose(:stats) do
-    stats = {
-      all: repository.all,
-      juniors_and_interns: repository.scheduled_juniors_and_interns,
-      to_rotate: repository.to_rotate,
-      in_internals: repository.in_internals,
-      with_rotations_in_progress: repository.with_rotations_in_progress,
-      in_commercial_projects_with_due_date: repository.in_commercial_projects_with_due_date,
-      booked: repository.booked,
-      unavailable: repository.unavailable,
-    }
-    stats[:not_scheduled] = repository.not_scheduled if current_user.admin?
-    stats.keys.each_with_object({}) { |key, h| h[key] = number_of(stats[key]) }
+    Scheduling::Stats.new(repository, current_user.admin?).get
   end
 
   expose(:columns) do
