@@ -82,6 +82,8 @@ class ScheduledUsersRepository
       :abilities,
       :projects,
       :longest_current_membership,
+      :primary_roles,
+      current_memberships: [:project],
       memberships: [:project],
       potential_memberships: [:project],
       next_memberships: [:project],
