@@ -118,6 +118,37 @@ bundle exec gemsurance
 
 It will generate HTML file with list of gems. Gems in bold are the one specified in `Gemfile`.
 
+### Issues
+#### libv8 && therubytracer
+If you run into problem during instalation of `therubytracer`, or `libv8` gem - try:
+```
+brew tap homebrew/versions
+brew install v8-315
+
+gem install libv8 -v '3.16.14.13' -- --with-system-v8
+gem install therubyracer -- --with-v8-dir=/usr/local/opt/v8-315
+
+bundle install
+```
+
+#### npm packages
+Most `npm` issues can be solved via:
+```
+npm cache clear
+```
+
+```
+rm -r node_modules/
+npm install
+```
+
+If you're experiencing:
+```
+Module build failed: SyntaxError: /Users/USERNAME/package.json: Error while parsing JSON - Unexpected end of JSON input
+```
+You probably are running global version of `webpack`. Try `npm start`, or just simply remove the file.
+
+
 ### Read More
 
 [Introducing: People. A simple open source app for managing devs within projects](https://netguru.co/blog/posts/introducing-people-a-simple-open-source-app-for-managing-devs-within-projects).
