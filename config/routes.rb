@@ -1,4 +1,5 @@
 Hrguru::Application.routes.draw do
+  resources :skills
   devise_for(
     :users,
     controllers: {

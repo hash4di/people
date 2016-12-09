@@ -1,6 +1,8 @@
 require 'factory_girl'
 require 'faker'
 
+require './db/seeds/skills_and_categories'
+
 billable_roles = %w(senior developer)
 non_billable_roles = %w(junior praktykant pm junior\ pm qa junior\ qa)
 technical_roles = %w(junior praktykant developer senior)
@@ -33,3 +35,4 @@ Membership.where(billable: nil).each do |membership|
 end
 
 FactoryGirl.create_list(:user, 50) if Rails.env.development?
+

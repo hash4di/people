@@ -11,6 +11,7 @@ describe User do
   it { should belong_to :primary_role }
   it { should have_and_belong_to_many :abilities }
   it { should have_and_belong_to_many :teams }
+  it { is_expected.to have_many :skills }
 
   context 'validation' do
     it { should be_valid }
@@ -223,6 +224,46 @@ describe User do
 
       it "returns the user who ends unavailable project today" do
         expect(User.unavailable.to_a).to eq([unavailable_user])
+      end
+    end
+  end
+
+  describe '#rated_skills' do
+    let(:user) { create(:user) }
+    let!(:rated_skill) { create(:skill, name: 'rated_skill') }
+    let!(:non_rated_skill) { create(:skill, name: 'non_rated_skill') }
+
+    before do
+      create(:user_skill_rate, skill: rated_skill, user: user, rate: 1)
+      create(:user_skill_rate, skill: non_rated_skill, user: user, rate: 0)
+    end
+
+    subject { user.reload.rated_skills }
+
+    it 'returns all rated skills' do
+      aggregate_failures do
+        is_expected.to include(rated_skill)
+        is_expected.not_to include(non_rated_skill)
+      end
+    end
+  end
+
+  describe '#non_rated_skills' do
+    let(:user) { create(:user) }
+    let!(:rated_skill) { create(:skill, name: 'rated_skill') }
+    let!(:non_rated_skill) { create(:skill, name: 'non_rated_skill') }
+
+    before do
+      create(:user_skill_rate, skill: rated_skill, user: user, rate: 1)
+      create(:user_skill_rate, skill: non_rated_skill, user: user, rate: 0)
+    end
+
+    subject { user.reload.non_rated_skills }
+
+    it 'returns all non rated skills' do
+      aggregate_failures do
+        is_expected.not_to include(rated_skill)
+        is_expected.to include(non_rated_skill)
       end
     end
   end

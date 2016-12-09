@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160415090408) do
+ActiveRecord::Schema.define(version: 20161209093856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,14 @@ ActiveRecord::Schema.define(version: 20160415090408) do
     t.integer  "user_ids",      default: [],                 array: true
   end
 
+  create_table "roles_skill_categories", force: :cascade do |t|
+    t.integer "role_id"
+    t.integer "skill_category_id"
+  end
+
+  add_index "roles_skill_categories", ["role_id"], name: "index_roles_skill_categories_on_role_id", using: :btree
+  add_index "roles_skill_categories", ["skill_category_id"], name: "index_roles_skill_categories_on_skill_category_id", using: :btree
+
   create_table "roles_users", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
@@ -146,6 +154,24 @@ ActiveRecord::Schema.define(version: 20160415090408) do
 
   add_index "roles_users", ["role_id"], name: "index_roles_users_on_role_id", using: :btree
   add_index "roles_users", ["user_id"], name: "index_roles_users_on_user_id", using: :btree
+
+  create_table "skill_categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "skills", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "rate_type"
+    t.integer  "skill_category_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "ref_name"
+  end
+
+  add_index "skills", ["skill_category_id"], name: "index_skills_on_skill_category_id", using: :btree
 
   create_table "teams", force: :cascade do |t|
     t.string   "name"
@@ -166,6 +192,17 @@ ActiveRecord::Schema.define(version: 20160415090408) do
 
   add_index "teams_users", ["team_id"], name: "index_teams_users_on_team_id", using: :btree
   add_index "teams_users", ["user_id"], name: "index_teams_users_on_user_id", using: :btree
+
+  create_table "user_skill_rates", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "skill_id"
+    t.integer  "rate",       default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "user_skill_rates", ["skill_id"], name: "index_user_skill_rates_on_skill_id", using: :btree
+  add_index "user_skill_rates", ["user_id"], name: "index_user_skill_rates_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "encrypted_password"
@@ -207,4 +244,9 @@ ActiveRecord::Schema.define(version: 20160415090408) do
   add_index "users", ["location_id"], name: "index_users_on_location_id", using: :btree
   add_index "users", ["primary_role_id"], name: "index_users_on_primary_role_id", using: :btree
 
+  add_foreign_key "roles_skill_categories", "roles"
+  add_foreign_key "roles_skill_categories", "skill_categories"
+  add_foreign_key "skills", "skill_categories"
+  add_foreign_key "user_skill_rates", "skills"
+  add_foreign_key "user_skill_rates", "users"
 end
