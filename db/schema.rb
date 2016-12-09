@@ -197,8 +197,10 @@ ActiveRecord::Schema.define(version: 20161209093856) do
     t.integer  "user_id"
     t.integer  "skill_id"
     t.integer  "rate",       default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "note"
+    t.boolean  "favorite",   default: false
   end
 
   add_index "user_skill_rates", ["skill_id"], name: "index_user_skill_rates_on_skill_id", using: :btree
