@@ -9,7 +9,7 @@ set :docker_volumes, [
   "#{shared_path}/public/uploads:/var/www/app/public/uploads",
   "people_staging_assets:/var/www/app/public/assets",
   "people_staging_node_modules:/var/www/app/node_modules",
-  "#{shared_path}/assets/javascripts/react_bundle.js:/var/www/app/assets/javascripts/react_bundle.js",
+  "#{shared_path}/assets/javascripts/react_bundle.js:/var/www/app/app/assets/javascripts/react_bundle.js",
 ]
 
 set :docker_dockerfile, "docker/staging/Dockerfile"
