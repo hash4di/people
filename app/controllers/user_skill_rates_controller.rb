@@ -36,6 +36,7 @@ class UserSkillRatesController < ApplicationController
         user_skill_rates.*,
         skills.name as name,
         skills.description as description,
+        skills.rate_type as rate_type,
         skill_categories.name as category
       "
     ).where(user_id: current_user.id)
