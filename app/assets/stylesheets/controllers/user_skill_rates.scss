@@ -1,0 +1,41 @@
+body.user_skill_rates {
+  &.index {
+    .skill {
+      &__note {
+        min-width: 180px;
+      }
+
+      &__favorite {
+        cursor: pointer;
+      }
+
+      &__rating {
+        min-width: 150px;
+
+        & > li {
+          padding: 0;
+        }
+
+        i {
+          padding: 0 5px;
+          font-size: 18px;
+        }
+      }
+
+      &__rate {
+        &.hovered {
+          color: $brand-success;
+          cursor: pointer;
+        }
+
+        &.selected {
+          color: $brand-primary;
+        }
+      }
+    }
+
+    .skills-header {
+      margin-top: 15px;
+    }
+  }
+}
