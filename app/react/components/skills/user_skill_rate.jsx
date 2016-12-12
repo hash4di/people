@@ -16,6 +16,8 @@ export default class UserSkillRate extends React.Component {
     this.onNoteChange = this.onNoteChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onRateChange = this.onRateChange.bind(this);
+    this.userSkillRateSaved = this.userSkillRateSaved.bind(this);
+    this.failedToSaveUserSkillRate = this.failedToSaveUserSkillRate.bind(this);
   }
 
   isDirty() {
@@ -32,12 +34,26 @@ export default class UserSkillRate extends React.Component {
     this.setState(this.state);
   }
 
-  onSubmit() {
-    UserSkillRateSource.update(this.state.skill);
+  userSkillRateSaved() {
     this.state.originalSkill.favorite = this.state.skill.favorite;
     this.state.originalSkill.note = this.state.skill.note;
     this.state.originalSkill.rate = this.state.skill.rate;
     this.setState(this.state);
+    Messenger().success(`Your changes for: ${this.props.skill.name} are saved.`);
+  }
+
+  failedToSaveUserSkillRate() {
+    Messenger().success(`Failed to save your changes for: ${this.props.skill.name}.`);
+  }
+
+  onSubmit() {
+    UserSkillRateSource.update(
+      this.state.skill
+    ).done(
+      this.userSkillRateSaved
+    ).fail(
+      this.failedToSaveUserSkillRate
+    );
   }
 
   onRateChange(newRate) {
