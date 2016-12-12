@@ -74,7 +74,7 @@ export default class UserSkillRate extends React.Component {
   }
 
   render() {
-    const saveDivClass = `btn ${this.isDirty() ? 'btn-success' : 'btn-primary disabled'}`
+    const saveDivClass = `btn ${this.isDirty() ? 'btn-info' : 'btn-primary disabled'}`
     const favoriteCLass = `skill__favorite glyphicon btn-lg ${this.state.skill.favorite ? 'glyphicon-pushpin text-primary' : 'glyphicon-minus'}`
 
     const rateStars = this.rateComponent();
