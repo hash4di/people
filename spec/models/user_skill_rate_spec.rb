@@ -1,19 +1,37 @@
 require 'spec_helper'
 
 describe UserSkillRate do
-  it { is_expected.to belong_to :skill }
-  it { is_expected.to belong_to :user }
+  describe 'associations' do
+    it { is_expected.to belong_to :skill }
+    it { is_expected.to belong_to :user }
+  end
 
-  it { is_expected.to  validate_presence_of :skill }
-  it { is_expected.to  validate_presence_of :user }
-  it { is_expected.to  validate_presence_of :rate }
+  describe 'validations' do
+    it { is_expected.to  validate_presence_of :skill }
+    it { is_expected.to  validate_presence_of :user }
+  end
 
-  subject { build :user_skill_rate }
+  describe '#content' do
+    let(:user_skill_rate) { create(:user_skill_rate) }
+
+    it 'returns newest content' do
+      create(:user_skill_rate_content, user_skill_rate: user_skill_rate, rate: 1)
+      create(:user_skill_rate_content, user_skill_rate: user_skill_rate, rate: 2)
+      content = create(:user_skill_rate_content, user_skill_rate: user_skill_rate, rate: 0)
+
+      result = user_skill_rate.content
+      expect(result).to eq(content)
+    end
+  end
 
   describe '#rate' do
-    subject { described_class.new }
-    it 'equals 0 by default' do
-      expect(subject.rate).to eq 0
+    let(:user_skill_rate) { create(:user_skill_rate) }
+
+    it 'returns content#rate' do
+      create(:user_skill_rate_content, user_skill_rate: user_skill_rate, rate: 1)
+
+      result = user_skill_rate.rate
+      expect(result).to eq(1)
     end
   end
 end

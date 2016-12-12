@@ -234,8 +234,13 @@ describe User do
     let!(:non_rated_skill) { create(:skill, name: 'non_rated_skill') }
 
     before do
-      create(:user_skill_rate, skill: rated_skill, user: user, rate: 1)
-      create(:user_skill_rate, skill: non_rated_skill, user: user, rate: 0)
+      rated_usr = create(:user_skill_rate, skill: rated_skill, user: user)
+      create(:user_skill_rate_content, user_skill_rate: rated_usr, rate: 1)
+      create(:user_skill_rate_content, user_skill_rate: rated_usr, rate: 1)
+
+      non_rated_usr = create(:user_skill_rate, skill: non_rated_skill, user: user)
+      create(:user_skill_rate_content, user_skill_rate: rated_usr, rate: 1)
+      create(:user_skill_rate_content, user_skill_rate: non_rated_usr, rate: 0)
     end
 
     subject { user.reload.rated_skills }
@@ -244,6 +249,7 @@ describe User do
       aggregate_failures do
         is_expected.to include(rated_skill)
         is_expected.not_to include(non_rated_skill)
+        expect(subject.count).to eq(1)
       end
     end
   end
@@ -254,8 +260,13 @@ describe User do
     let!(:non_rated_skill) { create(:skill, name: 'non_rated_skill') }
 
     before do
-      create(:user_skill_rate, skill: rated_skill, user: user, rate: 1)
-      create(:user_skill_rate, skill: non_rated_skill, user: user, rate: 0)
+      rated_usr = create(:user_skill_rate, skill: rated_skill, user: user)
+      create(:user_skill_rate_content, user_skill_rate: rated_usr, rate: 1)
+      create(:user_skill_rate_content, user_skill_rate: rated_usr, rate: 1)
+
+      non_rated_usr = create(:user_skill_rate, skill: non_rated_skill, user: user)
+      create(:user_skill_rate_content, user_skill_rate: rated_usr, rate: 1)
+      create(:user_skill_rate_content, user_skill_rate: non_rated_usr, rate: 0)
     end
 
     subject { user.reload.non_rated_skills }
@@ -264,6 +275,7 @@ describe User do
       aggregate_failures do
         is_expected.not_to include(rated_skill)
         is_expected.to include(non_rated_skill)
+        expect(subject.count).to eq(1)
       end
     end
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161209093856) do
+ActiveRecord::Schema.define(version: 20161212073646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -193,12 +193,20 @@ ActiveRecord::Schema.define(version: 20161209093856) do
   add_index "teams_users", ["team_id"], name: "index_teams_users_on_team_id", using: :btree
   add_index "teams_users", ["user_id"], name: "index_teams_users_on_user_id", using: :btree
 
+  create_table "user_skill_rate_contents", force: :cascade do |t|
+    t.integer  "rate",               default: 0
+    t.integer  "user_skill_rate_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_skill_rate_contents", ["user_skill_rate_id"], name: "index_user_skill_rate_contents_on_user_skill_rate_id", using: :btree
+
   create_table "user_skill_rates", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
-    t.integer  "rate",       default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "user_skill_rates", ["skill_id"], name: "index_user_skill_rates_on_skill_id", using: :btree

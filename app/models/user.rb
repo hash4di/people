@@ -172,15 +172,17 @@ class User < ActiveRecord::Base
 
   def rated_skills
     ::Skill
-      .joins(:user_skill_rates)
+      .joins(user_skill_rates: :contents)
+      .where('user_skill_rate_contents.created_at = (SELECT MAX(user_skill_rate_contents.created_at) FROM user_skill_rate_contents WHERE user_skill_rates.id = user_skill_rate_contents.user_skill_rate_id)')
       .where('user_skill_rates.user_id' => self.id)
-      .where('user_skill_rates.rate > 0')
+      .where('user_skill_rate_contents.rate > 0')
   end
 
   def non_rated_skills
     ::Skill
-      .joins(:user_skill_rates)
+      .joins(user_skill_rates: :contents)
+      .where('user_skill_rate_contents.created_at = (SELECT MAX(user_skill_rate_contents.created_at) FROM user_skill_rate_contents WHERE user_skill_rates.id = user_skill_rate_contents.user_skill_rate_id)')
       .where('user_skill_rates.user_id' => self.id)
-      .where('user_skill_rates.rate = 0')
+      .where('user_skill_rate_contents.rate = 0')
   end
 end
