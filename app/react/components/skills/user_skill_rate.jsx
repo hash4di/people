@@ -57,7 +57,6 @@ export default class UserSkillRate extends React.Component {
   }
 
   onRateChange(newRate) {
-    debugger;
     this.state.skill.rate = newRate;
     this.setState(this.state);
   }
