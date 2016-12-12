@@ -1,5 +1,5 @@
 class UserSkillRatesController < ApplicationController
-  before_action :set_skill, only: [:show, :edit, :update, :destroy]
+  before_action :set_user_skill_rate, only: [:show, :edit, :update, :destroy]
   before_action :set_grouped_skills, only: [:index]
 
 
@@ -24,8 +24,8 @@ class UserSkillRatesController < ApplicationController
 
   private
 
-  def set_skill
-    @user_skill_rate = Skill.find(params[:id])
+  def set_user_skill_rate
+    @user_skill_rate = UserSkillRate.find(params[:id])
   end
 
   def set_grouped_skills
