@@ -58,45 +58,30 @@ export default class UserSkillRate extends React.Component {
   }
 
   ratingIcons() {
-    if(this.state.skill.rate_type == 'range'){
-      return {
-        minus: [
-         {
-            value: 0,
-            title: "Never was done anything. Lack of experience. Lack of confidence of dealing with this in project.",
-         }
-        ],
-        star: [
-          {
-            value: 1,
-            title: "Once something has been done. There was some sort of contact. Lack of confidence of dealing with this in project. It requires re-read the documentation.",
-          },
-          {
-            value: 2,
-            title: "Was used several times. Sufficient knowledge to cope with this in project using documentation from time to time. I understand the concept.",
-          },
-          {
-            value: 3,
-            title: "Was used many times. Feeling of confidence in dealing with  this in project. Documentation is addition.",
-          },
-        ]
-      };
-    }else{
-      return {
-        minus: [
-         {
-            value: 0,
-            title: "I do not know the tool / methodology / language / pattern.",
-         }
-        ],
-        star: [
-          {
-            value: 1,
-            title: "I know the tool / methodology / language / pattern.",
-          },
-        ]
-      };
-    }
+    return {
+      range: [
+        {
+          title: "Never was done anything. Lack of experience. Lack of confidence of dealing with this in project.",
+        },
+        {
+          title: "Once something has been done. There was some sort of contact. Lack of confidence of dealing with this in project. It requires re-read the documentation.",
+        },
+        {
+          title: "Was used several times. Sufficient knowledge to cope with this in project using documentation from time to time. I understand the concept.",
+        },
+        {
+          title: "Was used many times. Feeling of confidence in dealing with  this in project. Documentation is addition.",
+        },
+      ],
+      boolean: [
+        {
+          title: "I do not know the tool / methodology / language / pattern.",
+        },
+        {
+          title: "I know the tool / methodology / language / pattern.",
+        },
+      ]
+    }[this.state.skill.rate_type];
   }
 
   rateComponent() {

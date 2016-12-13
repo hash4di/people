@@ -29,9 +29,11 @@ export default class RateScale extends React.Component {
 
   rateMinusClass(elementNumber) {
     if(elementNumber <= this.state.hoverNumber) {
-      return "hovered";
+      return "glyphicon-minus hovered";
     }else if(elementNumber == this.state.rate){
-      return "selected";
+      return "glyphicon-minus selected";
+    }else{
+      return "glyphicon-minus";
     }
   }
 
@@ -50,29 +52,14 @@ export default class RateScale extends React.Component {
   }
 
   render() {
-    const iconMinusElement = (
+    const iconElements = this.props.icons.map((el, index) => (
       <li>
         <i
-          className={`glyphicon glyphicon-minus skill__rate ${this.rateMinusClass(0)}`}
+          className={`glyphicon skill__rate ${index == 0 ? this.rateMinusClass(0) : this.rateStarClass(index)}`}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
           onClick={this.onRateChange}
-          data-id="0"
-          data-toggle="tooltip"
-          data-placement="top"
-          title={this.props.icons.minus.title}
-        ></i>
-      </li>
-    );
-
-    const iconStarsElements = this.props.icons.star.map((el) => (
-      <li>
-        <i
-          className={`glyphicon skill__rate ${this.rateStarClass(el.value)}`}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-          onClick={this.onRateChange}
-          data-id={el.value}
+          data-id={index}
           data-toggle="tooltip"
           data-placement="top"
           title={el.title}
@@ -82,8 +69,7 @@ export default class RateScale extends React.Component {
 
     return(
       <ul className="list-inline skill__rating">
-        {iconMinusElement}
-        {iconStarsElements}
+        {iconElements}
       </ul>
     );
   }
