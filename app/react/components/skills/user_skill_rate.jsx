@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 import UserSkillRateSource from '../../sources/UserSkillRateSource';
-import RateStarsRange from '../RateStarsRange';
-import RateStarsBoolean from '../RateStarsBoolean';
+import RateScale from '../RateScale';
 import _ from 'lodash';
 
 export default class UserSkillRate extends React.Component {
@@ -58,12 +57,50 @@ export default class UserSkillRate extends React.Component {
     this.setState(this.state);
   }
 
-  rateComponent() {
+  ratingIcons() {
     if(this.state.skill.rate_type == 'range'){
-      return <RateStarsRange key={this.state.skill.id} rate={this.state.skill.rate} rateType={this.state.skill.rate_type} onRateChange={this.onRateChange}/>;
+      return {
+        minus: [
+         {
+            value: 0,
+            title: "Never was done anything. Lack of experience. Lack of confidence of dealing with this in project.",
+         }
+        ],
+        star: [
+          {
+            value: 1,
+            title: "Once something has been done. There was some sort of contact. Lack of confidence of dealing with this in project. It requires re-read the documentation.",
+          },
+          {
+            value: 2,
+            title: "Was used several times. Sufficient knowledge to cope with this in project using documentation from time to time. I understand the concept.",
+          },
+          {
+            value: 3,
+            title: "Was used many times. Feeling of confidence in dealing with  this in project. Documentation is addition.",
+          },
+        ]
+      };
     }else{
-      return <RateStarsBoolean key={this.state.skill.id} rate={this.state.skill.rate} rateType={this.state.skill.rate_type} onRateChange={this.onRateChange}/>;
+      return {
+        minus: [
+         {
+            value: 0,
+            title: "I do not know the tool / methodology / language / pattern.",
+         }
+        ],
+        star: [
+          {
+            value: 1,
+            title: "I know the tool / methodology / language / pattern.",
+          },
+        ]
+      };
     }
+  }
+
+  rateComponent() {
+    return <RateScale key={this.state.skill.id} rate={this.state.skill.rate} icons={this.ratingIcons()} onRateChange={this.onRateChange}/>;
   }
 
   componentDidMount() {

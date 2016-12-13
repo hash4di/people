@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import _ from 'lodash';
 
-export default class RateStarsBoolean extends React.Component {
+export default class RateScale extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,32 +50,40 @@ export default class RateStarsBoolean extends React.Component {
   }
 
   render() {
+    const iconMinusElement = (
+      <li>
+        <i
+          className={`glyphicon glyphicon-minus skill__rate ${this.rateMinusClass(0)}`}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          onClick={this.onRateChange}
+          data-id="0"
+          data-toggle="tooltip"
+          data-placement="top"
+          title={this.props.icons.minus.title}
+        ></i>
+      </li>
+    );
+
+    const iconStarsElements = this.props.icons.star.map((el) => (
+      <li>
+        <i
+          className={`glyphicon skill__rate ${this.rateStarClass(el.value)}`}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          onClick={this.onRateChange}
+          data-id={el.value}
+          data-toggle="tooltip"
+          data-placement="top"
+          title={el.title}
+        ></i>
+      </li>
+    ));
+
     return(
       <ul className="list-inline skill__rating">
-        <li>
-          <i
-            className={`glyphicon glyphicon-minus skill__rate ${this.rateMinusClass(0)}`}
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-            onClick={this.onRateChange}
-            data-id="0"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="I do not know the tool / methodology / language / pattern."
-          ></i>
-        </li>
-        <li>
-          <i
-            className={`glyphicon skill__rate ${this.rateStarClass(1)}`}
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-            onClick={this.onRateChange}
-            data-id="1"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="I know the tool / methodology / language / pattern."
-          ></i>
-        </li>
+        {iconMinusElement}
+        {iconStarsElements}
       </ul>
     );
   }
