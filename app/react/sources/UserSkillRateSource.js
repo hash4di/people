@@ -5,7 +5,7 @@ export default class UserSkillRateSource {
       type: "PATCH",
       dataType: 'json',
       data: {
-        user_skill_rate: params
+        user_skill_rate: params,
       }
     });
   }

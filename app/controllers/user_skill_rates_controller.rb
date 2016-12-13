@@ -27,7 +27,7 @@ class UserSkillRatesController < ApplicationController
   private
 
   def set_user_skill_rates
-    user_skill_rates ||= UserSkillRate.joins(
+    @user_skill_rates ||= UserSkillRate.joins(
       skill: :skill_category
     ).select(
       "
