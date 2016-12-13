@@ -14,7 +14,7 @@ export default class RateStarsBoolean extends React.Component {
   }
 
   componentDidMount() {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   rateStarClass(elementNumber) {
@@ -36,20 +36,17 @@ export default class RateStarsBoolean extends React.Component {
   }
 
   onMouseEnter(event) {
-    this.state.hoverNumber = parseInt(event.currentTarget.dataset.id);
-    this.setState(this.state);
+    this.setState({ hoverNumber: parseInt(event.currentTarget.dataset.id) });
   }
 
   onMouseLeave() {
-    this.state.hoverNumber = -1;
-    this.setState(this.state);
+    this.setState({ hoverNumber: -1 });
   }
 
   onRateChange(event) {
     const newRate = parseInt(event.currentTarget.dataset.id);
-    this.state.rate = newRate;
     this.props.onRateChange(newRate);
-    this.setState(this.state);
+    this.setState({ rate: newRate });
   }
 
   render() {

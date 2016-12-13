@@ -1,6 +1,5 @@
 export default class UserSkillRateSource {
   static update(params) {
-    debugger
     return $.ajax({
       url: Routes.user_skill_rate_path(params.id),
       type: "PATCH",

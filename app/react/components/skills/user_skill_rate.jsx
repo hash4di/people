@@ -35,10 +35,7 @@ export default class UserSkillRate extends React.Component {
   }
 
   userSkillRateSaved() {
-    this.state.originalSkill.favorite = this.state.skill.favorite;
-    this.state.originalSkill.note = this.state.skill.note;
-    this.state.originalSkill.rate = this.state.skill.rate;
-    this.setState(this.state);
+    this.setState({ originalSkill: Object.assign({}, this.state.skill) });
     Messenger().success(`Your changes for: ${this.props.skill.name} are saved.`);
   }
 

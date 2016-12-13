@@ -7,7 +7,7 @@ export default class UsersSkillRates extends React.Component {
     const rows = this.props.skills.map(skill => <UserSkillRate key={skill.id} skill={skill}/>);
 
     return(
-      <table className="skills--table table table-striped table-condensed table-hover">
+      <table className="table table-striped table-condensed">
         <thead>
           <tr>
             <th> Name </th>

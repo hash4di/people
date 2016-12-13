@@ -12,10 +12,16 @@ body.user_skill_rates {
         }
       }
 
+      &__row {
+        &:hover {
+          background-color: $light-blue;
+        }
+      }
+
       &__rating {
         min-width: 150px;
 
-        & > li {
+        > li {
           padding: 0;
         }
 
