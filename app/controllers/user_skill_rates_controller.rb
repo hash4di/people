@@ -1,8 +1,7 @@
 class UserSkillRatesController < ApplicationController
   expose(:user_skill_rate) { UserSkillRate.find(params[:id]) }
-  expose(:user_skill_rates) { set_user_skill_rates }
   expose(:grouped_skills_by_category) do
-    user_skill_rates.group_by { |skill| skill.category }
+    GroupUserSkillRatesBySkillCategoriesQuery.new(current_user).results
   end
 
   def index
@@ -25,20 +24,6 @@ class UserSkillRatesController < ApplicationController
   end
 
   private
-
-  def set_user_skill_rates
-    @user_skill_rates ||= UserSkillRate.joins(
-      skill: :skill_category
-    ).select(
-      "
-        user_skill_rates.*,
-        skills.name as name,
-        skills.description as description,
-        skills.rate_type as rate_type,
-        skill_categories.name as category
-      "
-    ).where(user_id: current_user.id)
-  end
 
   def user_skill_rate_params
     params.require(:user_skill_rate).permit(:rate, :note, :favorite)
