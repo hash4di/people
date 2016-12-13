@@ -35,11 +35,11 @@ export default class UserSkillRate extends React.Component {
 
   userSkillRateSaved() {
     this.setState({ originalSkill: Object.assign({}, this.state.skill) });
-    Messenger().success(`Your changes for: ${this.props.skill.name} are saved.`);
+    Messenger({theme: 'flat'}).success(`Your changes for: ${this.props.skill.name} are saved.`);
   }
 
   failedToSaveUserSkillRate() {
-    Messenger().success(`Failed to save your changes for: ${this.props.skill.name}.`);
+    Messenger({theme: 'flat'}).error(`Failed to save your changes for: ${this.props.skill.name}.`);
   }
 
   onSubmit() {
