@@ -25,14 +25,16 @@ describe GroupUserSkillRatesBySkillCategoriesQuery do
   end
 
   it "returns user_skill_rate with requried attributes" do
-    expect(result_object.name).to eq(skill_backend.name)
-    expect(result_object.description).to eq(skill_backend.description)
-    expect(result_object.rate_type).to eq(skill_backend.rate_type)
-    expect(result_object.category).to eq(skill_category_backend.name)
-    expect(result_object.skill_id).to eq(user_skill_rate_backend.skill_id)
-    expect(result_object.user_id).to eq(user_skill_rate_backend.user_id)
-    expect(result_object.rate).to eq(user_skill_rate_backend.rate)
-    expect(result_object.note).to eq(user_skill_rate_backend.note)
-    expect(result_object.favorite).to eq(user_skill_rate_backend.favorite)
+    expect(result_object.serializable_hash).to include(
+      'name' => skill_backend.name,
+      'description' => skill_backend.description,
+      'rate_type' => skill_backend.rate_type,
+      'category' => skill_category_backend.name,
+      'skill_id' => user_skill_rate_backend.skill_id,
+      'user_id' => user_skill_rate_backend.user_id,
+      'rate' => user_skill_rate_backend.rate,
+      'note' => user_skill_rate_backend.note,
+      'favorite' => user_skill_rate_backend.favorite
+    )
   end
 end
