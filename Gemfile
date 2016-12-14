@@ -24,6 +24,7 @@ gem 'google-analytics-rails'
 gem 'google-api-client', require: 'google/api_client'
 gem 'haml-rails'
 gem 'haml_coffee_assets', github: 'netzpirat/haml_coffee_assets'
+gem "i18n-js", ">= 3.0.0.rc11"
 gem 'jquery-cookie-rails'
 gem 'jquery-rails'
 gem 'jquery-tablesorter'
