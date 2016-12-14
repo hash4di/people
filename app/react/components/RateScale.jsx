@@ -51,8 +51,13 @@ export default class RateScale extends React.Component {
     this.setState({ rate: newRate });
   }
 
+  scaleElementsCount() {
+    return this.props.rateType == 'boolean' ? 2 : 4;
+  }
+
   render() {
-    const iconElements = this.props.icons.map((el, index) => (
+    const scaleElementsCount = this.scaleElementsCount()
+    const iconElements = _.times(scaleElementsCount, (index) =>
       <li>
         <i
           className={`glyphicon skill__rate ${index == 0 ? this.rateMinusClass(0) : this.rateStarClass(index)}`}
@@ -62,10 +67,10 @@ export default class RateScale extends React.Component {
           data-id={index}
           data-toggle="tooltip"
           data-placement="top"
-          title={el.title}
+          title={I18n.t(`skills.rating.${this.props.rateType}.${index}`)}
         ></i>
       </li>
-    ));
+    );
 
     return(
       <ul className="list-inline skill__rating">

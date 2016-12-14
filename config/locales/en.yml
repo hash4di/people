@@ -58,3 +58,13 @@ en:
       chronology: "End date precedes start date!"
       membership_starts_after_project_end_date: "Can't start after project has ended."
       membership_ends_after_project_ended: "Membership ends after project end date"
+  skills:
+    rating:
+      boolean:
+        0: "I do not know the tool / methodology / language / pattern."
+        1: "I know the tool / methodology / language / pattern."
+      range:
+        0: "I have never used it before. I don't have any experience with the tool / methodology / language / pattern. I don't feel confident enough to use it in a project."
+        1: "I have used once before. I know a little bit about it. I don't feel confident enough to use it in a project. I would need to re-read the documentation."
+        2: "I have used it several times. I feel that my knowledge is sufficient to use it in a project (using the documentation occasionally). I understand the concept."
+        3: "I have worked with the tool / methodology / language / pattern many times. I'm feeling confident I can use it in a project. I would very rarely need to check something in the documentation, if it all."

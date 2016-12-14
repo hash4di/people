@@ -57,35 +57,8 @@ export default class UserSkillRate extends React.Component {
     this.setState(this.state);
   }
 
-  ratingIcons() {
-    return {
-      range: [
-        {
-          title: "Never was done anything. Lack of experience. Lack of confidence of dealing with this in project.",
-        },
-        {
-          title: "Once something has been done. There was some sort of contact. Lack of confidence of dealing with this in project. It requires re-read the documentation.",
-        },
-        {
-          title: "Was used several times. Sufficient knowledge to cope with this in project using documentation from time to time. I understand the concept.",
-        },
-        {
-          title: "Was used many times. Feeling of confidence in dealing with  this in project. Documentation is addition.",
-        },
-      ],
-      boolean: [
-        {
-          title: "I do not know the tool / methodology / language / pattern.",
-        },
-        {
-          title: "I know the tool / methodology / language / pattern.",
-        },
-      ]
-    }[this.state.skill.rate_type];
-  }
-
   rateComponent() {
-    return <RateScale key={this.state.skill.id} rate={this.state.skill.rate} icons={this.ratingIcons()} onRateChange={this.onRateChange}/>;
+    return <RateScale key={this.state.skill.id} rate={this.state.skill.rate} rateType={this.state.skill.rate_type} onRateChange={this.onRateChange}/>;
   }
 
   componentDidMount() {
@@ -114,7 +87,7 @@ export default class UserSkillRate extends React.Component {
             className={favoriteCLass}
             data-toggle="tooltip"
             data-placement="top"
-            title="skill I want to get better at."
+            title="Skill I want to get better at."
           ></i>
         </td>
         <td>
