@@ -57,8 +57,16 @@ export default class UserSkillRate extends React.Component {
     this.setState(this.state);
   }
 
+  rateComponentScaleTranslations() {
+    return I18n.t(`skills.rating.${this.state.skill.rate_type}`);
+  }
+
+  rateComponentScaleSize() {
+    return this.state.skill.rate_type == 'boolean' ? 2 : 4;
+  }
+
   rateComponent() {
-    return <RateScale key={this.state.skill.id} rate={this.state.skill.rate} rateType={this.state.skill.rate_type} onRateChange={this.onRateChange}/>;
+    return <RateScale key={this.state.skill.id} rate={this.state.skill.rate} scaleTranslations={this.rateComponentScaleTranslations()} scaleSize={this.rateComponentScaleSize()} onRateChange={this.onRateChange}/>;
   }
 
   componentDidMount() {
