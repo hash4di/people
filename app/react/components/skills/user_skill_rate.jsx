@@ -24,13 +24,24 @@ export default class UserSkillRate extends React.Component {
   }
 
   onFavoriteChange() {
-    this.state.skill.favorite = !this.state.skill.favorite;
-    this.setState(this.state);
+    const skill = Object.assign(
+      {}, this.state.skill, { favorite: !this.state.skill.favorite }
+    );
+    this.setState({ skill });
   }
 
   onNoteChange(event) {
-    this.state.skill.note = event.currentTarget.value;
-    this.setState(this.state);
+    const skill = Object.assign(
+      {}, this.state.skill, { note: event.currentTarget.value }
+    );
+    this.setState({ skill });
+  }
+
+  onRateChange(newRate) {
+    const skill = Object.assign(
+      {}, this.state.skill, { rate: newRate }
+    );
+    this.setState({ skill });
   }
 
   userSkillRateSaved() {
@@ -52,30 +63,17 @@ export default class UserSkillRate extends React.Component {
     );
   }
 
-  onRateChange(newRate) {
-    this.state.skill.rate = newRate;
-    this.setState(this.state);
-  }
-
-  rateComponentScaleTranslations() {
-    return I18n.t(`skills.rating.${this.state.skill.rate_type}`);
-  }
-
-  rateComponentScaleSize() {
-    return this.state.skill.rate_type == 'boolean' ? 2 : 4;
-  }
-
   rateComponent() {
-    return <RateScale key={this.state.skill.id} rate={this.state.skill.rate} scaleTranslations={this.rateComponentScaleTranslations()} scaleSize={this.rateComponentScaleSize()} onRateChange={this.onRateChange}/>;
+    return <RateScale key={this.state.skill.id} rate={this.state.skill.rate} rateType={this.state.skill.rate_type} onRateChange={this.onRateChange}/>;
   }
 
   componentDidMount() {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
   }
 
   render() {
-    const saveDivClass = `btn ${this.isDirty() ? 'btn-info' : 'btn-primary disabled'}`
-    const favoriteCLass = `skill__favorite glyphicon btn-lg ${this.state.skill.favorite ? 'glyphicon-pushpin text-primary' : 'glyphicon-minus'}`
+    const saveDivClass = `btn ${this.isDirty() ? 'btn-info' : 'btn-primary disabled'}`;
+    const favoriteCLass = `skill__favorite glyphicon btn-lg ${this.state.skill.favorite ? 'glyphicon-pushpin text-primary' : 'glyphicon-minus'}`;
 
     const rateStars = this.rateComponent();
 
