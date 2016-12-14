@@ -46,11 +46,17 @@ export default class UserSkillRate extends React.Component {
 
   userSkillRateSaved() {
     this.setState({ originalSkill: Object.assign({}, this.state.skill) });
-    Messenger({theme: 'flat'}).success(`Your changes for: ${this.props.skill.name} are saved.`);
+    const message = I18n.t(
+      "skills.message.success", {skill: this.props.skill.name}
+    )
+    Messenger({theme: 'flat'}).success(message);
   }
 
   failedToSaveUserSkillRate() {
-    Messenger({theme: 'flat'}).error(`Failed to save your changes for: ${this.props.skill.name}.`);
+    const message = I18n.t(
+      "skills.message.error", {skill: this.props.skill.name}
+    )
+    Messenger({theme: 'flat'}).error(message);
   }
 
   onSubmit() {
@@ -85,7 +91,7 @@ export default class UserSkillRate extends React.Component {
           {rateStars}
         </td>
         <td>
-          <textarea className="skill__note form-control" rows="1" cols="30" onChange={this.onNoteChange} placeholder='Add note to your rate' value={this.state.skill.note}>
+          <textarea className="skill__note form-control" rows="1" cols="30" onChange={this.onNoteChange} placeholder={I18n.t("skills.add_note")} value={this.state.skill.note}>
           </textarea>
         </td>
         <td onClick={this.onFavoriteChange}>
@@ -93,7 +99,7 @@ export default class UserSkillRate extends React.Component {
             className={favoriteCLass}
             data-toggle="tooltip"
             data-placement="top"
-            title="Skill I want to get better at."
+            title={I18n.t("skills.favorite")}
           ></i>
         </td>
         <td>
@@ -102,7 +108,7 @@ export default class UserSkillRate extends React.Component {
             onClick={this.onSubmit}
             data-toggle="tooltip"
             data-placement="top"
-            title="Save your changes."
+            title={I18n.t("skills.save")}
           >
             <i className="glyphicon glyphicon-floppy-disk"></i>
           </div>

@@ -59,6 +59,12 @@ en:
       membership_starts_after_project_end_date: "Can't start after project has ended."
       membership_ends_after_project_ended: "Membership ends after project end date"
   skills:
+    favorite: "Skill I want to get better at."
+    add_note: "Add note to your rate."
+    save: "Save your changes."
+    message:
+      success: "Your changes for: %{skill} are saved."
+      error: "Failed to save your changes for: %{skill}."
     rating:
       boolean:
         0: "I do not know the tool / methodology / language / pattern."
