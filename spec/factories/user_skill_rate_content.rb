@@ -2,6 +2,8 @@ FactoryGirl.define do
   factory :user_skill_rate_content, class: ::UserSkillRate::Content do
     user_skill_rate
     rate 2
+    note { Faker::Lorem.sentence }
+    favorite false
 
     trait :with_boolean_rate_type do
       after(:build) do |content|
