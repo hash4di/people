@@ -15,7 +15,7 @@ module Skills
 
     def generate_default_user_skills
       skills.each do |skill|
-        UserSkillRate.create(
+        UserSkillRate.find_or_create_by(
           user_id: user.id, skill_id: skill.id
         )
       end
