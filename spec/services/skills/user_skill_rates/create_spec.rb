@@ -19,7 +19,7 @@ describe ::Skills::UserSkillRates::Create do
 
     it 'creates UserSkillRate::Content' do
       subject.call
-      expect(user.user_skill_rates.first.contents.count).to eq(1)
+      expect(user_skill_rates.first.contents.count).to eq(1)
     end
   end
 end
