@@ -42,9 +42,11 @@ describe ::Skills::UserSkillRates::Update do
     it 'sets correct values on new content' do
       subject.call
       user_skill_rate.reload
-      expect(last_content.favorite).to eq(user_skill_rate.favorite)
-      expect(last_content.note).to eq(user_skill_rate.note)
-      expect(last_content.rate).to eq(user_skill_rate.rate)
+      aggregate_failures do
+        expect(last_content.favorite).to eq(user_skill_rate.favorite)
+        expect(last_content.note).to eq(user_skill_rate.note)
+        expect(last_content.rate).to eq(user_skill_rate.rate)
+      end
     end
   end
 end
