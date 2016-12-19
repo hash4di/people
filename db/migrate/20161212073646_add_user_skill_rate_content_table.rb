@@ -6,7 +6,5 @@ class AddUserSkillRateContentTable < ActiveRecord::Migration
 
       t.timestamps
     end
-
-    remove_column :user_skill_rates, :rate
   end
 end
