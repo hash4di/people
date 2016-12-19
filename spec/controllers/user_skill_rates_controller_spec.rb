@@ -39,10 +39,6 @@ describe UserSkillRatesController do
       put :update, id: user_skill_rate.id, user_skill_rate: params, format: :json
     end
 
-    let(:user_skill_rate) do
-      create(:user_skill_rate, note: 'abc', rate: 0, favorite: false, user: user)
-    end
-
     let(:params) {
       {
         id: user_skill_rate.id,
@@ -52,22 +48,40 @@ describe UserSkillRatesController do
       }
     }
 
-    it 'updates note on user rate skill' do
-      expect{ subject }.to change{ user_skill_rate.reload.note }.from('abc').to('def')
+    context 'when user_skill_rate is current_user' do
+      let(:user_skill_rate) do
+        create(:user_skill_rate, note: 'abc', rate: 0, favorite: false, user: user)
+      end
+
+      it 'updates note on user rate skill' do
+        expect{ subject }.to change{ user_skill_rate.reload.note }.from('abc').to('def')
+      end
+
+      it 'updates favorite on user rate skill' do
+        expect{ subject }.to change{ user_skill_rate.reload.rate }.from(0).to(1)
+      end
+
+      it 'updates favorite on user favorite skill' do
+        expect{ subject }.to change{ user_skill_rate.reload.favorite }.from(false).to(true)
+      end
+
+      it 'responds successfully with an HTTP 204 status code' do
+        subject
+        expect(response).to be_success
+        expect(response.status).to eq(204)
+      end
     end
 
-    it 'updates favorite on user rate skill' do
-      expect{ subject }.to change{ user_skill_rate.reload.rate }.from(0).to(1)
-    end
+    context 'when user_skill_rate is not current_user' do
+      let(:different_user) { create(:user) }
+      let(:user_skill_rate) do
+        create(:user_skill_rate, note: 'abc', rate: 0, favorite: false, user: different_user)
+      end
 
-    it 'updates favorite on user favorite skill' do
-      expect{ subject }.to change{ user_skill_rate.reload.favorite }.from(false).to(true)
-    end
-
-    it 'responds successfully with an HTTP 204 status code' do
-      subject
-      expect(response).to be_success
-      expect(response.status).to eq(204)
+      it 'responds unprocessable entity' do
+        subject
+        expect(response.status).to eq(422)
+      end
     end
   end
-end
+  end
