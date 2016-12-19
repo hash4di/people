@@ -1,0 +1,14 @@
+.container
+  %h1 Your skills
+
+  %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
+    %li
+      %h4.skills-header.text-primary Skill categories:
+    - grouped_skills_by_category.keys.each_with_index do |skill_category|
+      %li{ role: "presentation" }
+        %a{ id: "#{skill_category}-tab", aria: { controls: skill_category, expanded: "false"}, data: { toggle: "tab" }, href: "##{skill_category}", role: "tab" }= skill_category
+
+  .tab-content
+    - grouped_skills_by_category.each do |skill_category, skills|
+      .tab-pane.fade{ id: "#{skill_category}", aria: { labelledby: "#{skill_category}-tab" }, role: "tabpanel" }
+        = react_component('user_skill_rates', skills: skills)
