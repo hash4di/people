@@ -1,4 +1,5 @@
 Hrguru::Application.routes.draw do
+  resources :user_skill_rates, only: [:index, :update]
   resources :skills
   devise_for(
     :users,

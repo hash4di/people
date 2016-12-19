@@ -205,8 +205,11 @@ ActiveRecord::Schema.define(version: 20161212073646) do
   create_table "user_skill_rates", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "rate",       default: 0
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "note",       default: ""
+    t.boolean  "favorite",   default: false
   end
 
   add_index "user_skill_rates", ["skill_id"], name: "index_user_skill_rates_on_skill_id", using: :btree

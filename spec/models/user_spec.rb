@@ -230,8 +230,14 @@ describe User do
 
   describe '#rated_skills' do
     let(:user) { create(:user) }
-    let!(:rated_skill) { create(:skill, name: 'rated_skill') }
-    let!(:non_rated_skill) { create(:skill, name: 'non_rated_skill') }
+    let(:skill_category_backend) { create(:skill_category, name: 'backend') }
+    let(:skill_category_frontend) { create(:skill_category, name: 'frontend') }
+    let!(:rated_skill) do
+      create(:skill, name: 'rated_skill', skill_category: skill_category_backend)
+    end
+    let!(:non_rated_skill) do
+      create(:skill, name: 'non_rated_skill', skill_category: skill_category_frontend)
+    end
 
     before do
       rated_usr = create(:user_skill_rate, skill: rated_skill, user: user)
