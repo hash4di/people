@@ -38,7 +38,7 @@ export default class RateScale extends React.Component {
   }
 
   onMouseEnter(event) {
-    this.setState({ hoverNumber: parseInt(event.currentTarget.dataset.id) });
+    this.setState({ hoverNumber: parseInt(event.currentTarget.dataset.id, 10) });
   }
 
   onMouseLeave() {
@@ -46,7 +46,7 @@ export default class RateScale extends React.Component {
   }
 
   onRateChange(event) {
-    const newRate = parseInt(event.currentTarget.dataset.id);
+    const newRate = parseInt(event.currentTarget.dataset.id, 10);
     this.props.onRateChange(newRate);
     this.setState({ rate: newRate });
   }
