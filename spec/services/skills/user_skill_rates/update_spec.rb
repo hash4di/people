@@ -14,14 +14,14 @@ describe ::Skills::UserSkillRates::Update do
     let(:user_skill_rate) do
       create(:user_skill_rate, note: 'abc', rate: 0, favorite: false, user: user)
     end
-    let(:params) {
+    let(:params) do
       {
         id: user_skill_rate.id,
         note: 'def',
         rate: 1,
         favorite: true
       }
-    }
+    end
 
     it 'updates note on user rate skill' do
       expect{ subject.call }.to change{ user_skill_rate.reload.note }.from('abc').to('def')
