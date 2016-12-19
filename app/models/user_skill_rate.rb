@@ -9,6 +9,4 @@ class UserSkillRate < ActiveRecord::Base
   def content
     contents.order('user_skill_rate_contents.created_at asc').last
   end
-
-  delegate :rate, to: :content
 end
