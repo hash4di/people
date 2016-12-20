@@ -49,14 +49,18 @@ export default class UserSkillRate extends React.Component {
     const message = I18n.t(
       "skills.message.success", {skill: this.props.skill.name}
     )
-    Messenger({theme: 'flat'}).success(message);
+    Messenger({theme: 'flat'}).success({
+      message: message, hideAfter: 3, showCloseButton: true
+    });
   }
 
   failedToSaveUserSkillRate() {
     const message = I18n.t(
       "skills.message.error", {skill: this.props.skill.name}
     )
-    Messenger({theme: 'flat'}).error(message);
+    Messenger({theme: 'flat'}).error({
+      message: message, hideAfter: 3, showCloseButton: true
+    });
   }
 
   onSubmit() {

@@ -15,9 +15,9 @@ module Skills
 
     def generate_default_user_skills
       skills.each do |skill|
-        UserSkillRate.create(
+        ::Skills::UserSkillRates::Create.new(
           user_id: user.id, skill_id: skill.id
-        )
+        ).call
       end
     end
 

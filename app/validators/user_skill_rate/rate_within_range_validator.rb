@@ -11,7 +11,7 @@ class UserSkillRate
     attr_reader :record
 
     def rate_within_range?
-      rate_type = record.skill&.rate_type
+      rate_type = record.user_skill_rate&.skill&.rate_type
       expected_range = ::Skills::RateType.new(type: rate_type).expected_range
 
       expected_range.include?(record.rate)

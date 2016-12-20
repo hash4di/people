@@ -13,7 +13,7 @@ class UserSkillRatesController < ApplicationController
 
   def update
     respond_to do |format|
-      if is_user_skill? && user_skill_rate.update(user_skill_rate_params)
+      if is_user_skill? && update_user_skill_rate
         format.html { redirect_to user_skill_rate, notice: 'Skill was successfully updated.' }
         format.json { head :no_content }
       else
@@ -24,6 +24,13 @@ class UserSkillRatesController < ApplicationController
   end
 
   private
+
+  def update_user_skill_rate
+    ::Skills::UserSkillRates::Update.new(
+      user_skill_rate_id: params[:id],
+      params: user_skill_rate_params
+    ).call
+  end
 
   def is_user_skill?
     user_skill_rate.user == current_user

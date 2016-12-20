@@ -23,10 +23,12 @@ describe UserSkillRatesController do
 
     it 'exposes user skill rates grouped by category' do
       subject
-      expect(controller.grouped_skills_by_category.values.count).to eq(2)
-      expect(controller.grouped_skills_by_category.keys).to include('backend', 'frontend')
-      expect(controller.grouped_skills_by_category['backend']).to include(user_skill_rate_backend)
-      expect(controller.grouped_skills_by_category['frontend']).to include(user_skill_rate_frontend)
+      aggregate_failures do
+        expect(controller.grouped_skills_by_category.values.count).to eq(2)
+        expect(controller.grouped_skills_by_category.keys).to include('backend', 'frontend')
+        expect(controller.grouped_skills_by_category['backend']).to include(user_skill_rate_backend)
+        expect(controller.grouped_skills_by_category['frontend']).to include(user_skill_rate_frontend)
+      end
     end
 
     it 'renders index view' do
@@ -67,8 +69,10 @@ describe UserSkillRatesController do
 
       it 'responds successfully with an HTTP 204 status code' do
         subject
-        expect(response).to be_success
-        expect(response.status).to eq(204)
+        aggregate_failures do
+          expect(response).to be_success
+          expect(response.status).to eq(204)
+        end
       end
     end
 
