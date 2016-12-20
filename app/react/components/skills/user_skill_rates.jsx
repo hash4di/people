@@ -12,10 +12,9 @@ export default class UsersSkillRates extends React.Component {
           <tr>
             <th> Name </th>
             <th> Description </th>
-            <th> Rate </th>
-            <th> Note </th>
+            <th className="skill__rating_table_rate"> Rate </th>
             <th> Target </th>
-            <th> Save </th>
+            <th> Note </th>
           </tr>
         </thead>
         <tbody>

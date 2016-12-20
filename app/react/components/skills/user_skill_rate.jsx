@@ -7,45 +7,35 @@ export default class UserSkillRate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      originalSkill: Object.assign({}, props.skill),
-      skill: Object.assign({}, props.skill),
+      favorite: props.skill.favorite,
+      note: props.skill.note,
+      rate: props.skill.rate,
+      id: props.skill.id
     };
-    this.isDirty = this.isDirty.bind(this);
     this.onFavoriteChange = this.onFavoriteChange.bind(this);
     this.onNoteChange = this.onNoteChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
     this.onRateChange = this.onRateChange.bind(this);
     this.userSkillRateSaved = this.userSkillRateSaved.bind(this);
     this.failedToSaveUserSkillRate = this.failedToSaveUserSkillRate.bind(this);
-  }
-
-  isDirty() {
-    return !_.isEqual(this.state.originalSkill, this.state.skill);
+    this.submitInterval = null;
   }
 
   onFavoriteChange() {
-    const skill = Object.assign(
-      {}, this.state.skill, { favorite: !this.state.skill.favorite }
-    );
-    this.setState({ skill });
+    this.setState({ favorite: !this.state.favorite });
+    this.submit();
   }
 
   onNoteChange(event) {
-    const skill = Object.assign(
-      {}, this.state.skill, { note: event.currentTarget.value }
-    );
-    this.setState({ skill });
+    this.setState({ note: event.currentTarget.value });
+    this.submit();
   }
 
   onRateChange(newRate) {
-    const skill = Object.assign(
-      {}, this.state.skill, { rate: newRate }
-    );
-    this.setState({ skill });
+    this.setState({ rate: newRate });
+    this.submit();
   }
 
   userSkillRateSaved() {
-    this.setState({ originalSkill: Object.assign({}, this.state.skill) });
     const message = I18n.t(
       "skills.message.success", {skill: this.props.skill.name}
     )
@@ -63,18 +53,24 @@ export default class UserSkillRate extends React.Component {
     });
   }
 
-  onSubmit() {
-    UserSkillRateSource.update(
-      this.state.skill
-    ).done(
-      this.userSkillRateSaved
-    ).fail(
-      this.failedToSaveUserSkillRate
+  submit() {
+    clearTimeout(this.submitInterval);
+    this.submitInterval = setTimeout(() =>
+      {
+        UserSkillRateSource.update(
+          this.state
+        ).done(
+          this.userSkillRateSaved
+        ).fail(
+          this.failedToSaveUserSkillRate
+        );
+      },
+      2000
     );
   }
 
   rateComponent() {
-    return <RateScale key={this.state.skill.id} rate={this.state.skill.rate} rateType={this.state.skill.rate_type} onRateChange={this.onRateChange}/>;
+    return <RateScale key={this.props.skill.id} rate={this.state.rate} rateType={this.props.skill.rate_type} onRateChange={this.onRateChange}/>;
   }
 
   componentDidMount() {
@@ -82,8 +78,7 @@ export default class UserSkillRate extends React.Component {
   }
 
   render() {
-    const saveDivClass = `btn ${this.isDirty() ? 'btn-info' : 'btn-primary disabled'}`;
-    const favoriteCLass = `skill__favorite glyphicon btn-lg ${this.state.skill.favorite ? 'glyphicon-pushpin text-primary' : 'glyphicon-minus'}`;
+    const favoriteCLass = `skill__favorite glyphicon ${this.state.favorite ? 'glyphicon-heart selected' : 'glyphicon-heart-empty'}`;
 
     const rateStars = this.rateComponent();
 
@@ -94,10 +89,6 @@ export default class UserSkillRate extends React.Component {
         <td>
           {rateStars}
         </td>
-        <td>
-          <textarea className="skill__note form-control" rows="1" cols="30" onChange={this.onNoteChange} placeholder={I18n.t("skills.add_note")} value={this.state.skill.note}>
-          </textarea>
-        </td>
         <td onClick={this.onFavoriteChange}>
           <i
             className={favoriteCLass}
@@ -107,15 +98,8 @@ export default class UserSkillRate extends React.Component {
           ></i>
         </td>
         <td>
-          <div
-            className={saveDivClass}
-            onClick={this.onSubmit}
-            data-toggle="tooltip"
-            data-placement="top"
-            title={I18n.t("skills.save")}
-          >
-            <i className="glyphicon glyphicon-floppy-disk"></i>
-          </div>
+          <textarea className="skill__note form-control" rows="1" cols="30" onChange={this.onNoteChange} placeholder={I18n.t("skills.add_note")} value={this.state.note}>
+          </textarea>
         </td>
       </tr>
     );
