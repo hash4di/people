@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import UserSkillRateSource from '../../sources/UserSkillRateSource';
-import RateScale from '../RateScale';
+import RateScale from '../rate-scale';
 import _ from 'lodash';
 
 export default class UserSkillRate extends React.Component {
