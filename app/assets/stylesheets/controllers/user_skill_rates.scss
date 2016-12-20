@@ -6,32 +6,67 @@ body.user_skill_rates {
       }
 
       &__favorite {
+        margin: 4px 45px 4px 7px;
         cursor: pointer;
+        font-size: $font-size-h3;
         &:hover {
           color: $brand-info;
         }
+
+        &.selected {
+          color: $brand-danger;
+
+          &:hover {
+            color: $brand-info;
+          }
+        }
+      }
+
+      &__rating_table_rate {
+        padding-left: 30px;
+      }
+
+      &__clear_rate {
+        display: none;
+        cursor: pointer;
+        color: $brand-danger;
+      }
+
+      &__clear_rate__btn {
+        top: -4px;
+        font-size: $font-size-small;
       }
 
       &__row {
         &:hover {
-          background-color: $light-blue;
+          background-color: $light-orange;
+          .skill__clear_rate {
+            display: inline-block;
+          }
         }
       }
 
       &__rating {
         min-width: 150px;
+        margin: 5px 0 0 0;
+        position: relative;
 
-        > li {
+        li:not(.skill__clear_rate) {
           padding: 0;
         }
-
-        i {
-          padding: 0 5px;
-          font-size: 18px;
+        li:nth-child(1) {
+          position: absolute;
+          top: 5px;
+        }
+        li:nth-child(2) {
+          padding: 0 0 0 25px;
         }
       }
 
       &__rate {
+        padding-left: 5px;
+        font-size: $font-size-h3;
+
         &.hovered {
           color: $brand-info;
           cursor: pointer;
