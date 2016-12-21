@@ -38,7 +38,7 @@ describe ::Skills::UserSkillRates::Update do
       let(:last_content) { user_skill_rate.contents.last }
 
       it 'creates new user_skill_rate_content' do
-        expect { subject.call }.to change { user_skill_rate.contents.count }
+        expect { subject.call }.to change { user_skill_rate.contents.count }.by(1)
       end
 
       it 'sets correct values on new content' do
