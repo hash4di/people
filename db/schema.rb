@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219135648) do
+ActiveRecord::Schema.define(version: 20161221114330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -250,6 +250,7 @@ ActiveRecord::Schema.define(version: 20161219135648) do
     t.integer  "role_id"
     t.boolean  "admin",              default: false
     t.integer  "commitment"
+    t.string   "salesforce_id"
   end
 
   add_index "users", ["contract_type_id"], name: "index_users_on_contract_type_id", using: :btree
