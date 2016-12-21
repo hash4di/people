@@ -9,7 +9,6 @@ describe ::Skills::UserSkillRates::Update do
   end
 
   describe '#call' do
-    let(:last_content) { user_skill_rate.contents.last }
     let(:user) { create(:user) }
     let(:user_skill_rate) do
       create(:user_skill_rate, note: 'abc', rate: 0, favorite: false, user: user)
@@ -24,28 +23,53 @@ describe ::Skills::UserSkillRates::Update do
     end
 
     it 'updates note on user rate skill' do
-      expect{ subject.call }.to change{ user_skill_rate.reload.note }.from('abc').to('def')
+      expect { subject.call }.to change { user_skill_rate.reload.note }.from('abc').to('def')
     end
 
     it 'updates favorite on user rate skill' do
-      expect{ subject.call }.to change{ user_skill_rate.reload.rate }.from(0).to(1)
+      expect { subject.call }.to change { user_skill_rate.reload.rate }.from(0).to(1)
     end
 
     it 'updates favorite on user favorite skill' do
-      expect{ subject.call }.to change{ user_skill_rate.reload.favorite }.from(false).to(true)
+      expect { subject.call }.to change { user_skill_rate.reload.favorite }.from(false).to(true)
     end
 
-    it 'creates new user_skill_rate_content' do
-      expect{ subject.call }.to change{ user_skill_rate.contents.count }
-    end
+    context "when user_skill_rate_content doesn't exist today" do
+      let(:last_content) { user_skill_rate.contents.last }
 
-    it 'sets correct values on new content' do
-      subject.call
-      user_skill_rate.reload
-      aggregate_failures do
+      it 'creates new user_skill_rate_content' do
+        expect { subject.call }.to change { user_skill_rate.contents.count }.by(1)
+      end
+
+      it 'sets correct values on new content', :aggregate_failures do
+        subject.call
+        user_skill_rate.reload
         expect(last_content.favorite).to eq(user_skill_rate.favorite)
         expect(last_content.note).to eq(user_skill_rate.note)
         expect(last_content.rate).to eq(user_skill_rate.rate)
+      end
+    end
+
+    context 'when user_skill_rate_content exists today' do
+      let!(:user_skill_rate_content) do
+        create(
+          :user_skill_rate_content,
+          user_skill_rate_id: user_skill_rate.id
+        )
+      end
+
+      it "doesn't create new user_skill_rate_content" do
+        expect { subject.call }.to_not change { user_skill_rate.contents.count }
+      end
+
+      it 'updates content', :aggregate_failures do
+        subject.call
+        user_skill_rate_content.reload
+        user_skill_rate.reload
+        expect(user_skill_rate_content.favorite)
+          .to eq(user_skill_rate.favorite)
+        expect(user_skill_rate_content.note).to eq(user_skill_rate.note)
+        expect(user_skill_rate_content.rate).to eq(user_skill_rate.rate)
       end
     end
   end
