@@ -9,7 +9,6 @@ describe ::Skills::UserSkillRates::Update do
   end
 
   describe '#call' do
-    let(:last_content) { user_skill_rate.contents.last }
     let(:user) { create(:user) }
     let(:user_skill_rate) do
       create(:user_skill_rate, note: 'abc', rate: 0, favorite: false, user: user)
@@ -36,6 +35,8 @@ describe ::Skills::UserSkillRates::Update do
     end
 
     context "when user_skill_rate_content doesn't exist today" do
+      let(:last_content) { user_skill_rate.contents.last }
+
       it 'creates new user_skill_rate_content' do
         expect { subject.call }.to change { user_skill_rate.contents.count }
       end
