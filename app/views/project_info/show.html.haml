@@ -10,7 +10,7 @@
       .col-sm-2.project-label
         %p Project description:
       .col-sm-10
-        %p=project_info[:project_description]
+        %p= project_info[:project_description]
   .row
     .col-sm-12
       .col-sm-2.project-label
@@ -186,7 +186,7 @@
       .col-sm-6.project-label
         %p Key account:
       .col-sm-6
-        %span{class: "glyphicon glyphicon-#{ bool_to_glyph(project_info[:key_account]) }"}
+        %span{ class: "glyphicon glyphicon-#{bool_to_glyph(project_info[:key_account])}" }
     .col-sm-6.col-sm-6
       .col-sm-6.project-label
         %p Project status:
@@ -197,7 +197,7 @@
       .col-sm-6.project-label
         %p Project active:
       .col-sm-6
-        %span{class: "glyphicon glyphicon-#{ bool_to_glyph(project_info[:project_active]) }"}
+        %span{ class: "glyphicon glyphicon-#{ bool_to_glyph(project_info[:project_active]) }" }
     .col-sm-6.col-sm-6
       .col-sm-6.project-label
         %p Intensity:
