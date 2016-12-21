@@ -27,32 +27,22 @@ export default class RateScale extends React.Component {
     }
   }
 
-  rateMinusClass(elementNumber) {
-    if(elementNumber <= this.state.hoverNumber) {
-      return "glyphicon-minus hovered";
-    }else if(elementNumber == this.state.rate){
-      return "glyphicon-minus selected";
-    }else{
-      return "glyphicon-minus";
-    }
-  }
-
   onMouseEnter(event) {
-    this.setState({ hoverNumber: parseInt(event.currentTarget.dataset.id, 10) });
+    this.setState({ hoverNumber: parseInt(event.currentTarget.dataset.rate, 10) });
   }
 
   onMouseLeave() {
     this.setState({ hoverNumber: -1 });
   }
 
-  onRateChange(event) {
-    const newRate = parseInt(event.currentTarget.dataset.id, 10);
+  onRateChange(e) {
+    const newRate = parseInt(e.currentTarget.dataset.rate, 10);
     this.props.onRateChange(newRate);
     this.setState({ rate: newRate });
   }
 
   scaleSize() {
-    return this.props.rateType == 'boolean' ? 2 : 4;
+    return this.props.rateType == 'boolean' ? [1] : [1,2,3];
   }
 
   scaleTranslation(number) {
@@ -60,14 +50,14 @@ export default class RateScale extends React.Component {
   }
 
   render() {
-    const iconElements = _.times(this.scaleSize(), (index) =>
+    const iconElements = _.map(this.scaleSize(), (index) =>
       <li>
         <i
-          className={`glyphicon skill__rate ${index == 0 ? this.rateMinusClass(0) : this.rateStarClass(index)}`}
+          className={`glyphicon skill__rate ${this.rateStarClass(index)}`}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
           onClick={this.onRateChange}
-          data-id={index}
+          data-rate={index}
           data-toggle="tooltip"
           data-placement="top"
           title={this.scaleTranslation(index)}
@@ -75,8 +65,24 @@ export default class RateScale extends React.Component {
       </li>
     );
 
+    const resetElement = this.state.rate > 0 ? (
+      <li className="skill__clear_rate">
+        <i
+          className="glyphicon glyphicon-remove"
+          onClick={this.onRateChange}
+          title="Click to reset your rating"
+          data-toggle="tooltip"
+          data-placement="top"
+          data-rate="0"
+        ></i>
+      </li>
+    ) : (
+      ''
+    );
+
     return(
       <ul className="list-inline skill__rating">
+        {resetElement}
         {iconElements}
       </ul>
     );
