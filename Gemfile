@@ -43,6 +43,7 @@ gem 'pg'
 gem 'rabl'
 gem 'rack-mini-profiler', require: false
 gem 'render_anywhere', require: false
+gem 'restforce'
 gem 'rollbar'
 gem 'sass-rails'
 gem 'searchlight'
