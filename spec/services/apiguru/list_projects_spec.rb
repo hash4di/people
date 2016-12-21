@@ -6,23 +6,19 @@ describe Apiguru::ListProjects do
       [{ name: 'Table Crowd',
          product_owner: '123',
          product_owner_name: 'Mark',
-         project_active: true
-       },
+         project_active: true },
        { name: 'bss',
          product_owner: '456',
          product_owner_name: 'Adam',
-         project_active: true
-       },
+         project_active: true },
        { name: 'upfitness',
          product_owner: '678',
          product_owner_name: 'Jane',
-         project_active: true
-       },
+         project_active: true },
        { name: 'old project',
          product_owner: '901',
          product_owner_name: 'John',
-         project_active: false
-       }]
+         project_active: false }]
     end
 
     subject { described_class.new.call }
