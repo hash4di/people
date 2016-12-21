@@ -10,6 +10,7 @@ export default class UserSkillRate extends React.Component {
       favorite: props.favorite,
       note: props.note,
       rate: props.rate,
+      id: props.id,
     };
     this.onFavoriteChange = this.onFavoriteChange.bind(this);
     this.onNoteChange = this.onNoteChange.bind(this);
