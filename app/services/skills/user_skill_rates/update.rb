@@ -29,9 +29,7 @@ module Skills
       end
 
       def user_skill_rate_content
-        @user_skill_rate_content ||= user_skill_rate.contents.where(
-          "created_at > ?", Time.zone.now.beginning_of_day
-        ).last
+        @user_skill_rate_content ||= user_skill_rate.contents.today.last
       end
 
       def user_skill_rate
