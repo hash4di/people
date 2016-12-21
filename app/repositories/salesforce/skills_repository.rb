@@ -46,6 +46,7 @@ module Salesforce
     def map_to_salesforce(skill)
       {
         Name: skill.name,
+        Description__c: skill.description,
       }
     end
   end
