@@ -22,7 +22,6 @@ module Skills
 
       def create_or_update_user_skill_rate_content
         if user_skill_rate_content
-          binding.pry
           user_skill_rate_content.update_attributes(update_params)
         else
           user_skill_rate.contents.create(params)

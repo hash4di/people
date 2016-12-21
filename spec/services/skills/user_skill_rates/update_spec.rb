@@ -24,20 +24,20 @@ describe ::Skills::UserSkillRates::Update do
     end
 
     it 'updates note on user rate skill' do
-      expect{ subject.call }.to change{ user_skill_rate.reload.note }.from('abc').to('def')
+      expect { subject.call }.to change { user_skill_rate.reload.note }.from('abc').to('def')
     end
 
     it 'updates favorite on user rate skill' do
-      expect{ subject.call }.to change{ user_skill_rate.reload.rate }.from(0).to(1)
+      expect { subject.call }.to change { user_skill_rate.reload.rate }.from(0).to(1)
     end
 
     it 'updates favorite on user favorite skill' do
-      expect{ subject.call }.to change{ user_skill_rate.reload.favorite }.from(false).to(true)
+      expect { subject.call }.to change { user_skill_rate.reload.favorite }.from(false).to(true)
     end
 
     context "when user_skill_rate_content doesn't exist today" do
       it 'creates new user_skill_rate_content' do
-        expect{ subject.call }.to change{ user_skill_rate.contents.count }
+        expect { subject.call }.to change { user_skill_rate.contents.count }
       end
 
       it 'sets correct values on new content' do
@@ -53,13 +53,14 @@ describe ::Skills::UserSkillRates::Update do
 
     context 'when user_skill_rate_content exists today' do
       let!(:user_skill_rate_content) do
-        create(:user_skill_rate_content,
+        create(
+          :user_skill_rate_content,
           user_skill_rate_id: user_skill_rate.id
         )
       end
 
       it "doesn't create new user_skill_rate_content" do
-        expect{ subject.call }.to_not change{ user_skill_rate.contents.count }
+        expect { subject.call }.to_not change { user_skill_rate.contents.count }
       end
 
       it 'updates content' do
