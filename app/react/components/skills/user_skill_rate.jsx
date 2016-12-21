@@ -7,10 +7,9 @@ export default class UserSkillRate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      favorite: props.skill.favorite,
-      note: props.skill.note,
-      rate: props.skill.rate,
-      id: props.skill.id
+      favorite: props.favorite,
+      note: props.note,
+      rate: props.rate,
     };
     this.onFavoriteChange = this.onFavoriteChange.bind(this);
     this.onNoteChange = this.onNoteChange.bind(this);
@@ -36,18 +35,14 @@ export default class UserSkillRate extends React.Component {
   }
 
   userSkillRateSaved() {
-    const message = I18n.t(
-      "skills.message.success", {skill: this.props.skill.name}
-    )
+    const message = I18n.t("skills.message.success", {skill: this.props.name});
     Messenger({theme: 'flat'}).success({
       message: message, hideAfter: 3, showCloseButton: true
     });
   }
 
   failedToSaveUserSkillRate() {
-    const message = I18n.t(
-      "skills.message.error", {skill: this.props.skill.name}
-    )
+    const message = I18n.t("skills.message.error", {skill: this.props.name});
     Messenger({theme: 'flat'}).error({
       message: message, hideAfter: 3, showCloseButton: true
     });
@@ -70,7 +65,7 @@ export default class UserSkillRate extends React.Component {
   }
 
   rateComponent() {
-    return <RateScale key={this.props.skill.id} rate={this.state.rate} rateType={this.props.skill.rate_type} onRateChange={this.onRateChange}/>;
+    return <RateScale key={this.props.id} rate={this.state.rate} rateType={this.props.rate_type} onRateChange={this.onRateChange}/>;
   }
 
   componentDidMount() {
@@ -78,27 +73,34 @@ export default class UserSkillRate extends React.Component {
   }
 
   render() {
-    const favoriteCLass = `skill__favorite glyphicon ${this.state.favorite ? 'glyphicon-heart selected' : 'glyphicon-heart-empty'}`;
+    const favoriteClass = `skill__favorite glyphicon ${this.state.favorite ? 'glyphicon-heart selected' : 'glyphicon-heart-empty'}`;
 
     const rateStars = this.rateComponent();
 
     return(
       <tr className="skill__row">
-        <td>{this.props.skill.name}</td>
-        <td>{this.props.skill.description}</td>
+        <td>{this.props.name}</td>
+        <td>{this.props.description}</td>
         <td>
           {rateStars}
         </td>
         <td onClick={this.onFavoriteChange}>
           <i
-            className={favoriteCLass}
+            className={favoriteClass}
             data-toggle="tooltip"
             data-placement="top"
             title={I18n.t("skills.favorite")}
           ></i>
         </td>
         <td>
-          <textarea className="skill__note form-control" rows="1" cols="30" onChange={this.onNoteChange} placeholder={I18n.t("skills.add_note")} value={this.state.note}>
+          <textarea
+            className="skill__note form-control"
+            rows="1"
+            cols="30"
+            placeholder={I18n.t("skills.add_note")}
+            value={this.state.note}
+            onChange={this.onNoteChange}
+          >
           </textarea>
         </td>
       </tr>

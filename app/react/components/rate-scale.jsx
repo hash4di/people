@@ -28,7 +28,7 @@ export default class RateScale extends React.Component {
   }
 
   onMouseEnter(event) {
-    this.setState({ hoverNumber: parseInt(event.currentTarget.dataset.id, 10) });
+    this.setState({ hoverNumber: parseInt(event.currentTarget.dataset.rate, 10) });
   }
 
   onMouseLeave() {
@@ -36,7 +36,7 @@ export default class RateScale extends React.Component {
   }
 
   onRateChange(e) {
-    const newRate = parseInt(e.currentTarget.dataset.id, 10);
+    const newRate = parseInt(e.currentTarget.dataset.rate, 10);
     this.props.onRateChange(newRate);
     this.setState({ rate: newRate });
   }
@@ -57,7 +57,7 @@ export default class RateScale extends React.Component {
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
           onClick={this.onRateChange}
-          data-id={index}
+          data-rate={index}
           data-toggle="tooltip"
           data-placement="top"
           title={this.scaleTranslation(index)}
@@ -73,7 +73,7 @@ export default class RateScale extends React.Component {
           title="Click to reset your rating"
           data-toggle="tooltip"
           data-placement="top"
-          data-id="0"
+          data-rate="0"
         ></i>
       </li>
     ) : (
