@@ -1,4 +1,17 @@
 module ApplicationHelper
+  def api_link(link)
+    return unless link
+    link_to 'Link', link
+  end
+
+  def simple_date(date)
+    return unless date
+    date.sub(/T.*/, '')
+  end
+
+  def bool_to_glyph(value)
+    value ? 'ok' : 'remove'
+  end
 
   def menu_class(name)
     'active' if name == controller_name

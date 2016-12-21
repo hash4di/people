@@ -86,5 +86,7 @@ Hrguru::Application.routes.draw do
     resources :strategies, only: [:update, :destroy]
   end
 
+  resources :project_info, param: :name, only: [:show, :index]
+
   mount Flip::Engine => '/features'
 end
