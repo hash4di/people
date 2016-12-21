@@ -41,14 +41,12 @@ describe ::Skills::UserSkillRates::Update do
         expect { subject.call }.to change { user_skill_rate.contents.count }.by(1)
       end
 
-      it 'sets correct values on new content' do
+      it 'sets correct values on new content', :aggregate_failures do
         subject.call
         user_skill_rate.reload
-        aggregate_failures do
-          expect(last_content.favorite).to eq(user_skill_rate.favorite)
-          expect(last_content.note).to eq(user_skill_rate.note)
-          expect(last_content.rate).to eq(user_skill_rate.rate)
-        end
+        expect(last_content.favorite).to eq(user_skill_rate.favorite)
+        expect(last_content.note).to eq(user_skill_rate.note)
+        expect(last_content.rate).to eq(user_skill_rate.rate)
       end
     end
 
@@ -64,16 +62,14 @@ describe ::Skills::UserSkillRates::Update do
         expect { subject.call }.to_not change { user_skill_rate.contents.count }
       end
 
-      it 'updates content' do
+      it 'updates content', :aggregate_failures do
         subject.call
         user_skill_rate_content.reload
         user_skill_rate.reload
-        aggregate_failures do
-          expect(user_skill_rate_content.favorite)
-            .to eq(user_skill_rate.favorite)
-          expect(user_skill_rate_content.note).to eq(user_skill_rate.note)
-          expect(user_skill_rate_content.rate).to eq(user_skill_rate.rate)
-        end
+        expect(user_skill_rate_content.favorite)
+          .to eq(user_skill_rate.favorite)
+        expect(user_skill_rate_content.note).to eq(user_skill_rate.note)
+        expect(user_skill_rate_content.rate).to eq(user_skill_rate.rate)
       end
     end
   end
