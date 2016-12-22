@@ -9,7 +9,7 @@ class UsersForSkillQuery
     skill.user_skill_rates.joins(:user).select(selected_fields).order(
       rate: :desc,
       favorite: :desc
-      )
+    )
   end
 
   private
