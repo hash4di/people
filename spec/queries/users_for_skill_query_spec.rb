@@ -1,7 +1,9 @@
 require 'spec_helper'
 
+# TODO: require modification with scope
 describe UsersForSkillQuery do
-  subject { UsersForSkillQuery.new(skill: skill) }
+  subject { UsersForSkillQuery.new(skill: skill, user: admin_user) }
+  let(:admin_user) { create(:user, :admin) }
 
   let(:user) { create(:user, first_name: 'Bogdan', last_name: 'Mazur') }
   let(:user_1) { create(:user, first_name: 'Jaunsz', last_name:  'Kowalski') }
