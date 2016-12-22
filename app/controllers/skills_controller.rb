@@ -2,6 +2,7 @@ class SkillsController < ApplicationController
   before_filter :authenticate_admin!
   before_action :set_skill, only: [:show, :edit, :update, :destroy]
   before_action :set_grouped_skills, only: [:index]
+  expose(:users_with_skill) { UsersForSkillQuery.new(skill: @skill).results }
 
   # GET /skills
   # GET /skills.json
