@@ -1,18 +1,33 @@
 %p#notice= notice
 
-%p
-  %b Name:
-  = @skill.name
-%p
-  %b Description:
-  = @skill.description
-%p
-  %b Rate type:
-  = @skill.rate_type
-%p
-  %b Skill category:
-  = @skill.skill_category.name
+.jumbotron
+  %h2.text-primary= @skill.name
+  %p
+    %b Description:
+    = @skill.description
+  %p
+    %b Rate type:
+    = @skill.rate_type
+  %p
+    %b Skill category:
+    = @skill.skill_category.name
 
-= link_to 'Edit', edit_skill_path(@skill)
-\|
-= link_to 'Back', skills_path
+  = link_to 'Back', skills_path, class: 'btn btn-primary btn-lg'
+
+.container
+  %h3.text-primary List of users with their rates
+
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th First name
+        %th Last name
+        %th Favorite
+        %th Rate
+    %tbody
+      - users_with_skill.map do |user|
+        %tr
+          %th= user.first_name
+          %th= user.last_name
+          %th= user.favorite
+          %th= user.rate
