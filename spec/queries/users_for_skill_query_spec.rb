@@ -51,7 +51,7 @@ describe UsersForSkillQuery do
     )
   end
 
-  it "returns user_skill_rate with requried attributes", :aggregate_failures do
+  it 'returns user with requried attributes', :aggregate_failures do
     expect(result_object.serializable_hash).to include(
       'user_skill_rate_id' => user_skill_rate_favorite_rate_2.id,
       'rate' => user_skill_rate_favorite_rate_2.rate,
