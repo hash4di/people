@@ -22,7 +22,7 @@ RSpec.describe Salesforce::UsersRepository do
 
     it "creates new entry in Salesforce" do
       set_salesforce_expectation(:create, "sf_id", Name: "John Doe")
-      expect(user).to receive(:update).with(salesforce_id: "sf_id")
+      expect(user).to receive(:update_column).with(:salesforce_id, "sf_id")
       repository.sync(user)
     end
 

@@ -22,7 +22,7 @@ RSpec.describe Salesforce::SkillsRepository do
 
     it "creates new entry in Salesforce" do
       set_salesforce_expectation(:create, "sf_id", Name: "Debugging", Description__c: "Squashing bugs")
-      expect(skill).to receive(:update).with(salesforce_id: "sf_id")
+      expect(skill).to receive(:update_column).with(:salesforce_id, "sf_id")
       repository.sync(skill)
     end
 

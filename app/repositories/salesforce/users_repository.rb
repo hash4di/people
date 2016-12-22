@@ -24,7 +24,7 @@ module Salesforce
       attrs = map_to_salesforce(user)
       salesforce_client.create(SALESFORCE_OBJECT_NAME, attrs).tap do |salesforce_id|
         raise_sync_failed(user) unless salesforce_id
-        user.update(salesforce_id: salesforce_id)
+        user.update_column(:salesforce_id, salesforce_id)
       end.present?
     end
 
