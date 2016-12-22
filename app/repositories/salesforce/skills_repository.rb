@@ -48,6 +48,8 @@ module Salesforce
         Name: skill.name,
         Description__c: skill.description,
         RateType__c: skill.rate_type,
+        RefName__c: skill.ref_name,
+        CategoryName__c: skill.skill_category.name,
       }
     end
   end
