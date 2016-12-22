@@ -34,7 +34,7 @@ class UsersForSkillQuery
     if user_has_team?
       team.users.pluck(:id)
     else
-      '*'
+      Users.all.pluck(:id)
     end
   end
 
