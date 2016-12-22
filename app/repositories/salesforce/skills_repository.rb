@@ -47,6 +47,7 @@ module Salesforce
       {
         Name: skill.name,
         Description__c: skill.description,
+        RateType__c: skill.rate_type,
       }
     end
   end

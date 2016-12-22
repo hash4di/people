@@ -9,6 +9,7 @@ RSpec.describe Salesforce::SkillsRepository do
            id: 42,
            name: "Debugging",
            description: "Squashing bugs",
+           rate_type: 'range',
            salesforce_id: salesforce_id,
           )
   end
@@ -21,13 +22,13 @@ RSpec.describe Salesforce::SkillsRepository do
     let(:skill) { make_skill(salesforce_id: nil) }
 
     it "creates new entry in Salesforce" do
-      set_salesforce_expectation(:create, "sf_id", Name: "Debugging", Description__c: "Squashing bugs")
+      set_salesforce_expectation(:create, "sf_id", Name: "Debugging", Description__c: "Squashing bugs", RateType__c: 'range')
       expect(skill).to receive(:update_column).with(:salesforce_id, "sf_id")
       repository.sync(skill)
     end
 
     it "raises error if couldn't be created" do
-      set_salesforce_expectation(:create, false, Name: "Debugging", Description__c: "Squashing bugs")
+      set_salesforce_expectation(:create, false, Name: "Debugging", Description__c: "Squashing bugs", RateType__c: 'range')
       expect do
         repository.sync(skill)
       end.to raise_error Salesforce::SkillsRepository::SyncFailed, /id=42/
@@ -38,12 +39,12 @@ RSpec.describe Salesforce::SkillsRepository do
     let(:skill) { make_skill(salesforce_id: "sf_id") }
 
     it "updates old entry in Salesforce" do
-      set_salesforce_expectation(:update, true, Id: "sf_id", Name: "Debugging", Description__c: "Squashing bugs")
+      set_salesforce_expectation(:update, true, Id: "sf_id", Name: "Debugging", Description__c: "Squashing bugs", RateType__c: 'range')
       repository.sync(skill)
     end
 
     it "raises error if couldn't be updated" do
-      set_salesforce_expectation(:update, false, Id: "sf_id", Name: "Debugging", Description__c: "Squashing bugs")
+      set_salesforce_expectation(:update, false, Id: "sf_id", Name: "Debugging", Description__c: "Squashing bugs", RateType__c: 'range')
       expect do
         repository.sync(skill)
       end.to raise_error Salesforce::SkillsRepository::SyncFailed, /id=42/
