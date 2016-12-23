@@ -1,0 +1,5 @@
+%h2 Projects
+.project-info
+  - project_infos.each do |project|
+    .col-md-4
+      .current-name= link_to project, project_info_path(project)

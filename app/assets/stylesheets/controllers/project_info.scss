@@ -1,0 +1,29 @@
+$project-height: 45px;
+
+.project-info {
+  .current-name {
+    font-size: 20px;
+    font-weight: 300;
+    height: $project-height;
+    line-height: ($project-height - 1);
+    margin-bottom: 15px;
+    padding: 0 0 0 55px;
+    width: calc(100% - 75px);
+
+    a {
+      color: darken($gray, 15%);
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.project-label {
+  font-weight: bold;
+}
