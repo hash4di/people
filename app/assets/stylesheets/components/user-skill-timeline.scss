@@ -1,0 +1,38 @@
+.user-skill-timeline {
+    display: flex;
+    width: 100%;
+
+    &__labels {
+        display: inline-block;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        min-width: 100px;
+    }
+
+    &__timelines {
+        display: flex;
+        flex-direction: column;
+        overflow-x: scroll;
+    }
+
+    &__row-item {
+        border-top: 1px solid #d6dade;
+        box-sizing: content-box;
+        height: 100px;
+        padding: 10px 0;
+
+        &:last-child {
+            border-bottom: 1px solid #d6dade;
+        }
+
+        &:nth-of-type(odd) {
+            background-color: #f2f4f5;
+        }
+    }
+
+    &__skill-label {
+        padding: 10px;
+        border-right: 1px solid #d6dade;
+    }
+}

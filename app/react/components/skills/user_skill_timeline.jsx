@@ -103,18 +103,30 @@ export default class UserSkillTimeline extends React.Component {
     this.state.preparedData = preparedData;
   }
 
-  svgHeight = 100;
-  svgWidthScale = 5;
+  componentDidMount() {
+    var $this = $(ReactDOM.findDOMNode(this));
+    $this.find(`.${this.cssNamespace}__timelines`).scrollLeft(this.svgWidth);
+  }
+
+  svgHeight = 100
+  svgWidthScale = 5
+  cssNamespace = 'user-skill-timeline'
+  nextDays = 40
+  // this has to be calculated
+  svgWidth = 1500
 
   createSkillTimelineSVG(data) {
     const svgHeight = this.svgHeight;
-    const svgWidth = data.totalDays * this.svgWidthScale;
+    const svgWidth = this.svgWidth;
+    const rectanglesWidth = data.totalDays * this.svgWidthScale;
+    const nextDaysWidth = this.nextDays * this.svgWidthScale;
+    const offsetLeft = this.svgWidth - rectanglesWidth - nextDaysWidth;
 
     const rectangles = data.updates.reduce((accumulator, update) => {
       const height = update.rate === 0 ? 0 : update.rate / data.maxRate * svgHeight;
       const width = update.days * this.svgWidthScale;
       const lastAccumulatorElement = accumulator[accumulator.length - 1];
-      const lastAccumulatorElementPositionX = lastAccumulatorElement && lastAccumulatorElement.props ? lastAccumulatorElement.props.x : 0;
+      const lastAccumulatorElementPositionX = lastAccumulatorElement && lastAccumulatorElement.props ? lastAccumulatorElement.props.x : offsetLeft;
       const lastAccumulatorElementWidth = lastAccumulatorElement && lastAccumulatorElement.props ? lastAccumulatorElement.props.width : 0;
       const positionX = lastAccumulatorElementPositionX + lastAccumulatorElementWidth;
       const positionY = svgHeight - height;
@@ -122,24 +134,31 @@ export default class UserSkillTimeline extends React.Component {
       return accumulator.concat(<rect x={positionX} y={positionY} width={width} height={height} fill="red" />);
     }, []);
 
-    return <svg version="1.1" baseProfile="full" width={svgWidth} height={svgHeight} xmlns="http://www.w3.org/2000/svg">
+    return <svg className={`${this.cssNamespace}__row-item`} version="1.1" baseProfile="full" width={svgWidth} height={svgHeight} xmlns="http://www.w3.org/2000/svg">
       {rectangles}
     </svg>
   }
 
-  getSkillTimelines(skillsData) {
-    return skillsData.reduce((accumulator, data) => {
-      const skillTimelineSVG = this.createSkillTimelineSVG(data);
-
-      return accumulator.concat(skillTimelineSVG);
+  getSkillTimelines(skillData) {
+    const skillTimelines = skillData.reduce((accumulator, data) => {
+      return accumulator.concat(this.createSkillTimelineSVG(data));
     }, []);
+
+    return <div className={`${this.cssNamespace}__timelines`}>{skillTimelines}</div>
+  }
+
+  getSkillLabels(skillData) {
+    const skillLabels = skillData.reduce((accumulator, data) => {
+      return accumulator.concat(<li className={`${this.cssNamespace}__row-item ${this.cssNamespace}__skill-label`}>{data.skill}</li>);
+    }, []);
+    
+    return <ul className={`${this.cssNamespace}__labels`}>{skillLabels}</ul>;
   }
 
   render() {
-    return(
-      <div className="user-skill-timeline">
-        {this.getSkillTimelines(this.state.preparedData)}
-      </div>
-    );
+    return <div className={this.cssNamespace}>
+      {this.getSkillLabels(this.state.preparedData)}
+      {this.getSkillTimelines(this.state.preparedData)}
+    </div>
   }
 }
