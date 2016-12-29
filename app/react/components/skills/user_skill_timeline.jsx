@@ -137,30 +137,36 @@ export default class UserSkillTimeline extends React.Component {
     ]
   }
 
-  createMonthSeparatorSVG() {
+  getLineWithLabel(positionX, labelText, labelFontSize, labelOffsetTop, labelOffsetLeft, labelColor, lineColor) {
+    return [
+      <line x1={positionX} y1="0%" x2={positionX} y2="100%" strokeWidth="1" stroke={lineColor} />,
+      <text x={positionX + labelOffsetLeft} y={labelFontSize + labelOffsetTop}
+        fontFamily="Helvetica Neue" fontSize={labelFontSize} fill={labelColor}>{labelText}</text>
+    ];
+  }
+  
+  createTimelineUIsvg() {
     const nextDays = this.nextDays;
     const nowDate = Moment();
     const startDate = Moment(nowDate).subtract(this.totalDays - this.nextDays, 'days');
     const endDate = Moment(nowDate).add(nextDays, 'days');
     const currentDate = Moment(startDate);
-    const lines = [];
-    const labels = [];
+    const elements = [];
     
     while (currentDate.diff(endDate, 'days') < 0) {
       currentDate.startOf('month').add(1, 'months');
-      
       const positionX = currentDate.diff(startDate, 'days') * this.svgWidthScale;
-      lines.push(<line x1={positionX} y1="0%" x2={positionX} y2="100%" strokeWidth="1" stroke="black" />);
-      labels.push(<text x={positionX + 10} y={this.labelFontSize + 10} fontFamily="Helvetica Neue" fontSize={this.labelFontSize}>{currentDate.format('MMMM Y')}</text>);
+
+      elements.push(...this.getLineWithLabel(positionX, currentDate.format('MMMM Y'), this.labelFontSize, 10, 10, "black", "black"));
     }
 
     const positionX = nowDate.diff(startDate, 'days') * this.svgWidthScale;
-    lines.push(<line x1={positionX} y1="0%" x2={positionX} y2="100%" strokeWidth="1" stroke="red" />);
-    labels.push(<text x={positionX + 10} y={(this.labelFontSize + 10) * 2} fontFamily="Helvetica Neue" fontSize={this.labelFontSize}>Today</text>);
+    elements.push(...this.getLineWithLabel(positionX, 'Today', this.labelFontSize, 40, 5, "red", "red"));
+    elements.push(<line x1="0" y1={this.labelFontSize + 20} x2="100%" y2={this.labelFontSize + 20} strokeWidth="1" stroke="black" />);
 
-    return <svg className={`${this.cssNamespace}__timeline-ui`} version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
-      {lines}
-      {labels}
+    return <svg className={`${this.cssNamespace}__timeline-ui`} version="1.1" baseProfile="full"
+      width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
+      {elements}
     </svg>
   }
 
@@ -186,12 +192,12 @@ export default class UserSkillTimeline extends React.Component {
   }
 
   getSkillTimelines(skillData) {
-    const monthSeparatorSVG = this.createMonthSeparatorSVG();
+    const timelineUIsvg = this.createTimelineUIsvg();
     const skillTimelines = skillData.reduce((accumulator, data) => {
       return accumulator.concat(this.createSkillTimelineSVG(data));
     }, []);
 
-    return <div className={`${this.cssNamespace}__timelines`}>{monthSeparatorSVG}{skillTimelines}</div>
+    return <div className={`${this.cssNamespace}__timelines`}>{timelineUIsvg}{skillTimelines}</div>
   }
 
   getSkillLabels(skillData) {

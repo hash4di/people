@@ -17,6 +17,11 @@
         position: relative;
     }
 
+    &__labels,
+    &__timelines {
+        padding-top: 65px;
+    }
+
     &__row-item {
         border-top: 1px solid #d6dade;
         box-sizing: content-box;
@@ -43,6 +48,7 @@
 
     &__timeline-ui {
         position: absolute;
+        top: 0;
         height: 100%;
     }
 }
