@@ -11,12 +11,7 @@
         min-width: 100px;
     }
 
-    &__timelines {
-        overflow-x: scroll;
-        position: relative;
-    }
-
-    &__skill-label {
+    &__labels-item {
         padding: 10px;
         border-bottom: 1px solid #d6dade;
         border-right: 1px solid #d6dade;
@@ -30,5 +25,10 @@
         &:nth-of-type(odd) {
             background-color: #f2f4f5;
         }
+    }
+
+    &__timeline {
+        overflow-x: scroll;
+        position: relative;
     }
 }

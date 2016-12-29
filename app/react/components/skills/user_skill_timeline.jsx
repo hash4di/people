@@ -37,7 +37,7 @@ export default class UserSkillTimeline extends React.Component {
 
   componentDidMount() {
     var $this = $(ReactDOM.findDOMNode(this));
-    $this.find(`.${this.cssNamespace}__timelines`).scrollLeft(this.svgWidth);
+    $this.find(`.${this.cssNamespace}__timeline`).scrollLeft(this.svgWidth);
   }
 
   render() {
@@ -142,14 +142,14 @@ export default class UserSkillTimeline extends React.Component {
 
   getSkillLabels() {
     const skillLabels = this.model.reduce((acc, skillData) => {
-      return acc.concat(<li className={`${this.cssNamespace}__skill-label`}>{skillData.skillName}</li>);
+      return acc.concat(<li className={`${this.cssNamespace}__labels-item`}>{skillData.skillName}</li>);
     }, []);
 
     return <ul className={`${this.cssNamespace}__labels`}>{skillLabels}</ul>;
   }
 
   getTimeline() {
-    return <div className={`${this.cssNamespace}__timelines`}>
+    return <div className={`${this.cssNamespace}__timeline`}>
       <svg version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
         {this.getTimelineBackground()}
         {this.getCharts()}
