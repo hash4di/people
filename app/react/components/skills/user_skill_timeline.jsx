@@ -9,6 +9,7 @@ export default class UserSkillTimeline extends React.Component {
   nextDays = 40
   previousDays = 40
 
+  totalDays = null
   previousDaysWidth = null
   nextDaysWidth = null
   svgWidth = null
@@ -27,6 +28,7 @@ export default class UserSkillTimeline extends React.Component {
     const requiredSVGwidth = this.previousDaysWidth + this.nextDaysWidth + maximumDaysWidth;
 
     this.svgWidth = requiredSVGwidth > this.minimumSVGwidth ? requiredSVGwidth : this.minimumSVGwidth;
+    this.totalDays = this.svgWidth / this. svgWidthScale;
   }
 
   componentDidMount() {
@@ -137,10 +139,21 @@ export default class UserSkillTimeline extends React.Component {
   createMonthSeparatorSVG() {
     const nextDays = this.nextDays;
     const nowDate = Moment();
-    const startDate = '';
-    const endDate = nowDate.add(nextDays, 'days');
+    const startDate = Moment(nowDate).subtract(this.totalDays - this.nextDays, 'days');
+    const endDate = Moment(nowDate).add(nextDays, 'days');
+    const currentDate = Moment(startDate);
+    const separators = [];
+    
+    while (currentDate.diff(endDate, 'days') < 0) {
+      currentDate.startOf('month').add(1, 'months');
+      
+      const positionX = currentDate.diff(startDate, 'days') * this.svgWidthScale;
+      separators.push(<line x1={positionX} y1="0%" x2={positionX} y2="100%" strokeWidth="2" stroke="black" />);
+    }
 
-    return <div>ok</div>;
+    return <svg className={`${this.cssNamespace}__timeline-ui`} version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
+      {separators}
+    </svg>
   }
 
   createSkillTimelineSVG(data) {
