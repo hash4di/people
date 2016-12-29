@@ -1,7 +1,5 @@
 module Api::V2
   class SkillsController < Api::ApiController
-    expose(:skills) { grouped_skills_by_category }
-
     def index
       render json: grouped_skills_by_category
     end
