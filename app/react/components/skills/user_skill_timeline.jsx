@@ -10,6 +10,7 @@ export default class UserSkillTimeline extends React.Component {
   labelFontSize = 14
   chartHeight = 100
   chartPadding = 10
+  gridLabelsHeight = 35
 
   totalDays = null
   previousDaysWidth = null
@@ -29,7 +30,7 @@ export default class UserSkillTimeline extends React.Component {
     const maximumDaysWidth = maximumDays * this.svgWidthScale;
     const requiredSVGwidth = this.previousDaysWidth + this.nextDaysWidth + maximumDaysWidth;
 
-    this.svgHeight = this.model.length * (this.chartHeight + this.chartPadding * 2);
+    this.svgHeight = this.model.length * (this.chartHeight + this.chartPadding * 2) + this.gridLabelsHeight;
     this.svgWidth = requiredSVGwidth > this.minimumSVGwidth ? requiredSVGwidth : this.minimumSVGwidth;
     this.totalDays = this.svgWidth / this. svgWidthScale;
   }
@@ -141,7 +142,7 @@ export default class UserSkillTimeline extends React.Component {
 
   getSkillLabels() {
     const skillLabels = this.model.reduce((acc, skillData) => {
-      return acc.concat(<li className={`${this.cssNamespace}__row-item ${this.cssNamespace}__skill-label`}>{skillData.skillName}</li>);
+      return acc.concat(<li className={`${this.cssNamespace}__skill-label`}>{skillData.skillName}</li>);
     }, []);
 
     return <ul className={`${this.cssNamespace}__labels`}>{skillLabels}</ul>;
@@ -150,15 +151,33 @@ export default class UserSkillTimeline extends React.Component {
   getTimeline() {
     return <div className={`${this.cssNamespace}__timelines`}>
       <svg version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
+        {this.getTimelineBackground()}
         {this.getCharts()}
         {this.getGridLinesWithLabels()}
       </svg>
     </div>;
   }
 
+  getTimelineBackground() {
+    const modelLenght = this.model.length;
+    const elements = [];
+
+    for (let i = 0; i < modelLenght; ++i) {
+      const color = i % 2 === 0 ? '#f2f4f5' : 'white';
+      const rectanglePositionY = (this.chartHeight + this.chartPadding * 2) * i + this.gridLabelsHeight;
+      const height = this.chartHeight + 2 * this.chartPadding;
+      const linePositionY = rectanglePositionY + height;
+
+      elements.push(<rect x="0" y={rectanglePositionY} width={this.svgWidth} height={height} fill={color} />);
+      elements.push(<line x1="0" y1={linePositionY} x2={this.svgWidth} y2={linePositionY} strokeWidth="1" stroke="#d6dade" />);
+    }
+
+    return elements;
+  }
+
   getCharts() {
     return this.model.reduce((acc, skillData, index) => {
-      const offsetTop = (this.chartHeight + this.chartPadding * 2) * index + this.chartPadding;
+      const offsetTop = (this.chartHeight + this.chartPadding * 2) * index + this.chartPadding + this.gridLabelsHeight;
       return acc.concat(this.getChart(skillData, this.chartHeight, offsetTop));
     }, []);
   }
@@ -192,22 +211,22 @@ export default class UserSkillTimeline extends React.Component {
       currentDate.startOf('month').add(1, 'months');
       const positionX = currentDate.diff(startDate, 'days') * this.svgWidthScale;
 
-      elements.push(...this.getLineWithLabel(positionX, currentDate.format('MMMM Y'), 10, 10, "black", "black"));
+      elements.push(...this.getVerticalLineWithLabel(positionX, currentDate.format('MMMM Y'), 10, 10, "black", "black"));
     }
 
     // current day line with label
     const positionX = Moment().diff(startDate, 'days') * this.svgWidthScale;
-    elements.push(...this.getLineWithLabel(positionX, 'Today', 40, 5, "red", "red"));
+    elements.push(...this.getVerticalLineWithLabel(positionX, 'Today', 40, 5, "red", "red"));
 
     // horizontal line
-    elements.push(<line x1="0" y1={this.labelFontSize + 20} x2="100%" y2={this.labelFontSize + 20} strokeWidth="1" stroke="black" />);
+    elements.push(<line x1="0" y1={this.gridLabelsHeight} x2={this.svgWidth} y2={this.gridLabelsHeight} strokeWidth="1" stroke="black" />);
 
     return elements;
   }
 
-  getLineWithLabel(positionX, labelText, labelOffsetTop, labelOffsetLeft, labelColor, lineColor) {
+  getVerticalLineWithLabel(positionX, labelText, labelOffsetTop, labelOffsetLeft, labelColor, lineColor) {
     return [
-      <line x1={positionX} y1="0%" x2={positionX} y2="100%" strokeWidth="1" stroke={lineColor} />,
+      <line x1={positionX} y1="0" x2={positionX} y2={this.svgHeight} strokeWidth="1" stroke={lineColor} />,
       <text x={positionX + labelOffsetLeft} y={this.labelFontSize + labelOffsetTop}
         fontFamily="Helvetica Neue" fontSize={this.labelFontSize} fill={labelColor}>{labelText}</text>
     ];

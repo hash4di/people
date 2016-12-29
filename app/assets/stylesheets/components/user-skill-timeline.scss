@@ -6,49 +6,29 @@
         display: inline-block;
         list-style-type: none;
         margin: 0;
+        margin-top: 35px;
         padding: 0;
         min-width: 100px;
     }
 
     &__timelines {
-        display: flex;
-        flex-direction: column;
         overflow-x: scroll;
         position: relative;
     }
 
-    &__labels,
-    &__timelines {
-        padding-top: 65px;
-    }
-
-    &__row-item {
-        border-top: 1px solid #d6dade;
-        box-sizing: content-box;
-        height: 100px;
-        padding: 10px 0;
-
-        &:last-child {
-            border-bottom: 1px solid #d6dade;
-        }
-    }
-
     &__skill-label {
         padding: 10px;
+        border-bottom: 1px solid #d6dade;
         border-right: 1px solid #d6dade;
+        box-sizing: border-box;
+        height: 120px;
+
+        &:first-child {
+            border-top: 1px solid #d6dade;
+        }
 
         &:nth-of-type(odd) {
             background-color: #f2f4f5;
         }
-    }
-
-    &__skill-timeline:nth-of-type(even) {
-        background-color: #f2f4f5;
-    }
-
-    &__timeline-ui {
-        position: absolute;
-        top: 0;
-        height: 100%;
     }
 }
