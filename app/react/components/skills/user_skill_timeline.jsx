@@ -2,14 +2,47 @@ import React, {PropTypes} from 'react';
 import Moment from 'moment';
 
 export default class UserSkillTimeline extends React.Component {
+  cssNamespace = 'user-skill-timeline'
+  svgHeight = 100
+  svgWidthScale = 5
+  minimumSVGwidth = 1000
+  nextDays = 40
+  previousDays = 40
+
+  previousDaysWidth = null
+  nextDaysWidth = null
+  svgWidth = null
+
   constructor(props) {
     super(props);
-    this.state = {
-      tom: Moment('2016-12-20T15:35:59.859+01:00').format("YYYY-MM-DD")
-    };
-    //debugger;
+    const preparedData = this.prepareData(props);
 
-    const preparedData = [
+    this.state = {preparedData};
+    this.nextDaysWidth = this.nextDays * this.svgWidthScale;
+    this.previousDaysWidth = this.previousDays * this.svgWidthScale;
+
+    // this should be taken from prepareData
+    const maximumDays = 30;
+    const maximumDaysWidth = maximumDays * this.svgWidthScale;
+    const requiredSVGwidth = this.previousDaysWidth + this.nextDaysWidth + maximumDaysWidth;
+
+    this.svgWidth = requiredSVGwidth > this.minimumSVGwidth ? requiredSVGwidth : this.minimumSVGwidth;
+  }
+
+  componentDidMount() {
+    var $this = $(ReactDOM.findDOMNode(this));
+    $this.find(`.${this.cssNamespace}__timelines`).scrollLeft(this.svgWidth);
+  }
+
+  render() {
+    return <div className={this.cssNamespace}>
+      {this.getSkillLabels(this.state.preparedData)}
+      {this.getSkillTimelines(this.state.preparedData)}
+    </div>;
+  }
+
+  prepareData(data) {
+    return [
       {
         skill: 'ember',
         totalDays: 23,
@@ -99,42 +132,34 @@ export default class UserSkillTimeline extends React.Component {
         ]
       }
     ]
-
-    this.state.preparedData = preparedData;
   }
 
-  componentDidMount() {
-    var $this = $(ReactDOM.findDOMNode(this));
-    $this.find(`.${this.cssNamespace}__timelines`).scrollLeft(this.svgWidth);
-  }
+  createMonthSeparatorSVG() {
+    const nextDays = this.nextDays;
+    const nowDate = Moment();
+    const startDate = '';
+    const endDate = nowDate.add(nextDays, 'days');
 
-  svgHeight = 100
-  svgWidthScale = 5
-  cssNamespace = 'user-skill-timeline'
-  nextDays = 40
-  // this has to be calculated
-  svgWidth = 1500
+    return <div>ok</div>;
+  }
 
   createSkillTimelineSVG(data) {
-    const svgHeight = this.svgHeight;
-    const svgWidth = this.svgWidth;
     const rectanglesWidth = data.totalDays * this.svgWidthScale;
-    const nextDaysWidth = this.nextDays * this.svgWidthScale;
-    const offsetLeft = this.svgWidth - rectanglesWidth - nextDaysWidth;
+    const offsetLeft = this.svgWidth - rectanglesWidth - this.nextDaysWidth;
 
     const rectangles = data.updates.reduce((accumulator, update) => {
-      const height = update.rate === 0 ? 0 : update.rate / data.maxRate * svgHeight;
+      const height = update.rate === 0 ? 0 : update.rate / data.maxRate * this.svgHeight;
       const width = update.days * this.svgWidthScale;
       const lastAccumulatorElement = accumulator[accumulator.length - 1];
       const lastAccumulatorElementPositionX = lastAccumulatorElement && lastAccumulatorElement.props ? lastAccumulatorElement.props.x : offsetLeft;
       const lastAccumulatorElementWidth = lastAccumulatorElement && lastAccumulatorElement.props ? lastAccumulatorElement.props.width : 0;
       const positionX = lastAccumulatorElementPositionX + lastAccumulatorElementWidth;
-      const positionY = svgHeight - height;
+      const positionY = this.svgHeight - height;
 
       return accumulator.concat(<rect x={positionX} y={positionY} width={width} height={height} fill="red" />);
     }, []);
 
-    return <svg className={`${this.cssNamespace}__row-item`} version="1.1" baseProfile="full" width={svgWidth} height={svgHeight} xmlns="http://www.w3.org/2000/svg">
+    return <svg className={`${this.cssNamespace}__row-item`} version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
       {rectangles}
     </svg>
   }
@@ -143,8 +168,9 @@ export default class UserSkillTimeline extends React.Component {
     const skillTimelines = skillData.reduce((accumulator, data) => {
       return accumulator.concat(this.createSkillTimelineSVG(data));
     }, []);
+    const monthSeparatorSVG = this.createMonthSeparatorSVG();
 
-    return <div className={`${this.cssNamespace}__timelines`}>{skillTimelines}</div>
+    return <div className={`${this.cssNamespace}__timelines`}>{monthSeparatorSVG}{skillTimelines}</div>
   }
 
   getSkillLabels(skillData) {
@@ -153,12 +179,5 @@ export default class UserSkillTimeline extends React.Component {
     }, []);
     
     return <ul className={`${this.cssNamespace}__labels`}>{skillLabels}</ul>;
-  }
-
-  render() {
-    return <div className={this.cssNamespace}>
-      {this.getSkillLabels(this.state.preparedData)}
-      {this.getSkillTimelines(this.state.preparedData)}
-    </div>
   }
 }
