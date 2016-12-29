@@ -43,6 +43,7 @@ Hrguru::Application.routes.draw do
     namespace :v2 do
       resources :users, only: [:index]
       resources :statistics, only: [:index]
+      resources :skills, only: [:index]
     end
 
     namespace :v3 do
