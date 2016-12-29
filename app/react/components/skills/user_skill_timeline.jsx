@@ -3,31 +3,33 @@ import Moment from 'moment';
 
 export default class UserSkillTimeline extends React.Component {
   cssNamespace = 'user-skill-timeline'
-  svgHeight = 100
   svgWidthScale = 5
   minimumSVGwidth = 1000
   nextDays = 40
   previousDays = 40
   labelFontSize = 14
+  chartHeight = 100
+  chartPadding = 10
 
   totalDays = null
   previousDaysWidth = null
   nextDaysWidth = null
+  heightWidth = null
   svgWidth = null
 
   constructor(props) {
     super(props);
-    const preparedData = this.prepareData(props);
+    this.model = this.getModel(props);
 
-    this.state = {preparedData};
     this.nextDaysWidth = this.nextDays * this.svgWidthScale;
     this.previousDaysWidth = this.previousDays * this.svgWidthScale;
 
-    // this should be taken from prepareData
+    // this should be taken from model
     const maximumDays = 30;
     const maximumDaysWidth = maximumDays * this.svgWidthScale;
     const requiredSVGwidth = this.previousDaysWidth + this.nextDaysWidth + maximumDaysWidth;
 
+    this.svgHeight = this.model.length * (this.chartHeight + this.chartPadding * 2);
     this.svgWidth = requiredSVGwidth > this.minimumSVGwidth ? requiredSVGwidth : this.minimumSVGwidth;
     this.totalDays = this.svgWidth / this. svgWidthScale;
   }
@@ -39,15 +41,15 @@ export default class UserSkillTimeline extends React.Component {
 
   render() {
     return <div className={this.cssNamespace}>
-      {this.getSkillLabels(this.state.preparedData)}
-      {this.getSkillTimelines(this.state.preparedData)}
+      {this.getSkillLabels()}
+      {this.getTimeline()}
     </div>;
   }
 
-  prepareData(data) {
+  getModel(data) {
     return [
       {
-        skill: 'ember',
+        skillName: 'ember',
         totalDays: 23,
         maxRate: 4,
         updates: [
@@ -70,7 +72,7 @@ export default class UserSkillTimeline extends React.Component {
         ]
       },
       {
-        skill: 'react',
+        skillName: 'react',
         totalDays: 30,
         maxRate: 4,
         updates: [
@@ -97,7 +99,7 @@ export default class UserSkillTimeline extends React.Component {
         ]
       },
       {
-        skill: 'git',
+        skillName: 'git',
         totalDays: 20,
         maxRate: 4,
         updates: [
@@ -120,7 +122,7 @@ export default class UserSkillTimeline extends React.Component {
         ]
       },
       {
-        skill: 'jira',
+        skillName: 'jira',
         totalDays: 10,
         maxRate: 1,
         updates: [
@@ -137,74 +139,77 @@ export default class UserSkillTimeline extends React.Component {
     ]
   }
 
-  getLineWithLabel(positionX, labelText, labelFontSize, labelOffsetTop, labelOffsetLeft, labelColor, lineColor) {
-    return [
-      <line x1={positionX} y1="0%" x2={positionX} y2="100%" strokeWidth="1" stroke={lineColor} />,
-      <text x={positionX + labelOffsetLeft} y={labelFontSize + labelOffsetTop}
-        fontFamily="Helvetica Neue" fontSize={labelFontSize} fill={labelColor}>{labelText}</text>
-    ];
-  }
-  
-  createTimelineUIsvg() {
-    const nextDays = this.nextDays;
-    const nowDate = Moment();
-    const startDate = Moment(nowDate).subtract(this.totalDays - this.nextDays, 'days');
-    const endDate = Moment(nowDate).add(nextDays, 'days');
-    const currentDate = Moment(startDate);
-    const elements = [];
-    
-    while (currentDate.diff(endDate, 'days') < 0) {
-      currentDate.startOf('month').add(1, 'months');
-      const positionX = currentDate.diff(startDate, 'days') * this.svgWidthScale;
+  getSkillLabels() {
+    const skillLabels = this.model.reduce((acc, skillData) => {
+      return acc.concat(<li className={`${this.cssNamespace}__row-item ${this.cssNamespace}__skill-label`}>{skillData.skillName}</li>);
+    }, []);
 
-      elements.push(...this.getLineWithLabel(positionX, currentDate.format('MMMM Y'), this.labelFontSize, 10, 10, "black", "black"));
-    }
-
-    const positionX = nowDate.diff(startDate, 'days') * this.svgWidthScale;
-    elements.push(...this.getLineWithLabel(positionX, 'Today', this.labelFontSize, 40, 5, "red", "red"));
-    elements.push(<line x1="0" y1={this.labelFontSize + 20} x2="100%" y2={this.labelFontSize + 20} strokeWidth="1" stroke="black" />);
-
-    return <svg className={`${this.cssNamespace}__timeline-ui`} version="1.1" baseProfile="full"
-      width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
-      {elements}
-    </svg>
+    return <ul className={`${this.cssNamespace}__labels`}>{skillLabels}</ul>;
   }
 
-  createSkillTimelineSVG(data) {
+  getTimeline() {
+    return <div className={`${this.cssNamespace}__timelines`}>
+      <svg version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
+        {this.getCharts()}
+        {this.getGridLinesWithLabels()}
+      </svg>
+    </div>;
+  }
+
+  getCharts() {
+    return this.model.reduce((acc, skillData, index) => {
+      const offsetTop = (this.chartHeight + this.chartPadding * 2) * index + this.chartPadding;
+      return acc.concat(this.getChart(skillData, this.chartHeight, offsetTop));
+    }, []);
+  }
+
+  getChart(data, chartHeight, offsetTop) {
     const rectanglesWidth = data.totalDays * this.svgWidthScale;
     const offsetLeft = this.svgWidth - rectanglesWidth - this.nextDaysWidth;
 
-    const rectangles = data.updates.reduce((accumulator, update) => {
-      const height = update.rate === 0 ? 0 : update.rate / data.maxRate * this.svgHeight;
-      const width = update.days * this.svgWidthScale;
-      const lastAccumulatorElement = accumulator[accumulator.length - 1];
-      const lastAccumulatorElementPositionX = lastAccumulatorElement && lastAccumulatorElement.props ? lastAccumulatorElement.props.x : offsetLeft;
-      const lastAccumulatorElementWidth = lastAccumulatorElement && lastAccumulatorElement.props ? lastAccumulatorElement.props.width : 0;
-      const positionX = lastAccumulatorElementPositionX + lastAccumulatorElementWidth;
-      const positionY = this.svgHeight - height;
+    return data.updates.reduce((acc, rectangleData) => {
+      const height = rectangleData.rate === 0 ? 0 : rectangleData.rate / data.maxRate * chartHeight;
+      const width = rectangleData.days * this.svgWidthScale;
+      const lastAccElement = acc[acc.length - 1];
+      const lastAccElementPositionX = lastAccElement && lastAccElement.props ? lastAccElement.props.x : offsetLeft;
+      const lastAccElementWidth = lastAccElement && lastAccElement.props ? lastAccElement.props.width : 0;
+      const positionX = lastAccElementPositionX + lastAccElementWidth;
+      const positionY = chartHeight - height + offsetTop;
 
-      return accumulator.concat(<rect x={positionX} y={positionY} width={width} height={height} fill="red" />);
+      return acc.concat(<rect x={positionX} y={positionY} width={width} height={height} fill="red" />);
     }, []);
-
-    return <svg className={`${this.cssNamespace}__row-item ${this.cssNamespace}__skill-timeline`} version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
-      {rectangles}
-    </svg>
   }
 
-  getSkillTimelines(skillData) {
-    const timelineUIsvg = this.createTimelineUIsvg();
-    const skillTimelines = skillData.reduce((accumulator, data) => {
-      return accumulator.concat(this.createSkillTimelineSVG(data));
-    }, []);
-
-    return <div className={`${this.cssNamespace}__timelines`}>{timelineUIsvg}{skillTimelines}</div>
-  }
-
-  getSkillLabels(skillData) {
-    const skillLabels = skillData.reduce((accumulator, data) => {
-      return accumulator.concat(<li className={`${this.cssNamespace}__row-item ${this.cssNamespace}__skill-label`}>{data.skill}</li>);
-    }, []);
+  getGridLinesWithLabels() {
+    const nowDate = Moment();
+    const startDate = Moment(nowDate).subtract(this.totalDays - this.nextDays, 'days');
+    const endDate = Moment(nowDate).add(this.nextDays, 'days');
+    const currentDate = Moment(startDate);
+    const elements = [];
     
-    return <ul className={`${this.cssNamespace}__labels`}>{skillLabels}</ul>;
+    // vertical lines with labels
+    while (currentDate.diff(endDate, 'days') < -30) {
+      currentDate.startOf('month').add(1, 'months');
+      const positionX = currentDate.diff(startDate, 'days') * this.svgWidthScale;
+
+      elements.push(...this.getLineWithLabel(positionX, currentDate.format('MMMM Y'), 10, 10, "black", "black"));
+    }
+
+    // current day line with label
+    const positionX = Moment().diff(startDate, 'days') * this.svgWidthScale;
+    elements.push(...this.getLineWithLabel(positionX, 'Today', 40, 5, "red", "red"));
+
+    // horizontal line
+    elements.push(<line x1="0" y1={this.labelFontSize + 20} x2="100%" y2={this.labelFontSize + 20} strokeWidth="1" stroke="black" />);
+
+    return elements;
+  }
+
+  getLineWithLabel(positionX, labelText, labelOffsetTop, labelOffsetLeft, labelColor, lineColor) {
+    return [
+      <line x1={positionX} y1="0%" x2={positionX} y2="100%" strokeWidth="1" stroke={lineColor} />,
+      <text x={positionX + labelOffsetLeft} y={this.labelFontSize + labelOffsetTop}
+        fontFamily="Helvetica Neue" fontSize={this.labelFontSize} fill={labelColor}>{labelText}</text>
+    ];
   }
 }
