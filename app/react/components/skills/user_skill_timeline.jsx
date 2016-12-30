@@ -10,6 +10,7 @@ export default class UserSkillTimeline extends React.Component {
   labelFontSize = 14
   chartHeight = 100
   chartPadding = 10
+  chartStrokeWidth = 5
   gridLabelsHeight = 35
 
   totalDays = null
@@ -181,15 +182,14 @@ export default class UserSkillTimeline extends React.Component {
   getChart(data, chartHeight, offsetTop) {
     const rectanglesWidth = data.totalDays * this.svgWidthScale;
     const offsetLeft = this.svgWidth - rectanglesWidth - this.nextDaysWidth;
-    const rectangles = [];
     const verticalLines = [];
     const horizontalLines = [];
 
-    data.updates.forEach((rectangleData) => {
-      const height = rectangleData.rate === 0 ? 0 : rectangleData.rate / data.maxRate * chartHeight;
-      const width = rectangleData.days * this.svgWidthScale;
+    data.updates.forEach((skillData) => {
+      const height = skillData.rate === 0 ? 0 : skillData.rate / data.maxRate * chartHeight;
+      const width = skillData.days * this.svgWidthScale;
       const positionY = chartHeight - height + offsetTop;
-      const chartColor = this.getChartColor(rectangleData.rate, data.maxRate);
+      const chartColor = this.getChartColor(skillData.rate, data.maxRate);
 
       const previousHorizontalLineProps = horizontalLines[horizontalLines.length - 1] &&
         horizontalLines[horizontalLines.length - 1].props ? horizontalLines[horizontalLines.length - 1].props : {};
@@ -199,32 +199,31 @@ export default class UserSkillTimeline extends React.Component {
         previousHorizontalLineProps.x2 - previousHorizontalLineProps.x1 : 0;
       
       const positionX = previousHorizontalLinePositionX + previousHorizontalLineWidth;
-      horizontalLines.push(<line x1={positionX} y1={positionY} x2={positionX + width} y2={positionY} strokeWidth="1" stroke="red" />);
+      horizontalLines.push(<line x1={positionX} y1={positionY} x2={positionX + width}
+        y2={positionY} strokeWidth={this.chartStrokeWidth} strokeLinecap="round" stroke={chartColor} />);
       
       if (height !== 0) {
-        rectangles.push(<rect x={positionX} y={positionY} width={width} height={height} fill={chartColor} />);
         verticalLines.push(<line x1={positionX} y1={previousHorizontalLinePositionY}
-          x2={positionX} y2={positionY} strokeWidth="1" stroke="red" />);
+          x2={positionX} y2={positionY} strokeWidth="1" strokeDasharray="1, 5" stroke="black" />);
       }
     });
 
-    return [].concat(rectangles, horizontalLines, verticalLines);
+    return [].concat(verticalLines, horizontalLines);
   }
 
   getChartColor(rate, maxRate) {
-    if (maxRate === 3) {
-      switch (rate) {
-        default:
-        case 0:
-        case 1:
-          return '#00a000';
-        case 2:
-          return '#008000';
-        case 3:
-          return '#006000';
-      }
+    const value = rate / maxRate;
+
+    if (value === 0) {
+      return '#FF2D0E';
+    } else if (value >= 0.25 && value < 0.5) {
+      return '#E87200';
+    } else if (value >= 0.5 && value < 0.75) {
+      return '#FFC300';
+    } else if (value >= 0.75 && value <= 1) {
+      return '#57B80F';
     } else {
-      return '#006000';
+      return 'black';
     }
   }
 
@@ -240,7 +239,7 @@ export default class UserSkillTimeline extends React.Component {
       currentDate.startOf('month').add(1, 'months');
       const positionX = currentDate.diff(startDate, 'days') * this.svgWidthScale;
 
-      elements.push(...this.getVerticalLineWithLabel(positionX, currentDate.format('MMMM Y'), 10, 10, "black", "black"));
+      elements.push(...this.getVerticalLineWithLabel(positionX, currentDate.format('MMMM Y'), 10, 10, "black", "#d6dade"));
     }
 
     // current day line with label
@@ -248,7 +247,7 @@ export default class UserSkillTimeline extends React.Component {
     elements.push(...this.getVerticalLineWithLabel(positionX, 'Today', 40, 5, "red", "red"));
 
     // horizontal line
-    elements.push(<line x1="0" y1={this.gridLabelsHeight} x2={this.svgWidth} y2={this.gridLabelsHeight} strokeWidth="1" stroke="black" />);
+    elements.push(<line x1="0" y1={this.gridLabelsHeight} x2={this.svgWidth} y2={this.gridLabelsHeight} strokeWidth="1" stroke="#d6dade" />);
 
     return elements;
   }
