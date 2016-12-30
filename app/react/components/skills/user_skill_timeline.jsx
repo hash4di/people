@@ -181,19 +181,32 @@ export default class UserSkillTimeline extends React.Component {
   getChart(data, chartHeight, offsetTop) {
     const rectanglesWidth = data.totalDays * this.svgWidthScale;
     const offsetLeft = this.svgWidth - rectanglesWidth - this.nextDaysWidth;
+    const rectangles = [];
+    const lines = [];
 
-    return data.updates.reduce((acc, rectangleData) => {
+    data.updates.forEach((rectangleData) => {
       const height = rectangleData.rate === 0 ? 0 : rectangleData.rate / data.maxRate * chartHeight;
       const width = rectangleData.days * this.svgWidthScale;
-      const lastAccElement = acc[acc.length - 1];
-      const lastAccElementPositionX = lastAccElement && lastAccElement.props ? lastAccElement.props.x : offsetLeft;
-      const lastAccElementWidth = lastAccElement && lastAccElement.props ? lastAccElement.props.width : 0;
-      const positionX = lastAccElementPositionX + lastAccElementWidth;
+      
+      const previousRectangleProps = rectangles[rectangles.length - 1] &&
+        rectangles[rectangles.length - 1].props ? rectangles[rectangles.length - 1].props : {};
+      const previousRectanglePositionX = previousRectangleProps.x ? previousRectangleProps.x : offsetLeft;
+      const previousRectanglePositionY = previousRectangleProps.y ? previousRectangleProps.y : 0;
+      const previousRectangleWidth = previousRectangleProps.width ? previousRectangleProps.width : 0;
+      
+      const positionX = previousRectanglePositionX + previousRectangleWidth;
       const positionY = chartHeight - height + offsetTop;
       const chartColor = this.getChartColor(rectangleData.rate, data.maxRate);
 
-      return acc.concat(<rect x={positionX} y={positionY} width={width} height={height} fill={chartColor} />);
-    }, []);
+      rectangles.push(<rect x={positionX} y={positionY} width={width} height={height} fill={chartColor} />);
+      lines.push(<line x1={positionX} y1={positionY} x2={positionX + width} y2={positionY} strokeWidth="1" stroke="red" />);
+      
+      if (height !== 0) {
+        lines.push(<line x1={positionX} y1={previousRectanglePositionY} x2={positionX} y2={positionY} strokeWidth="1" stroke="red" />);
+      }
+    });
+
+    return [].concat(rectangles, lines);
   }
 
   getChartColor(rate, maxRate) {
