@@ -5,8 +5,8 @@ export default class UserSkillTimeline extends React.Component {
   cssNamespace = 'user-skill-timeline'
   svgWidthScale = 5
   minimumSVGwidth = 1000
-  nextDays = 40
-  previousDays = 40
+  nextDays = 20
+  previousDays = 5
   labelFontSize = 14
   chartHeight = 70
   chartPadding = 10
