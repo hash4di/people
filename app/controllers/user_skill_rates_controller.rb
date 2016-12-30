@@ -53,7 +53,7 @@ class UserSkillRatesController < ApplicationController
     }
   end
   expose(:grouped_skills_by_category) do
-    GroupUserSkillRatesBySkillCategoriesQuery.new(User.find(1)).results
+    GroupUserSkillRatesBySkillCategoriesQuery.new(current_user).results
   end
 
   def index
