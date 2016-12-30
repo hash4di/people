@@ -52,7 +52,7 @@ export default class UserSkillTimeline extends React.Component {
       {
         skillName: 'ember',
         totalDays: 23,
-        maxRate: 4,
+        maxRate: 3,
         updates: [
           {
             days: 5,
@@ -68,21 +68,21 @@ export default class UserSkillTimeline extends React.Component {
           },
           {
             days: 3,
-            rate: 4
+            rate: 3
           }
         ]
       },
       {
         skillName: 'react',
         totalDays: 30,
-        maxRate: 4,
+        maxRate: 3,
         updates: [
           {
             days: 5,
             rate: 0
           },
           {
-            days: 10,
+            days: 13,
             rate: 1
           },
           {
@@ -92,17 +92,13 @@ export default class UserSkillTimeline extends React.Component {
           {
             days: 2,
             rate: 3
-          },
-          {
-            days: 3,
-            rate: 4
           }
         ]
       },
       {
         skillName: 'git',
         totalDays: 20,
-        maxRate: 4,
+        maxRate: 3,
         updates: [
           {
             days: 5,
@@ -194,9 +190,27 @@ export default class UserSkillTimeline extends React.Component {
       const lastAccElementWidth = lastAccElement && lastAccElement.props ? lastAccElement.props.width : 0;
       const positionX = lastAccElementPositionX + lastAccElementWidth;
       const positionY = chartHeight - height + offsetTop;
+      const chartColor = this.getChartColor(rectangleData.rate, data.maxRate);
 
-      return acc.concat(<rect x={positionX} y={positionY} width={width} height={height} fill="red" />);
+      return acc.concat(<rect x={positionX} y={positionY} width={width} height={height} fill={chartColor} />);
     }, []);
+  }
+
+  getChartColor(rate, maxRate) {
+    if (maxRate === 3) {
+      switch (rate) {
+        default:
+        case 0:
+        case 1:
+          return '#00a000';
+        case 2:
+          return '#008000';
+        case 3:
+          return '#006000';
+      }
+    } else {
+      return '#006000';
+    }
   }
 
   getGridLinesWithLabels() {
