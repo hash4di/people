@@ -47,6 +47,7 @@ export default class UserSkillTimeline extends React.Component {
   }
 
   getModel(data) {
+    // Transform data to presented output
     return {
       meta: {
         maximumDays: 200
