@@ -182,31 +182,33 @@ export default class UserSkillTimeline extends React.Component {
     const rectanglesWidth = data.totalDays * this.svgWidthScale;
     const offsetLeft = this.svgWidth - rectanglesWidth - this.nextDaysWidth;
     const rectangles = [];
-    const lines = [];
+    const verticalLines = [];
+    const horizontalLines = [];
 
     data.updates.forEach((rectangleData) => {
       const height = rectangleData.rate === 0 ? 0 : rectangleData.rate / data.maxRate * chartHeight;
       const width = rectangleData.days * this.svgWidthScale;
-      
-      const previousRectangleProps = rectangles[rectangles.length - 1] &&
-        rectangles[rectangles.length - 1].props ? rectangles[rectangles.length - 1].props : {};
-      const previousRectanglePositionX = previousRectangleProps.x ? previousRectangleProps.x : offsetLeft;
-      const previousRectanglePositionY = previousRectangleProps.y ? previousRectangleProps.y : 0;
-      const previousRectangleWidth = previousRectangleProps.width ? previousRectangleProps.width : 0;
-      
-      const positionX = previousRectanglePositionX + previousRectangleWidth;
       const positionY = chartHeight - height + offsetTop;
       const chartColor = this.getChartColor(rectangleData.rate, data.maxRate);
 
-      rectangles.push(<rect x={positionX} y={positionY} width={width} height={height} fill={chartColor} />);
-      lines.push(<line x1={positionX} y1={positionY} x2={positionX + width} y2={positionY} strokeWidth="1" stroke="red" />);
+      const previousHorizontalLineProps = horizontalLines[horizontalLines.length - 1] &&
+        horizontalLines[horizontalLines.length - 1].props ? horizontalLines[horizontalLines.length - 1].props : {};
+      const previousHorizontalLinePositionX = previousHorizontalLineProps.x1 ? previousHorizontalLineProps.x1 : offsetLeft;
+      const previousHorizontalLinePositionY = previousHorizontalLineProps.y1 ? previousHorizontalLineProps.y1 : 0;
+      const previousHorizontalLineWidth = previousHorizontalLineProps.x1 && previousHorizontalLineProps.x2 ?
+        previousHorizontalLineProps.x2 - previousHorizontalLineProps.x1 : 0;
+      
+      const positionX = previousHorizontalLinePositionX + previousHorizontalLineWidth;
+      horizontalLines.push(<line x1={positionX} y1={positionY} x2={positionX + width} y2={positionY} strokeWidth="1" stroke="red" />);
       
       if (height !== 0) {
-        lines.push(<line x1={positionX} y1={previousRectanglePositionY} x2={positionX} y2={positionY} strokeWidth="1" stroke="red" />);
+        rectangles.push(<rect x={positionX} y={positionY} width={width} height={height} fill={chartColor} />);
+        verticalLines.push(<line x1={positionX} y1={previousHorizontalLinePositionY}
+          x2={positionX} y2={positionY} strokeWidth="1" stroke="red" />);
       }
     });
 
-    return [].concat(rectangles, lines);
+    return [].concat(rectangles, horizontalLines, verticalLines);
   }
 
   getChartColor(rate, maxRate) {
