@@ -29,8 +29,9 @@ describe Api::V2::UserSkillRatesController do
       it { expect(response.status).to eq(200) }
 
       it 'returns correct hash', :aggregate_failures do
-        expect(json_response.keys).to include(user.email)
-        expect(json_response[user.email].length).to eq(2)
+        response = json_response['user_skill_rates']['user_with_skill_rates']
+        expect(response.keys).to include(user.email)
+        expect(response[user.email].length).to eq(2)
       end
     end
   end
