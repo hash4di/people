@@ -1,5 +1,5 @@
 module Salesforce
-  class UserSkillRatingsRepository
+  class UserSkillRatingsRepository < GenericRepository
     def salesforce_object_name
       'DeveloperSkillRating__c'
     end
