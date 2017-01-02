@@ -1,13 +1,8 @@
 module Api::V2
   class UserSkillRatesController < Api::ApiController
     def index
-      render json: user_with_skill_rates_hash
-    end
-
-    private
-
-    def user_with_skill_rates_hash
-      UserSkillRatesFetcher.new(params[:user_id]).call
+      user = User.find(params[:user_id])
+      render json: user, serializer: UserSkillRatesSerializer
     end
   end
 end
