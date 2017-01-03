@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react';
 import Moment from 'moment';
 
-export default class UserSkillTimeline extends React.Component {
-  cssNamespace = 'user-skill-timeline'
+export default class UserSkillHistoryTimeline extends React.Component {
+  cssNamespace = 'user-skill-history-timeline'
   svgWidthScale = 5
   minimumSVGwidth = 1000
   nextDays = 20
