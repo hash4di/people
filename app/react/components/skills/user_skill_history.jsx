@@ -36,7 +36,7 @@ export default class UserSkillHistory extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {skillCategories: this.skillCategories, tom: 'test'};
+        this.state = {skillCategories: this.skillCategories};
         this.changeActiveCategory = this.changeActiveCategory.bind(this);
     }
 
@@ -46,7 +46,7 @@ export default class UserSkillHistory extends React.Component {
         skillCategories[this.activeCategory].isActive = false;
         skillCategories[index].isActive = true;
         
-        this.setState(skillCategories);
+        this.setState({skillCategories});
         this.activeCategory = index;
     }
     
@@ -57,7 +57,6 @@ export default class UserSkillHistory extends React.Component {
                     cssNamespace = {`${this.cssNamespace}-filter`}
                     listPrimaryText='Skill categories:'
                     listItems={this.state.skillCategories}
-                    tom={this.state.tom}
                     onItemClick={this.changeActiveCategory}
                 />
                 <UserSkillHistoryTimeline />
