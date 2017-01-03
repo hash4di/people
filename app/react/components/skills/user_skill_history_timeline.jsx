@@ -21,22 +21,19 @@ export default class UserSkillHistoryTimeline extends React.Component {
 
   constructor(props) {
     super(props);
-    this.model = this.props.model;
-
-    this.nextDaysWidth = this.nextDays * this.svgWidthScale;
-    this.previousDaysWidth = this.previousDays * this.svgWidthScale;
-
-    const maximumDaysWidth = this.model.meta.maximumDays * this.svgWidthScale;
-    const requiredSVGwidth = this.previousDaysWidth + this.nextDaysWidth + maximumDaysWidth;
-
-    this.svgHeight = this.model.skills.length * (this.chartHeight + this.chartPadding * 2) + this.gridLabelsHeight;
-    this.svgWidth = requiredSVGwidth > this.minimumSVGwidth ? requiredSVGwidth : this.minimumSVGwidth;
-    this.totalDays = this.svgWidth / this. svgWidthScale;
+    this.updateComponentProperties(this.props.model);
   }
 
   componentDidMount() {
-    var $this = $(ReactDOM.findDOMNode(this));
-    $this.find(`.${this.cssNamespace}__timeline`).scrollLeft(this.svgWidth);
+    this.scrollRight();
+  }
+
+  componentWillUpdate(props) {
+    this.updateComponentProperties(this.props.model);
+  }
+
+  componentDidUpdate(props) {
+    this.scrollRight();
   }
 
   render() {
@@ -46,10 +43,25 @@ export default class UserSkillHistoryTimeline extends React.Component {
     </div>;
   }
 
+  updateComponentProperties(model) {
+    this.nextDaysWidth = this.nextDays * this.svgWidthScale;
+    this.previousDaysWidth = this.previousDays * this.svgWidthScale;
 
+    const maximumDaysWidth = model.meta.maximumDays * this.svgWidthScale;
+    const requiredSVGwidth = this.previousDaysWidth + this.nextDaysWidth + maximumDaysWidth;
+
+    this.svgHeight = model.skills.length * (this.chartHeight + this.chartPadding * 2) + this.gridLabelsHeight;
+    this.svgWidth = requiredSVGwidth > this.minimumSVGwidth ? requiredSVGwidth : this.minimumSVGwidth;
+    this.totalDays = this.svgWidth / this. svgWidthScale;
+  }
+
+  scrollRight() {
+    var $this = $(ReactDOM.findDOMNode(this));
+    $this.find(`.${this.cssNamespace}__timeline`).scrollLeft(this.svgWidth);
+  }
 
   getSkillLabels() {
-    const skillLabels = this.model.skills.reduce((acc, skillData) => {
+    const skillLabels = this.props.model.skills.reduce((acc, skillData) => {
       return acc.concat(<li className={`${this.cssNamespace}__labels-item`}>{skillData.skillName}</li>);
     }, []);
 
@@ -67,7 +79,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getTimelineBackground() {
-    const modelLenght = this.model.skills.length;
+    const modelLenght = this.props.model.skills.length;
     const elements = [];
 
     for (let i = 0; i < modelLenght; ++i) {
@@ -84,7 +96,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getCharts() {
-    return this.model.skills.reduce((acc, skillData, index) => {
+    return this.props.model.skills.reduce((acc, skillData, index) => {
       const offsetTop = (this.chartHeight + this.chartPadding * 2) * index + this.chartPadding + this.gridLabelsHeight;
       return acc.concat(this.getChart(skillData, this.chartHeight, offsetTop));
     }, []);
