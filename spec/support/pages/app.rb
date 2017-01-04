@@ -46,4 +46,8 @@ class App < SitePrism::Page
   def users_page
     UsersPage.new
   end
+
+  def user_skill_rates_page
+    UserSkillRatesPage.new
+  end
 end
