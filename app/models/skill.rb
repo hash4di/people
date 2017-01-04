@@ -6,7 +6,7 @@ class Skill < ActiveRecord::Base
   validates :ref_name, :name, :skill_category, :rate_type, presence: true
   validates :ref_name, uniqueness: true
   validates :rate_type, inclusion: { in: ::Skills::RateType.stringified_types }
-  validate :uniques
+  validate :uniques, if: :new_record?
 
   private
 
