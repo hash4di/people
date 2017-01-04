@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import Moment from 'moment';
 
 export default class UserSkillHistoryTimeline extends React.Component {
-  cssNamespace = 'user-skill-history-timeline'
   svgWidthScale = 5
   minimumSVGwidth = 1000
   nextDays = 20
@@ -37,7 +36,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   render() {
-    return <div className={this.cssNamespace}>
+    return <div className={this.props.cssNamespace}>
       {this.getSkillLabels()}
       {this.getTimeline()}
     </div>;
@@ -57,19 +56,19 @@ export default class UserSkillHistoryTimeline extends React.Component {
 
   scrollRight() {
     var $this = $(ReactDOM.findDOMNode(this));
-    $this.find(`.${this.cssNamespace}__timeline`).scrollLeft(this.svgWidth);
+    $this.find(`.${this.props.cssNamespace}__timeline`).scrollLeft(this.svgWidth);
   }
 
   getSkillLabels() {
     const skillLabels = this.props.model.skills.reduce((acc, skillData) => {
-      return acc.concat(<li className={`${this.cssNamespace}__labels-item`}>{skillData.skillName}</li>);
+      return acc.concat(<li className={`${this.props.cssNamespace}__labels-item`}>{skillData.skillName}</li>);
     }, []);
 
-    return <ul className={`${this.cssNamespace}__labels`}>{skillLabels}</ul>;
+    return <ul className={`${this.props.cssNamespace}__labels`}>{skillLabels}</ul>;
   }
 
   getTimeline() {
-    return <div className={`${this.cssNamespace}__timeline`}>
+    return <div className={`${this.props.cssNamespace}__timeline`}>
       <svg version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
         {this.getTimelineBackground()}
         {this.getCharts()}
@@ -121,11 +120,11 @@ export default class UserSkillHistoryTimeline extends React.Component {
       const previousHorizontalLinePositionX = previousHorizontalLineProps.x1 || offsetLeft;
       const previousHorizontalLinePositionY = previousHorizontalLineProps.y1 || 0;
       const previousHorizontalLineWidth = previousHorizontalLineProps.x2 - previousHorizontalLineProps.x1 || 0;
-      
+
       const positionX = previousHorizontalLinePositionX + previousHorizontalLineWidth;
       horizontalLines.push(<line x1={positionX} y1={positionY} x2={positionX + width} y2={positionY}
         strokeWidth={chartStrokeWidth} strokeDasharray={strokeDasharray} stroke={chartColor} />);
-      
+
       if (height !== 0) {
         verticalLines.push(<line x1={positionX} y1={previousHorizontalLinePositionY}
           x2={positionX} y2={positionY} strokeWidth="1" strokeDasharray="1, 6" stroke="black" />);
@@ -157,7 +156,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
     const endDate = Moment(nowDate).add(this.nextDays, 'days');
     const currentDate = Moment(startDate);
     const elements = [];
-    
+
     // vertical lines with labels
     while (currentDate.diff(endDate, 'days') < -30) {
       currentDate.startOf('month').add(1, 'months');
