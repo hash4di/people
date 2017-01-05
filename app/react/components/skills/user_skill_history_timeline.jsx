@@ -3,7 +3,7 @@ import Moment from 'moment';
 
 export default class UserSkillHistoryTimeline extends React.Component {
   svgWidthScale = 5
-  minimumSVGwidth = 1500
+  minimumSVGwidth = 500
   nextDays = 20
   previousDays = 5
   labelFontSize = 14
@@ -20,7 +20,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
 
   constructor(props) {
     super(props);
-    this.updateComponentProperties(this.props.model);
+    this.updateComponentProperties(props.model);
   }
 
   componentDidMount() {
@@ -28,10 +28,10 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   componentWillUpdate(props) {
-    this.updateComponentProperties(this.props.model);
+    this.updateComponentProperties(props.model);
   }
 
-  componentDidUpdate(props) {
+  componentDidUpdate() {
     this.scrollRight();
   }
 
