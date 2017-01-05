@@ -3,7 +3,7 @@ import Moment from 'moment';
 
 export default class UserSkillHistoryTimeline extends React.Component {
   svgWidthScale = 5
-  minimumSVGwidth = 1000
+  minimumSVGwidth = 1500
   nextDays = 20
   previousDays = 5
   labelFontSize = 14

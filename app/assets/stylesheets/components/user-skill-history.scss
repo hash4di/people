@@ -1,34 +1,87 @@
-.user-skill-history-timeline {
-    display: flex;
-    width: 100%;
+.user-skill-history {
+    &-timeline {
+        display: flex;
+        width: 100%;
 
-    &__labels {
-        display: inline-block;
-        list-style-type: none;
-        margin: 0;
-        margin-top: 35px;
-        padding: 0;
-        min-width: 100px;
+        &__labels {
+            display: inline-block;
+            list-style-type: none;
+            margin: 0;
+            margin-top: 35px;
+            padding: 0;
+            min-width: 100px;
+        }
+
+        &__labels-item {
+            padding: 10px;
+            border-bottom: 1px solid #d6dade;
+            border-right: 1px solid #d6dade;
+            box-sizing: border-box;
+            height: 90px;
+
+            &:first-child {
+                border-top: 1px solid #d6dade;
+            }
+
+            &:nth-of-type(odd) {
+                background-color: #f2f4f5;
+            }
+        }
+
+        &__timeline {
+            overflow-x: scroll;
+            position: relative;
+        }
     }
 
-    &__labels-item {
-        padding: 10px;
+    &-filter {
+      &__filter-category {
+        display: flex;
+        margin: 10px 0;
         border-bottom: 1px solid #d6dade;
-        border-right: 1px solid #d6dade;
-        box-sizing: border-box;
-        height: 90px;
 
-        &:first-child {
-            border-top: 1px solid #d6dade;
+        &-primary-text {
+          color: #f5a122;
+          font-size: 18px;
+          font-weight: bold;
+          line-height: 18px;
         }
 
-        &:nth-of-type(odd) {
-            background-color: #f2f4f5;
-        }
-    }
+        &-list {
+          flex-grow: 2;
+          border: 0;
 
-    &__timeline {
-        overflow-x: scroll;
-        position: relative;
+          &-item {
+            margin-left: 20px;
+            font-weight: bold;
+          }
+        }
+
+        &-active-item {
+          color: #f5a122;
+          border-bottom: 3px solid #f5a122;
+          padding-bottom: 15px;
+        }
+      }
+
+      &__filter-date {
+        display: flex;
+        align-items: baseline;
+        border-bottom: 1px solid #d6dade;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+
+        &-button:first-child {
+          margin-right: 20px;
+        }
+
+        &-label {
+          margin: 0 20px;
+        }
+
+        &-input {
+          width: auto;
+        }
+      }
     }
 }
