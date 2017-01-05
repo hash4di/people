@@ -25,6 +25,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
 
   componentDidMount() {
     this.scrollRight();
+    this.initNotePopovers();
   }
 
   componentWillUpdate(props) {
@@ -33,6 +34,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
 
   componentDidUpdate() {
     this.scrollRight();
+    this.initNotePopovers();
   }
 
   render() {
@@ -75,6 +77,10 @@ export default class UserSkillHistoryTimeline extends React.Component {
         </ul>
       </div>
     );
+  }
+
+  initNotePopovers() {
+    $(`.${this.props.cssNamespace}__note-popover-entry-point`).popover();
   }
 
   updateComponentProperties(model) {
@@ -141,6 +147,8 @@ export default class UserSkillHistoryTimeline extends React.Component {
     const offsetLeft = this.svgWidth - rectanglesWidth - this.nextDaysWidth;
     const verticalLines = [];
     const horizontalLines = [];
+    const points = [];
+    let lastNote = '';
 
     data.updates.forEach((skillData) => {
       const height = skillData.rate === 0 ? 0 : skillData.rate / data.maxRate * chartHeight;
@@ -164,9 +172,19 @@ export default class UserSkillHistoryTimeline extends React.Component {
         verticalLines.push(<line x1={positionX} y1={previousHorizontalLinePositionY}
           x2={positionX} y2={positionY} strokeWidth="1" strokeDasharray="1, 6" stroke="black" />);
       }
+
+      if (skillData.note !== '' && skillData.note !== lastNote) {
+        points.push(<circle
+          className={`${this.props.cssNamespace}__note-popover-entry-point`}
+          data-placement="top" data-container="body" data-trigger="hover" data-content={skillData.note}
+          cx={positionX} cy={positionY} r="6" strokeWidth="1" stroke="#084F73" fill="#01C6FF"
+        />);
+      }
+
+      lastNote = skillData.note;
     });
 
-    return [].concat(verticalLines, horizontalLines);
+    return [].concat(verticalLines, horizontalLines, points);
   }
 
   getChartColor(rate, maxRate) {

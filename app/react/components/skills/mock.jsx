@@ -14,22 +14,26 @@ export default {
             {
               days: 40,
               rate: 0,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: 'notka 1'
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: false
+              isFavourite: false,
+              note: 'notka 2'
             },
             {
               days: 30,
               rate: 3,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             }
           ]
         },
@@ -41,22 +45,26 @@ export default {
             {
               days: 5,
               rate: 0,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 13,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 2,
               rate: 3,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             }
           ]
         },
@@ -68,32 +76,38 @@ export default {
             {
               days: 50,
               rate: 0,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: 'blabla'
             },
             {
               days: 30,
               rate: 1,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: 'blabla2'
             },
             {
               days: 50,
               rate: 2,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             },
             {
               days: 30,
               rate: 1,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             }
           ]
         },
@@ -105,12 +119,14 @@ export default {
             {
               days: 20,
               rate: 0,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 80,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: 'awesome'
             }
           ]
         }
@@ -133,22 +149,26 @@ getModel2(data) {
             {
               days: 0,
               rate: 0,
-              isFavourite: false
+              isFavourite: false,
+              note: 'ooo'
             },
             {
               days: 10,
               rate: 1,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: true
+              isFavourite: true,
+              note: 'nie'
             },
             {
               days: 10,
               rate: 3,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             }
           ]
         },
@@ -160,22 +180,26 @@ getModel2(data) {
             {
               days: 5,
               rate: 0,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 10,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 25,
               rate: 3,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             }
           ]
         },
@@ -187,27 +211,32 @@ getModel2(data) {
             {
               days: 0,
               rate: 0,
-              isFavourite: false
+              isFavourite: false,
+              note: 'utanhu'
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: 'utnahuso'
             },
             {
               days: 30,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             },
             {
               days: 30,
               rate: 2,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             }
           ]
         },
@@ -219,12 +248,14 @@ getModel2(data) {
             {
               days: 20,
               rate: 0,
-              isFavourite: true
+              isFavourite: true,
+              note: ''
             },
             {
               days: 80,
               rate: 1,
-              isFavourite: false
+              isFavourite: false,
+              note: ''
             }
           ]
         }
