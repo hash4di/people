@@ -39,7 +39,42 @@ export default class UserSkillHistoryTimeline extends React.Component {
     return <div className={this.props.cssNamespace}>
       {this.getSkillLabels()}
       {this.getTimeline()}
+      {this.getLegend()}
     </div>;
+  }
+
+  getLegend() {
+    const rateItems = [];
+
+    for (let i = 0; i <= 3; ++i) {
+      const text = `Skill rate ${i}`;
+
+      rateItems.push(
+        <li className={`${this.props.cssNamespace}__legend-list-item`}>
+          <div className={`${this.props.cssNamespace}__legend-list-item-symbol
+            ${this.props.cssNamespace}__legend-list-item-symbol--rate-${i}`}></div>
+          {text}
+        </li>
+      );
+    }
+
+    return (
+      <div className={`${this.props.cssNamespace}__legend`}>
+        <div className={`${this.props.cssNamespace}__legend-title`}>Legend:</div>
+        <ul className={`${this.props.cssNamespace}__legend-list`}>
+          {rateItems}
+          <li className={`${this.props.cssNamespace}__legend-list-item ${this.props.cssNamespace}__legend-list-item--top-margin`}>
+            <div className={`${this.props.cssNamespace}__legend-list-item-symbol
+              ${this.props.cssNamespace}__legend-list-item-symbol--dashed`}></div>
+            Normal skill
+          </li>
+          <li className={`${this.props.cssNamespace}__legend-list-item`}>
+            <div className={`${this.props.cssNamespace}__legend-list-item-symbol`}></div>
+            Favourite skill
+          </li>
+        </ul>
+      </div>
+    );
   }
 
   updateComponentProperties(model) {
