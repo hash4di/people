@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import Moment from 'moment';
 
 export default class UserSkillHistoryTimeline extends React.Component {
@@ -26,6 +27,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   componentDidMount() {
     this.scrollRight();
     this.initNotePopovers();
+    this.initLegendPopover();
   }
 
   componentWillUpdate(props) {
@@ -41,7 +43,6 @@ export default class UserSkillHistoryTimeline extends React.Component {
     return <div className={this.props.cssNamespace}>
       {this.getSkillLabels()}
       {this.getTimeline()}
-      {this.getLegend()}
     </div>;
   }
 
@@ -83,6 +84,13 @@ export default class UserSkillHistoryTimeline extends React.Component {
     $(`.${this.props.cssNamespace}__note-popover-entry-point`).popover();
   }
 
+  initLegendPopover() {
+    const legendPopoverHTML = document.createElement('div');
+
+    ReactDOM.render(this.getLegend(), legendPopoverHTML);
+    $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover({html: true, content: legendPopoverHTML.innerHTML});
+  }
+
   updateComponentProperties(model) {
     this.nextDaysWidth = this.nextDays * this.svgWidthScale;
     this.previousDaysWidth = this.previousDays * this.svgWidthScale;
@@ -105,7 +113,10 @@ export default class UserSkillHistoryTimeline extends React.Component {
       return acc.concat(<li className={`${this.props.cssNamespace}__labels-item`}>{skillData.skillName}</li>);
     }, []);
 
-    return <ul className={`${this.props.cssNamespace}__labels`}>{skillLabels}</ul>;
+    return (<div className={`${this.props.cssNamespace}__left-column`}>
+      <button className={`btn btn-info ${this.props.cssNamespace}__legend-popover-entry-point`}>Legend</button>
+      <ul className={`${this.props.cssNamespace}__labels`}>{skillLabels}</ul>
+    </div>);
   }
 
   getTimeline() {
@@ -177,7 +188,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
         points.push(<circle
           className={`${this.props.cssNamespace}__note-popover-entry-point`}
           data-placement="top" data-container="body" data-trigger="hover" data-content={skillData.note}
-          cx={positionX} cy={positionY} r="6" strokeWidth="1" stroke="#084F73" fill="#01C6FF"
+          cx={positionX} cy={positionY} r="6" strokeWidth="1" stroke="#084F73" fill="#23a9db"
         />);
       }
 
