@@ -1,4 +1,6 @@
 .container
-  %h1 Your skills history
+  %h1
+    %span Your skills history
+    = link_to 'Skill rating', user_skill_rates_path, class: 'btn btn-xs btn-default'
 
   = react_component('user_skill_history', {skills: [], new: []})
