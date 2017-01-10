@@ -46,6 +46,7 @@ Hrguru::Application.routes.draw do
     end
 
     namespace :v3 do
+      resources :user_skill_rates, only: :index
       resources :users, only: [] do
         get :technical, on: :collection
       end
