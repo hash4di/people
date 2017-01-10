@@ -261,5 +261,89 @@ getModel2(data) {
         }
       ]
     };
+  },
+
+  getModel3(data) {
+    // Transform data to presented output
+    return {
+      meta: {
+        maximumDays: 30
+      },
+      skills: [
+        {
+          skillName: 'php',
+          totalDays: 30,
+          maxRate: 3,
+          updates: [
+            {
+              days: 5,
+              rate: 0,
+              isFavourite: false,
+              note: 'ooo'
+            },
+            {
+              days: 5,
+              rate: 1,
+              isFavourite: true,
+              note: ''
+            },
+            {
+              days: 10,
+              rate: 2,
+              isFavourite: true,
+              note: 'nie'
+            },
+            {
+              days: 10,
+              rate: 3,
+              isFavourite: true,
+              note: ''
+            }
+          ]
+        }
+      ]
+    };
+  },
+
+  getModel4(data) {
+    // Transform data to presented output
+    return {
+      meta: {
+        maximumDays: 300
+      },
+      skills: [
+        {
+          skillName: 'trello',
+          totalDays: 300,
+          maxRate: 3,
+          updates: [
+            {
+              days: 50,
+              rate: 0,
+              isFavourite: false,
+              note: 'ooo'
+            },
+            {
+              days: 50,
+              rate: 1,
+              isFavourite: true,
+              note: ''
+            },
+            {
+              days: 100,
+              rate: 2,
+              isFavourite: true,
+              note: 'nie'
+            },
+            {
+              days: 100,
+              rate: 3,
+              isFavourite: true,
+              note: ''
+            }
+          ]
+        }
+      ]
+    };
   }
 };

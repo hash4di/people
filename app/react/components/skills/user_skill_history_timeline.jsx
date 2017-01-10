@@ -3,25 +3,30 @@ import ReactDOM from 'react-dom';
 import Moment from 'moment';
 
 export default class UserSkillHistoryTimeline extends React.Component {
-  svgWidthScale = 5
+  minimumSVGwidthScale = 5
   minimumSVGwidth = 500
-  nextDays = 20
+  nextDaysOnLongDateRange = 20
+  nextDaysOnShortDateRange = 10
   previousDays = 5
   labelFontSize = 14
   chartHeight = 70
   chartPadding = 10
   chartStrokeWidth = 5
   gridLabelsHeight = 35
+  legendWidth = 100
 
   totalDays = null
   previousDaysWidth = null
   nextDaysWidth = null
   heightWidth = null
   svgWidth = null
+  svgWidthScale = null
+  containerWidth = null
+  nextDays = null
 
   constructor(props) {
     super(props);
-    this.updateComponentProperties(props.model);
+    this.updateComponentProperties(props);
   }
 
   componentDidMount() {
@@ -31,7 +36,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   componentWillUpdate(props) {
-    this.updateComponentProperties(props.model);
+    this.updateComponentProperties(props);
   }
 
   componentDidUpdate() {
@@ -91,15 +96,22 @@ export default class UserSkillHistoryTimeline extends React.Component {
     $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover({html: true, content: legendPopoverHTML.innerHTML});
   }
 
-  updateComponentProperties(model) {
+  updateComponentProperties({model, containerWidth}) {
+    const requiredDays = this.previousDays + model.meta.maximumDays + this.nextDaysOnShortDateRange;
+    const svgWidth = containerWidth - this.legendWidth;
+
+    if (requiredDays * this.minimumSVGwidthScale < svgWidth) {
+      this.svgWidthScale = svgWidth / requiredDays;
+      this.nextDays = this.nextDaysOnShortDateRange;
+    } else {
+      this.svgWidthScale = this.minimumSVGwidthScale;
+      this.nextDays = this.nextDaysOnLongDateRange;
+    }
+
+    this.svgWidth = requiredDays * this.svgWidthScale;
     this.nextDaysWidth = this.nextDays * this.svgWidthScale;
     this.previousDaysWidth = this.previousDays * this.svgWidthScale;
-
-    const maximumDaysWidth = model.meta.maximumDays * this.svgWidthScale;
-    const requiredSVGwidth = this.previousDaysWidth + this.nextDaysWidth + maximumDaysWidth;
-
     this.svgHeight = model.skills.length * (this.chartHeight + this.chartPadding * 2) + this.gridLabelsHeight;
-    this.svgWidth = requiredSVGwidth > this.minimumSVGwidth ? requiredSVGwidth : this.minimumSVGwidth;
     this.totalDays = this.svgWidth / this. svgWidthScale;
   }
 
