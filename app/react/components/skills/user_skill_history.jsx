@@ -48,8 +48,8 @@ export default class UserSkillHistory extends React.Component {
 
     this.state.fromDate = fromDate;
     this.state.toDate = toDate;
-    this.state.containerWidth = $('#main-container > div.container').width();
     this.setModel(this.getActiveCategory(), fromDate, toDate, true);
+    this.setContainerWidth(true);
   }
 
   render() {
@@ -101,6 +101,16 @@ export default class UserSkillHistory extends React.Component {
     }
   }
 
+  setContainerWidth(firstSet) {
+    const containerWidth = $('#main-container > div.container').width();
+
+    if (firstSet) {
+      this.state.containerWidth = containerWidth;
+    } else {
+      this.setState({ containerWidth });
+    }
+  }
+
   setActiveCategory(index) {
     const skillCategories = [].concat(this.state.skillCategories);
 
@@ -109,6 +119,7 @@ export default class UserSkillHistory extends React.Component {
 
     this.setState({ skillCategories, activeCategory: index });
     this.setModel(skillCategories[index].name, this.state.fromDate, this.state.toDate);
+    this.setContainerWidth();
   }
 
   onDateChange(dateInput, date) {
@@ -117,5 +128,6 @@ export default class UserSkillHistory extends React.Component {
 
     this.setState({ [dateInput]: date });
     this.setModel(this.getActiveCategory(), fromDate, toDate);
+    this.setContainerWidth();
   }
 }
