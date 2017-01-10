@@ -5,34 +5,34 @@ export default {
       meta: {
         maximumDays: 200
       },
-      skills: [
+      data: [
         {
           skillName: 'ember',
           totalDays: 100,
           maxRate: 3,
-          updates: [
+          points: [
             {
               days: 40,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: 'notka 1'
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: false,
+              favorite: false,
               note: 'notka 2'
             },
             {
               days: 30,
               rate: 3,
-              isFavourite: false,
+              favorite: false,
               note: ''
             }
           ]
@@ -41,29 +41,29 @@ export default {
           skillName: 'react',
           totalDays: 30,
           maxRate: 3,
-          updates: [
+          points: [
             {
               days: 5,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 13,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 2,
               rate: 3,
-              isFavourite: false,
+              favorite: false,
               note: ''
             }
           ]
@@ -72,41 +72,41 @@ export default {
           skillName: 'git',
           totalDays: 200,
           maxRate: 3,
-          updates: [
+          points: [
             {
               days: 50,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: 'blabla'
             },
             {
               days: 30,
               rate: 1,
-              isFavourite: true,
+              favorite: true,
               note: ''
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: 'blabla2'
             },
             {
               days: 50,
               rate: 2,
-              isFavourite: true,
+              favorite: true,
               note: ''
             },
             {
               days: 30,
               rate: 1,
-              isFavourite: true,
+              favorite: true,
               note: ''
             }
           ]
@@ -115,17 +115,17 @@ export default {
           skillName: 'jira',
           totalDays: 100,
           maxRate: 1,
-          updates: [
+          points: [
             {
               days: 20,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 80,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: 'awesome'
             }
           ]
@@ -140,34 +140,34 @@ getModel2(data) {
       meta: {
         maximumDays: 100
       },
-      skills: [
+      data: [
         {
           skillName: 'php',
           totalDays: 30,
           maxRate: 3,
-          updates: [
+          points: [
             {
               days: 0,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: 'ooo'
             },
             {
               days: 10,
               rate: 1,
-              isFavourite: true,
+              favorite: true,
               note: ''
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: true,
+              favorite: true,
               note: 'nie'
             },
             {
               days: 10,
               rate: 3,
-              isFavourite: true,
+              favorite: true,
               note: ''
             }
           ]
@@ -176,29 +176,29 @@ getModel2(data) {
           skillName: 'rails',
           totalDays: 50,
           maxRate: 3,
-          updates: [
+          points: [
             {
               days: 5,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 10,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 25,
               rate: 3,
-              isFavourite: true,
+              favorite: true,
               note: ''
             }
           ]
@@ -207,35 +207,35 @@ getModel2(data) {
           skillName: 'docker',
           totalDays: 100,
           maxRate: 3,
-          updates: [
+          points: [
             {
               days: 0,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: 'utanhu'
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: 'utnahuso'
             },
             {
               days: 30,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: ''
             },
             {
               days: 20,
               rate: 1,
-              isFavourite: true,
+              favorite: true,
               note: ''
             },
             {
               days: 30,
               rate: 2,
-              isFavourite: true,
+              favorite: true,
               note: ''
             }
           ]
@@ -244,17 +244,17 @@ getModel2(data) {
           skillName: 'toggl',
           totalDays: 100,
           maxRate: 1,
-          updates: [
+          points: [
             {
               days: 20,
               rate: 0,
-              isFavourite: true,
+              favorite: true,
               note: ''
             },
             {
               days: 80,
               rate: 1,
-              isFavourite: false,
+              favorite: false,
               note: ''
             }
           ]
@@ -269,34 +269,34 @@ getModel2(data) {
       meta: {
         maximumDays: 30
       },
-      skills: [
+      data: [
         {
           skillName: 'php',
           totalDays: 30,
           maxRate: 3,
-          updates: [
+          points: [
             {
               days: 5,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: 'ooo'
             },
             {
               days: 5,
               rate: 1,
-              isFavourite: true,
+              favorite: true,
               note: ''
             },
             {
               days: 10,
               rate: 2,
-              isFavourite: true,
+              favorite: true,
               note: 'nie'
             },
             {
               days: 10,
               rate: 3,
-              isFavourite: true,
+              favorite: true,
               note: ''
             }
           ]
@@ -311,34 +311,34 @@ getModel2(data) {
       meta: {
         maximumDays: 300
       },
-      skills: [
+      data: [
         {
           skillName: 'trello',
           totalDays: 300,
           maxRate: 3,
-          updates: [
+          points: [
             {
               days: 50,
               rate: 0,
-              isFavourite: false,
+              favorite: false,
               note: 'ooo'
             },
             {
               days: 50,
               rate: 1,
-              isFavourite: true,
+              favorite: true,
               note: ''
             },
             {
               days: 100,
               rate: 2,
-              isFavourite: true,
+              favorite: true,
               note: 'nie'
             },
             {
               days: 100,
               rate: 3,
-              isFavourite: true,
+              favorite: true,
               note: ''
             }
           ]

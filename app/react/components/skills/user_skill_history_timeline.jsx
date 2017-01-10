@@ -111,7 +111,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
     this.svgWidth = requiredDays * this.svgWidthScale;
     this.nextDaysWidth = this.nextDays * this.svgWidthScale;
     this.previousDaysWidth = this.previousDays * this.svgWidthScale;
-    this.svgHeight = model.skills.length * (this.chartHeight + this.chartPadding * 2) + this.gridLabelsHeight;
+    this.svgHeight = model.data.length * (this.chartHeight + this.chartPadding * 2) + this.gridLabelsHeight;
     this.totalDays = this.svgWidth / this. svgWidthScale;
   }
 
@@ -121,7 +121,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getSkillLabels() {
-    const skillLabels = this.props.model.skills.reduce((acc, skillData) => {
+    const skillLabels = this.props.model.data.reduce((acc, skillData) => {
       return acc.concat(<li className={`${this.props.cssNamespace}__labels-item`}>{skillData.skillName}</li>);
     }, []);
 
@@ -142,7 +142,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getTimelineBackground() {
-    const modelLenght = this.props.model.skills.length;
+    const modelLenght = this.props.model.data.length;
     const elements = [];
 
     for (let i = 0; i < modelLenght; ++i) {
@@ -159,7 +159,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getCharts() {
-    return this.props.model.skills.reduce((acc, skillData, index) => {
+    return this.props.model.data.reduce((acc, skillData, index) => {
       const offsetTop = (this.chartHeight + this.chartPadding * 2) * index + this.chartPadding + this.gridLabelsHeight;
       return acc.concat(this.getChart(skillData, this.chartHeight, offsetTop));
     }, []);
@@ -173,13 +173,13 @@ export default class UserSkillHistoryTimeline extends React.Component {
     const points = [];
     let lastNote = '';
 
-    data.updates.forEach((skillData) => {
-      const height = skillData.rate === 0 ? 0 : skillData.rate / data.maxRate * chartHeight;
-      const width = skillData.days * this.svgWidthScale;
+    data.points.forEach((point) => {
+      const height = point.rate === 0 ? 0 : point.rate / data.maxRate * chartHeight;
+      const width = point.days * this.svgWidthScale;
       const positionY = chartHeight - height + offsetTop;
-      const chartColor = this.getChartColor(skillData.rate, data.maxRate);
-      const strokeDasharray = skillData.isFavourite ? 'none' : '10, 10';
-      const chartStrokeWidth = skillData.isFavourite ? this.chartStrokeWidth : this.chartStrokeWidth / 2;
+      const chartColor = this.getChartColor(point.rate, data.maxRate);
+      const strokeDasharray = point.favorite ? 'none' : '10, 10';
+      const chartStrokeWidth = point.favorite ? this.chartStrokeWidth : this.chartStrokeWidth / 2;
 
       const previousHorizontalLineProps = horizontalLines[horizontalLines.length - 1] &&
         horizontalLines[horizontalLines.length - 1].props ? horizontalLines[horizontalLines.length - 1].props : {};
@@ -196,15 +196,15 @@ export default class UserSkillHistoryTimeline extends React.Component {
           x2={positionX} y2={positionY} strokeWidth="1" strokeDasharray="1, 6" stroke="black" />);
       }
 
-      if (skillData.note !== '' && skillData.note !== lastNote) {
+      if (point.note !== '' && point.note !== lastNote) {
         points.push(<circle
           className={`${this.props.cssNamespace}__note-popover-entry-point`}
-          data-placement="top" data-container="body" data-trigger="hover" data-content={skillData.note}
+          data-placement="top" data-container="body" data-trigger="hover" data-content={point.note}
           cx={positionX} cy={positionY} r="6" strokeWidth="1" stroke="#084F73" fill="#23a9db"
         />);
       }
 
-      lastNote = skillData.note;
+      lastNote = point.note;
     });
 
     return [].concat(verticalLines, horizontalLines, points);

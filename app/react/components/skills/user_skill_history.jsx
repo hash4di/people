@@ -86,19 +86,91 @@ export default class UserSkillHistory extends React.Component {
     this.setModel(this.getActiveCategory(), fromDate, toDate);
   }
 
-  setModel(category, fromDate, toDate, firstSet) {
-    let model;
+  setModel(category, startDate, endDate, firstSet) {
+    if (category === 'design') {
+      return $.ajax({
+        url: Routes.api_v3_user_skill_rates_path(),
+        dataType: 'json',
+        data: {
+          category,
+          token: 'miamiamia',
+          user_id: this.props.user_id,
+          start_date: Moment(startDate).format(),
+          end_date: Moment(endDate).format()
+        }
+      }).done((data) => {
+        const model = this.getModel(data, endDate);
+        if (firstSet) {
+          this.state.model = model;
+        } else {
+          this.setState({ model });
+        }
+      });
+    }
 
-    if (category === 'backend') model = getModel();
-    if (category === 'devops') model = getModel2();
-    if (category === 'ios') model = getModel3();
-    if (category === 'frontend') model = getModel4();
+    let mock;
+
+    if (category === 'backend') mock = getModel();
+    if (category === 'devops') mock = getModel2();
+    if (category === 'ios') mock = getModel3();
+    if (category === 'frontend') mock = getModel4();
 
     if (firstSet) {
-      this.state.model = model;
+      this.state.model = mock;
     } else {
-      this.setState({ model });
+      this.setState({model: mock});
     }
+  }
+
+  getModel(data, endDate) {
+    return data.reduce((model, item) => {
+      const points = this.getPointsTable(item, endDate);
+      const totalDays = this.getTotalDays(points);
+
+      model.data.push({
+        skillName: item.name,
+        maxRange: item.rate_type === 'range' ? 3 : 1,
+        points,
+        totalDays
+      });
+
+      if (totalDays > model.meta.maximumDays) model.meta.maximumDays = totalDays;
+
+      return model;
+    }, {data: [], meta: {
+      maximumDays: null
+    }});
+  }
+
+  getTotalDays(points) {
+    return points.reduce((acc, point) => {
+      return acc + point.days;
+    }, 0);
+  }
+
+  getPointsTable(item, endDate) {
+    const result = [];
+    let pointsTable = [];
+    let datePointer = null;
+
+    if (item.first_change_before_data_range) pointsTable.push(item.first_change_before_data_range);
+    if (item.history) pointsTable = [].concat(pointsTable, item.history);
+    if (pointsTable[0]) datePointer = Moment(pointsTable[0].created_at);
+
+    pointsTable.forEach((item, index) => {
+      const nextDate = Moment(item[index + 1] ? item[index + 1].created_at : endDate);
+
+      result.push({
+        days: nextDate.diff(datePointer, 'days'),
+        favorite: item.favorite,
+        note: item.note,
+        rate: item.rate
+      });
+
+      datePointer = nextDate;
+    });
+
+    return result;
   }
 
   setContainerWidth(firstSet) {
