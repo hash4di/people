@@ -2,7 +2,7 @@ import React from 'react';
 import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
 import Moment from 'moment';
-import { getModel, getModel2 } from './mock';
+import { getModel, getModel2, getModel3, getModel4 } from './mock';
 
 export default class UserSkillHistory extends React.Component {
   cssNamespace = 'user-skill-history'
@@ -37,7 +37,8 @@ export default class UserSkillHistory extends React.Component {
       },
     ],
     fromDate: null,
-    toDate: null
+    toDate: null,
+    containerWidth: null
   }
 
   constructor(props) {
@@ -48,6 +49,7 @@ export default class UserSkillHistory extends React.Component {
     this.state.fromDate = fromDate;
     this.state.toDate = toDate;
     this.setModel(this.getActiveCategory(), fromDate, toDate, true);
+    this.setContainerWidth(true);
   }
 
   render() {
@@ -62,8 +64,12 @@ export default class UserSkillHistory extends React.Component {
           onItemClick={this.setActiveCategory.bind(this)}
           onDateChange={this.onDateChange.bind(this)}
           setDateRange={this.setDateRange.bind(this)}
-          />
-        <UserSkillHistoryTimeline cssNamespace={`${this.cssNamespace}-timeline`} model={this.state.model} />
+        />
+        <UserSkillHistoryTimeline
+          cssNamespace={`${this.cssNamespace}-timeline`}
+          model={this.state.model}
+          containerWidth={this.state.containerWidth}
+        />
       </div>
     );
   }
@@ -81,12 +87,27 @@ export default class UserSkillHistory extends React.Component {
   }
 
   setModel(category, fromDate, toDate, firstSet) {
-    const model = category === 'backend' ? getModel() : getModel2();
+    let model;
+
+    if (category === 'backend') model = getModel();
+    if (category === 'devops') model = getModel2();
+    if (category === 'ios') model = getModel3();
+    if (category === 'frontend') model = getModel4();
 
     if (firstSet) {
       this.state.model = model;
     } else {
       this.setState({ model });
+    }
+  }
+
+  setContainerWidth(firstSet) {
+    const containerWidth = $('#main-container > div.container').width();
+
+    if (firstSet) {
+      this.state.containerWidth = containerWidth;
+    } else {
+      this.setState({ containerWidth });
     }
   }
 
@@ -98,6 +119,7 @@ export default class UserSkillHistory extends React.Component {
 
     this.setState({ skillCategories, activeCategory: index });
     this.setModel(skillCategories[index].name, this.state.fromDate, this.state.toDate);
+    this.setContainerWidth();
   }
 
   onDateChange(dateInput, date) {
@@ -106,5 +128,6 @@ export default class UserSkillHistory extends React.Component {
 
     this.setState({ [dateInput]: date });
     this.setModel(this.getActiveCategory(), fromDate, toDate);
+    this.setContainerWidth();
   }
 }
