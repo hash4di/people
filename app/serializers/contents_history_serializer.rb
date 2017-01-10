@@ -39,7 +39,7 @@ class ContentsHistorySerializer < ActiveModel::Serializer
 
   def first_change_before_data_range
     if date_range_set?
-      object.contents.where("created_at <= ?", start_date).last
+      object.contents.where("created_at < ?", start_date).last
     else
       nil
     end
