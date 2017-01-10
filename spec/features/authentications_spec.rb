@@ -63,6 +63,7 @@ describe 'Authentication', js: true do
     before { sign_in(second_usr) }
 
     it 'redirects to the dashboard' do
+      wait_for_ajax
       expect(page).to have_content('Projects')
     end
   end
