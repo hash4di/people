@@ -140,9 +140,9 @@ describe 'Projects dashboard page', js: true do
     describe 'adding member to project' do
       before { go_to_active_tab }
 
-
       it 'adds member to project correctly' do
         react_select('.project', admin_user.decorate.name)
+        wait_for_ajax
         expect(projects_page.projects.first.billable_counter).to have_content '1'
       end
     end
