@@ -119,7 +119,7 @@ export default class UserSkillHistory extends React.Component {
           end_date: Moment(endDate).format()
         }
       }).done((data) => {
-        const model = this.getModel(data, endDate);
+        const model = this.getModel(data, startDate, endDate);
         this.setState({ model, loadingState: false });
       });
     }
@@ -139,7 +139,9 @@ export default class UserSkillHistory extends React.Component {
     }
   }
 
-  getModel(data, endDate) {
+  getModel(data, startDate, endDate) {
+    const daysInRange = Moment(endDate).diff(startDate, 'days');
+
     return data.reduce((model, item) => {
       const points = this.getPointsTable(item, endDate);
       const totalDays = this.getTotalDays(points);
@@ -147,6 +149,7 @@ export default class UserSkillHistory extends React.Component {
       model.data.push({
         skillName: item.name,
         maxRate: item.rate_type === 'range' ? 3 : 1,
+        daysOffset: daysInRange - totalDays,
         points,
         totalDays
       });

@@ -13,7 +13,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   chartPadding = 10
   chartStrokeWidth = 5
   gridLabelsHeight = 35
-  legendWidth = 100
+  legendWidth = 200
 
   totalDays = null
   previousDaysWidth = null
@@ -57,41 +57,43 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   render() {
-    const loadingStateClass = this.props.loadingState ? `${this.props.cssNamespace}--loading` : '';
+    const {props: {loadingState, cssNamespace}} = this;
+    const loadingStateClass = loadingState ? `${cssNamespace}--loading` : '';
 
-    return <div className={`${this.props.cssNamespace} ${loadingStateClass}`}>
+    return <div className={`${cssNamespace} ${loadingStateClass}`}>
       {this.getSkillLabels()}
       {this.getTimeline()}
     </div>;
   }
 
   getLegend() {
+    const {props: {cssNamespace}} = this;
     const rateItems = [];
 
     for (let i = 0; i <= 3; ++i) {
       const text = `Skill rate ${i}`;
 
       rateItems.push(
-        <li className={`${this.props.cssNamespace}__legend-list-item`}>
-          <div className={`${this.props.cssNamespace}__legend-list-item-symbol
-            ${this.props.cssNamespace}__legend-list-item-symbol--rate-${i}`}></div>
+        <li className={`${cssNamespace}__legend-list-item`}>
+          <div className={`${cssNamespace}__legend-list-item-symbol
+            ${cssNamespace}__legend-list-item-symbol--rate-${i}`}></div>
           {text}
         </li>
       );
     }
 
     return (
-      <div className={`${this.props.cssNamespace}__legend`}>
-        <div className={`${this.props.cssNamespace}__legend-title`}>Legend:</div>
-        <ul className={`${this.props.cssNamespace}__legend-list`}>
+      <div className={`${cssNamespace}__legend`}>
+        <div className={`${cssNamespace}__legend-title`}>Legend:</div>
+        <ul className={`${cssNamespace}__legend-list`}>
           {rateItems}
-          <li className={`${this.props.cssNamespace}__legend-list-item ${this.props.cssNamespace}__legend-list-item--top-margin`}>
-            <div className={`${this.props.cssNamespace}__legend-list-item-symbol
-              ${this.props.cssNamespace}__legend-list-item-symbol--dashed`}></div>
+          <li className={`${cssNamespace}__legend-list-item ${cssNamespace}__legend-list-item--top-margin`}>
+            <div className={`${cssNamespace}__legend-list-item-symbol
+              ${cssNamespace}__legend-list-item-symbol--dashed`}></div>
             Normal skill
           </li>
-          <li className={`${this.props.cssNamespace}__legend-list-item`}>
-            <div className={`${this.props.cssNamespace}__legend-list-item-symbol`}></div>
+          <li className={`${cssNamespace}__legend-list-item`}>
+            <div className={`${cssNamespace}__legend-list-item-symbol`}></div>
             Favorite skill
           </li>
         </ul>
@@ -110,23 +112,25 @@ export default class UserSkillHistoryTimeline extends React.Component {
     $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover({html: true, content: legendPopoverHTML.innerHTML});
   }
 
-  updateComponentProperties({model, containerWidth}) {
-    const requiredDays = this.previousDays + model.meta.maximumDays + this.nextDaysOnShortDateRange;
-    const svgWidth = containerWidth - this.legendWidth;
+  updateComponentProperties({model: {data}, containerWidth, startDate, endDate}) {
+    const {gridLabelsHeight, legendWidth, minimumSVGwidthScale, chartHeight, chartPadding} = this;
 
-    if (requiredDays * this.minimumSVGwidthScale < svgWidth) {
-      this.svgWidthScale = svgWidth / requiredDays;
-      this.nextDays = this.nextDaysOnShortDateRange;
-    } else {
-      this.svgWidthScale = this.minimumSVGwidthScale;
-      this.nextDays = this.nextDaysOnLongDateRange;
-    }
+    const daysInRange = Moment(endDate).diff(startDate, 'days');
+    const extraDaysForMargin = this.getExtraDaysForMargin(daysInRange);
+    const requiredDays = daysInRange + extraDaysForMargin;
 
-    this.svgWidth = requiredDays * this.svgWidthScale;
-    this.nextDaysWidth = this.nextDays * this.svgWidthScale;
-    this.previousDaysWidth = this.previousDays * this.svgWidthScale;
-    this.svgHeight = model.data.length * (this.chartHeight + this.chartPadding * 2) + this.gridLabelsHeight;
-    this.totalDays = this.svgWidth / this. svgWidthScale;
+    const timelineWidth = containerWidth - legendWidth;
+    const svgWidthScale = requiredDays < 90 ? timelineWidth / requiredDays : minimumSVGwidthScale;
+
+    this.svgWidth = requiredDays * svgWidthScale;
+    this.svgHeight = data.length * (chartHeight + chartPadding * 2) + gridLabelsHeight;
+    this.svgWidthScale = svgWidthScale;
+  }
+
+  getExtraDaysForMargin(days) {
+    if (days < 30) return 10;
+    else if (days < 90) return 20;
+    else return 30;
   }
 
   scrollRight() {
@@ -135,7 +139,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getSkillLabels() {
-    const {props: {cssNamespace, model: {data}}} = this;
+    const {legendWidth, props: {cssNamespace, model: {data}}} = this;
     const skillLabels = data.reduce((acc, skillData) => acc.concat(
       <li className={`${cssNamespace}__labels-item`}>{skillData.skillName}</li>
     ), []);
@@ -143,7 +147,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
     return (
       <div className={`${cssNamespace}__left-column`}>
         <button className={`btn btn-info ${cssNamespace}__legend-popover-entry-point`}>Legend</button>
-        <ul className={`${cssNamespace}__labels`}>{skillLabels}</ul>
+        <ul className={`${cssNamespace}__labels`} style={{width: legendWidth + 'px'}}>{skillLabels}</ul>
       </div>
     );
   }
@@ -192,11 +196,11 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getCharts() {
-    const {chartHeight, chartPadding, gridLabelsHeight, svgWidth, nextDaysWidth, svgWidthScale, props: {model: {data}}} = this;
+    const {chartHeight, chartPadding, gridLabelsHeight, svgWidthScale, props: {model: {data}}} = this;
 
-    return data.reduce((acc, {points, maxRate, totalDays}, index) => {
+    return data.reduce((acc, {points, maxRate, totalDays, daysOffset}, index) => {
       const offsetTop = (chartHeight + chartPadding * 2) * index + chartPadding + gridLabelsHeight;
-      const offsetLeft = svgWidth - nextDaysWidth - (totalDays * svgWidthScale);
+      const offsetLeft = daysOffset * svgWidthScale;
 
       return acc.concat(this.getChart(points, maxRate, offsetTop, offsetLeft));
     }, []);
@@ -289,27 +293,24 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getGridLinesWithLabels() {
-    //const {startDate, endDate} = this.props;
-    const nowDate = Moment();
-    const startDate = Moment(nowDate).subtract(this.totalDays - this.nextDays, 'days');
-    const endDate = Moment(nowDate).add(this.nextDays, 'days');
+    const {svgWidthScale, gridLabelsHeight, svgWidth, props: {startDate, endDate}} = this;
     const currentDate = Moment(startDate);
     const elements = [];
 
     // vertical lines with labels
     while (currentDate.diff(endDate, 'days') < -30) {
       currentDate.startOf('month').add(1, 'months');
-      const positionX = currentDate.diff(startDate, 'days') * this.svgWidthScale;
+      const positionX = currentDate.diff(startDate, 'days') * svgWidthScale;
 
       elements.push(...this.getVerticalLineWithLabel(positionX, currentDate.format('MMMM Y'), 10, 10, "black", "#d6dade"));
     }
 
     // current day line with label
-    const positionX = Moment().diff(startDate, 'days') * this.svgWidthScale;
+    const positionX = Moment().diff(startDate, 'days') * svgWidthScale;
     elements.push(...this.getVerticalLineWithLabel(positionX, 'Today', 40, 10, "red", "red"));
 
     // horizontal line
-    elements.push(<line x1="0" y1={this.gridLabelsHeight} x2={this.svgWidth} y2={this.gridLabelsHeight} strokeWidth="1" stroke="#d6dade" />);
+    elements.push(<line x1="0" y1={gridLabelsHeight} x2={svgWidth} y2={gridLabelsHeight} strokeWidth="1" stroke="#d6dade" />);
 
     return elements;
   }
