@@ -187,12 +187,27 @@ export default class UserSkillHistoryTimeline extends React.Component {
 
       const nextPointX = previousPointX + width;
       const nextPointY = offsetTop + chartHeight - height;
-      horizontalLines.push(<line x1={previousPointX} y1={nextPointY} x2={nextPointX} y2={nextPointY}
-        strokeWidth={chartStrokeWidth} strokeDasharray={strokeDasharray} stroke={chartColor} />);
+
+      horizontalLines.push(this.getSVGline({
+        x1: previousPointX,
+        y1: nextPointY,
+        x2: nextPointX,
+        y2: nextPointY,
+        strokeWidth: chartStrokeWidth,
+        strokeDasharray: strokeDasharray,
+        stroke: chartColor
+      }));
 
       if (previousPointY !== nextPointY && index > 0) {
-        verticalLines.push(<line x1={previousPointX} y1={previousPointY}
-          x2={previousPointX} y2={nextPointY} strokeWidth="1" strokeDasharray="1, 6" stroke="black" />);
+        verticalLines.push(this.getSVGline({
+          x1: previousPointX,
+          y1: previousPointY,
+          x2: previousPointX,
+          y2: nextPointY,
+          strokeWidth: '1',
+          strokeDasharray: '1, 6',
+          stroke: 'black'
+        }));
       }
 
       if (point.note !== '' && point.note !== lastNote) {
@@ -209,6 +224,10 @@ export default class UserSkillHistoryTimeline extends React.Component {
     });
 
     return [].concat(verticalLines, horizontalLines, points);
+  }
+
+  getSVGline({x1, y1, x2, y2, strokeWidth, strokeDasharray, stroke}) {
+    return <line x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={strokeWidth} strokeDasharray={strokeDasharray} stroke={stroke} />;
   }
 
   getChartColor(rate, maxRate) {
