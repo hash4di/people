@@ -156,17 +156,32 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getTimelineBackground() {
+    const {svgWidth, chartHeight, chartPadding, gridLabelsHeight} = this;
     const modelLenght = this.props.model.data.length;
     const elements = [];
 
     for (let i = 0; i < modelLenght; ++i) {
-      const color = i % 2 === 0 ? '#f2f4f5' : 'white';
-      const rectanglePositionY = (this.chartHeight + this.chartPadding * 2) * i + this.gridLabelsHeight;
-      const height = this.chartHeight + 2 * this.chartPadding;
+      const height = chartHeight + 2 * chartPadding;
+      const rectanglePositionY = (chartHeight + chartPadding * 2) * i + gridLabelsHeight;
       const linePositionY = rectanglePositionY + height;
 
-      elements.push(<rect x="0" y={rectanglePositionY} width={this.svgWidth} height={height} fill={color} />);
-      elements.push(<line x1="0" y1={linePositionY} x2={this.svgWidth} y2={linePositionY} strokeWidth="1" stroke="#d6dade" />);
+      elements.push(
+        this.getJSXobject({tagName: 'rect', attributes: {
+          x: '0',
+          y: rectanglePositionY,
+          width: svgWidth,
+          fill: i % 2 === 0 ? '#f2f4f5' : 'white',
+          height
+        }}),
+        this.getJSXobject({tagName: 'line', attributes: {
+          x1: '0',
+          y1: linePositionY,
+          x2: svgWidth,
+          y2: linePositionY,
+          strokeWidth: '1',
+          stroke: '#d6dade'
+        }})
+      );
     }
 
     return elements;
