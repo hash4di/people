@@ -37,7 +37,7 @@ module Api
       def set_user
         @user ||= User.find_by_id(filter_params[:user_id])
         if @user.blank?
-          render json: "Sorry, such user doesn't exist.", status: 404 and return
+          render json: { error: "Sorry, such user doesn't exist."}, status: 404 and return
         end
       end
     end
