@@ -23,6 +23,7 @@ describe 'Team view', js: true do
   before do
     log_in_as admin_user
     teams_page.load
+    wait_for_ajax
   end
 
   describe "'show users without team' button" do
