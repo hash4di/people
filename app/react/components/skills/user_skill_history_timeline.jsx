@@ -24,6 +24,18 @@ export default class UserSkillHistoryTimeline extends React.Component {
   containerWidth = null
   nextDays = null
 
+  verticalLineAttributes = {
+    strokeWidth: '1',
+    strokeDasharray: '1, 6',
+    stroke: 'black'
+  };
+
+  noteAttributes = {
+    strokeWidth: '1',
+    stroke: '#084F73',
+    fill: '#23a9db'
+  };
+
   constructor(props) {
     super(props);
     this.updateComponentProperties(props);
@@ -80,7 +92,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
           </li>
           <li className={`${this.props.cssNamespace}__legend-list-item`}>
             <div className={`${this.props.cssNamespace}__legend-list-item-symbol`}></div>
-            Favourite skill
+            Favorite skill
           </li>
         </ul>
       </div>
@@ -137,8 +149,8 @@ export default class UserSkillHistoryTimeline extends React.Component {
     return <div className={`${this.props.cssNamespace}__timeline`}>
       <svg version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
         {this.getTimelineBackground()}
-        {this.getCharts()}
         {this.getGridLinesWithLabels()}
+        {this.getCharts()}
       </svg>
     </div>;
   }
@@ -169,45 +181,29 @@ export default class UserSkillHistoryTimeline extends React.Component {
     }, []);
   }
 
-  getChart(data, chartHeight, offsetTop, offsetLeft) {
+  getChart({points, maxRate}, chartHeight, offsetTop, offsetLeft) {
+    const {svgWidthScale, chartStrokeWidth, noteAttributes, verticalLineAttributes, props: {cssNamespace}} = this;
     const verticalLines = [];
     const horizontalLines = [];
     const notes = [];
-    let previousNote = '';
 
+    let previousNote = '';
     let previousPointX = offsetLeft;
     let previousPointY = offsetTop + chartHeight;
 
-    const verticalLineAttributes = {
-      strokeWidth: '1',
-      strokeDasharray: '1, 6',
-      stroke: 'black'
-    };
-
-    const noteAttributes = {
-      strokeWidth: '1',
-      stroke: '#084F73',
-      fill: '#23a9db'
-    };
-
-    data.points.forEach((point, index) => {
-      const height = point.rate === 0 ? 0 : point.rate / data.maxRate * chartHeight;
-      const width = point.days * this.svgWidthScale;
-      const chartColor = this.getChartColor(point.rate, data.maxRate);
-      const strokeDasharray = point.favorite ? 'none' : '10, 10';
-      const chartStrokeWidth = point.favorite ? this.chartStrokeWidth : this.chartStrokeWidth / 2;
-
-      const nextPointX = previousPointX + width;
-      const nextPointY = offsetTop + chartHeight - height;
+    points.forEach(({rate, days, favorite, note}, index) => {
+      const {stroke, strokeDasharray, strokeWidth, nextPointX, nextPointY} = this.getChartAttributes({
+        rate, days, favorite, maxRate, chartHeight, svgWidthScale, chartStrokeWidth, previousPointX, offsetTop
+      });
 
       horizontalLines.push(this.getJSXobject({tagName: 'line', attributes: {
         x1: previousPointX,
         y1: nextPointY,
         x2: nextPointX,
         y2: nextPointY,
-        strokeWidth: chartStrokeWidth,
-        strokeDasharray: strokeDasharray,
-        stroke: chartColor
+        strokeWidth,
+        strokeDasharray,
+        stroke
       }}));
 
       if (previousPointY !== nextPointY && index > 0) {
@@ -219,20 +215,20 @@ export default class UserSkillHistoryTimeline extends React.Component {
         }}));
       }
 
-      if (point.note !== '' && point.note !== previousNote) {
+      if (note !== '' && note !== previousNote) {
         notes.push(this.getJSXobject({tagName: 'circle', attributes: {
-          className: `${this.props.cssNamespace}__note-popover-entry-point`,
-          'data-content': point.note,
           'data-placement': 'top',
           'data-container': 'body',
           'data-trigger': 'hover',
+          'data-content': note,
+          className: `${cssNamespace}__note-popover-entry-point`,
           cx: previousPointX,
           cy: nextPointY,
           r: '6'
         }}));
       }
 
-      previousNote = point.note;
+      previousNote = note;
       previousPointX = nextPointX;
       previousPointY = nextPointY;
     });
@@ -242,6 +238,19 @@ export default class UserSkillHistoryTimeline extends React.Component {
       this.getJSXobject({tagName: 'g', content: horizontalLines}),
       this.getJSXobject({tagName: 'g', attributes: noteAttributes, content: notes})
     );
+  }
+
+  getChartAttributes({rate, maxRate, chartHeight, days, svgWidthScale, favorite, chartStrokeWidth, previousPointX, offsetTop}) {
+    const height = rate === 0 ? 0 : rate / maxRate * chartHeight;
+    const width = days * svgWidthScale;
+
+    return {
+      stroke: this.getChartColor(rate, maxRate),
+      strokeDasharray: favorite ? 'none' : '10, 10',
+      strokeWidth: favorite ? chartStrokeWidth : chartStrokeWidth / 2,
+      nextPointX: previousPointX + width,
+      nextPointY: offsetTop + chartHeight - height
+    };
   }
 
   getJSXobject({tagName: TagName, attributes, content}) {
