@@ -3,6 +3,10 @@
     display: flex;
     width: 100%;
 
+    &--loading {
+      display: none;
+    }
+
     &__left-column {
       display: flex;
       flex-direction: column;
@@ -144,5 +148,11 @@
         width: auto;
       }
     }
+  }
+
+  &-loading-state {
+    width: 100%;
+    font-size: 20px;
+    padding: 20px 0;
   }
 }

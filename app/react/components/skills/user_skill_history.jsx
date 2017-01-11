@@ -2,18 +2,18 @@ import React from 'react';
 import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
 import Moment from 'moment';
-import { getModel, getModel2, getModel3, getModel4 } from './mock';
+import { getModel, getModel2, getModel3, getModel4, getModel5 } from './mock';
 
 export default class UserSkillHistory extends React.Component {
   cssNamespace = 'user-skill-history'
   dateFormat = 'Y-MM-DD'
 
   state = {
-    activeCategory: 0,
+    activeCategory: 4,
     skillCategories: [
       {
         name: 'backend',
-        isActive: true
+        isActive: false
       },
       {
         name: 'devops',
@@ -29,7 +29,7 @@ export default class UserSkillHistory extends React.Component {
       },
       {
         name: 'design',
-        isActive: false
+        isActive: true
       },
       {
         name: 'android',
@@ -38,7 +38,11 @@ export default class UserSkillHistory extends React.Component {
     ],
     fromDate: null,
     toDate: null,
-    containerWidth: null
+    containerWidth: null,
+    loadingState: true,
+    model: {data: [], meta: {
+      maximumDays: null
+    }}
   }
 
   constructor(props) {
@@ -48,8 +52,11 @@ export default class UserSkillHistory extends React.Component {
 
     this.state.fromDate = fromDate;
     this.state.toDate = toDate;
-    this.setModel(this.getActiveCategory(), fromDate, toDate, true);
-    this.setContainerWidth(true);
+  }
+
+  componentDidMount() {
+    this.setModel(this.getActiveCategory(), this.state.fromDate, this.state.toDate);
+    this.setContainerWidth();
   }
 
   render() {
@@ -65,11 +72,21 @@ export default class UserSkillHistory extends React.Component {
           onDateChange={this.onDateChange.bind(this)}
           setDateRange={this.setDateRange.bind(this)}
         />
+        {this.getLoadingState()}
         <UserSkillHistoryTimeline
           cssNamespace={`${this.cssNamespace}-timeline`}
           model={this.state.model}
           containerWidth={this.state.containerWidth}
+          loadingState={this.state.loadingState}
         />
+      </div>
+    );
+  }
+
+  getLoadingState() {
+    if (this.state.loadingState) return (
+      <div className={`progress-bar progress-bar-striped active ${this.cssNamespace}-loading-state`}>
+        Loading, please wait...
       </div>
     );
   }
@@ -88,6 +105,7 @@ export default class UserSkillHistory extends React.Component {
 
   setModel(category, startDate, endDate, firstSet) {
     if (category === 'design') {
+      this.setState({ loadingState: true });
       return $.ajax({
         url: Routes.api_v3_user_skill_rates_path(),
         dataType: 'json',
@@ -100,11 +118,7 @@ export default class UserSkillHistory extends React.Component {
         }
       }).done((data) => {
         const model = this.getModel(data, endDate);
-        if (firstSet) {
-          this.state.model = model;
-        } else {
-          this.setState({ model });
-        }
+        this.setState({ model, loadingState: false });
       });
     }
 
@@ -114,6 +128,7 @@ export default class UserSkillHistory extends React.Component {
     if (category === 'devops') mock = getModel2();
     if (category === 'ios') mock = getModel3();
     if (category === 'frontend') mock = getModel4();
+    if (category === 'android') mock = getModel5();
 
     if (firstSet) {
       this.state.model = mock;
@@ -129,7 +144,7 @@ export default class UserSkillHistory extends React.Component {
 
       model.data.push({
         skillName: item.name,
-        maxRange: item.rate_type === 'range' ? 3 : 1,
+        maxRate: item.rate_type === 'range' ? 3 : 1,
         points,
         totalDays
       });
@@ -157,8 +172,8 @@ export default class UserSkillHistory extends React.Component {
     if (item.history) pointsTable = [].concat(pointsTable, item.history);
     if (pointsTable[0]) datePointer = Moment(pointsTable[0].created_at);
 
-    pointsTable.forEach((item, index) => {
-      const nextDate = Moment(item[index + 1] ? item[index + 1].created_at : endDate);
+    pointsTable.forEach((item, index, pointsTable) => {
+      const nextDate = Moment(pointsTable[index + 1] ? pointsTable[index + 1].created_at : endDate);
 
       result.push({
         days: nextDate.diff(datePointer, 'days'),
