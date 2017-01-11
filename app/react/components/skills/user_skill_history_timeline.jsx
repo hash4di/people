@@ -172,16 +172,22 @@ export default class UserSkillHistoryTimeline extends React.Component {
   getChart(data, chartHeight, offsetTop, offsetLeft) {
     const verticalLines = [];
     const horizontalLines = [];
-    const points = [];
-    let lastNote = '';
+    const notes = [];
+    let previousNote = '';
 
     let previousPointX = offsetLeft;
     let previousPointY = offsetTop + chartHeight;
 
-    const verticalLinesProperties = {
+    const verticalLineAttributes = {
       strokeWidth: '1',
       strokeDasharray: '1, 6',
       stroke: 'black'
+    };
+
+    const noteAttributes = {
+      strokeWidth: '1',
+      stroke: '#084F73',
+      fill: '#23a9db'
     };
 
     data.points.forEach((point, index) => {
@@ -213,23 +219,28 @@ export default class UserSkillHistoryTimeline extends React.Component {
         }}));
       }
 
-      if (point.note !== '' && point.note !== lastNote) {
-        points.push(<circle
-          className={`${this.props.cssNamespace}__note-popover-entry-point`}
-          data-placement="top" data-container="body" data-trigger="hover" data-content={point.note}
-          cx={previousPointX} cy={nextPointY} r="6" strokeWidth="1" stroke="#084F73" fill="#23a9db"
-        />);
+      if (point.note !== '' && point.note !== previousNote) {
+        notes.push(this.getJSXobject({tagName: 'circle', attributes: {
+          className: `${this.props.cssNamespace}__note-popover-entry-point`,
+          'data-content': point.note,
+          'data-placement': 'top',
+          'data-container': 'body',
+          'data-trigger': 'hover',
+          cx: previousPointX,
+          cy: nextPointY,
+          r: '6'
+        }}));
       }
 
-      lastNote = point.note;
+      previousNote = point.note;
       previousPointX = nextPointX;
       previousPointY = nextPointY;
     });
 
     return [].concat(
-      this.getJSXobject({tagName: 'g', attributes: verticalLinesProperties, content: verticalLines}),
+      this.getJSXobject({tagName: 'g', attributes: verticalLineAttributes, content: verticalLines}),
       this.getJSXobject({tagName: 'g', content: horizontalLines}),
-      points
+      this.getJSXobject({tagName: 'g', attributes: noteAttributes, content: notes})
     );
   }
 
