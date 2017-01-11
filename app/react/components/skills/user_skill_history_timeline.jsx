@@ -178,6 +178,12 @@ export default class UserSkillHistoryTimeline extends React.Component {
     let previousPointX = offsetLeft;
     let previousPointY = offsetTop + chartHeight;
 
+    const verticalLinesProperties = {
+      strokeWidth: '1',
+      strokeDasharray: '1, 6',
+      stroke: 'black'
+    };
+
     data.points.forEach((point, index) => {
       const height = point.rate === 0 ? 0 : point.rate / data.maxRate * chartHeight;
       const width = point.days * this.svgWidthScale;
@@ -188,7 +194,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
       const nextPointX = previousPointX + width;
       const nextPointY = offsetTop + chartHeight - height;
 
-      horizontalLines.push(this.getSVGline({
+      horizontalLines.push(this.getJSXobject({tagName: 'line', attributes: {
         x1: previousPointX,
         y1: nextPointY,
         x2: nextPointX,
@@ -196,18 +202,15 @@ export default class UserSkillHistoryTimeline extends React.Component {
         strokeWidth: chartStrokeWidth,
         strokeDasharray: strokeDasharray,
         stroke: chartColor
-      }));
+      }}));
 
       if (previousPointY !== nextPointY && index > 0) {
-        verticalLines.push(this.getSVGline({
+        verticalLines.push(this.getJSXobject({tagName: 'line', attributes: {
           x1: previousPointX,
           y1: previousPointY,
           x2: previousPointX,
-          y2: nextPointY,
-          strokeWidth: '1',
-          strokeDasharray: '1, 6',
-          stroke: 'black'
-        }));
+          y2: nextPointY
+        }}));
       }
 
       if (point.note !== '' && point.note !== lastNote) {
@@ -223,11 +226,15 @@ export default class UserSkillHistoryTimeline extends React.Component {
       previousPointY = nextPointY;
     });
 
-    return [].concat(verticalLines, horizontalLines, points);
+    return [].concat(
+      this.getJSXobject({tagName: 'g', attributes: verticalLinesProperties, content: verticalLines}),
+      this.getJSXobject({tagName: 'g', content: horizontalLines}),
+      points
+    );
   }
 
-  getSVGline({x1, y1, x2, y2, strokeWidth, strokeDasharray, stroke}) {
-    return <line x1={x1} y1={y1} x2={x2} y2={y2} strokeWidth={strokeWidth} strokeDasharray={strokeDasharray} stroke={stroke} />;
+  getJSXobject({tagName: TagName, attributes, content}) {
+    return <TagName {...attributes}>{content}</TagName>;
   }
 
   getChartColor(rate, maxRate) {
