@@ -130,24 +130,29 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   scrollRight() {
-    var $this = $(ReactDOM.findDOMNode(this));
-    $this.find(`.${this.props.cssNamespace}__timeline`).scrollLeft(this.svgWidth);
+    const {svgWidth, props: {cssNamespace}} = this;
+    $(ReactDOM.findDOMNode(this)).find(`.${cssNamespace}__timeline`).scrollLeft(svgWidth);
   }
 
   getSkillLabels() {
-    const skillLabels = this.props.model.data.reduce((acc, skillData) => {
-      return acc.concat(<li className={`${this.props.cssNamespace}__labels-item`}>{skillData.skillName}</li>);
-    }, []);
+    const {props: {cssNamespace, model: {data}}} = this;
+    const skillLabels = data.reduce((acc, skillData) => acc.concat(
+      <li className={`${cssNamespace}__labels-item`}>{skillData.skillName}</li>
+    ), []);
 
-    return (<div className={`${this.props.cssNamespace}__left-column`}>
-      <button className={`btn btn-info ${this.props.cssNamespace}__legend-popover-entry-point`}>Legend</button>
-      <ul className={`${this.props.cssNamespace}__labels`}>{skillLabels}</ul>
-    </div>);
+    return (
+      <div className={`${cssNamespace}__left-column`}>
+        <button className={`btn btn-info ${cssNamespace}__legend-popover-entry-point`}>Legend</button>
+        <ul className={`${cssNamespace}__labels`}>{skillLabels}</ul>
+      </div>
+    );
   }
 
   getTimeline() {
-    return <div className={`${this.props.cssNamespace}__timeline`}>
-      <svg version="1.1" baseProfile="full" width={this.svgWidth} height={this.svgHeight} xmlns="http://www.w3.org/2000/svg">
+    const {svgWidth, svgHeight, props: {cssNamespace}} = this;
+
+    return <div className={`${cssNamespace}__timeline`}>
+      <svg version="1.1" baseProfile="full" width={svgWidth} height={svgHeight} xmlns="http://www.w3.org/2000/svg">
         {this.getTimelineBackground()}
         {this.getGridLinesWithLabels()}
         {this.getCharts()}
@@ -156,11 +161,10 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getTimelineBackground() {
-    const {svgWidth, chartHeight, chartPadding, gridLabelsHeight} = this;
-    const modelLenght = this.props.model.data.length;
+    const {svgWidth, chartHeight, chartPadding, gridLabelsHeight, props: {model: {data: {length}}}} = this;
     const elements = [];
 
-    for (let i = 0; i < modelLenght; ++i) {
+    for (let i = 0; i < length; ++i) {
       const height = chartHeight + 2 * chartPadding;
       const rectanglePositionY = (chartHeight + chartPadding * 2) * i + gridLabelsHeight;
       const linePositionY = rectanglePositionY + height;
@@ -250,11 +254,11 @@ export default class UserSkillHistoryTimeline extends React.Component {
       previousPointY = nextPointY;
     });
 
-    return [].concat(
+    return [
       this.getJSXobject({tagName: 'g', attributes: verticalLineAttributes, content: verticalLines}),
       this.getJSXobject({tagName: 'g', content: horizontalLines}),
       this.getJSXobject({tagName: 'g', attributes: noteAttributes, content: notes})
-    );
+    ];
   }
 
   getChartAttributes({rate, maxRate, chartHeight, days, svgWidthScale, favorite, chartStrokeWidth, previousPointX, offsetTop}) {
@@ -277,17 +281,11 @@ export default class UserSkillHistoryTimeline extends React.Component {
   getChartColor(rate, maxRate) {
     const value = rate / maxRate;
 
-    if (value === 0) {
-      return '#FF2D0E';
-    } else if (value >= 0.25 && value < 0.5) {
-      return '#E87200';
-    } else if (value >= 0.5 && value < 0.75) {
-      return '#FFC300';
-    } else if (value >= 0.75 && value <= 1) {
-      return '#57B80F';
-    } else {
-      return 'black';
-    }
+    if (value === 0) return '#FF2D0E';
+    else if (value >= 0.25 && value < 0.5) return '#E87200';
+    else if (value >= 0.5 && value < 0.75) return '#FFC300';
+    else if (value >= 0.75 && value <= 1) return '#57B80F';
+    else return 'black';
   }
 
   getGridLinesWithLabels() {
