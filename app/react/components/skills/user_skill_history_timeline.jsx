@@ -163,50 +163,49 @@ export default class UserSkillHistoryTimeline extends React.Component {
   getCharts() {
     return this.props.model.data.reduce((acc, skillData, index) => {
       const offsetTop = (this.chartHeight + this.chartPadding * 2) * index + this.chartPadding + this.gridLabelsHeight;
-      return acc.concat(this.getChart(skillData, this.chartHeight, offsetTop));
+      const offsetLeft = this.svgWidth - this.nextDaysWidth - (skillData.totalDays * this.svgWidthScale);
+
+      return acc.concat(this.getChart(skillData, this.chartHeight, offsetTop, offsetLeft));
     }, []);
   }
 
-  getChart(data, chartHeight, offsetTop) {
-    const rectanglesWidth = data.totalDays * this.svgWidthScale;
-    const offsetLeft = this.svgWidth - rectanglesWidth - this.nextDaysWidth;
+  getChart(data, chartHeight, offsetTop, offsetLeft) {
     const verticalLines = [];
     const horizontalLines = [];
     const points = [];
     let lastNote = '';
 
-    data.points.forEach((point) => {
+    let previousPointX = offsetLeft;
+    let previousPointY = offsetTop + chartHeight;
+
+    data.points.forEach((point, index) => {
       const height = point.rate === 0 ? 0 : point.rate / data.maxRate * chartHeight;
       const width = point.days * this.svgWidthScale;
-      const positionY = chartHeight - height + offsetTop;
       const chartColor = this.getChartColor(point.rate, data.maxRate);
       const strokeDasharray = point.favorite ? 'none' : '10, 10';
       const chartStrokeWidth = point.favorite ? this.chartStrokeWidth : this.chartStrokeWidth / 2;
 
-      const previousHorizontalLineProps = horizontalLines[horizontalLines.length - 1] &&
-        horizontalLines[horizontalLines.length - 1].props ? horizontalLines[horizontalLines.length - 1].props : {};
-      const previousHorizontalLinePositionX = previousHorizontalLineProps.x1 || offsetLeft;
-      const previousHorizontalLinePositionY = previousHorizontalLineProps.y1 || 0;
-      const previousHorizontalLineWidth = previousHorizontalLineProps.x2 - previousHorizontalLineProps.x1 || 0;
-
-      const positionX = previousHorizontalLinePositionX + previousHorizontalLineWidth;
-      horizontalLines.push(<line x1={positionX} y1={positionY} x2={positionX + width} y2={positionY}
+      const nextPointX = previousPointX + width;
+      const nextPointY = offsetTop + chartHeight - height;
+      horizontalLines.push(<line x1={previousPointX} y1={nextPointY} x2={nextPointX} y2={nextPointY}
         strokeWidth={chartStrokeWidth} strokeDasharray={strokeDasharray} stroke={chartColor} />);
 
-      if (height !== 0) {
-        verticalLines.push(<line x1={positionX} y1={previousHorizontalLinePositionY}
-          x2={positionX} y2={positionY} strokeWidth="1" strokeDasharray="1, 6" stroke="black" />);
+      if (previousPointY !== nextPointY && index > 0) {
+        verticalLines.push(<line x1={previousPointX} y1={previousPointY}
+          x2={previousPointX} y2={nextPointY} strokeWidth="1" strokeDasharray="1, 6" stroke="black" />);
       }
 
       if (point.note !== '' && point.note !== lastNote) {
         points.push(<circle
           className={`${this.props.cssNamespace}__note-popover-entry-point`}
           data-placement="top" data-container="body" data-trigger="hover" data-content={point.note}
-          cx={positionX} cy={positionY} r="6" strokeWidth="1" stroke="#084F73" fill="#23a9db"
+          cx={previousPointX} cy={nextPointY} r="6" strokeWidth="1" stroke="#084F73" fill="#23a9db"
         />);
       }
 
       lastNote = point.note;
+      previousPointX = nextPointX;
+      previousPointY = nextPointY;
     });
 
     return [].concat(verticalLines, horizontalLines, points);
