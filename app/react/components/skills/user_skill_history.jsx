@@ -36,8 +36,8 @@ export default class UserSkillHistory extends React.Component {
         isActive: false
       },
     ],
-    fromDate: null,
-    toDate: null,
+    startDate: null,
+    endDate: null,
     containerWidth: null,
     loadingState: true,
     model: {data: [], meta: {
@@ -47,15 +47,15 @@ export default class UserSkillHistory extends React.Component {
 
   constructor(props) {
     super(props);
-    const fromDate = Moment().subtract(12, 'months').format(this.dateFormat);
-    const toDate = Moment().format(this.dateFormat);
+    const startDate = Moment().subtract(12, 'months').format(this.dateFormat);
+    const endDate = Moment().format(this.dateFormat);
 
-    this.state.fromDate = fromDate;
-    this.state.toDate = toDate;
+    this.state.startDate = startDate;
+    this.state.endDate = endDate;
   }
 
   componentDidMount() {
-    this.setModel(this.getActiveCategory(), this.state.fromDate, this.state.toDate);
+    this.setModel(this.getActiveCategory(), this.state.startDate, this.state.endDate);
     this.setContainerWidth();
   }
 
@@ -66,8 +66,8 @@ export default class UserSkillHistory extends React.Component {
           cssNamespace={`${this.cssNamespace}-filter`}
           listPrimaryText='Skill categories:'
           listItems={this.state.skillCategories}
-          fromDate={this.state.fromDate}
-          toDate={this.state.toDate}
+          startDate={this.state.startDate}
+          endDate={this.state.endDate}
           onItemClick={this.setActiveCategory.bind(this)}
           onDateChange={this.onDateChange.bind(this)}
           setDateRange={this.setDateRange.bind(this)}
@@ -78,6 +78,8 @@ export default class UserSkillHistory extends React.Component {
           model={this.state.model}
           containerWidth={this.state.containerWidth}
           loadingState={this.state.loadingState}
+          startDate={this.state.startDate}
+          endDate={this.state.endDate}
         />
       </div>
     );
@@ -96,11 +98,11 @@ export default class UserSkillHistory extends React.Component {
   }
 
   setDateRange(months) {
-    const fromDate = Moment().subtract(months, 'months').format(this.dateFormat);
-    const toDate = Moment().format(this.dateFormat);
+    const startDate = Moment().subtract(months, 'months').format(this.dateFormat);
+    const endDate = Moment().format(this.dateFormat);
 
-    this.setState({ fromDate, toDate });
-    this.setModel(this.getActiveCategory(), fromDate, toDate);
+    this.setState({ startDate, endDate });
+    this.setModel(this.getActiveCategory(), startDate, endDate);
   }
 
   setModel(category, startDate, endDate, firstSet) {
@@ -205,16 +207,16 @@ export default class UserSkillHistory extends React.Component {
     skillCategories[index].isActive = true;
 
     this.setState({ skillCategories, activeCategory: index });
-    this.setModel(skillCategories[index].name, this.state.fromDate, this.state.toDate);
+    this.setModel(skillCategories[index].name, this.state.startDate, this.state.endDate);
     this.setContainerWidth();
   }
 
   onDateChange(dateInput, date) {
-    const fromDate = dateInput === 'fromDate' ? date : this.state.fromDate;
-    const toDate = dateInput === 'toDate' ? date : this.state.toDate;
+    const startDate = dateInput === 'startDate' ? date : this.state.startDate;
+    const endDate = dateInput === 'endDate' ? date : this.state.endDate;
 
     this.setState({ [dateInput]: date });
-    this.setModel(this.getActiveCategory(), fromDate, toDate);
+    this.setModel(this.getActiveCategory(), startDate, endDate);
     this.setContainerWidth();
   }
 }

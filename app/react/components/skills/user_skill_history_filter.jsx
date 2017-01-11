@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class UserSkillHistoryFilter extends React.Component {
   render() {
-    const {cssNamespace, listItems, listPrimaryText, onItemClick, setDateRange, fromDate, toDate, onDateChange} = this.props;
+    const {cssNamespace, listItems, listPrimaryText, onItemClick, setDateRange, startDate, endDate, onDateChange} = this.props;
     const listElements = listItems.reduce((acc, listItem, index) => {
       const activeClass = listItem.isActive ? `${cssNamespace}__filter-category-active-item` : '';
 
@@ -25,9 +25,9 @@ export default class UserSkillHistoryFilter extends React.Component {
         <button className={`${cssNamespace}__filter-date-button btn btn-primary`} onClick={() => {setDateRange(1);}}>last month</button>
         <button className={`${cssNamespace}__filter-date-button btn btn-primary`} onClick={() => {setDateRange(3);}}>last 3 months</button>
         <div className={`${cssNamespace}__filter-date-label`}>From:</div>
-        <input className={`${cssNamespace}__filter-date-input form-control`} type="date" value={fromDate} onChange={(event) => {onDateChange('fromDate', event.target.value);}} />
+        <input className={`${cssNamespace}__filter-date-input form-control`} type="date" value={startDate} onChange={(event) => {onDateChange('startDate', event.target.value);}} />
         <div className={`${cssNamespace}__filter-date-label`}>To:</div>
-        <input className={`${cssNamespace}__filter-date-input form-control`} type="date" value={toDate} onChange={(event) => {onDateChange('toDate', event.target.value);}} />
+        <input className={`${cssNamespace}__filter-date-input form-control`} type="date" value={endDate} onChange={(event) => {onDateChange('endDate', event.target.value);}} />
       </div>
     </div>;
   }

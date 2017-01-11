@@ -229,6 +229,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getGridLinesWithLabels() {
+    //const {startDate, endDate} = this.props;
     const nowDate = Moment();
     const startDate = Moment(nowDate).subtract(this.totalDays - this.nextDays, 'days');
     const endDate = Moment(nowDate).add(this.nextDays, 'days');
