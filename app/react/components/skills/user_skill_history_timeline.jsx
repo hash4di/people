@@ -173,16 +173,18 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getCharts() {
-    return this.props.model.data.reduce((acc, skillData, index) => {
-      const offsetTop = (this.chartHeight + this.chartPadding * 2) * index + this.chartPadding + this.gridLabelsHeight;
-      const offsetLeft = this.svgWidth - this.nextDaysWidth - (skillData.totalDays * this.svgWidthScale);
+    const {chartHeight, chartPadding, gridLabelsHeight, svgWidth, nextDaysWidth, svgWidthScale, props: {model: {data}}} = this;
 
-      return acc.concat(this.getChart(skillData, this.chartHeight, offsetTop, offsetLeft));
+    return data.reduce((acc, {points, maxRate, totalDays}, index) => {
+      const offsetTop = (chartHeight + chartPadding * 2) * index + chartPadding + gridLabelsHeight;
+      const offsetLeft = svgWidth - nextDaysWidth - (totalDays * svgWidthScale);
+
+      return acc.concat(this.getChart(points, maxRate, offsetTop, offsetLeft));
     }, []);
   }
 
-  getChart({points, maxRate}, chartHeight, offsetTop, offsetLeft) {
-    const {svgWidthScale, chartStrokeWidth, noteAttributes, verticalLineAttributes, props: {cssNamespace}} = this;
+  getChart(points, maxRate, offsetTop, offsetLeft) {
+    const {svgWidthScale, chartStrokeWidth, noteAttributes, verticalLineAttributes, chartHeight, props: {cssNamespace}} = this;
     const verticalLines = [];
     const horizontalLines = [];
     const notes = [];
