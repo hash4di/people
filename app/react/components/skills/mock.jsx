@@ -345,5 +345,18 @@ getModel2(data) {
         }
       ]
     };
+  },
+
+  getModel5() {
+    return {"data":[
+      {"skillName":"Web Interface Design","maxRate":3,"points":[
+        {"days":30,"favorite":false,"note":"cool","rate":1},
+        //{"days":29,"favorite":true,"note":"test","rate":1},
+        //{"days":30,"favorite":true,"note":"test","rate":2},
+        //{"days":0,"favorite":false,"note":"","rate":3},
+        //{"days":29,"favorite":true,"note":"test","rate":3},
+        //{"days":18,"favorite":false,"note":"","rate":0},
+        //{"days":11,"favorite":false,"note":"","rate":0}
+      ],"totalDays":30}],"meta":{"maximumDays":30}};
   }
 };

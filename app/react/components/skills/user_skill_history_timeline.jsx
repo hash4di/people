@@ -45,7 +45,9 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   render() {
-    return <div className={this.props.cssNamespace}>
+    const loadingStateClass = this.props.loadingState ? `${this.props.cssNamespace}--loading` : '';
+
+    return <div className={`${this.props.cssNamespace} ${loadingStateClass}`}>
       {this.getSkillLabels()}
       {this.getTimeline()}
     </div>;
