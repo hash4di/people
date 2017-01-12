@@ -118,9 +118,9 @@ export default class UserSkillHistoryTimeline extends React.Component {
     this.svgWidthScale = svgWidthScale;
   }
 
-  getSVGwidthScale(timelineWidth, requiredDays, minimumSVGwidthScale) {
-    const scale = timelineWidth / requiredDays;
-    return scale < minimumSVGwidthScale ? minimumSVGwidthScale : scale;
+  getSVGwidthScale(width, days, minimumScale) {
+    const scale = width / days;
+    return scale < minimumScale ? minimumScale : scale;
   }
 
   getExtraDaysForMargin(days) {
