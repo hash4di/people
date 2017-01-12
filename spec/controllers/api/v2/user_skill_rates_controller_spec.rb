@@ -15,23 +15,15 @@ describe Api::V2::UserSkillRatesController do
       end
     end
 
-    context 'with api token and without user id' do
-      let(:request) { get :index, token: token }
-
-      it 'returns ActiveRecord::RecordNotFound error' do
-        expect { request }.to raise_error ActiveRecord::RecordNotFound
-      end
-    end
-
-    context 'with api token and user id' do
-      before { get :index, token: token, user_id: user.id }
+    context 'with api token and user email' do
+      before { get :index, token: token, user_email: user.email }
 
       it { expect(response.status).to eq(200) }
 
       it 'returns correct hash', :aggregate_failures do
-        response = json_response['user_skill_rates']['user_with_skill_rates']
-        expect(response.keys).to include(user.email)
-        expect(response[user.email].length).to eq(2)
+        skill_rates = json_response['user_skill_rates']['skill_rates']
+        expect(skill_rates).to be_a(Array)
+        expect(skill_rates.size).to eq(2)
       end
     end
   end

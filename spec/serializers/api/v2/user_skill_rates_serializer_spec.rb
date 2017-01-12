@@ -9,9 +9,8 @@ describe Api::V2::UserSkillRatesSerializer do
 
   context 'returns user skill rates hash' do
     it 'returns correct hash', :aggregate_failures do
-      expect(subject[:user_with_skill_rates].keys).to include(user.email)
-      expect(subject[:user_with_skill_rates][user.email].length).to eq(2)
-      expect(subject[:user_with_skill_rates][user.email].last[:rate]).to eq(0)
+      expect(subject[:skill_rates]).to be_a(Array)
+      expect(subject[:skill_rates].size).to eq(2)
     end
   end
 end
