@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Api::V2::UserSkillRatesController do
   describe 'GET #index' do
     let(:token) { AppConfig.api_token }
-    let(:user) { create :user, email: 'john.smith@netguru.pl' }
-    let(:skill) { create :skill }
+    let(:user) { create(:user, email: 'john.smith@netguru.pl') }
+    let(:skill) { create(:skill) }
     let(:unknown_email) { 'asdasd@netguru.pl' }
     let!(:user_skill_rate1) { create(:user_skill_rate, user: user, skill: skill, rate: 3) }
     let!(:user_skill_rate2) { create(:user_skill_rate, user: user, skill: skill) }
@@ -23,7 +23,8 @@ describe Api::V2::UserSkillRatesController do
 
       it 'returns correct hash', :aggregate_failures do
         skill_rates = json_response['user_skill_rates']
-        expect(skill_rates).to eq(nil)
+        expect(skill_rates).to be_a(Array)
+        expect(skill_rates.size).to eq(0)
       end
     end
 
@@ -33,7 +34,7 @@ describe Api::V2::UserSkillRatesController do
       it { expect(response.status).to eq(200) }
 
       it 'returns correct hash', :aggregate_failures do
-        skill_rates = json_response['user_skill_rates']['skill_rates']
+        skill_rates = json_response['user_skill_rates']
         expect(skill_rates).to be_a(Array)
         expect(skill_rates.size).to eq(2)
       end
@@ -45,7 +46,7 @@ describe Api::V2::UserSkillRatesController do
       it { expect(response.status).to eq(200) }
 
       it 'returns correct hash', :aggregate_failures do
-        skill_rates = json_response['user_skill_rates']['skill_rates']
+        skill_rates = json_response['user_skill_rates']
         expect(skill_rates).to be_a(Array)
         expect(skill_rates.size).to eq(2)
       end
