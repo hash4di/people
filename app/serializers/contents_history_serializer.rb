@@ -48,7 +48,7 @@ class ContentsHistorySerializer < ActiveModel::Serializer
   private
 
   def date_range_set?
-    context.present? && context[:start_date].present? && context[:end_date].present?
+    context.present? && start_date.present? && end_date.present?
   end
 
   def start_date
