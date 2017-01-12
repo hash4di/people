@@ -2,7 +2,6 @@ import React from 'react';
 import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
 import Moment from 'moment';
-import { getModel, getModel2, getModel3, getModel4, getModel5 } from './mock';
 
 export default class UserSkillHistory extends React.Component {
   cssNamespace = 'user-skill-history'
@@ -103,38 +102,23 @@ export default class UserSkillHistory extends React.Component {
     this.setModel(this.getActiveCategory(), startDate, endDate);
   }
 
-  setModel(category, startDate, endDate, firstSet) {
-    if (category === 'design') {
-      this.setState({ loadingState: true });
-      return $.ajax({
-        url: Routes.api_v3_user_skill_rates_path(),
-        dataType: 'json',
-        data: {
-          category,
-          token: 'miamiamia',
-          user_id: this.props.user_id,
-          start_date: Moment(startDate).format(),
-          end_date: Moment(endDate).format()
-        }
-      }).done((data) => {
-        const model = this.getModel(data, startDate, endDate);
-        this.setState({ model, loadingState: false });
-      });
-    }
+  setModel(category, startDate, endDate) {
+    this.setState({ loadingState: true });
 
-    let mock;
-
-    if (category === 'backend') mock = getModel();
-    if (category === 'devops') mock = getModel2();
-    if (category === 'ios') mock = getModel3();
-    if (category === 'frontend') mock = getModel4();
-    if (category === 'android') mock = getModel5();
-
-    if (firstSet) {
-      this.state.model = mock;
-    } else {
-      this.setState({model: mock});
-    }
+    $.ajax({
+      url: Routes.api_v3_user_skill_rates_path(),
+      dataType: 'json',
+      data: {
+        category,
+        token: 'miamiamia',
+        user_id: this.props.user_id,
+        start_date: Moment(startDate).format(),
+        end_date: Moment(endDate).format()
+      }
+    }).done((data) => {
+      const model = this.getModel(data, startDate, endDate);
+      this.setState({ model, loadingState: false });
+    });
   }
 
   getModel(data, startDate, endDate) {
@@ -187,14 +171,8 @@ export default class UserSkillHistory extends React.Component {
     return result;
   }
 
-  setContainerWidth(firstSet) {
-    const containerWidth = $('#main-container > div.container').width();
-
-    if (firstSet) {
-      this.state.containerWidth = containerWidth;
-    } else {
-      this.setState({ containerWidth });
-    }
+  setContainerWidth() {
+    this.setState({containerWidth: $('#main-container > div.container').width()});
   }
 
   setActiveCategory(index) {
