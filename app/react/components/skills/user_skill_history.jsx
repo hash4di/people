@@ -40,9 +40,7 @@ export default class UserSkillHistory extends React.Component {
     endDate: null,
     containerWidth: null,
     loadingState: true,
-    model: {data: [], meta: {
-      maximumDays: null
-    }}
+    model: []
   }
 
   constructor(props) {
@@ -146,7 +144,7 @@ export default class UserSkillHistory extends React.Component {
       const points = this.getPointsTable(item, endDate);
       const totalDays = this.getTotalDays(points);
 
-      model.data.push({
+      model.push({
         skillName: item.name,
         maxRate: item.rate_type === 'range' ? 3 : 1,
         daysOffset: daysInRange - totalDays,
@@ -154,12 +152,8 @@ export default class UserSkillHistory extends React.Component {
         totalDays
       });
 
-      if (totalDays > model.meta.maximumDays) model.meta.maximumDays = totalDays;
-
       return model;
-    }, {data: [], meta: {
-      maximumDays: null
-    }});
+    }, []);
   }
 
   getTotalDays(points) {

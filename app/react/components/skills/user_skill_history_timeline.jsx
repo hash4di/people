@@ -104,7 +104,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
     $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover({html: true, content: legendPopoverHTML.innerHTML});
   }
 
-  updateComponentProperties({model: {data}, containerWidth, startDate, endDate}) {
+  updateComponentProperties({model, containerWidth, startDate, endDate}) {
     const {gridLabelsHeight, legendWidth, minimumSVGwidthScale, chartHeight, chartPadding} = this;
 
     const daysInRange = Moment(endDate).diff(startDate, 'days');
@@ -115,7 +115,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
     const svgWidthScale = requiredDays < 90 ? timelineWidth / requiredDays : minimumSVGwidthScale;
 
     this.svgWidth = requiredDays * svgWidthScale;
-    this.svgHeight = data.length * (chartHeight + chartPadding * 2) + gridLabelsHeight;
+    this.svgHeight = model.length * (chartHeight + chartPadding * 2) + gridLabelsHeight;
     this.svgWidthScale = svgWidthScale;
   }
 
@@ -131,8 +131,8 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getSkillLabels() {
-    const {legendWidth, props: {cssNamespace, model: {data}}} = this;
-    const skillLabels = data.reduce((acc, skillData) => acc.concat(
+    const {legendWidth, props: {cssNamespace, model}} = this;
+    const skillLabels = model.reduce((acc, skillData) => acc.concat(
       <li className={`${cssNamespace}__labels-item`}>{skillData.skillName}</li>
     ), []);
 
@@ -157,7 +157,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getTimelineBackground() {
-    const {svgWidth, chartHeight, chartPadding, gridLabelsHeight, props: {model: {data: {length}}}} = this;
+    const {svgWidth, chartHeight, chartPadding, gridLabelsHeight, props: {model: {length}}} = this;
     const elements = [];
 
     for (let i = 0; i < length; ++i) {
@@ -188,9 +188,9 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getCharts() {
-    const {chartHeight, chartPadding, gridLabelsHeight, svgWidthScale, props: {model: {data}}} = this;
+    const {chartHeight, chartPadding, gridLabelsHeight, svgWidthScale, props: {model}} = this;
 
-    return data.reduce((acc, {points, maxRate, totalDays, daysOffset}, index) => {
+    return model.reduce((acc, {points, maxRate, totalDays, daysOffset}, index) => {
       const offsetTop = (chartHeight + chartPadding * 2) * index + chartPadding + gridLabelsHeight;
       const offsetLeft = daysOffset * svgWidthScale;
 
