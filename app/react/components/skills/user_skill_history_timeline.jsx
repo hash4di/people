@@ -5,9 +5,6 @@ import Moment from 'moment';
 export default class UserSkillHistoryTimeline extends React.Component {
   minimumSVGwidthScale = 5
   minimumSVGwidth = 500
-  nextDaysOnLongDateRange = 20
-  nextDaysOnShortDateRange = 10
-  previousDays = 5
   labelFontSize = 14
   chartHeight = 70
   chartPadding = 10
@@ -15,14 +12,9 @@ export default class UserSkillHistoryTimeline extends React.Component {
   gridLabelsHeight = 35
   legendWidth = 200
 
-  totalDays = null
-  previousDaysWidth = null
-  nextDaysWidth = null
-  heightWidth = null
   svgWidth = null
   svgWidthScale = null
-  containerWidth = null
-  nextDays = null
+  svgHeight = null
 
   verticalLineAttributes = {
     strokeWidth: '1',
