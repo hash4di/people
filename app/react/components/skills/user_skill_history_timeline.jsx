@@ -4,7 +4,6 @@ import Moment from 'moment';
 
 export default class UserSkillHistoryTimeline extends React.Component {
   minimumSVGwidthScale = 5
-  minimumSVGwidth = 500
   labelFontSize = 14
   chartHeight = 70
   chartPadding = 10
@@ -112,16 +111,21 @@ export default class UserSkillHistoryTimeline extends React.Component {
     const requiredDays = daysInRange + extraDaysForMargin;
 
     const timelineWidth = containerWidth - legendWidth;
-    const svgWidthScale = requiredDays < 90 ? timelineWidth / requiredDays : minimumSVGwidthScale;
+    const svgWidthScale = this.getSVGwidthScale(timelineWidth, requiredDays, minimumSVGwidthScale);
 
     this.svgWidth = requiredDays * svgWidthScale;
     this.svgHeight = model.length * (chartHeight + chartPadding * 2) + gridLabelsHeight;
     this.svgWidthScale = svgWidthScale;
   }
 
+  getSVGwidthScale(timelineWidth, requiredDays, minimumSVGwidthScale) {
+    const scale = timelineWidth / requiredDays;
+    return scale < minimumSVGwidthScale ? minimumSVGwidthScale : scale;
+  }
+
   getExtraDaysForMargin(days) {
-    if (days < 30) return 10;
-    else if (days < 90) return 20;
+    if (days < 30) return 5;
+    else if (days < 90) return 10;
     else return 30;
   }
 
