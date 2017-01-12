@@ -6,7 +6,7 @@
       %h4.skills-header.text-primary Skill categories:
     - @grouped_skills_by_category.keys.each_with_index do |skill_category|
       %li{ role: "presentation" }
-        %a{ id: "#{parametrize(skill_category)}-tab", aria: { controls: skill_category.parameterize('_'), expanded: "false"}, data: { toggle: "tab" }, href: "##{skill_category.parameterize('_')}", role: "tab" }= skill_category
+        %a{ id: "#{parameterize(skill_category)}-tab", aria: { controls: parameterize(skill_category), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(skill_category)}", role: "tab" }= skill_category
     %li.pull-right{ role: "presentation" }
       = link_to new_skill_path, role: 'button' do
         %i.glyphicon.glyphicon-plus
@@ -14,7 +14,7 @@
 
   .tab-content
     - @grouped_skills_by_category.each do |skill_category, skills|
-      .tab-pane.fade{ id: "#{parametrize(skill_category)}", aria: { labelledby: "#{parametrize(skill_category)}-tab" }, role: "tabpanel" }
+      .tab-pane.fade{ id: "#{parameterize(skill_category)}", aria: { labelledby: "#{parameterize(skill_category)}-tab" }, role: "tabpanel" }
         %table.table.table-striped.table-condensed
           %thead
             %tr

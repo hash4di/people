@@ -36,7 +36,7 @@ module ApplicationHelper
     link_to user.name, user_path(user)
   end
 
-  def parametrize(text)
+  def parameterize(text)
     text.parameterize('_')
   end
 
