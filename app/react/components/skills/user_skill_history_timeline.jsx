@@ -1,8 +1,14 @@
-import React from 'react';
+import {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Moment from 'moment';
+import {LONG_MONTH_DAY} from '../../constants/date_formats';
+import {
+  YELLOW, RED, SUNSET, GREEN, BLACK, GREY,
+  WHITE, DARK_BLUE, LIGHT_BLUE, LIGHT_GREY
+} from '../../constants/colors';
+import classNames from 'classnames';
 
-export default class UserSkillHistoryTimeline extends React.Component {
+export default class UserSkillHistoryTimeline extends Component {
   minimumSVGwidthScale = 5
   labelFontSize = 14
   chartHeight = 70
@@ -18,13 +24,13 @@ export default class UserSkillHistoryTimeline extends React.Component {
   verticalLineAttributes = {
     strokeWidth: '1',
     strokeDasharray: '1, 6',
-    stroke: 'black'
+    stroke: BLACK
   };
 
   noteAttributes = {
     strokeWidth: '1',
-    stroke: '#084F73',
-    fill: '#23a9db'
+    stroke: DARK_BLUE,
+    fill: LIGHT_BLUE
   };
 
   constructor(props) {
@@ -48,17 +54,19 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   render() {
-    const {props: {loadingState, cssNamespace}} = this;
+    const {loadingState, cssNamespace} = this.props;
     const loadingStateClass = loadingState ? `${cssNamespace}--loading` : '';
 
-    return <div className={`${cssNamespace} ${loadingStateClass}`}>
-      {this.getSkillLabels()}
-      {this.getTimeline()}
-    </div>;
+    return (
+      <div className={`${cssNamespace} ${loadingStateClass}`}>
+        {this.getSkillLabels()}
+        {this.getTimeline()}
+      </div>
+    );
   }
 
   getLegend() {
-    const {props: {cssNamespace}} = this;
+    const {cssNamespace} = this.props;
     const rateItems = [];
 
     for (let i = 0; i <= 3; ++i) {
@@ -66,8 +74,12 @@ export default class UserSkillHistoryTimeline extends React.Component {
 
       rateItems.push(
         <li className={`${cssNamespace}__legend-list-item`}>
-          <div className={`${cssNamespace}__legend-list-item-symbol
-            ${cssNamespace}__legend-list-item-symbol--rate-${i}`}></div>
+          <div
+            className={classNames(
+              `${cssNamespace}__legend-list-item-symbol`,
+              `${cssNamespace}__legend-list-item-symbol--rate-${i}`
+            )}>
+          </div>
           {text}
         </li>
       );
@@ -78,9 +90,19 @@ export default class UserSkillHistoryTimeline extends React.Component {
         <div className={`${cssNamespace}__legend-title`}>Legend:</div>
         <ul className={`${cssNamespace}__legend-list`}>
           {rateItems}
-          <li className={`${cssNamespace}__legend-list-item ${cssNamespace}__legend-list-item--top-margin`}>
-            <div className={`${cssNamespace}__legend-list-item-symbol
-              ${cssNamespace}__legend-list-item-symbol--dashed`}></div>
+          <li
+            className={classNames(
+              `${cssNamespace}__legend-list-item`,
+              `${cssNamespace}__legend-list-item--top-margin`
+            )}
+          >
+            <div
+              className={classNames(
+                `${cssNamespace}__legend-list-item-symbol`,
+                `${cssNamespace}__legend-list-item-symbol--dashed`
+              )}
+            >
+            </div>
             Normal skill
           </li>
           <li className={`${cssNamespace}__legend-list-item`}>
@@ -125,8 +147,8 @@ export default class UserSkillHistoryTimeline extends React.Component {
 
   getExtraDaysForMargin(days) {
     if (days < 30) return 5;
-    else if (days < 90) return 10;
-    else return 30;
+    if (days < 90) return 10;
+    return 30;
   }
 
   scrollRight() {
@@ -152,7 +174,13 @@ export default class UserSkillHistoryTimeline extends React.Component {
     const {svgWidth, svgHeight, props: {cssNamespace}} = this;
 
     return <div className={`${cssNamespace}__timeline`}>
-      <svg version="1.1" baseProfile="full" width={svgWidth} height={svgHeight} xmlns="http://www.w3.org/2000/svg">
+      <svg
+        version="1.1"
+        baseProfile="full"
+        width={svgWidth}
+        height={svgHeight}
+        xmlns="http://www.w3.org/2000/svg"
+      >
         {this.getTimelineBackground()}
         {this.getGridLinesWithLabels()}
         {this.getCharts()}
@@ -174,7 +202,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
           x: '0',
           y: rectanglePositionY,
           width: svgWidth,
-          fill: i % 2 === 0 ? '#f2f4f5' : 'white',
+          fill: i % 2 === 0 ? LIGHT_GREY : WHITE,
           height
         }}),
         this.getJSXobject({tagName: 'line', attributes: {
@@ -183,7 +211,7 @@ export default class UserSkillHistoryTimeline extends React.Component {
           x2: svgWidth,
           y2: linePositionY,
           strokeWidth: '1',
-          stroke: '#d6dade'
+          stroke: GREY
         }})
       );
     }
@@ -203,7 +231,10 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getChart(points, maxRate, offsetTop, offsetLeft) {
-    const {svgWidthScale, chartStrokeWidth, noteAttributes, verticalLineAttributes, chartHeight, props: {cssNamespace}} = this;
+    const {
+      svgWidthScale, chartStrokeWidth, noteAttributes,
+      verticalLineAttributes, chartHeight, props: {cssNamespace}
+    } = this;
     const verticalLines = [];
     const horizontalLines = [];
     const notes = [];
@@ -281,15 +312,18 @@ export default class UserSkillHistoryTimeline extends React.Component {
   getChartColor(rate, maxRate) {
     const value = rate / maxRate;
 
-    if (value === 0) return '#FF2D0E';
-    else if (value >= 0.25 && value < 0.5) return '#E87200';
-    else if (value >= 0.5 && value < 0.75) return '#FFC300';
-    else if (value >= 0.75 && value <= 1) return '#57B80F';
-    else return 'black';
+    if (value < 0.25) return RED;
+    if (value < 0.5) return SUNSET;
+    if (value < 0.75) return YELLOW;
+    if (value <= 1) return GREEN;
+    return BLACK;
   }
 
   getGridLinesWithLabels() {
-    const {svgWidthScale, labelFontSize, gridLabelsHeight, svgWidth, svgHeight, props: {startDate, endDate}} = this;
+    const {
+      svgWidthScale, labelFontSize, gridLabelsHeight,
+      svgWidth, svgHeight, props: {startDate, endDate}
+    } = this;
     const currentDate = Moment(startDate);
     const lines = [];
     const labels = [];
@@ -303,13 +337,13 @@ export default class UserSkillHistoryTimeline extends React.Component {
         y1: '0',
         x2: positionX,
         y2: svgHeight,
-        stroke: '#d6dade'
+        stroke: GREY
       }}));
 
-      labels.push(this.getJSXobject({tagName: 'text', content: currentDate.format('MMMM Y'), attributes: {
+      labels.push(this.getJSXobject({tagName: 'text', content: currentDate.format(LONG_MONTH_DAY), attributes: {
         x: positionX + 10,
         y: labelFontSize + 10,
-        fill: 'black'
+        fill: BLACK
       }}));
     }
 
@@ -321,26 +355,29 @@ export default class UserSkillHistoryTimeline extends React.Component {
         y1: '0',
         x2: positionX,
         y2: svgHeight,
-        stroke: 'red'
+        stroke: RED
       }}),
       this.getJSXobject({tagName: 'line', attributes: {
         x1: '0',
         y1: gridLabelsHeight,
         x2: svgWidth,
         y2: gridLabelsHeight,
-        stroke: '#d6dade'
+        stroke: GREY
       }})
     );
 
     labels.push(this.getJSXobject({tagName: 'text', content: 'Today', attributes: {
       x: positionX + 10,
       y: labelFontSize + 40,
-      fill: 'red'
+      fill: RED
     }}));
 
     return [
       this.getJSXobject({tagName: 'g', content: lines, attributes: {strokeWidth: '1'}}),
-      this.getJSXobject({tagName: 'g', content: labels, attributes: {fontFamily: 'Helvetica Neue', fontSize: labelFontSize}})
+      this.getJSXobject({tagName: 'g', content: labels, attributes: {
+        fontFamily: 'Helvetica Neue',
+        fontSize: labelFontSize}
+      })
     ];
   }
 }

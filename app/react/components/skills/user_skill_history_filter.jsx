@@ -1,8 +1,18 @@
-import React from 'react';
+import {Component} from 'react';
 
-export default class UserSkillHistoryFilter extends React.Component {
+export default class UserSkillHistoryFilter extends Component {
   render() {
-    const {cssNamespace, listItems, listPrimaryText, onItemClick, setDateRange, startDate, endDate, onDateChange} = this.props;
+    const {
+      cssNamespace,
+      listItems,
+      listPrimaryText,
+      onItemClick,
+      setDateRange,
+      startDate,
+      endDate,
+      onDateChange
+    } = this.props;
+
     const listElements = listItems.reduce((acc, listItem, index) => {
       const activeClass = listItem.isActive ? `${cssNamespace}__filter-category-active-item` : '';
 
@@ -10,7 +20,9 @@ export default class UserSkillHistoryFilter extends React.Component {
         <li
           className={`${cssNamespace}__filter-category-list-item ${activeClass}`}
           onClick={() => {onItemClick(index);}}
-        >{listItem.name}</li>
+        >
+          {listItem.name}
+        </li>
       );
     }, []);
 
@@ -22,12 +34,32 @@ export default class UserSkillHistoryFilter extends React.Component {
         </ul>
       </div>
       <div className={`${cssNamespace}__filter-date`}>
-        <button className={`${cssNamespace}__filter-date-button btn btn-primary`} onClick={() => {setDateRange(1);}}>last month</button>
-        <button className={`${cssNamespace}__filter-date-button btn btn-primary`} onClick={() => {setDateRange(3);}}>last 3 months</button>
+        <button
+          className={`${cssNamespace}__filter-date-button btn btn-primary`}
+          onClick={() => setDateRange(1)}
+        >
+          last month
+        </button>
+        <button
+          className={`${cssNamespace}__filter-date-button btn btn-primary`}
+          onClick={() => setDateRange(3)}
+        >
+          last 3 months
+        </button>
         <div className={`${cssNamespace}__filter-date-label`}>From:</div>
-        <input className={`${cssNamespace}__filter-date-input form-control`} type="date" value={startDate} onChange={(event) => {onDateChange('startDate', event.target.value);}} />
+        <input
+          className={`${cssNamespace}__filter-date-input form-control`}
+          type="date"
+          value={startDate}
+          onChange={(event) => onDateChange('startDate', event.target.value)}
+        />
         <div className={`${cssNamespace}__filter-date-label`}>To:</div>
-        <input className={`${cssNamespace}__filter-date-input form-control`} type="date" value={endDate} onChange={(event) => {onDateChange('endDate', event.target.value);}} />
+        <input
+          className={`${cssNamespace}__filter-date-input form-control`}
+          type="date"
+          value={endDate}
+          onChange={(event) => onDateChange('endDate', event.target.value)}
+        />
       </div>
     </div>;
   }

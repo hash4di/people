@@ -1,11 +1,11 @@
-import React from 'react';
+import {Component} from 'react';
 import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
 import Moment from 'moment';
+import {LONG_DATE} from '../../constants/date_formats'
 
-export default class UserSkillHistory extends React.Component {
+export default class UserSkillHistory extends Component {
   cssNamespace = 'user-skill-history'
-  dateFormat = 'Y-MM-DD'
 
   state = {
     activeCategory: 4,
@@ -44,8 +44,8 @@ export default class UserSkillHistory extends React.Component {
 
   constructor(props) {
     super(props);
-    const startDate = Moment().subtract(12, 'months').format(this.dateFormat);
-    const endDate = Moment().format(this.dateFormat);
+    const startDate = Moment().subtract(12, 'months').format(LONG_DATE);
+    const endDate = Moment().format(LONG_DATE);
 
     this.state.startDate = startDate;
     this.state.endDate = endDate;
@@ -83,11 +83,13 @@ export default class UserSkillHistory extends React.Component {
   }
 
   getLoadingState() {
-    if (this.state.loadingState) return (
-      <div className={`progress-bar progress-bar-striped active ${this.cssNamespace}-loading-state`}>
-        Loading, please wait...
-      </div>
-    );
+    if (this.state.loadingState) {
+      return (
+        <div className={`progress-bar progress-bar-striped active ${this.cssNamespace}-loading-state`}>
+          Loading, please wait...
+        </div>
+      );
+    }
   }
 
   getActiveCategory() {
@@ -95,8 +97,8 @@ export default class UserSkillHistory extends React.Component {
   }
 
   setDateRange(months) {
-    const startDate = Moment().subtract(months, 'months').format(this.dateFormat);
-    const endDate = Moment().format(this.dateFormat);
+    const startDate = Moment().subtract(months, 'months').format(LONG_DATE);
+    const endDate = Moment().format(LONG_DATE);
 
     this.setState({ startDate, endDate });
     this.setModel(this.getActiveCategory(), startDate, endDate);
@@ -141,9 +143,7 @@ export default class UserSkillHistory extends React.Component {
   }
 
   getTotalDays(points) {
-    return points.reduce((acc, point) => {
-      return acc + point.days;
-    }, 0);
+    return points.reduce((acc, point) => acc + point.days, 0);
   }
 
   getPointsTable(item, endDate) {
@@ -152,7 +152,7 @@ export default class UserSkillHistory extends React.Component {
     let datePointer = null;
 
     if (item.first_change_before_data_range) pointsTable.push(item.first_change_before_data_range);
-    if (item.history) pointsTable = [].concat(pointsTable, item.history);
+    if (item.history) pointsTable = pointsTable.concat(item.history);
     if (pointsTable[0]) datePointer = Moment(pointsTable[0].created_at);
 
     pointsTable.forEach((item, index, pointsTable) => {

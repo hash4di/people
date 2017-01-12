@@ -21,17 +21,17 @@
 
     &__labels-item {
       padding: 10px;
-      border-bottom: 1px solid #d6dade;
-      border-right: 1px solid #d6dade;
+      border-bottom: 1px solid $color-grey;
+      border-right: 1px solid $color-grey;
       box-sizing: border-box;
       height: 90px;
 
       &:first-child {
-        border-top: 1px solid #d6dade;
+        border-top: 1px solid $color-grey;
       }
 
       &:nth-of-type(odd) {
-        background-color: #f2f4f5;
+        background-color: $color-light-grey;
       }
     }
 
@@ -49,7 +49,7 @@
       flex-shrink: 0;
 
       &-title {
-        color: #23a9db;
+        color: $color-light-blue;
         font-weight: bold;
         font-size: 18px;
         text-align: center;
@@ -70,25 +70,25 @@
       }
 
       &-list-item-symbol {
-        border-top: 3px solid black;
+        border-top: 3px solid $color-brack;
         height: 3px;
         margin-right: 10px;
         width: 50px;
 
         &--rate-0 {
-          border-top-color: #FF2D0E;
+          border-top-color: $color-red;
         }
 
         &--rate-1 {
-          border-top-color: #E87200;
+          border-top-color: $color-sunset;
         }
 
         &--rate-2 {
-          border-top-color: #FFC300;
+          border-top-color: $color-yellow;
         }
 
         &--rate-3 {
-          border-top-color: #57B80F;
+          border-top-color: $color-green;
         }
 
         &--dashed {
@@ -102,10 +102,10 @@
     &__filter-category {
       display: flex;
       margin: 10px 0;
-      border-bottom: 1px solid #d6dade;
+      border-bottom: 1px solid $color-grey;
 
       &-primary-text {
-        color: #f5a122;
+        color: $color-orange;
         font-size: 18px;
         font-weight: bold;
         line-height: 18px;
@@ -122,8 +122,8 @@
       }
 
       &-active-item {
-        color: #f5a122;
-        border-bottom: 3px solid #f5a122;
+        color: $color-orange;
+        border-bottom: 3px solid $color-orange;
         padding-bottom: 15px;
       }
     }
@@ -131,7 +131,7 @@
     &__filter-date {
       display: flex;
       align-items: baseline;
-      border-bottom: 1px solid #d6dade;
+      border-bottom: 1px solid $color-grey;
       margin-bottom: 10px;
       padding-bottom: 10px;
 
