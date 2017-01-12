@@ -1,57 +1,5 @@
 class UserSkillRatesController < ApplicationController
   expose(:user_skill_rate) { UserSkillRate.find(params[:id]) }
-  expose(:grouped_skills_by_category_mock) do
-    {
-      frontend:
-        [
-          {
-            id: 8,
-            category: 'frontend',
-            name: 'CSS',
-            description: 'react tool',
-            rate: 1,
-            rate_type: 'range',
-            note: 'it is ok',
-            favorite: true,
-            user_skill_rate_contents:
-              [
-                {
-                  favorite: true,
-                  note: 'ntuhatusone',
-                  rate: 2,
-                  created_at: '2016-12-20T15:35:59.859+01:00'
-                },
-                {
-                  favorite: true,
-                  note: 'tneoahuntsau',
-                  rate: 3,
-                  created_at: '2016-12-20T15:35:59.859+01:00'
-                }
-              ]
-          },
-          {
-            id: 18,
-            category: 'frontend',
-            name: 'HTML',
-            description: 'react tool',
-            rate: 0,
-            rate_type: 'boolean',
-            note: 'it is ok',
-            favorite: false,
-            user_skill_rate_contents:
-              [
-                {
-                  favorite: false,
-                  note: 'ntuhatusone',
-                  rate: 1,
-                  created_at: '2016-12-20T15:35:59.859+01:00'
-                }
-              ]
-          }
-        ],
-      backend: {}
-    }
-  end
   expose(:grouped_skills_by_category) do
     UserSkillRatesQuery.new(current_user).results_by_categories
   end
