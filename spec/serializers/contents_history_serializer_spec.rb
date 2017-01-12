@@ -1,6 +1,27 @@
 require 'spec_helper'
 
 describe ContentsHistorySerializer do
+
+  shared_examples "return correct attributes" do
+    it { expect(subject[:user_id]).to eq(user_skill_rate.user_id) }
+    it { expect(subject[:skill_id]).to eq(user_skill_rate.skill_id) }
+    it { expect(subject[:rate]).to eq(user_skill_rate.rate) }
+    it { expect(subject[:created_at]).to eq(user_skill_rate.created_at) }
+    it { expect(subject[:updated_at]).to eq(user_skill_rate.updated_at) }
+    it { expect(subject[:note]).to eq(user_skill_rate.note) }
+    it { expect(subject[:favorite]).to eq(user_skill_rate.favorite) }
+    it { expect(subject[:name]).to eq(skill.name) }
+    it { expect(subject[:description]).to eq(skill.description) }
+    it { expect(subject[:rate_type]).to eq(skill.rate_type) }
+    it { expect(subject[:category]).to eq(skill_category.name) }
+    it { expect(subject[:history]).to eq(expected_history) }
+    it do
+      expect(subject[:first_change_before_data_range]).to eq(
+        expected_first_change_before_data_range
+      )
+    end
+  end
+
   subject { described_class.new(user_skill_rate).serializable_hash }
 
   let(:freeze_time) { Time.local(2017, 1, 11, 17, 50, 0) }
@@ -25,53 +46,27 @@ describe ContentsHistorySerializer do
   end
 
   context 'when date range is set' do
-    let(:context) do
-      { start_date: freeze_time + 45.days, end_date: freeze_time + 75.days }
-    end
     subject do
       described_class.new(user_skill_rate, context: context).serializable_hash
     end
 
-    it { expect(subject[:user_id]).to eq(user_skill_rate.user_id) }
-    it { expect(subject[:skill_id]).to eq(user_skill_rate.skill_id) }
-    it { expect(subject[:rate]).to eq(user_skill_rate.rate) }
-    it { expect(subject[:created_at]).to eq(user_skill_rate.created_at) }
-    it { expect(subject[:updated_at]).to eq(user_skill_rate.updated_at) }
-    it { expect(subject[:note]).to eq(user_skill_rate.note) }
-    it { expect(subject[:favorite]).to eq(user_skill_rate.favorite) }
-    it { expect(subject[:name]).to eq(skill.name) }
-    it { expect(subject[:description]).to eq(skill.description) }
-    it { expect(subject[:rate_type]).to eq(skill.rate_type) }
-    it { expect(subject[:category]).to eq(skill_category.name) }
-    it { expect(subject[:history]).to eq([user_skill_rate_content_2]) }
-    it do
-      expect(
-        subject[:first_change_before_data_range]
-      ).to eq(user_skill_rate_content_1)
+    let(:context) do
+      { start_date: freeze_time + 45.days, end_date: freeze_time + 75.days }
     end
+    let(:expected_first_change_before_data_range) { user_skill_rate_content_1 }
+    let(:expected_history) { [user_skill_rate_content_2] }
+
+    include_examples "return correct attributes"
   end
 
   context 'when date range is not set' do
     subject { described_class.new(user_skill_rate).serializable_hash }
 
-    it { expect(subject[:user_id]).to eq(user_skill_rate.user_id) }
-    it { expect(subject[:skill_id]).to eq(user_skill_rate.skill_id) }
-    it { expect(subject[:rate]).to eq(user_skill_rate.rate) }
-    it { expect(subject[:created_at]).to eq(user_skill_rate.created_at) }
-    it { expect(subject[:updated_at]).to eq(user_skill_rate.updated_at) }
-    it { expect(subject[:note]).to eq(user_skill_rate.note) }
-    it { expect(subject[:favorite]).to eq(user_skill_rate.favorite) }
-    it { expect(subject[:name]).to eq(skill.name) }
-    it { expect(subject[:description]).to eq(skill.description) }
-    it { expect(subject[:rate_type]).to eq(skill.rate_type) }
-    it { expect(subject[:category]).to eq(skill_category.name) }
-    it do
-      expect(subject[:history]).to eq(
-        [
-          user_skill_rate_content_1, user_skill_rate_content_2
-        ]
-      )
+    let(:expected_first_change_before_data_range) { nil }
+    let(:expected_history) do
+      [user_skill_rate_content_1, user_skill_rate_content_2]
     end
-    it { expect(subject[:first_change_before_data_range]).to eq(nil) }
+
+    include_examples "return correct attributes"
   end
 end
