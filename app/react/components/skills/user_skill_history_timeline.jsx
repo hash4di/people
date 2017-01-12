@@ -293,33 +293,58 @@ export default class UserSkillHistoryTimeline extends React.Component {
   }
 
   getGridLinesWithLabels() {
-    const {svgWidthScale, gridLabelsHeight, svgWidth, props: {startDate, endDate}} = this;
+    const {svgWidthScale, labelFontSize, gridLabelsHeight, svgWidth, svgHeight, props: {startDate, endDate}} = this;
     const currentDate = Moment(startDate);
-    const elements = [];
+    const lines = [];
+    const labels = [];
 
-    // vertical lines with labels
     while (currentDate.diff(endDate, 'days') < -30) {
       currentDate.startOf('month').add(1, 'months');
       const positionX = currentDate.diff(startDate, 'days') * svgWidthScale;
 
-      elements.push(...this.getVerticalLineWithLabel(positionX, currentDate.format('MMMM Y'), 10, 10, "black", "#d6dade"));
+      lines.push(this.getJSXobject({tagName: 'line', attributes: {
+        x1: positionX,
+        y1: '0',
+        x2: positionX,
+        y2: svgHeight,
+        stroke: '#d6dade'
+      }}));
+
+      labels.push(this.getJSXobject({tagName: 'text', content: currentDate.format('MMMM Y'), attributes: {
+        x: positionX + 10,
+        y: labelFontSize + 10,
+        fill: 'black'
+      }}));
     }
 
-    // current day line with label
     const positionX = Moment().diff(startDate, 'days') * svgWidthScale;
-    elements.push(...this.getVerticalLineWithLabel(positionX, 'Today', 40, 10, "red", "red"));
 
-    // horizontal line
-    elements.push(<line x1="0" y1={gridLabelsHeight} x2={svgWidth} y2={gridLabelsHeight} strokeWidth="1" stroke="#d6dade" />);
+    lines.push(
+      this.getJSXobject({tagName: 'line', attributes: {
+        x1: positionX,
+        y1: '0',
+        x2: positionX,
+        y2: svgHeight,
+        stroke: 'red'
+      }}),
+      this.getJSXobject({tagName: 'line', attributes: {
+        x1: '0',
+        y1: gridLabelsHeight,
+        x2: svgWidth,
+        y2: gridLabelsHeight,
+        stroke: '#d6dade'
+      }})
+    );
 
-    return elements;
-  }
+    labels.push(this.getJSXobject({tagName: 'text', content: 'Today', attributes: {
+      x: positionX + 10,
+      y: labelFontSize + 40,
+      fill: 'red'
+    }}));
 
-  getVerticalLineWithLabel(positionX, labelText, labelOffsetTop, labelOffsetLeft, labelColor, lineColor) {
     return [
-      <line x1={positionX} y1="0" x2={positionX} y2={this.svgHeight} strokeWidth="1" stroke={lineColor} />,
-      <text x={positionX + labelOffsetLeft} y={this.labelFontSize + labelOffsetTop}
-        fontFamily="Helvetica Neue" fontSize={this.labelFontSize} fill={labelColor}>{labelText}</text>
+      this.getJSXobject({tagName: 'g', content: lines, attributes: {strokeWidth: '1'}}),
+      this.getJSXobject({tagName: 'g', content: labels, attributes: {fontFamily: 'Helvetica Neue', fontSize: labelFontSize}})
     ];
   }
 }
