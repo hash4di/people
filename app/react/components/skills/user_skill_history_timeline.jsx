@@ -56,15 +56,31 @@ export default class UserSkillHistoryTimeline extends Component {
   }
 
   render() {
-    const {loadingState, cssNamespace} = this.props;
-    const loadingStateClass = loadingState ? `${cssNamespace}--loading` : '';
+    const {loadingState, cssNamespace, model: {length}} = this.props;
+    const loadingStateClass = loadingState || !length ? `${cssNamespace}--hide` : '';
 
     return (
-      <div className={`${cssNamespace} ${loadingStateClass}`}>
-        {this.getSkillLabels()}
-        {this.getTimeline()}
+      <div>
+        <div className={`${cssNamespace} ${loadingStateClass}`}>
+          {this.getSkillLabels()}
+          {this.getTimeline()}
+        </div>
+        {this.getMessageBox()}
       </div>
     );
+  }
+
+  getMessageBox() {
+    const {loadingState, model: {length}} = this.props;
+
+    if (!loadingState && length === 0) {
+      return (
+        <div className="alert alert-warning">
+          Ups! None of those skills have changed in this period of time.<br/>
+          Please try with different settings.
+        </div>
+      );
+    }
   }
 
   getLegend() {

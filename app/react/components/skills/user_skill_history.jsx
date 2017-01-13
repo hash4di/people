@@ -108,16 +108,18 @@ export default class UserSkillHistory extends Component {
     const daysInRange = Moment(endDate).diff(startDate, 'days');
 
     return data.reduce((model, item) => {
-      const points = this.getPointsTable(item, endDate);
-      const totalDays = this.getTotalDays(points);
+      if (item.history.length > 0) {
+        const points = this.getPointsTable(item, endDate);
+        const totalDays = this.getTotalDays(points);
 
-      model.push({
-        skillName: item.name,
-        maxRate: item.rate_type === 'range' ? 3 : 1,
-        daysOffset: daysInRange - totalDays,
-        points,
-        totalDays
-      });
+        model.push({
+          skillName: item.name,
+          maxRate: item.rate_type === 'range' ? 3 : 1,
+          daysOffset: daysInRange - totalDays,
+          points,
+          totalDays
+        });
+      }
 
       return model;
     }, []);
