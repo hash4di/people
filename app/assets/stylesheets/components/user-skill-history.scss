@@ -40,6 +40,21 @@
       position: relative;
     }
 
+    &__rate-note-list {
+      padding: 0;
+      margin: 0;
+
+      &-item {
+        list-style-type: none;
+        display: flex;
+
+        &-label {
+          font-weight: bold;
+          margin-right: 10px;
+        }
+      }
+    }
+
     &__legend-popover-entry-point {
       height: 35px;
       width: 100%;

@@ -140,6 +140,8 @@ export default class UserSkillHistory extends Component {
       const nextDate = Moment(pointsTable[index + 1] ? pointsTable[index + 1].created_at : endDate);
 
       result.push({
+        startDate: datePointer.format(LONG_DATE),
+        endDate: nextDate.format(LONG_DATE),
         days: nextDate.diff(datePointer, 'days'),
         favorite: item.favorite,
         note: item.note,

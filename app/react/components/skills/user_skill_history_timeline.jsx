@@ -23,7 +23,7 @@ export default class UserSkillHistoryTimeline extends Component {
 
   verticalLineAttributes = {
     strokeWidth: '1',
-    strokeDasharray: '1, 6',
+    strokeDasharray: '1, 3',
     stroke: BLACK
   };
 
@@ -40,7 +40,8 @@ export default class UserSkillHistoryTimeline extends Component {
 
   componentDidMount() {
     this.scrollRight();
-    this.initNotePopovers();
+    this.initSVGPopovers();
+    this.initRateNotePopover();
     this.initLegendPopover();
   }
 
@@ -50,7 +51,8 @@ export default class UserSkillHistoryTimeline extends Component {
 
   componentDidUpdate() {
     this.scrollRight();
-    this.initNotePopovers();
+    this.initSVGPopovers();
+    this.initRateNotePopover();
   }
 
   render() {
@@ -114,8 +116,8 @@ export default class UserSkillHistoryTimeline extends Component {
     );
   }
 
-  initNotePopovers() {
-    $(`.${this.props.cssNamespace}__note-popover-entry-point`).popover();
+  initSVGPopovers() {
+    $(`.${this.props.cssNamespace}__svg-popover-entry-point`).popover();
   }
 
   initLegendPopover() {
@@ -123,6 +125,43 @@ export default class UserSkillHistoryTimeline extends Component {
 
     ReactDOM.render(this.getLegend(), legendPopoverHTML);
     $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover({html: true, content: legendPopoverHTML.innerHTML});
+  }
+
+  initRateNotePopover() {
+    const entryPoints = $(`.${this.props.cssNamespace}__rate-note-popover-entry-point`).get();
+
+    entryPoints.forEach((entryPoint) => {
+      const startDate = entryPoint.getAttribute('data-start-date');
+      const endDate = entryPoint.getAttribute('data-end-date');
+      const days = entryPoint.getAttribute('data-days');
+      const rateNoteHTML = this.getRateNoteHTML(startDate, endDate, days);
+
+      $(entryPoint).popover({html: true, content: rateNoteHTML});
+    });
+  }
+
+  getRateNoteHTML(startDate, endDate, days) {
+    const {cssNamespace} = this.props;
+    const container = document.createElement('div');
+    const template = (
+      <ul className={`${cssNamespace}__rate-note-list`}>
+        <li className={`${cssNamespace}__rate-note-list-item`}>
+          <div className={`${cssNamespace}__rate-note-list-item-label`}>From:</div>
+          {startDate}
+        </li>
+        <li className={`${cssNamespace}__rate-note-list-item`}>
+          <div className={`${cssNamespace}__rate-note-list-item-label`}>To:</div>
+          {endDate}
+        </li>
+        <li className={`${cssNamespace}__rate-note-list-item`}>
+          <div className={`${cssNamespace}__rate-note-list-item-label`}>No. days:</div>
+          {days}
+        </li>
+      </ul>
+    );
+
+    ReactDOM.render(template, container);
+    return container.innerHTML;
   }
 
   updateComponentProperties({model, containerWidth, startDate, endDate}) {
@@ -243,12 +282,19 @@ export default class UserSkillHistoryTimeline extends Component {
     let previousPointX = offsetLeft;
     let previousPointY = offsetTop + chartHeight;
 
-    points.forEach(({rate, days, favorite, note}, index) => {
+    points.forEach(({rate, days, favorite, note, startDate, endDate}, index) => {
       const {stroke, strokeDasharray, strokeWidth, nextPointX, nextPointY} = this.getChartAttributes({
         rate, days, favorite, maxRate, chartHeight, svgWidthScale, chartStrokeWidth, previousPointX, offsetTop
       });
 
       horizontalLines.push(this.getJSXobject({tagName: 'line', attributes: {
+        'data-placement': 'top',
+        'data-container': 'body',
+        'data-trigger': 'hover',
+        'data-start-date': startDate,
+        'data-end-date': endDate,
+        'data-days': days,
+        className: `${cssNamespace}__rate-note-popover-entry-point`,
         x1: previousPointX,
         y1: nextPointY,
         x2: nextPointX,
@@ -273,7 +319,7 @@ export default class UserSkillHistoryTimeline extends Component {
           'data-container': 'body',
           'data-trigger': 'hover',
           'data-content': note,
-          className: `${cssNamespace}__note-popover-entry-point`,
+          className: `${cssNamespace}__svg-popover-entry-point`,
           cx: previousPointX,
           cy: nextPointY,
           r: '6'
@@ -298,8 +344,8 @@ export default class UserSkillHistoryTimeline extends Component {
 
     return {
       stroke: this.getChartColor(rate, maxRate),
-      strokeDasharray: favorite ? 'none' : '10, 10',
-      strokeWidth: favorite ? chartStrokeWidth : chartStrokeWidth / 2,
+      strokeDasharray: favorite ? 'none' : '10, 5',
+      strokeWidth: chartStrokeWidth,
       nextPointX: previousPointX + width,
       nextPointY: offsetTop + chartHeight - height
     };
