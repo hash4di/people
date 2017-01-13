@@ -1,5 +1,7 @@
 .container
-  %h1 Your skills
+  %h1
+    %span Your skills
+    = link_to 'History', skills_history_user_path(current_user), class: 'btn btn-xs btn-default'
 
   %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
     %li

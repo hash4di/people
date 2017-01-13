@@ -1,12 +1,16 @@
-class GroupUserSkillRatesBySkillCategoriesQuery
+class UserSkillRatesQuery
   attr_reader :user
 
   def initialize(user)
     @user = user
   end
 
-  def results
-    user_skill_rates.group_by { |skill| skill.category }
+  def results_by_categories
+    user_skill_rates.group_by { | skill | skill.category }
+  end
+
+  def results_for_category(category)
+    user_skill_rates.where(skill_categories: {name: category})
   end
 
   private
