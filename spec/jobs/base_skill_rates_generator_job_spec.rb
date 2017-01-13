@@ -18,7 +18,9 @@ describe BaseSkillRatesGeneratorJob do
     end
 
     it 'executes service for genearting user skill rates' do
-      expect(Skills::UserSkillRatesGenerator).to receive(:new).with(user_id: user.id).and_return(generator)
+      expect(
+        Skills::UserSkillRatesGenerator
+      ).to receive(:new).with(user_id: user.id).and_return(generator)
       expect(generator).to receive(:call).and_return(true)
       subject
     end
