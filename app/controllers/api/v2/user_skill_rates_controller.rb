@@ -8,9 +8,7 @@ module Api::V2
 
     def find_user_by_email
       email = params[:user_email][0...-2]
-      pl = email + 'pl'
-      co = email + 'co'
-      User.find_by(email: pl) || User.find_by(email: co)
+      User.where('email LIKE ?', "#{email}%").first
     end
 
     def user_skill_rates

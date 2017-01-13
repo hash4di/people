@@ -4,10 +4,11 @@ describe Api::V2::UserSkillRatesController do
   describe 'GET #index' do
     let(:token) { AppConfig.api_token }
     let(:user) { create(:user, email: 'john.smith@netguru.pl') }
-    let(:skill) { create(:skill) }
+    let(:skill1) { create(:skill) }
+    let(:skill2) { create(:skill) }
     let(:unknown_email) { 'asdasd@netguru.pl' }
-    let!(:user_skill_rate1) { create(:user_skill_rate, user: user, skill: skill, rate: 3) }
-    let!(:user_skill_rate2) { create(:user_skill_rate, user: user, skill: skill) }
+    let!(:user_skill_rate1) { create(:user_skill_rate, user: user, skill: skill1, rate: 3) }
+    let!(:user_skill_rate2) { create(:user_skill_rate, user: user, skill: skill2, rate: 1) }
 
     context 'without api token' do
       it 'returns response status 403' do
@@ -36,7 +37,13 @@ describe Api::V2::UserSkillRatesController do
       it 'returns correct hash', :aggregate_failures do
         skill_rates = json_response['user_skill_rates']
         expect(skill_rates).to be_a(Array)
-        expect(skill_rates.size).to eq(2)
+        expect(skill_rates)
+          .to eq(
+            [
+              { "ref_name" => "#{skill1.ref_name}", "rate" => user_skill_rate1.rate },
+              { "ref_name" => "#{skill2.ref_name}", "rate" => user_skill_rate2.rate },
+            ]
+          )
       end
     end
 
@@ -48,7 +55,13 @@ describe Api::V2::UserSkillRatesController do
       it 'returns correct hash', :aggregate_failures do
         skill_rates = json_response['user_skill_rates']
         expect(skill_rates).to be_a(Array)
-        expect(skill_rates.size).to eq(2)
+        expect(skill_rates)
+          .to eq(
+            [
+              { "ref_name" => "#{skill1.ref_name}", "rate" => user_skill_rate1.rate },
+              { "ref_name" => "#{skill2.ref_name}", "rate" => user_skill_rate2.rate },
+            ]
+          )
       end
     end
   end

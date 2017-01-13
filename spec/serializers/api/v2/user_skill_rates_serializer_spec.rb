@@ -9,7 +9,10 @@ describe Api::V2::UserSkillRatesSerializer do
   context 'returns user skill rates hash' do
     it 'returns correct hash', :aggregate_failures do
       expect(subject).to be_a(Hash)
-      expect(subject.keys.size).to eq(2)
+      expect(subject)
+        .to eq(
+          { :ref_name => "#{skill.ref_name}", :rate => user_skill_rate1.rate }
+        )
     end
   end
 end
