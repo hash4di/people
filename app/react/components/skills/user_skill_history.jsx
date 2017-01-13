@@ -7,48 +7,19 @@ import {LONG_DATE} from '../../constants/date_formats'
 export default class UserSkillHistory extends Component {
   cssNamespace = 'user-skill-history'
 
-  state = {
-    activeCategory: 4,
-    skillCategories: [
-      {
-        name: 'backend',
-        isActive: false
-      },
-      {
-        name: 'devops',
-        isActive: false
-      },
-      {
-        name: 'ios',
-        isActive: false
-      },
-      {
-        name: 'frontend',
-        isActive: false
-      },
-      {
-        name: 'design',
-        isActive: true
-      },
-      {
-        name: 'android',
-        isActive: false
-      },
-    ],
-    startDate: null,
-    endDate: null,
-    containerWidth: null,
-    loadingState: true,
-    model: []
-  }
-
   constructor(props) {
     super(props);
-    const startDate = Moment().subtract(12, 'months').format(LONG_DATE);
-    const endDate = Moment().format(LONG_DATE);
+    const activeCategory = 0;
 
-    this.state.startDate = startDate;
-    this.state.endDate = endDate;
+    this.state = {
+      containerWidth: null,
+      loadingState: true,
+      model: [],
+      startDate: Moment().subtract(12, 'months').format(LONG_DATE),
+      endDate: Moment().format(LONG_DATE),
+      skillCategories: this.getSkillCategories(props.skill_categories, activeCategory),
+      activeCategory
+    };
   }
 
   componentDidMount() {
@@ -80,6 +51,16 @@ export default class UserSkillHistory extends Component {
         />
       </div>
     );
+  }
+
+  getSkillCategories(skillCategories, activeCategory) {
+    return skillCategories.reduce((acc, {name}, index) => {
+      acc.push({
+        name,
+        isActive: index === activeCategory
+      });
+      return acc;
+    }, []);
   }
 
   getLoadingState() {
