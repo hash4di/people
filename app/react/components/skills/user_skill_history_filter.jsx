@@ -1,32 +1,30 @@
-import {Component} from 'react';
+export default (props) => {
+  const {
+    cssNamespace,
+    listItems,
+    listPrimaryText,
+    onItemClick,
+    setDateRange,
+    startDate,
+    endDate,
+    onDateChange
+  } = props;
 
-export default class UserSkillHistoryFilter extends Component {
-  render() {
-    const {
-      cssNamespace,
-      listItems,
-      listPrimaryText,
-      onItemClick,
-      setDateRange,
-      startDate,
-      endDate,
-      onDateChange
-    } = this.props;
+  const listElements = listItems.reduce((acc, listItem, index) => {
+    const activeClass = listItem.isActive ? `${cssNamespace}__filter-category-active-item` : '';
 
-    const listElements = listItems.reduce((acc, listItem, index) => {
-      const activeClass = listItem.isActive ? `${cssNamespace}__filter-category-active-item` : '';
+    return acc.concat(
+      <li
+        className={`${cssNamespace}__filter-category-list-item ${activeClass}`}
+        onClick={() => {onItemClick(index);}}
+      >
+        {listItem.name}
+      </li>
+    );
+  }, []);
 
-      return acc.concat(
-        <li
-          className={`${cssNamespace}__filter-category-list-item ${activeClass}`}
-          onClick={() => {onItemClick(index);}}
-        >
-          {listItem.name}
-        </li>
-      );
-    }, []);
-
-    return <div className={cssNamespace}>
+  return (
+    <div className={cssNamespace}>
       <div className={`${cssNamespace}__filter-category`}>
         <div className={`${cssNamespace}__filter-category-primary-text`}>{listPrimaryText}</div>
         <ul className={`${cssNamespace}__filter-category-list nav nav-tabs`}>
@@ -61,6 +59,6 @@ export default class UserSkillHistoryFilter extends Component {
           onChange={(event) => onDateChange('endDate', event.target.value)}
         />
       </div>
-    </div>;
-  }
+    </div>
+  );
 }
