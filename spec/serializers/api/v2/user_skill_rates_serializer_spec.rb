@@ -11,7 +11,7 @@ describe Api::V2::UserSkillRatesSerializer do
       expect(subject).to be_a(Hash)
       expect(subject)
         .to eq(
-          { :ref_name => "#{skill.ref_name}", :rate => user_skill_rate1.rate }
+          { ref_name: skill.ref_name.to_s, rate: user_skill_rate1.rate }
         )
     end
   end
