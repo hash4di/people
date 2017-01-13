@@ -56,7 +56,6 @@ describe Api::V2::UserSkillRatesController do
         skill_rates = json_response['user_skill_rates']
         expect(skill_rates).to be_a(Array)
         expect(skill_rates)
-        expect(skill_rates)
           .to eq(
             [
               { 'ref_name' => skill1.ref_name.to_s, 'rate' => user_skill_rate1.rate },
