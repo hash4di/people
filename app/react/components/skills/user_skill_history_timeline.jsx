@@ -147,15 +147,15 @@ export default class UserSkillHistoryTimeline extends Component {
       <ul className={`${cssNamespace}__rate-note-list`}>
         <li className={`${cssNamespace}__rate-note-list-item`}>
           <div className={`${cssNamespace}__rate-note-list-item-label`}>From:</div>
-          {startDate}
+          <div className={`${cssNamespace}__rate-note-list-item-value`}>{startDate}</div>
         </li>
         <li className={`${cssNamespace}__rate-note-list-item`}>
           <div className={`${cssNamespace}__rate-note-list-item-label`}>To:</div>
-          {endDate}
+          <div className={`${cssNamespace}__rate-note-list-item-value`}>{endDate}</div>
         </li>
         <li className={`${cssNamespace}__rate-note-list-item`}>
           <div className={`${cssNamespace}__rate-note-list-item-label`}>No. days:</div>
-          {days}
+          <div className={`${cssNamespace}__rate-note-list-item-value`}>{days}</div>
         </li>
       </ul>
     );

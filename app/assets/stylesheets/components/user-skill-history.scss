@@ -52,6 +52,11 @@
           font-weight: bold;
           margin-right: 10px;
         }
+
+        &-value {
+          flex-grow: 2;
+          text-align: right;
+        }
       }
     }
 
