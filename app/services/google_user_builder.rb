@@ -12,11 +12,17 @@ class GoogleUserBuilder
       return user
     else
       # send_notifications
-      User.create!(new_user_attributes)
+      create_user
     end
   end
 
   private
+
+  def create_user
+    user = User.create!(new_user_attributes)
+    BaseSkillRatesGeneratorJob.perform_async(user_id: user.id) if user.present?
+    user
+  end
 
   def new_user_attributes
     fields = %w(first_name last_name email)
