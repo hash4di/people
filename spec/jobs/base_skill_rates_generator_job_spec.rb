@@ -7,7 +7,7 @@ describe BaseSkillRatesGeneratorJob do
 
   describe '#perform' do
     let(:generator) do
-      instance_double("Skills::UserSkillRatesGenerator", call: true)
+      instance_double('Skills::UserSkillRatesGenerator', call: true)
     end
 
     before do
