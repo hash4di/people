@@ -40,19 +40,27 @@ export default class UserSkillHistoryTimeline extends Component {
 
   componentDidMount() {
     this.scrollRight();
-    this.initSVGPopovers();
-    this.initRateNotePopover();
+    this.initNotePopovers();
+    this.initRateInfoPopovers();
     this.initLegendPopover();
   }
 
   componentWillUpdate(props) {
     this.updateComponentProperties(props);
+    this.destroyNotePopovers();
+    this.destroyRateInfoPopovers();
   }
 
   componentDidUpdate() {
     this.scrollRight();
-    this.initSVGPopovers();
-    this.initRateNotePopover();
+    this.initNotePopovers();
+    this.initRateInfoPopovers();
+  }
+
+  componentWillUnmount() {
+    this.destroyLegendPopover();
+    this.destroyNotePopovers();
+    this.destroyRateInfoPopovers();
   }
 
   render() {
@@ -132,8 +140,8 @@ export default class UserSkillHistoryTimeline extends Component {
     );
   }
 
-  initSVGPopovers() {
-    $(`.${this.props.cssNamespace}__svg-popover-entry-point`).popover();
+  initNotePopovers() {
+    $(`.${this.props.cssNamespace}__note-popover-entry-point`).popover();
   }
 
   initLegendPopover() {
@@ -143,8 +151,8 @@ export default class UserSkillHistoryTimeline extends Component {
     $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover({html: true, content: legendPopoverHTML.innerHTML});
   }
 
-  initRateNotePopover() {
-    const entryPoints = $(`.${this.props.cssNamespace}__rate-note-popover-entry-point`).get();
+  initRateInfoPopovers() {
+    const entryPoints = $(`.${this.props.cssNamespace}__rate-info-popover-entry-point`).get();
 
     entryPoints.forEach((entryPoint) => {
       const startDate = entryPoint.getAttribute('data-start-date');
@@ -155,6 +163,18 @@ export default class UserSkillHistoryTimeline extends Component {
 
       $(entryPoint).popover({html: true, content: rateNoteHTML});
     });
+  }
+
+  destroyLegendPopover() {
+    $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover('destroy');
+  }
+
+  destroyNotePopovers() {
+    $(`.${this.props.cssNamespace}__note-popover-entry-point`).popover('destroy');
+  }
+
+  destroyRateInfoPopovers() {
+    $(`.${this.props.cssNamespace}__rate-info-popover-entry-point`).popover('destroy');
   }
 
   getRateNoteHTML(startDate, endDate, totalDays, visibleDays) {
@@ -318,7 +338,7 @@ export default class UserSkillHistoryTimeline extends Component {
         'data-end-date': endDate,
         'data-visible-days': days,
         'data-total-days': Moment(endDate).diff(Moment(startDate), 'days'),
-        className: `${cssNamespace}__rate-note-popover-entry-point`,
+        className: `${cssNamespace}__rate-info-popover-entry-point`,
         x1: previousPointX,
         y1: nextPointY,
         x2: nextPointX,
@@ -343,7 +363,7 @@ export default class UserSkillHistoryTimeline extends Component {
           'data-container': 'body',
           'data-trigger': 'hover',
           'data-content': note,
-          className: `${cssNamespace}__svg-popover-entry-point`,
+          className: `${cssNamespace}__note-popover-entry-point`,
           cx: previousPointX,
           cy: nextPointY,
           r: '6'
