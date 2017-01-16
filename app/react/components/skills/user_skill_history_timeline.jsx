@@ -182,7 +182,7 @@ export default class UserSkillHistoryTimeline extends Component {
     const container = document.createElement('div');
     let days = totalDays;
 
-    if (visibleDays < totalDays) days += ` (visible ${visibleDays})`;
+    if (parseInt(visibleDays) < parseInt(totalDays)) days += ` (visible ${visibleDays})`;
 
     const template = (
       <ul className={`${cssNamespace}__rate-note-list`}>
