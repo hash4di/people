@@ -39,6 +39,7 @@ end
 
 def react_select(selector, text)
   find("#{selector} .Select-control").click
+  find("#{selector} .Select.is-open") # wait for the select to be opened
   find('div.Select-option', text: text).click
 end
 
