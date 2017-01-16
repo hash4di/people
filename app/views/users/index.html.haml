@@ -1,4 +1,1 @@
-- if Flip.fetching_abilities? && current_user.admin?
-  #fetch-button
-    = link_to 'Fetch users skills from Profile', { controller: 'users', action: 'fetch_abilities' }, class: 'btn btn-success js-fetch-abilities'
 = react_component('users', users_index_page.react_props(current_user) )
