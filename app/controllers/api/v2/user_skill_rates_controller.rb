@@ -13,7 +13,7 @@ module Api::V2
 
     def user_skill_rates
       user = find_user_by_email
-      user ? user.user_skill_rates : []
+      user ? user.user_skill_rates.includes(:skill) : []
     end
   end
 end
