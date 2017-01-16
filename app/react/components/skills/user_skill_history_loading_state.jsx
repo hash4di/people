@@ -28,7 +28,8 @@ export default class UserSkillHistoryLoadingState extends Component {
     'while the satellite moves into position',
     'the bits are flowing slowly today',
     'dig on the \'X\' for buried treasure... ARRR!',
-    'it\'s still faster than you could draw it'
+    'it\'s still faster than you could draw it',
+    'consider using Spree',
   ]
 
   prefix = 'Loading, please wait...'
