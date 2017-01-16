@@ -188,6 +188,13 @@ export default class UserSkillHistory extends Component {
     const startDate = dateInput === 'startDate' ? date : this.state.startDate;
     const endDate = dateInput === 'endDate' ? date : this.state.endDate;
 
+    if (
+      Moment(startDate).diff(endDate, 'days') >= 0 ||
+      Moment(endDate).diff(Moment().format(LONG_DATE), 'days') > 0
+    ) {
+      return;
+    }
+
     this.setState({ [dateInput]: date });
     this.setModel(this.getActiveCategory(), startDate, endDate);
     this.setContainerWidth();
