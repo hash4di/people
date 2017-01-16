@@ -55,7 +55,6 @@ Hrguru::Application.routes.draw do
     end
   end
 
-  get 'fetch_abilities', to: 'users#fetch_abilities'
   resources :users, only: [:index, :show, :update] do
     get :skills_history, on: :member, to: 'users/user_skill_rates#history'
   end
