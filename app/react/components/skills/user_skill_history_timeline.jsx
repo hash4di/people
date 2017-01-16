@@ -149,16 +149,21 @@ export default class UserSkillHistoryTimeline extends Component {
     entryPoints.forEach((entryPoint) => {
       const startDate = entryPoint.getAttribute('data-start-date');
       const endDate = entryPoint.getAttribute('data-end-date');
-      const days = entryPoint.getAttribute('data-days');
-      const rateNoteHTML = this.getRateNoteHTML(startDate, endDate, days);
+      const totalDays = entryPoint.getAttribute('data-total-days');
+      const visibleDays = entryPoint.getAttribute('data-visible-days');
+      const rateNoteHTML = this.getRateNoteHTML(startDate, endDate, totalDays, visibleDays);
 
       $(entryPoint).popover({html: true, content: rateNoteHTML});
     });
   }
 
-  getRateNoteHTML(startDate, endDate, days) {
+  getRateNoteHTML(startDate, endDate, totalDays, visibleDays) {
     const {cssNamespace} = this.props;
     const container = document.createElement('div');
+    let days = totalDays;
+
+    if (visibleDays < totalDays) days += ` (visible ${visibleDays})`;
+
     const template = (
       <ul className={`${cssNamespace}__rate-note-list`}>
         <li className={`${cssNamespace}__rate-note-list-item`}>
@@ -311,7 +316,8 @@ export default class UserSkillHistoryTimeline extends Component {
         'data-trigger': 'hover',
         'data-start-date': startDate,
         'data-end-date': endDate,
-        'data-days': days,
+        'data-visible-days': days,
+        'data-total-days': Moment(endDate).diff(Moment(startDate), 'days'),
         className: `${cssNamespace}__rate-note-popover-entry-point`,
         x1: previousPointX,
         y1: nextPointY,

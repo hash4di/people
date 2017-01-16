@@ -109,7 +109,7 @@ export default class UserSkillHistory extends Component {
 
     return data.reduce((model, item) => {
       if (item.history.length > 0) {
-        const points = this.getPointsTable(item, endDate);
+        const points = this.getPointsTable(item, startDate, endDate);
         const totalDays = this.getTotalDays(points);
 
         model.push({
@@ -129,17 +129,26 @@ export default class UserSkillHistory extends Component {
     return points.reduce((acc, point) => acc + point.days, 0);
   }
 
-  getPointsTable(item, endDate) {
+  getSanitizedDate(date, format) {
+    return Moment(date).format(format);
+  }
+
+  getPointsTable(item, startDate, endDate) {
     const result = [];
     let pointsTable = [];
     let datePointer = null;
+    let daysOffset = null;
 
     if (item.first_change_before_data_range) pointsTable.push(item.first_change_before_data_range);
     if (item.history) pointsTable = pointsTable.concat(item.history);
-    if (pointsTable[0]) datePointer = Moment(pointsTable[0].created_at);
+    if (pointsTable[0]) {
+      datePointer = Moment(this.getSanitizedDate(pointsTable[0].created_at), LONG_DATE);
+      daysOffset = datePointer.diff(Moment(startDate), 'days');
+    }
 
     pointsTable.forEach((item, index, pointsTable) => {
-      const nextDate = Moment(pointsTable[index + 1] ? pointsTable[index + 1].created_at : endDate);
+      let nextDate = pointsTable[index + 1] ? pointsTable[index + 1].created_at : endDate;
+      nextDate = Moment(this.getSanitizedDate(nextDate, LONG_DATE));
 
       result.push({
         startDate: datePointer.format(LONG_DATE),
@@ -152,6 +161,10 @@ export default class UserSkillHistory extends Component {
 
       datePointer = nextDate;
     });
+
+    if (result[0] && daysOffset < 0) {
+      result[0].days += daysOffset;
+    }
 
     return result;
   }
