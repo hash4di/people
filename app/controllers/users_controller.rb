@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   include ContextFreeRepos
-  before_filter :authenticate_admin!, only: [:update, :fetch_abilities], unless: -> { check_action }
+  before_filter :authenticate_admin!, only: :update, unless: -> { check_action }
 
   expose(:user) { users_repository.get params[:id] }
   expose(:users_index_page) { UserIndexPage.new }
@@ -53,18 +53,11 @@ class UsersController < ApplicationController
 
   def show
     gon.events = user_events
-    gon.fetching_abilities = Flip.fetching_abilities?
-  end
-
-  def fetch_abilities
-    NetguruApi::FetchAbilitiesJob.perform_async
-    render(nothing: true, status: :ok)
   end
 
   private
 
   def check_action
-    return false if params[:action] == 'fetch_abilities'
     user == current_user
   end
 
