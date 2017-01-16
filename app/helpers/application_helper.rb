@@ -36,6 +36,10 @@ module ApplicationHelper
     link_to user.name, user_path(user)
   end
 
+  def parameterize(text)
+    text.parameterize('_')
+  end
+
   private
 
   def icon_generator(name, icon_class, options = {})
