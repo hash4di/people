@@ -79,5 +79,12 @@ describe 'User skill rates page', js: true do
       wait_for_ajax
       expect(star[:class]).to_not include('selected')
     end
+
+    it 'deselects favourite skill' do
+      heart = user_skill_rates_page.skill_favorite.first
+      expect(heart[:class]).to include('selected')
+      user_skill_rates_page.skill_favorite.first.click
+      expect(heart[:class]).to_not include('selected')
+    end
   end
 end
