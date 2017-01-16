@@ -34,8 +34,21 @@ describe GoogleUserBuilder do
     end
 
     context 'when user does not exists' do
+      before do
+        allow(
+          BaseSkillRatesGeneratorJob
+        ).to receive(:perform_async).and_return(true)
+      end
+
       it 'creates new user' do
         expect { subject.call }.to change { User.count }
+      end
+
+      it 'generates base user_skill_rates' do
+        expect(
+          BaseSkillRatesGeneratorJob
+        ).to receive(:perform_async).and_return(true)
+        subject.call
       end
     end
   end
