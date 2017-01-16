@@ -226,9 +226,11 @@ export default class UserSkillHistoryTimeline extends Component {
   }
 
   getTimeline() {
-    const {svgWidth, svgHeight, props: {cssNamespace}} = this;
+    const {svgWidthScale, minimumSVGwidthScale, svgWidth, svgHeight, props: {cssNamespace}} = this;
+    const enableHorizontalScrollClass = svgWidthScale === minimumSVGwidthScale ?
+      `${cssNamespace}--enable-horizontal-scroll` : '';
 
-    return <div className={`${cssNamespace}__timeline`}>
+    return <div className={`${cssNamespace}__timeline ${enableHorizontalScrollClass}`}>
       <svg
         version="1.1"
         baseProfile="full"

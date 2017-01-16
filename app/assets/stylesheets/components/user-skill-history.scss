@@ -7,6 +7,10 @@
       display: none;
     }
 
+    &--enable-horizontal-scroll {
+      overflow-x: scroll;
+    }
+
     &__left-column {
       display: flex;
       flex-direction: column;
@@ -36,7 +40,6 @@
     }
 
     &__timeline {
-      overflow-x: scroll;
       position: relative;
     }
 
