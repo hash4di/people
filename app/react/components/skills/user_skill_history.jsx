@@ -1,6 +1,7 @@
 import {Component} from 'react';
 import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
+import UserSkillHistoryLoadingState from './user_skill_history_loading_state';
 import Moment from 'moment';
 import {LONG_DATE} from '../../constants/date_formats'
 
@@ -40,7 +41,10 @@ export default class UserSkillHistory extends Component {
           onDateChange={this.onDateChange.bind(this)}
           setDateRange={this.setDateRange.bind(this)}
         />
-        {this.getLoadingState()}
+        <UserSkillHistoryLoadingState
+          cssNamespace={this.cssNamespace}
+          display={this.state.loadingState}
+        />
         <UserSkillHistoryTimeline
           cssNamespace={`${this.cssNamespace}-timeline`}
           model={this.state.model}
@@ -61,16 +65,6 @@ export default class UserSkillHistory extends Component {
       });
       return acc;
     }, []);
-  }
-
-  getLoadingState() {
-    if (this.state.loadingState) {
-      return (
-        <div className={`progress-bar progress-bar-striped active ${this.cssNamespace}-loading-state`}>
-          Loading, please wait...
-        </div>
-      );
-    }
   }
 
   getActiveCategory() {
