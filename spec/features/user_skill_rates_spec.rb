@@ -61,6 +61,13 @@ describe 'User skill rates page', js: true do
       skill_rate_trigger(1, 'click')
       expect(star[:class]).to include('selected')
     end
+
+    it 'selects favourite skill' do
+      heart = user_skill_rates_page.skill_favorite.first
+      expect(heart[:class]).to_not include('selected')
+      user_skill_rates_page.skill_favorite.first.click
+      expect(heart[:class]).to include('selected')
+    end
   end
 
   context 'when user have marked skills' do
