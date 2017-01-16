@@ -11,8 +11,6 @@ describe 'User skill rates page', js: true do
 
   let!(:developer) { create(:user, :developer, skills: skills_range + skills_boolean) }
 
-
-
   context 'when user does not have any marked skills' do
     before do
       log_in_as developer
@@ -67,6 +65,14 @@ describe 'User skill rates page', js: true do
       expect(heart[:class]).to_not include('selected')
       user_skill_rates_page.skill_favorite.first.click
       expect(heart[:class]).to include('selected')
+    end
+
+    it 'adds note' do
+      skill_rate = developer.user_skill_rates.first
+      expect do
+        user_skill_rates_page.skill_note.first.set 'test note'
+        user_skill_rates_page.wait_for_save_alert
+      end.to change { skill_rate.reload.note }.from('').to('test note')
     end
   end
 
