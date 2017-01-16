@@ -14,7 +14,7 @@ export default class UserSkillHistoryTimeline extends Component {
   chartHeight = 70
   chartPadding = 10
   chartStrokeWidth = 5
-  gridLabelsHeight = 35
+  gridLabelsHeight = 60
   legendWidth = 200
 
   svgWidth = null
@@ -237,14 +237,16 @@ export default class UserSkillHistoryTimeline extends Component {
   }
 
   getSkillLabels() {
-    const {legendWidth, props: {cssNamespace, model}} = this;
+    const {legendWidth, gridLabelsHeight, props: {cssNamespace, model}} = this;
     const skillLabels = model.reduce((acc, skillData) => acc.concat(
       <li className={`${cssNamespace}__labels-item`}>{skillData.skillName}</li>
     ), []);
 
     return (
       <div className={`${cssNamespace}__left-column`}>
-        <button className={`btn btn-info ${cssNamespace}__legend-popover-entry-point`}>Legend</button>
+        <div className={`${cssNamespace}__legend-container`} style={{height: gridLabelsHeight + 'px'}}>
+          <button className={`btn btn-info ${cssNamespace}__legend-popover-entry-point`}>Legend</button>
+        </div>
         <ul className={`${cssNamespace}__labels`} style={{width: legendWidth + 'px'}}>{skillLabels}</ul>
       </div>
     );
@@ -442,10 +444,11 @@ export default class UserSkillHistoryTimeline extends Component {
     lines.push(
       this.getJSXobject({tagName: 'line', attributes: {
         x1: positionX,
-        y1: '0',
+        y1: gridLabelsHeight,
         x2: positionX,
         y2: svgHeight,
-        stroke: RED
+        stroke: RED,
+        strokeWidth: '0.6'
       }}),
       this.getJSXobject({tagName: 'line', attributes: {
         x1: '0',
@@ -457,8 +460,8 @@ export default class UserSkillHistoryTimeline extends Component {
     );
 
     labels.push(this.getJSXobject({tagName: 'text', content: 'Today', attributes: {
-      x: positionX + 10,
-      y: labelFontSize + 40,
+      x: positionX - 15,
+      y: 50,
       fill: RED
     }}));
 

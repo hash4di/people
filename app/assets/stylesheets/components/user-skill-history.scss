@@ -2,6 +2,7 @@
   &-timeline {
     display: flex;
     width: 100%;
+    margin-bottom: 50px;
 
     &--hide {
       display: none;
@@ -63,11 +64,6 @@
       }
     }
 
-    &__legend-popover-entry-point {
-      height: 35px;
-      width: 100%;
-    }
-
     &__legend {
       flex-shrink: 0;
 
@@ -77,6 +73,17 @@
         font-size: 18px;
         text-align: center;
         margin-bottom: 10px;
+      }
+
+      &-popover-entry-point {
+        height: 35px;
+        width: 80px;
+      }
+
+      &-container {
+        height: 60px;
+        width: 100%;
+        border-right: 1px solid $color-grey;
       }
 
       &-list {
@@ -122,9 +129,10 @@
   }
 
   &-filter {
+    margin: 20px 0;
+
     &__filter-category {
       display: flex;
-      margin: 10px 0;
       border-bottom: 1px solid $color-grey;
 
       &-primary-text {
@@ -155,8 +163,7 @@
       display: flex;
       align-items: baseline;
       border-bottom: 1px solid $color-grey;
-      margin-bottom: 10px;
-      padding-bottom: 10px;
+      padding: 20px 0;
 
       &-button:first-child {
         margin-right: 20px;
