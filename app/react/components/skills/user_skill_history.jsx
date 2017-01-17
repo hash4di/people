@@ -1,54 +1,26 @@
 import {Component} from 'react';
 import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
+import UserSkillHistoryLoadingState from './user_skill_history_loading_state';
 import Moment from 'moment';
 import {LONG_DATE} from '../../constants/date_formats'
 
 export default class UserSkillHistory extends Component {
   cssNamespace = 'user-skill-history'
 
-  state = {
-    activeCategory: 4,
-    skillCategories: [
-      {
-        name: 'backend',
-        isActive: false
-      },
-      {
-        name: 'devops',
-        isActive: false
-      },
-      {
-        name: 'ios',
-        isActive: false
-      },
-      {
-        name: 'frontend',
-        isActive: false
-      },
-      {
-        name: 'design',
-        isActive: true
-      },
-      {
-        name: 'android',
-        isActive: false
-      },
-    ],
-    startDate: null,
-    endDate: null,
-    containerWidth: null,
-    loadingState: true,
-    model: []
-  }
-
   constructor(props) {
     super(props);
-    const startDate = Moment().subtract(12, 'months').format(LONG_DATE);
-    const endDate = Moment().format(LONG_DATE);
+    const activeCategory = 0;
 
-    this.state.startDate = startDate;
-    this.state.endDate = endDate;
+    this.state = {
+      containerWidth: null,
+      loadingState: true,
+      model: [],
+      startDate: Moment().subtract(12, 'months').format(LONG_DATE),
+      endDate: Moment().format(LONG_DATE),
+      skillCategories: this.getSkillCategories(props.skill_categories, activeCategory),
+      activeCategory
+    };
   }
 
   componentDidMount() {
@@ -69,7 +41,10 @@ export default class UserSkillHistory extends Component {
           onDateChange={this.onDateChange.bind(this)}
           setDateRange={this.setDateRange.bind(this)}
         />
-        {this.getLoadingState()}
+        <UserSkillHistoryLoadingState
+          cssNamespace={this.cssNamespace}
+          display={this.state.loadingState}
+        />
         <UserSkillHistoryTimeline
           cssNamespace={`${this.cssNamespace}-timeline`}
           model={this.state.model}
@@ -82,14 +57,14 @@ export default class UserSkillHistory extends Component {
     );
   }
 
-  getLoadingState() {
-    if (this.state.loadingState) {
-      return (
-        <div className={`progress-bar progress-bar-striped active ${this.cssNamespace}-loading-state`}>
-          Loading, please wait...
-        </div>
-      );
-    }
+  getSkillCategories(skillCategories, activeCategory) {
+    return skillCategories.reduce((acc, {name}, index) => {
+      acc.push({
+        name,
+        isActive: index === activeCategory
+      });
+      return acc;
+    }, []);
   }
 
   getActiveCategory() {
@@ -127,16 +102,18 @@ export default class UserSkillHistory extends Component {
     const daysInRange = Moment(endDate).diff(startDate, 'days');
 
     return data.reduce((model, item) => {
-      const points = this.getPointsTable(item, endDate);
-      const totalDays = this.getTotalDays(points);
+      if (item.history.length > 0) {
+        const points = this.getPointsTable(item, startDate, endDate);
+        const totalDays = this.getTotalDays(points);
 
-      model.push({
-        skillName: item.name,
-        maxRate: item.rate_type === 'range' ? 3 : 1,
-        daysOffset: daysInRange - totalDays,
-        points,
-        totalDays
-      });
+        model.push({
+          skillName: item.name,
+          maxRate: item.rate_type === 'range' ? 3 : 1,
+          daysOffset: daysInRange - totalDays,
+          points,
+          totalDays
+        });
+      }
 
       return model;
     }, []);
@@ -146,19 +123,30 @@ export default class UserSkillHistory extends Component {
     return points.reduce((acc, point) => acc + point.days, 0);
   }
 
-  getPointsTable(item, endDate) {
+  getSanitizedDate(date, format) {
+    return Moment(date).format(format);
+  }
+
+  getPointsTable(item, startDate, endDate) {
     const result = [];
     let pointsTable = [];
     let datePointer = null;
+    let daysOffset = null;
 
     if (item.first_change_before_data_range) pointsTable.push(item.first_change_before_data_range);
     if (item.history) pointsTable = pointsTable.concat(item.history);
-    if (pointsTable[0]) datePointer = Moment(pointsTable[0].created_at);
+    if (pointsTable[0]) {
+      datePointer = Moment(this.getSanitizedDate(pointsTable[0].created_at), LONG_DATE);
+      daysOffset = datePointer.diff(Moment(startDate), 'days');
+    }
 
     pointsTable.forEach((item, index, pointsTable) => {
-      const nextDate = Moment(pointsTable[index + 1] ? pointsTable[index + 1].created_at : endDate);
+      let nextDate = pointsTable[index + 1] ? pointsTable[index + 1].created_at : endDate;
+      nextDate = Moment(this.getSanitizedDate(nextDate, LONG_DATE));
 
       result.push({
+        startDate: datePointer.format(LONG_DATE),
+        endDate: nextDate.format(LONG_DATE),
         days: nextDate.diff(datePointer, 'days'),
         favorite: item.favorite,
         note: item.note,
@@ -167,6 +155,10 @@ export default class UserSkillHistory extends Component {
 
       datePointer = nextDate;
     });
+
+    if (result[0] && daysOffset < 0) {
+      result[0].days += daysOffset;
+    }
 
     return result;
   }
@@ -189,6 +181,13 @@ export default class UserSkillHistory extends Component {
   onDateChange(dateInput, date) {
     const startDate = dateInput === 'startDate' ? date : this.state.startDate;
     const endDate = dateInput === 'endDate' ? date : this.state.endDate;
+
+    if (
+      Moment(startDate).diff(endDate, 'days') >= 0 ||
+      Moment(endDate).diff(Moment().format(LONG_DATE), 'days') > 0
+    ) {
+      return;
+    }
 
     this.setState({ [dateInput]: date });
     this.setModel(this.getActiveCategory(), startDate, endDate);

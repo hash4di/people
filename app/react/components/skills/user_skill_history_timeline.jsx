@@ -14,7 +14,7 @@ export default class UserSkillHistoryTimeline extends Component {
   chartHeight = 70
   chartPadding = 10
   chartStrokeWidth = 5
-  gridLabelsHeight = 35
+  gridLabelsHeight = 60
   legendWidth = 200
 
   svgWidth = null
@@ -23,7 +23,7 @@ export default class UserSkillHistoryTimeline extends Component {
 
   verticalLineAttributes = {
     strokeWidth: '1',
-    strokeDasharray: '1, 6',
+    strokeDasharray: '1, 3',
     stroke: BLACK
   };
 
@@ -41,28 +41,54 @@ export default class UserSkillHistoryTimeline extends Component {
   componentDidMount() {
     this.scrollRight();
     this.initNotePopovers();
+    this.initRateInfoPopovers();
     this.initLegendPopover();
   }
 
   componentWillUpdate(props) {
     this.updateComponentProperties(props);
+    this.destroyNotePopovers();
+    this.destroyRateInfoPopovers();
   }
 
   componentDidUpdate() {
     this.scrollRight();
     this.initNotePopovers();
+    this.initRateInfoPopovers();
+  }
+
+  componentWillUnmount() {
+    this.destroyLegendPopover();
+    this.destroyNotePopovers();
+    this.destroyRateInfoPopovers();
   }
 
   render() {
-    const {loadingState, cssNamespace} = this.props;
-    const loadingStateClass = loadingState ? `${cssNamespace}--loading` : '';
+    const {loadingState, cssNamespace, model: {length}} = this.props;
+    const loadingStateClass = loadingState || !length ? `${cssNamespace}--hide` : '';
 
     return (
-      <div className={`${cssNamespace} ${loadingStateClass}`}>
-        {this.getSkillLabels()}
-        {this.getTimeline()}
+      <div>
+        <div className={`${cssNamespace} ${loadingStateClass}`}>
+          {this.getSkillLabels()}
+          {this.getTimeline()}
+        </div>
+        {this.getMessageBox()}
       </div>
     );
+  }
+
+  getMessageBox() {
+    const {loadingState, model: {length}} = this.props;
+
+    if (!loadingState && length === 0) {
+      return (
+        <div className="alert alert-warning">
+          Ups! None of those skills have changed in this period of time.<br/>
+          Please try with different settings.
+        </div>
+      );
+    }
   }
 
   getLegend() {
@@ -125,6 +151,60 @@ export default class UserSkillHistoryTimeline extends Component {
     $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover({html: true, content: legendPopoverHTML.innerHTML});
   }
 
+  initRateInfoPopovers() {
+    const entryPoints = $(`.${this.props.cssNamespace}__rate-info-popover-entry-point`).get();
+
+    entryPoints.forEach((entryPoint) => {
+      const startDate = entryPoint.getAttribute('data-start-date');
+      const endDate = entryPoint.getAttribute('data-end-date');
+      const totalDays = entryPoint.getAttribute('data-total-days');
+      const visibleDays = entryPoint.getAttribute('data-visible-days');
+      const rateNoteHTML = this.getRateNoteHTML(startDate, endDate, totalDays, visibleDays);
+
+      $(entryPoint).popover({html: true, content: rateNoteHTML});
+    });
+  }
+
+  destroyLegendPopover() {
+    $(`.${this.props.cssNamespace}__legend-popover-entry-point`).popover('destroy');
+  }
+
+  destroyNotePopovers() {
+    $(`.${this.props.cssNamespace}__note-popover-entry-point`).popover('destroy');
+  }
+
+  destroyRateInfoPopovers() {
+    $(`.${this.props.cssNamespace}__rate-info-popover-entry-point`).popover('destroy');
+  }
+
+  getRateNoteHTML(startDate, endDate, totalDays, visibleDays) {
+    const {cssNamespace} = this.props;
+    const container = document.createElement('div');
+    let days = totalDays;
+
+    if (parseInt(visibleDays) < parseInt(totalDays)) days += ` (visible ${visibleDays})`;
+
+    const template = (
+      <ul className={`${cssNamespace}__rate-note-list`}>
+        <li className={`${cssNamespace}__rate-note-list-item`}>
+          <div className={`${cssNamespace}__rate-note-list-item-label`}>From:</div>
+          <div className={`${cssNamespace}__rate-note-list-item-value`}>{startDate}</div>
+        </li>
+        <li className={`${cssNamespace}__rate-note-list-item`}>
+          <div className={`${cssNamespace}__rate-note-list-item-label`}>To:</div>
+          <div className={`${cssNamespace}__rate-note-list-item-value`}>{endDate}</div>
+        </li>
+        <li className={`${cssNamespace}__rate-note-list-item`}>
+          <div className={`${cssNamespace}__rate-note-list-item-label`}>No. days:</div>
+          <div className={`${cssNamespace}__rate-note-list-item-value`}>{days}</div>
+        </li>
+      </ul>
+    );
+
+    ReactDOM.render(template, container);
+    return container.innerHTML;
+  }
+
   updateComponentProperties({model, containerWidth, startDate, endDate}) {
     const {gridLabelsHeight, legendWidth, minimumSVGwidthScale, chartHeight, chartPadding} = this;
 
@@ -157,23 +237,27 @@ export default class UserSkillHistoryTimeline extends Component {
   }
 
   getSkillLabels() {
-    const {legendWidth, props: {cssNamespace, model}} = this;
+    const {legendWidth, gridLabelsHeight, props: {cssNamespace, model}} = this;
     const skillLabels = model.reduce((acc, skillData) => acc.concat(
       <li className={`${cssNamespace}__labels-item`}>{skillData.skillName}</li>
     ), []);
 
     return (
       <div className={`${cssNamespace}__left-column`}>
-        <button className={`btn btn-info ${cssNamespace}__legend-popover-entry-point`}>Legend</button>
+        <div className={`${cssNamespace}__legend-container`} style={{height: gridLabelsHeight + 'px'}}>
+          <button className={`btn btn-info ${cssNamespace}__legend-popover-entry-point`}>Legend</button>
+        </div>
         <ul className={`${cssNamespace}__labels`} style={{width: legendWidth + 'px'}}>{skillLabels}</ul>
       </div>
     );
   }
 
   getTimeline() {
-    const {svgWidth, svgHeight, props: {cssNamespace}} = this;
+    const {svgWidthScale, minimumSVGwidthScale, svgWidth, svgHeight, props: {cssNamespace}} = this;
+    const enableHorizontalScrollClass = svgWidthScale === minimumSVGwidthScale ?
+      `${cssNamespace}--enable-horizontal-scroll` : '';
 
-    return <div className={`${cssNamespace}__timeline`}>
+    return <div className={`${cssNamespace}__timeline ${enableHorizontalScrollClass}`}>
       <svg
         version="1.1"
         baseProfile="full"
@@ -243,12 +327,20 @@ export default class UserSkillHistoryTimeline extends Component {
     let previousPointX = offsetLeft;
     let previousPointY = offsetTop + chartHeight;
 
-    points.forEach(({rate, days, favorite, note}, index) => {
+    points.forEach(({rate, days, favorite, note, startDate, endDate}, index) => {
       const {stroke, strokeDasharray, strokeWidth, nextPointX, nextPointY} = this.getChartAttributes({
         rate, days, favorite, maxRate, chartHeight, svgWidthScale, chartStrokeWidth, previousPointX, offsetTop
       });
 
       horizontalLines.push(this.getJSXobject({tagName: 'line', attributes: {
+        'data-placement': 'top',
+        'data-container': 'body',
+        'data-trigger': 'hover',
+        'data-start-date': startDate,
+        'data-end-date': endDate,
+        'data-visible-days': days,
+        'data-total-days': Moment(endDate).diff(Moment(startDate), 'days'),
+        className: `${cssNamespace}__rate-info-popover-entry-point`,
         x1: previousPointX,
         y1: nextPointY,
         x2: nextPointX,
@@ -298,8 +390,8 @@ export default class UserSkillHistoryTimeline extends Component {
 
     return {
       stroke: this.getChartColor(rate, maxRate),
-      strokeDasharray: favorite ? 'none' : '10, 10',
-      strokeWidth: favorite ? chartStrokeWidth : chartStrokeWidth / 2,
+      strokeDasharray: favorite ? 'none' : '10, 5',
+      strokeWidth: chartStrokeWidth,
       nextPointX: previousPointX + width,
       nextPointY: offsetTop + chartHeight - height
     };
@@ -352,10 +444,11 @@ export default class UserSkillHistoryTimeline extends Component {
     lines.push(
       this.getJSXobject({tagName: 'line', attributes: {
         x1: positionX,
-        y1: '0',
+        y1: gridLabelsHeight,
         x2: positionX,
         y2: svgHeight,
-        stroke: RED
+        stroke: RED,
+        strokeWidth: '0.6'
       }}),
       this.getJSXobject({tagName: 'line', attributes: {
         x1: '0',
@@ -367,8 +460,8 @@ export default class UserSkillHistoryTimeline extends Component {
     );
 
     labels.push(this.getJSXobject({tagName: 'text', content: 'Today', attributes: {
-      x: positionX + 10,
-      y: labelFontSize + 40,
+      x: positionX - 15,
+      y: 50,
       fill: RED
     }}));
 

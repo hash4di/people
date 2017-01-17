@@ -9,4 +9,4 @@ export default {
   DARK_BLUE: '#084F73',
   BLACK: 'black',
   WHITE: 'white'
-}
+};
