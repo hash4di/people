@@ -8,4 +8,5 @@ class UserSkillRatesPage < SitePrism::Page
   elements :clear_rate, '.skill__clear_rate'
   elements :skill_note, '.skill__note'
   element :save_alert, '.messenger-message'
+  elements :two_starts, '.glyphicon.skill__rate[data-rate="2"'
 end

@@ -31,28 +31,28 @@ describe 'User skill rates page', js: true do
       expect(user_skill_rates_page).to have_content I18n.t('skills.favorite')
     end
 
-    it 'selects one star in the boolean rate' do
+    it 'selects one star in the range rate' do
       star = user_skill_rates_page.skill_rate1.first
       expect(star[:class]).to_not include('selected')
       skill_rate_trigger(1, 'click')
       expect(star[:class]).to include('selected')
     end
 
-    it 'selects two stars in the boolean rate' do
+    it 'selects two stars in the range rate' do
       star = user_skill_rates_page.skill_rate2.first
       expect(star[:class]).to_not include('selected')
       skill_rate_trigger(2, 'click')
       expect(star[:class]).to include('selected')
     end
 
-    it 'selects three stars in the boolean rate' do
+    it 'selects three stars in the range rate' do
       star = user_skill_rates_page.skill_rate3.first
       expect(star[:class]).to_not include('selected')
       skill_rate_trigger(3, 'click')
       expect(star[:class]).to include('selected')
     end
 
-    it 'selects star in the range rate' do
+    it 'selects star in the boolean rate' do
       find('#ios-tab').click
       star = user_skill_rates_page.skill_rate1.first
       expect(star[:class]).to_not include('selected')
@@ -78,13 +78,16 @@ describe 'User skill rates page', js: true do
 
   context 'when user have marked skills' do
     before do
-      developer.user_skill_rates.update_all(rate: 2)
+      range_skills_ids = skills_range.map(&:id)
+      developer.user_skill_rates.where(skill_id: range_skills_ids).update_all(rate: 2)
       developer.user_skill_rates.update_all(favorite: true)
       log_in_as developer
       user_skill_rates_page.load
     end
 
     it 'resets rating' do
+      find('#backend-tab').click
+      user_skill_rates_page.wait_for_two_starts
       star = user_skill_rates_page.skill_rate2.first
       expect(star[:class]).to include('selected')
       page.execute_script "$('.skill__clear_rate').show()"
