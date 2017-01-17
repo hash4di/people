@@ -34,5 +34,6 @@
                       %i.glyphicon.glyphicon-search
                     = link_to edit_skill_path(skill), class: "btn btn-primary", role: 'button' do
                       %i.glyphicon.glyphicon-cog
-                    = link_to skill, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger ", role: 'button' do
-                      %i.glyphicon.glyphicon-trash
+                    - if Flip.removing_skills_allowed?
+                      = link_to skill, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger ", role: 'button' do
+                        %i.glyphicon.glyphicon-trash

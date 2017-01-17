@@ -5,4 +5,6 @@ class Feature < ActiveRecord::Base
   strategy Flip::DatabaseStrategy
   strategy Flip::DeclarationStrategy
   default false
+
+  feature :removing_skills_allowed, description: 'Allow user to remove skills'
 end

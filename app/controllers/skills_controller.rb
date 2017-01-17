@@ -66,7 +66,7 @@ class SkillsController < ApplicationController
   # DELETE /skills/1
   # DELETE /skills/1.json
   def destroy
-    @skill.destroy
+    @skill.destroy if Flip.removing_skills_allowed?
     respond_to do |format|
       format.html { redirect_to skills_url }
       format.json { head :no_content }
