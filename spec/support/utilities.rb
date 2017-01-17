@@ -39,8 +39,7 @@ end
 
 def react_select(selector, text)
   find("#{selector} .Select-control").click
-  wait_for_ajax
-  find("#{selector} .Select.is-open") # wait for the select to be opened
+  find("#{selector} .Select").native.send_key(text)
   find('div.Select-option', text: text).click
 end
 
