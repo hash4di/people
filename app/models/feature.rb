@@ -6,5 +6,5 @@ class Feature < ActiveRecord::Base
   strategy Flip::DeclarationStrategy
   default false
 
-  feature :removing_skills_allowed, description: 'Allow user to remove skills'
+  feature :modifying_skills_allowed, description: 'Allow user to modify skills'
 end
