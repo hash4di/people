@@ -58,6 +58,7 @@
     "node": ">= 0.10"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathDirs": ["app/react"]
   }
 }
