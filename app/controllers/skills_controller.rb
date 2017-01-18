@@ -2,6 +2,7 @@ class SkillsController < ApplicationController
   before_filter :authenticate_admin!
   before_action :set_skill, only: [:show, :edit, :update, :destroy]
   before_action :set_grouped_skills, only: [:index]
+  before_action :skip_skill_modification, only: [:edit, :update, :destroy]
   expose(:users_with_skill) do
     UsersForSkillQuery.new(skill: @skill, user: current_user).results
   end
@@ -84,6 +85,14 @@ class SkillsController < ApplicationController
     @skills = Skill.eager_load(:skill_category).all
     @grouped_skills_by_category = @skills.group_by do |skill|
       skill.skill_category.name
+    end
+  end
+
+  def skip_skill_modification
+    return if Flip.modifying_skills_allowed?
+    respond_to do |format|
+      format.html { redirect_to skills_url }
+      format.json { head :no_content }
     end
   end
 
