@@ -39,6 +39,7 @@ end
 
 def react_select(selector, text)
   find("#{selector} .Select-control").click
+  find("#{selector} .Select").native.send_key(text)
   find('div.Select-option', text: text).click
 end
 

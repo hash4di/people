@@ -29,6 +29,7 @@ describe 'Scheduling page', js: true do
     it 'allows to filter by abilities' do
       expect(page).to have_content angular_dev.last_name
       expect(page).to have_content dev_with_no_skillz.last_name
+      wait_for_ajax
       react_select('.abilities', 'AngularJS')
       expect(page).to have_content angular_dev.last_name
       expect(page).to_not have_content dev_with_no_skillz.last_name
