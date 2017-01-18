@@ -4,8 +4,8 @@ describe Api::V2::UserSkillRatesController do
   describe 'GET #index' do
     let(:token) { AppConfig.api_token }
     let(:user) { create(:user, email: 'john.smith@netguru.pl') }
-    let(:skill1) { create(:skill) }
-    let(:skill2) { create(:skill) }
+    let(:skill1) { create(:skill, name: 'ruby') }
+    let(:skill2) { create(:skill, name: 'rails') }
     let(:unknown_email) { 'asdasd@netguru.pl' }
     let!(:user_skill_rate1) { create(:user_skill_rate, user: user, skill: skill1, rate: 3) }
     let!(:user_skill_rate2) { create(:user_skill_rate, user: user, skill: skill2, rate: 1) }
