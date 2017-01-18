@@ -28,7 +28,6 @@ defaults: &defaults
     new_available_view:   false
   rollbar:
     access_token:         token
-  fetching_abilities:     false
   profile_api_url:        some_dev_url
 
   slack:

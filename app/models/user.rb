@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :positions
   has_many :projects, through: :memberships
   has_many :roles, through: :positions
+  has_many :user_skill_rates
+  has_many :skills, through: :user_skill_rates
   belongs_to :contract_type
   belongs_to :location
   belongs_to :primary_role, class_name: 'Role'
@@ -166,5 +168,21 @@ class User < ActiveRecord::Base
 
   def user_memberships_repository
     @user_memberships_repository ||= UserMembershipsRepository.new(self)
+  end
+
+  def rated_skills
+    ::Skill
+      .joins(user_skill_rates: :contents)
+      .where('user_skill_rate_contents.created_at = (SELECT MAX(user_skill_rate_contents.created_at) FROM user_skill_rate_contents WHERE user_skill_rates.id = user_skill_rate_contents.user_skill_rate_id)')
+      .where('user_skill_rates.user_id' => self.id)
+      .where('user_skill_rate_contents.rate > 0')
+  end
+
+  def non_rated_skills
+    ::Skill
+      .joins(user_skill_rates: :contents)
+      .where('user_skill_rate_contents.created_at = (SELECT MAX(user_skill_rate_contents.created_at) FROM user_skill_rate_contents WHERE user_skill_rates.id = user_skill_rate_contents.user_skill_rate_id)')
+      .where('user_skill_rates.user_id' => self.id)
+      .where('user_skill_rate_contents.rate = 0')
   end
 end

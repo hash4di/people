@@ -9,6 +9,10 @@ describe 'Projects dashboard page', js: true do
 
   let(:projects_page) { App.new.projects_page }
 
+  let(:go_to_active_tab) { visit '/dashboard/active' }
+  let(:go_to_potential_tab) { visit '/dashboard/potential' }
+  let(:go_to_archived_tab) { visit '/dashboard/archived' }
+
   before do
     allow_any_instance_of(SendMailJob).to receive(:perform)
     log_in_as admin_user
@@ -40,13 +44,13 @@ describe 'Projects dashboard page', js: true do
 
   describe 'project row' do
     context 'when on Active tab' do
-      before { projects_page.project_types.active_tab.click }
-
       it 'has action icon (archive)' do
+        go_to_active_tab
         expect(projects_page.projects.first).to have_archive_icon
       end
 
       it 'displays proper projects' do
+        go_to_active_tab
         expect(projects_page).to have_content active_project.name
         expect(projects_page).not_to have_content potential_project.name
         expect(projects_page).not_to have_content archived_project.name
@@ -54,13 +58,14 @@ describe 'Projects dashboard page', js: true do
       end
 
       it 'allows adding memberships to an active project' do
+        go_to_active_tab
         expect(projects_page.projects.first).to have_member_dropdown
       end
 
       describe 'show next' do
         let!(:future_membership) { create(:membership, :future, project: active_project) }
 
-        before { projects_page.project_types.active_tab.click }
+        before { go_to_active_tab }
 
         context 'when checked' do
           it 'shows future memberships' do
@@ -80,7 +85,7 @@ describe 'Projects dashboard page', js: true do
         let!(:project_membership) { create(:membership, project: active_project) }
         let!(:future_project_membership) { create(:membership, :future, project: active_project) }
 
-        before { projects_page.project_types.active_tab.click }
+        before { go_to_active_tab }
 
         it 'shows number of present people in project' do
           expect(projects_page.projects.first.non_billable_counter).to have_content '1'
@@ -89,7 +94,7 @@ describe 'Projects dashboard page', js: true do
     end
 
     context 'when on Potential tab' do
-      before { projects_page.project_types.potential_tab.click }
+      before { go_to_potential_tab }
 
       it 'displays action icon (archive)' do
         expect(projects_page.projects.first).to have_archive_icon
@@ -108,7 +113,7 @@ describe 'Projects dashboard page', js: true do
     end
 
     context 'when on Archived tab' do
-      before { projects_page.project_types.archived_tab.click }
+      before { go_to_archived_tab }
 
       it 'displays all archived projects' do
         expect(projects_page).to have_content archived_project.name
@@ -131,11 +136,13 @@ describe 'Projects dashboard page', js: true do
   end
 
   describe 'managing people in projects' do
-    before { projects_page.project_types.active_tab.click }
 
     describe 'adding member to project' do
+      before { go_to_active_tab }
+
       it 'adds member to project correctly' do
         react_select('.project', admin_user.decorate.name)
+        wait_for_ajax
         expect(projects_page.projects.first.billable_counter).to have_content '1'
       end
     end
@@ -143,11 +150,11 @@ describe 'Projects dashboard page', js: true do
     describe 'ending membership in a regular project' do
       let!(:membership) { create(:membership, user: admin_user, project: active_project, ends_at: nil) }
 
-      before { projects_page.project_types.active_tab.click }
+      before { go_to_active_tab }
 
       it 'sets and end date for a membership' do
         expect(projects_page.projects.first).to_not have_time_to_element
-        projects_page.projects.first.memberships.first.hover
+        page.execute_script "$('.js-project-memberships.memberships').trigger('mouseover')"
         find('.icons .remove').click
         wait_for_ajax
         expect(projects_page.projects.first).to have_time_to_element
@@ -158,7 +165,7 @@ describe 'Projects dashboard page', js: true do
   describe 'managing notes' do
     describe 'add a new note' do
       before do
-        projects_page.project_types.active_tab.click
+        go_to_active_tab
         projects_page.projects.first.notes_button.click
       end
 
@@ -176,7 +183,7 @@ describe 'Projects dashboard page', js: true do
 
       before do
         create(:note, user: admin_user, project: active_project)
-        projects_page.project_types.active_tab.click
+        go_to_active_tab
         projects_page.projects.first.notes_button.click
       end
 

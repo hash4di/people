@@ -18,6 +18,7 @@ dependencies:
   pre:
     - cp config/sec_config.yml.sample config/sec_config.yml
   post:
+    - sudo apt-get update && sudo apt-get install libpango1.0-0 && sudo apt-get install firefox
     - npm install webpack -g
     - webpack
   cache_directories:

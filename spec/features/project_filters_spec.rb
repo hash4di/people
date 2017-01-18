@@ -12,6 +12,7 @@ describe 'Project dashboard filters', js: true do
   before(:each) do
     log_in_as admin_user
     projects_page.load
+    wait_for_ajax
   end
 
   describe 'roles filter' do
@@ -22,7 +23,6 @@ describe 'Project dashboard filters', js: true do
 
     it 'shows only matched projects when role is provided' do
       react_select('.filter.roles', membership.role.name)
-
       expect(projects_page).to_not have_text('zztop')
       expect(projects_page).to have_text('test')
     end
@@ -32,7 +32,6 @@ describe 'Project dashboard filters', js: true do
   describe 'users filter' do
     it 'returns only matched projects when user name provided' do
       react_select('.filter.users', 'Developer Daisy')
-
       expect(projects_page).to have_text('test')
       expect(projects_page).to_not have_text('zztop')
     end
@@ -50,9 +49,9 @@ describe 'Project dashboard filters', js: true do
       end
 
       it 'does not show the project' do
-        projects_page.project_types.active_tab.click
-
+        visit '/dashboard/active'
         expect(projects_page).to have_text('zztop')
+        wait_for_ajax
         react_select('.filter.users', future_dev.decorate.name)
         expect(page).to_not have_text('zztop')
       end
@@ -67,7 +66,6 @@ describe 'Project dashboard filters', js: true do
 
     it 'shows only matched projects when project name provided' do
       react_select('.filter.projects', 'zztop')
-
       expect(projects_page).to have_text('zztop')
       expect(projects_page).not_to have_text('test')
     end

@@ -24,6 +24,10 @@ module Hrguru
     config.generators do |g|
       g.orm :active_record
     end
+
+    config.i18n.default_locale = :en
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+    config.assets.initialize_on_precompile = true # required by i18n-js
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de

@@ -6,5 +6,5 @@ class Feature < ActiveRecord::Base
   strategy Flip::DeclarationStrategy
   default false
 
-  feature :fetching_abilities, description: 'Fetching abilities from profile app'
+  feature :modifying_skills_allowed, description: 'Allow user to modify skills'
 end

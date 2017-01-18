@@ -45,25 +45,4 @@ describe UsersController do
       expect(response.body).to match(/Winchester Dean/)
     end
   end
-
-  describe '#fetch_abilities' do
-    before do
-      user_data = [{ 'email' => 'email', 'skills' => ['skill'] }]
-      allow(NetguruApi::Profile).to receive(:fetch_users_with_skills).and_return(user_data)
-      sign_in user
-      get :fetch_abilities
-    end
-
-    context 'current_user is not an admin' do
-      let(:user) { create(:user) }
-
-      it { expect(response).to redirect_to root_path }
-    end
-
-    context 'current_user is an admin' do
-      let(:user) { create(:user, :admin) }
-
-      it { expect(response).to be_success }
-    end
-  end
 end
