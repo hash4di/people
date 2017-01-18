@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Api::V2::SkillsController do
   describe 'GET #index' do
     let(:token) { AppConfig.api_token }
-    let!(:skill1) { create(:skill) }
-    let!(:skill2) { create(:skill) }
+    let!(:skill1) { create(:skill, name: 'ruby') }
+    let!(:skill2) { create(:skill, name: 'rails') }
 
     context 'without api token' do
       it 'returns response status 403' do
