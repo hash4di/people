@@ -35,25 +35,13 @@ describe Api::V2::UserSkillRatesController do
     context 'with api token and valid user_email' do
       before { get :index, token: token, user_email: user.email }
 
-      it { expect(response.status).to eq(200) }
-
-      it 'returns correct hash', :aggregate_failures do
-        skill_rates = json_response['user_skill_rates']
-        expect(skill_rates).to be_a(Array)
-        expect(skill_rates).to eq(expected_array)
-      end
+      it_behaves_like 'returns correct hash and response is 200'
     end
 
     context 'with api token and user_email with different domain' do
       before { get :index, token: token, user_email: 'john.smith@netguru.co' }
 
-      it { expect(response.status).to eq(200) }
-
-      it 'returns correct hash', :aggregate_failures do
-        skill_rates = json_response['user_skill_rates']
-        expect(skill_rates).to be_a(Array)
-        expect(skill_rates).to eq(expected_array)
-      end
+      it_behaves_like 'returns correct hash and response is 200'
     end
   end
 end
