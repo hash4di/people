@@ -7,7 +7,7 @@ class ScheduledUsersRepository
     @not_scheduled ||=
       technical_users
       .where
-      .not(id: technical_users_with_valid_memberships.pluck(:id))
+      .not(id: technical_users_with_valid_memberships.map(&:id))
       .order(:last_name)
   end
 
