@@ -103,7 +103,10 @@ class ScheduledUsersRepository
             ' AND (projects.end_at IS NULL OR projects.end_at >= :now)'
 
     @technical_users_with_valid_memberships ||=
-      technical_users.joins(memberships: :project).where(query, now: Date.current.beginning_of_day).distinct
+      technical_users
+      .joins(memberships: :project)
+      .where(query, now: Date.current.beginning_of_day)
+      .distinct
   end
 
   def billable_users
