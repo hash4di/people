@@ -8,9 +8,10 @@
       %li{ role: "presentation" }
         %a{ id: "#{parameterize(skill_category)}-tab", aria: { controls: parameterize(skill_category), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(skill_category)}", role: "tab" }= skill_category
     %li.pull-right{ role: "presentation" }
-      = link_to new_skill_path, role: 'button' do
-        %i.glyphicon.glyphicon-plus
-        %span Add new skill
+      - if Flip.modifying_skills_allowed?
+        = link_to new_skill_path, role: 'button' do
+          %i.glyphicon.glyphicon-plus
+          %span Add new skill
 
   .tab-content
     - @grouped_skills_by_category.each do |skill_category, skills|
