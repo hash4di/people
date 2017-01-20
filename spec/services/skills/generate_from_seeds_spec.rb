@@ -12,15 +12,15 @@ describe Skills::GenerateFromSeeds do
           {
             ref_name: 'backend_ruby-on-rails',
             name: 'Ruby on Rails',
-            rating:'int',
-            description: 'Rails is a web application development framework written in the Ruby language. It is designed to make programming web applications easier by making assumptions about what every developer needs to get started.',
+            rating: 'int',
+            description: 'Rails.',
             category: 'backend'
           },
           {
             ref_name: 'backend_sinatra',
             name: 'Sinatra',
             rating: 'boolean',
-            description: 'Sinatra is a free and open source software web application library and domain-specific language written in Ruby. It is an alternative to other Ruby web application frameworks such as Ruby on Rails. It is dependent on the Rack web server interface.',
+            description: 'Sinatra.',
             category: 'backend'
           }
         ]
