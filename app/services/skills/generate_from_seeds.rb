@@ -24,9 +24,10 @@ module Skills
     end
 
     def skill_seeds
-      SKILLS_AND_CATEGORIES
+      return SKILLS_AND_CATEGORIES if SKILLS_AND_CATEGORIES.present?
+      fail
     rescue
-      fail 'Please run `rake skills:generate_seeds` first'
+      raise 'Please run `rake skills:generate_seeds` first'
     end
 
     def find_or_create_skill_category(name)
