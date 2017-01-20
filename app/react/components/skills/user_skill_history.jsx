@@ -3,9 +3,7 @@ import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
 import UserSkillHistoryLoadingState from './user_skill_history_loading_state';
 import Moment from 'moment';
-import DateFormats from '../../constants/date_formats'
-
-const {LONG_DATE} = DateFormats;
+import {LONG_DATE} from '../../constants/date_formats'
 
 export default class UserSkillHistory extends Component {
   cssNamespace = 'user-skill-history'
