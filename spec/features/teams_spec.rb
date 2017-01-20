@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-# TODO find out why this test won't work on CircleCI
-xdescribe 'Team view', js: true do
+describe 'Team view', js: true do
   let(:admin_user) { create(:user, :admin, email: AppConfig.emails.admin[0]) }
   let(:hidden_role) { create(:role, show_in_team: false) }
   let(:team) { create(:team) }
@@ -78,7 +77,8 @@ xdescribe 'Team view', js: true do
       expect(teams_page).to have_edit_team_modal
     end
 
-    it 'updates team name' do
+    # TODO find out why this won't work on CircleCI
+    xit 'updates team name' do
       teams_page.new_name_input.set new_team_name
       teams_page.save_button.click
       wait_for_ajax
