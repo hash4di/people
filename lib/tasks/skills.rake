@@ -28,4 +28,9 @@ namespace :skills do
       f.puts(']')
     end
   end
+
+  desc 'Create skills from generated seeds'
+  task generate_skills: :environment do
+    Skills::GenerateFromSeeds.call
+  end
 end
