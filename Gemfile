@@ -57,6 +57,7 @@ gem 'whenever', require: false
 gem 'httparty'
 gem 'active_model_serializers'
 gem 'react_webpack_rails'
+gem 'rake-progressbar'
 
 group :development do
   gem 'better_errors'
