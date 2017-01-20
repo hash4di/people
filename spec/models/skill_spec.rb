@@ -19,6 +19,9 @@ describe Skill do
     let!(:existing_skill) do
       create(:skill, name: 'foo', skill_category: category)
     end
+    let!(:existing_skill2) do
+      create(:skill, name: 'ROR', skill_category: other_category)
+    end
 
     context 'when created' do
       let(:skill) { build(:skill, name: 'foo', skill_category: category) }
@@ -33,23 +36,37 @@ describe Skill do
     context 'when updated' do
       let(:persisted_skill) { create(:skill, name: 'ROR', skill_category: category) }
 
-      it 'ensures uniques by name & category' do
-        persisted_skill.update(name: 'foo')
-        expect(persisted_skill.valid?).to be false
-        expect(persisted_skill.errors.messages)
-          .to eq :'name & skill_category' => ['must be uniq']
-        persisted_skill.reload
-        persisted_skill.update(name: 'foo', skill_category: other_category)
-        expect(persisted_skill.valid?).to be true
-        persisted_skill.update(skill_category: category)
-        expect(persisted_skill.valid?).to be false
-        expect(persisted_skill.errors.messages)
-          .to eq :'name & skill_category' => ['must be uniq']
+      context 'with existing combination of name and category' do
+
+        it 'is invalid' do
+          persisted_skill.update(name: 'foo')
+          expect(persisted_skill.valid?).to be false
+          expect(persisted_skill.errors.messages)
+            .to eq :'name & skill_category' => ['must be uniq']
+        end
+
+        it 'is invalid' do
+          persisted_skill.update(skill_category: other_category)
+          expect(persisted_skill.valid?).to be false
+          expect(persisted_skill.errors.messages)
+            .to eq :'name & skill_category' => ['must be uniq']
+        end
       end
 
-      it 'allows change of other attributes' do
-        existing_skill.update(rate_type: 'boolean', description: 'description')
-        expect(existing_skill.valid?).to be true
+      context 'with new combination of name and category' do
+        before { persisted_skill.update(name: 'foo', skill_category: other_category) }
+
+        it 'is valid' do
+          expect(persisted_skill.valid?).to be true
+        end
+      end
+
+      context 'allows update of other attributes' do
+
+        it 'is valid' do
+          existing_skill.update(rate_type: 'boolean', description: 'description')
+          expect(existing_skill.valid?).to be true
+        end
       end
     end
   end
