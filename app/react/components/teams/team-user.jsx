@@ -55,7 +55,7 @@ class TeamUser extends React.Component {
   userRoles() {
     let userRoleIds = this.props.user.primary_role_ids;
     return this.props.roles.filter(role => {
-      return _.isMatch(userRoleIds, role.id);
+      return _.contains(userRoleIds, role.id);
     });
   }
 
@@ -75,7 +75,7 @@ class TeamUser extends React.Component {
   isBillable() {
     let userRoleIds = this.props.user.primary_role_ids;
     return this.billableRoles().filter(role => {
-      return _.isMatch(userRoleIds, role.id);
+      return _.contains(userRoleIds, role.id);
     }).length > 0;
   }
 
