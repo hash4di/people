@@ -7,8 +7,17 @@ describe UserSkillRate do
   end
 
   describe 'validations' do
-    it { is_expected.to  validate_presence_of :skill }
-    it { is_expected.to  validate_presence_of :user }
+    let(:user_skill_rate) { create(:user_skill_rate) }
+
+    it { is_expected.to validate_presence_of :skill }
+    it { is_expected.to validate_presence_of :user }
+
+    # there is a problem inside shoulda gem, check this issue on GH: https://github.com/thoughtbot/shoulda-matchers/issues/535
+    it 'enforces uniqueness' do
+      expect(
+        user_skill_rate
+      ).to validate_uniqueness_of(:skill).scoped_to(:user_id)
+    end
   end
 
   describe '#content' do
