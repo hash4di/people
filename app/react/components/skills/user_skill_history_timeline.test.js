@@ -28,12 +28,12 @@ test('show loading state while waiting for model', () => {
   expect(subject.find(`.${cssNamespace}--hide`).length).not.toBe(0);
   expect(subject.find('.alert-warning').length).toBe(0);
 });
-/*
-test('tbd', () => {
+
+test('component is build correctly when all attributes are passed', () => {
   const cssNamespace = 'test-subject';
   const startDate = '2016-12-01';
   const endDate = '2016-12-10';
-  const containerWidth = 200;
+  const containerWidth = 1000;
   const model = [{
     daysOffset: 0,
     maxRate: 3,
@@ -67,141 +67,30 @@ test('tbd', () => {
       model={model}
     />
   );
-  console.log(subject.html());
-  //console.log(subject.find('.alert-warning'));
-  expect(subject.find(`.${cssNamespace}--hide`).length).not.toBe(0);
-  expect(subject.find('.alert-warning').text()).not.toBeNull();
-});
 
-/*
+  expect(subject.find(`.${cssNamespace}`).html()).not.toBeNull();
+  expect(subject.find(`.${cssNamespace}__left-column`).html()).not.toBeNull();
+  expect(subject.find(`.${cssNamespace}__timeline`).html()).not.toBeNull();
+  expect(subject.find(`.${cssNamespace}__timeline svg`).html()).not.toBeNull();
+  expect(subject.find(`.${cssNamespace}__legend-popover-entry-point`).text()).toBe(`Legend`);
 
-test('component wrapper has expected structure', () => {
-  const cssNamespace = 'test-subject';
-  const subject = shallow(
-    <UserSkillHistoryFilter cssNamespace={cssNamespace} />
-  );
-
-  expect(subject.is('div')).toBeTruthy();
-  expect(subject.hasClass(cssNamespace)).toBeTruthy();
-  expect(subject.find('> div').length).toBe(2);
-
-  expect(subject
-    .find(`.${cssNamespace}__filter-category`)
-    .is('div')
-  ).toBeTruthy();
-
-  expect(subject
-    .find(`.${cssNamespace}__filter-date`)
-    .is('div')
-  ).toBeTruthy();
-});
-
-test('category filter sub-component has expected structure', () => {
-  const cssNamespace = 'test-subject';
-  const listPrimaryText = "My test list";
-  const listItems = [
-    {
-      name: 'skill_1',
-      isActive: true
-    },
-    {
-      name: 'skill_2',
-      isActive: false
-    },
-    {
-      name: 'skill_3',
-      isActive: false
-    }
-  ];
-  const subject = shallow(
-    <UserSkillHistoryFilter
-      cssNamespace={cssNamespace}
-      listItems={listItems}
-      listPrimaryText={listPrimaryText}
-    />
-  );
-
-  expect(subject
-    .find(`.${cssNamespace}__filter-category-primary-text`)
-    .is('div')
-  ).toBeTruthy();
-
-  expect(subject
-    .find(`.${cssNamespace}__filter-category-primary-text`)
-    .text()
-  ).toBe(listPrimaryText);
-
-  expect(subject
-    .find(`.${cssNamespace}__filter-category-list`)
-    .is('ul')
-  ).toBeTruthy();
-
-  expect(subject
-    .find(`.${cssNamespace}__filter-category-list`)
-    .hasClass('nav')
-  ).toBeTruthy();
-
-  expect(subject
-    .find(`.${cssNamespace}__filter-category-list`)
-    .hasClass('nav-tabs')
-  ).toBeTruthy();
-
-  expect(subject
-    .find(`.${cssNamespace}__filter-category-list-item`)
-    .length
-  ).toBe(listItems.length);
-
-  listItems.forEach(({name, isActive}, index) => {
-    const listItem = subject
-      .find(`.${cssNamespace}__filter-category-list-item`)
-      .at(index);
-
-    if (isActive) {
-      expect(
-        listItem.hasClass(`${cssNamespace}__filter-category-active-item`)
-      ).toBeTruthy();
-    } else {
-      expect(
-        listItem.hasClass(`${cssNamespace}__filter-category-active-item`)
-      ).not.toBeTruthy();
-    }
-
-    expect(listItem.text()).toBe(name);
+  model.forEach(({skillName}, index) => {
+    expect(subject.find(`.${cssNamespace}__labels-item`).at(index).text()).toBe(skillName);
   });
 });
 
-test('category filter sub-component has expected structure', () => {
-  const cssNamespace = 'test-subject';
-  const startDate = "2016-10-10";
-  const endDate = "2016-12-12";
-  const subject = shallow(
-    <UserSkillHistoryFilter
-      cssNamespace={cssNamespace}
-      startDate={startDate}
-      endDate={endDate}
-    />
-  );
-  const filterNodes = subject.find(`.${cssNamespace}__filter-date`).children();
 
-  expect(filterNodes.length).toBe(6);
-  expect(filterNodes.at(0).is('button'));
-  expect(filterNodes.at(0).text()).toBe('last month');
+test('scale method respects minimum scale', () => {
+  const subject = new UserSkillHistoryTimeline({model: []});
 
-  expect(filterNodes.at(1).is('button'));
-  expect(filterNodes.at(1).text()).toBe('last 3 months');
-
-  expect(filterNodes.at(2).is('div'));
-  expect(filterNodes.at(2).text()).toBe('From:');
-
-  expect(filterNodes.at(3).is('input'));
-  expect(filterNodes.at(3).prop('type')).toBe('date');
-  expect(filterNodes.at(3).prop('value')).toBe(startDate);
-
-  expect(filterNodes.at(4).is('div'));
-  expect(filterNodes.at(4).text()).toBe('To:');
-
-  expect(filterNodes.at(5).is('input'));
-  expect(filterNodes.at(5).prop('type')).toBe('date');
-  expect(filterNodes.at(5).prop('value')).toBe(endDate);
+  expect(subject.getSVGwidthScale(1000, 10, 5)).toBe(100);
+  expect(subject.getSVGwidthScale(1000, 500, 5)).toBe(5);
 });
-*/
+
+test('get extra days variants', () => {
+  const subject = new UserSkillHistoryTimeline({model: []});
+
+  expect(subject.getExtraDaysForMargin(10)).toBe(5);
+  expect(subject.getExtraDaysForMargin(60)).toBe(10);
+  expect(subject.getExtraDaysForMargin(100)).toBe(30);
+});
