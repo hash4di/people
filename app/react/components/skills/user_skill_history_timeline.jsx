@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Moment from 'moment';
-import {LONG_MONTH_DAY} from '../../constants/date_formats';
-import {
+import DateFormats from '../../constants/date_formats';
+import Colors from '../../constants/colors';
+import classNames from 'classnames';
+
+const {LONG_MONTH_DAY} = DateFormats;
+const {
   YELLOW, RED, SUNSET, GREEN, BLACK, GREY,
   WHITE, DARK_BLUE, LIGHT_BLUE, LIGHT_GREY
-} from '../../constants/colors';
-import classNames from 'classnames';
+} = Colors;
 
 export default class UserSkillHistoryTimeline extends Component {
   minimumSVGwidthScale = 5
