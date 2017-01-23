@@ -76,6 +76,11 @@ class SkillsController < ApplicationController
 
   private
 
+  def authenticate_admin!
+    return if current_user.talent? || current_user.leader?
+    super
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_skill
     @skill = Skill.find(params[:id])

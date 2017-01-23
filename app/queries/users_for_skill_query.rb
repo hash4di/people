@@ -30,13 +30,16 @@ class UsersForSkillQuery
     "
   end
 
-  # TODO: can be optimalised to select only developer users
   def query_scope
-    if user_has_team?
-      team.users.pluck(:id)
-    else
+    if user_is_admin_or_talent
       User.all.pluck(:id)
+    elsif user_has_team?
+      team.users.pluck(:id)
     end
+  end
+
+  def user_is_admin_or_talent
+    user.admin? || user.talent?
   end
 
   def user_has_team?

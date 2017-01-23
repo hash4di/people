@@ -18,7 +18,7 @@
           %li{ class: menu_class('skill_user_rates') }= link_to "Skills", user_skill_rates_path
           - if current_user.admin?
             %li.dropdown
-              %a.dropdown-toggle{ href: "#", :'data-toggle' => "dropdown"}
+              %a.dropdown-toggle{ href: "#", :'data-toggle' => "dropdown" }
                 Other
                 %b.caret
               %ul.dropdown-menu
@@ -26,6 +26,13 @@
                 %li{ class: menu_class('abilities') }= link_to "Abilities", abilities_path
                 %li{ class: menu_class('skills') }= link_to "Skills", skills_path
                 %li= link_to "Reports", AppConfig.reports_url, target: '_blank'
+          - elsif current_user.talent? || current_user.leader?
+            %li.dropdown
+              %a.dropdown-toggle{ href: "#", :'data-toggle' => "dropdown" }
+                Other
+                %b.caret
+              %ul.dropdown-menu
+                %li{ class: menu_class('skills') }= link_to "Skills", skills_path
       - if signed_in?
         %ul.nav.navbar-nav.navbar-right.user-profile
           %li.dropdown

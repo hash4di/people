@@ -48,5 +48,10 @@ FactoryGirl.define do
       name 'qa'
       technical false
     end
+
+    factory :talent do
+      name 'talent'
+      technical false
+    end
   end
 end

@@ -170,6 +170,14 @@ class User < ActiveRecord::Base
     @user_memberships_repository ||= UserMembershipsRepository.new(self)
   end
 
+  def leader?
+    Team.any? { |team| team.leader == self }
+  end
+
+  def talent?
+    roles.pluck(:name).include?('talent')
+  end
+
   def rated_skills
     ::Skill
       .joins(user_skill_rates: :contents)
