@@ -1,6 +1,6 @@
 .container
   %h1
-    %span Your skills history
+    %span #{user.skills_history_header} skills history
     - if user == current_user
       = link_to 'Skill rating', user_skill_rates_path, class: 'btn btn-xs btn-default'
 
