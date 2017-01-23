@@ -9,6 +9,8 @@ describe UsersForSkillQuery do
   let(:skill) {  create(:skill, rate_type: 'range') }
   let(:team) { create(:team, user_id: team_leader.id) }
   let(:team_leader) { create(:user, first_name: 'Andrzej', last_name: 'Lewandowski') }
+  let(:talent_position) { create(:position, user: create(:user), role: create(:talent)) }
+  let(:talent_user) { talent_position.user }
 
   let!(:user_skill_rate_favorite_rate_2) do
     create(
@@ -44,28 +46,13 @@ describe UsersForSkillQuery do
   context 'for admin_user' do
     subject { UsersForSkillQuery.new(skill: skill, user: admin_user) }
 
-    it 'returns correct ordered users', :aggregate_failures do
-      expect(results[0].user_skill_rate_id).to eq(
-        user_skill_rate_favorite_rate_2.id
-      )
-      expect(results[1].user_skill_rate_id).to eq(
-        user_skill_rate_not_favorite_rate_2.id
-      )
-      expect(results[2].user_skill_rate_id).to eq(
-        user_skill_rate_favorite_rate_1.id
-      )
-    end
+    it_behaves_like 'returns correct results'
+  end
 
-    it 'returns user with required attributes', :aggregate_failures do
-      expect(result_object.serializable_hash).to include(
-        'user_skill_rate_id' => user_skill_rate_favorite_rate_2.id,
-        'rate' => user_skill_rate_favorite_rate_2.rate,
-        'favorite' => user_skill_rate_favorite_rate_2.favorite,
-        'user_id' => user_skill_rate_favorite_rate_2.user_id,
-        'first_name' => user_skill_rate_favorite_rate_2.user.first_name,
-        'last_name' => user_skill_rate_favorite_rate_2.user.last_name
-      )
-    end
+  context 'for talent user' do
+    subject { UsersForSkillQuery.new(skill: skill, user: talent_user) }
+
+    it_behaves_like 'returns correct results'
   end
 
   context 'for team leader' do
