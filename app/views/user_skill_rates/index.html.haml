@@ -1,0 +1,16 @@
+.container
+  %h1
+    %span Your skills
+    = link_to 'History', skills_history_user_path(current_user), class: 'btn btn-xs btn-default'
+
+  %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
+    %li
+      %h4.skills-header.text-primary Skill categories:
+    - grouped_skills_by_category.keys.each_with_index do |skill_category|
+      %li{ role: "presentation" }
+        %a{ id: "#{parameterize(skill_category)}-tab", aria: { controls: parameterize(skill_category), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(skill_category)}", role: "tab" }= skill_category
+
+  .tab-content
+    - grouped_skills_by_category.each do |skill_category, skills|
+      .tab-pane.fade{ id: "#{parameterize(skill_category)}", aria: { labelledby: "#{parameterize(skill_category)}-tab" }, role: "tabpanel" }
+        = react_component('user_skill_rates', skills: skills)

@@ -6,6 +6,7 @@ describe Role do
   it { should have_many :memberships }
   it { should validate_presence_of(:name) }
   it { should be_valid }
+  it { is_expected.to have_and_belong_to_many :skill_categories }
 
   describe 'callbacks' do
     describe 'before_destroy' do

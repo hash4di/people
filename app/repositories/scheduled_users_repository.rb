@@ -7,7 +7,7 @@ class ScheduledUsersRepository
     @not_scheduled ||=
       technical_users
       .where
-      .not(id: technical_users_with_valid_memberships.pluck(:id))
+      .not(id: technical_users_with_valid_memberships.map(&:id))
       .order(:last_name)
   end
 
@@ -82,6 +82,8 @@ class ScheduledUsersRepository
       :abilities,
       :projects,
       :longest_current_membership,
+      :primary_roles,
+      current_memberships: [:project],
       memberships: [:project],
       potential_memberships: [:project],
       next_memberships: [:project],
@@ -101,7 +103,10 @@ class ScheduledUsersRepository
             ' AND (projects.end_at IS NULL OR projects.end_at >= :now)'
 
     @technical_users_with_valid_memberships ||=
-      technical_users.joins(memberships: :project).where(query, now: Time.now).distinct
+      technical_users
+      .joins(memberships: :project)
+      .where(query, now: Date.current.beginning_of_day)
+      .distinct
   end
 
   def billable_users

@@ -24,6 +24,7 @@ gem 'google-analytics-rails'
 gem 'google-api-client', require: 'google/api_client'
 gem 'haml-rails'
 gem 'haml_coffee_assets', github: 'netzpirat/haml_coffee_assets'
+gem "i18n-js", ">= 3.0.0.rc11"
 gem 'jquery-cookie-rails'
 gem 'jquery-rails'
 gem 'jquery-tablesorter'
@@ -56,6 +57,7 @@ gem 'whenever', require: false
 gem 'httparty'
 gem 'active_model_serializers'
 gem 'react_webpack_rails'
+gem 'rake-progressbar'
 
 group :development do
   gem 'better_errors'

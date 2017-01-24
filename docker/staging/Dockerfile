@@ -7,7 +7,7 @@ RUN /opt/node/install
 RUN apt-get update && apt-get install -y libpq-dev imagemagick
 
 # set timezone
-RUN echo 'Europe/Warsaw' > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
+RUN echo "Europe/Warsaw" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
 
 ENV APP_HOME /var/www/app
 ENV RAILS_ENV=staging

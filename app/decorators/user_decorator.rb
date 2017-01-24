@@ -87,4 +87,8 @@ class UserDecorator < Draper::Decorator
   def previous_projects_json
     @previous_projects_json ||= projects_json(previous_memberships)
   end
+
+  def skills_history_header
+    object == h.current_user ? 'Your' : "#{first_name} #{last_name}"
+  end
 end

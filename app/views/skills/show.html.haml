@@ -1,0 +1,35 @@
+%p#notice= notice
+
+.jumbotron
+  %h2.text-primary= @skill.name
+  %p
+    %b Description:
+    = @skill.description
+  %p
+    %b Rate type:
+    = @skill.rate_type
+  %p
+    %b Skill category:
+    = @skill.skill_category.name
+
+  = link_to 'Back', skills_path, class: 'btn btn-primary btn-lg'
+
+.container
+  %h3.text-primary List of users with their rates
+
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th First name
+        %th Last name
+        %th Favorite
+        %th Rate
+        %th History of all skills
+    %tbody
+      - users_with_skill.map do |user_skill_rate|
+        %tr
+          %th= user_skill_rate.first_name
+          %th= user_skill_rate.last_name
+          %th= user_skill_rate.favorite
+          %th= user_skill_rate.rate
+          %th= link_to 'Skills history', skills_history_user_path(user_skill_rate.user_id), class: 'btn btn-xs btn-default'

@@ -1,4 +1,6 @@
 Hrguru::Application.routes.draw do
+  resources :user_skill_rates, only: [:index, :update]
+  resources :skills
   devise_for(
     :users,
     controllers: {
@@ -41,17 +43,21 @@ Hrguru::Application.routes.draw do
     namespace :v2 do
       resources :users, only: [:index]
       resources :statistics, only: [:index]
+      resources :skills, only: [:index]
+      resources :user_skill_rates, only: [:index]
     end
 
     namespace :v3 do
+      resources :user_skill_rates, only: :index
       resources :users, only: [] do
         get :technical, on: :collection
       end
     end
   end
 
-  get 'fetch_abilities', to: 'users#fetch_abilities'
-  resources :users, only: [:index, :show, :update]
+  resources :users, only: [:index, :show, :update] do
+    get :skills_history, on: :member, to: 'users/user_skill_rates#history'
+  end
   resources :dashboard, only: [:index], path: 'dashboard' do
     get 'active', on: :collection
     get 'potential', on: :collection
@@ -85,6 +91,8 @@ Hrguru::Application.routes.draw do
   resources :features, only: [:index] do
     resources :strategies, only: [:update, :destroy]
   end
+
+  resources :project_info, param: :name, only: [:show, :index]
 
   mount Flip::Engine => '/features'
 end

@@ -23,6 +23,7 @@ describe 'Team view', js: true do
   before do
     log_in_as admin_user
     teams_page.load
+    wait_for_ajax
   end
 
   describe "'show users without team' button" do
@@ -59,7 +60,7 @@ describe 'Team view', js: true do
     let(:success_msg) { 'New leader promoted!' }
 
     it 'promotes member to leader' do
-      teams_page.memberships.first.hover
+      page.execute_script "$('.membership').trigger('mouseover')"
       teams_page.promote_to_leader_icons.first.click
       wait_for_ajax
       expect(teams_page).not_to have_empty_leader_rows

@@ -1,0 +1,205 @@
+.container
+  .row
+    %center
+      %h1= project_info[:name]
+      %hr
+  .row
+    %p Project context
+  .row
+    .col-sm-12
+      .col-sm-2.project-label
+        %p Project description:
+      .col-sm-10
+        %p= project_info[:project_description]
+  .row
+    .col-sm-12
+      .col-sm-2.project-label
+        %p Client description:
+      .col-sm-10
+        %p= project_info[:client_description]
+  .row
+    .col-sm-12
+      .col-sm-2.project-label
+        %p Project risks:
+      .col-sm-10
+        %p= project_info[:project_risks]
+  %hr
+  .row
+    %p People
+  .row
+    .col-sm-6
+      .col-sm-6.project-label
+        %p Project manager:
+      .col-sm-6
+        %p= project_info[:project_manager_name]
+    .col-sm-6
+      .col-sm-6.project-label
+        %p Account PM:
+      .col-sm-3
+        %p= project_info[:ac_pm]
+  .row
+    .col-sm-6
+      .col-sm-6.project-label
+        %p Product owner:
+      .col-sm-6
+        %p= project_info[:product_owner_name]
+
+  %hr
+  .row
+    %p Project status
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Last project status report:
+      .col-sm-6
+        %p= project_info[:last_project_status_report]
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Days since last project status update:
+      .col-sm-6
+        %p= project_info[:days_since_last_project_status_update]
+  .row
+    .col-sm-6
+      .col-sm-6.project-label
+        %p Last project:
+      .col-sm-6
+        %p= project_info[:last_project]
+  %hr
+  .row
+    %p Information
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Project name:
+      .col-sm-6
+        %p= project_info[:name]
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Location:
+      .col-sm-6
+        %p= project_info[:location]
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Production 1:
+      .col-sm-6
+        %p= project_info[:production_link_1]
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Production 2:
+      .col-sm-6
+        %p= project_info[:production_link_2]
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Time zone:
+      .col-sm-6
+        %p= project_info[:time_zone]
+  %hr
+  .row
+    %p Documentation
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Google Drive:
+      .col-sm-6
+        %p= api_link(project_info[:google_drive])
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p QA checklist:
+      .col-sm-6
+        %p= api_link(project_info[:qa_checklist])
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Call notes:
+      .col-sm-6
+        %p= api_link(project_info[:pms_call_notes])
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Functional notes:
+      .col-sm-6
+        %p= api_link(project_info[:functional_notes])
+  %hr
+  .row
+    %p Tools
+  .row
+    .col-md-6.col-sm-6
+      .col-sm-6.project-label
+        %p Staging 1:
+      .col-sm-6
+        %p= project_info[:staging_1]
+    .col-md-6.col-sm-6
+      .col-sm-6.project-label
+        %p Rollbar:
+      .col-sm-6
+        %p= api_link(project_info[:rollbar])
+  .row
+    .col-md-6.col-sm-6
+      .col-sm-6.project-label
+        %p Staging 2:
+      .col-sm-6
+        %p= project_info[:staging_2]
+    .col-md-6.col-sm-6
+      .col-sm-6.project-label
+        %p Codebeat:
+      .col-sm-6
+        %p= api_link(project_info[:code_climate])
+  .row
+    .col-md-6.col-sm-6
+      .col-sm-6.project-label
+        %p Other stagings:
+      .col-sm-6
+        %p= api_link(project_info[:other_stagings])
+    .col-md-6.col-sm-6
+      .col-sm-6.project-label
+        %p New Relic:
+      .col-sm-6
+        %p= api_link(project_info[:new_relic])
+  .row
+    .col-md-6.col-sm-6
+      .col-sm-6.project-label
+        %p JIRA:
+      .col-sm-6
+        %p= api_link(project_info[:jira_link])
+    .col-md-6.col-sm-6
+      .col-sm-6.project-label
+        %p Calibre:
+      .col-sm-6
+        %p= api_link(project_info[:calibre])
+  %hr
+  .row
+    %p Project status
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Start date:
+      .col-sm-6
+        %p= simple_date(project_info[:start_date])
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Finish date:
+      .col-sm-6
+        %p= simple_date(project_info[:finish_date])
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Key account:
+      .col-sm-6
+        %span{ class: "glyphicon glyphicon-#{bool_to_glyph(project_info[:key_account])}" }
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Project status:
+      .col-sm-6
+        %p= project_info[:project_status]
+  .row
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Project active:
+      .col-sm-6
+        %span{ class: "glyphicon glyphicon-#{ bool_to_glyph(project_info[:project_active]) }" }
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Intensity:
+      .col-sm-6
+        %p= project_info[:intensity]

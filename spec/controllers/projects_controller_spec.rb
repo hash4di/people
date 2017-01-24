@@ -73,6 +73,8 @@ describe ProjectsController do
         allow_any_instance_of(Membership).to receive(:notify_slack_on_create)
         allow_any_instance_of(Membership).to receive(:notify_slack_on_update)
         expect_any_instance_of(Slack::Notifier).to receive(:ping).and_return(response_ok)
+        expect_any_instance_of(Memberships::UpdateBooked).to receive(:call)
+        expect_any_instance_of(Projects::EndCurrentMemberships).to_not receive(:call)
         new_project.memberships << [current_membership, old_membership]
         put :update, id: new_project, project: attributes_for(:project, potential: false)
         new_project.reload
@@ -102,6 +104,8 @@ describe ProjectsController do
         new_project.memberships << [current_membership, old_membership]
         allow(AppConfig).to receive(:slack).and_return(slack_config)
         expect_any_instance_of(Slack::Notifier).to receive(:ping).and_return(response_ok)
+        expect_any_instance_of(Memberships::UpdateBooked).to_not receive(:call)
+        expect_any_instance_of(Projects::EndCurrentMemberships).to_not receive(:call)
       end
 
       it 'return all memberships' do
@@ -123,6 +127,7 @@ describe ProjectsController do
       before do
         allow(AppConfig).to receive(:slack).and_return(slack_config)
         expect_any_instance_of(Slack::Notifier).to receive(:ping).and_return(response_ok)
+        expect_any_instance_of(Projects::EndCurrentMemberships).to_not receive(:call)
       end
 
       it "changes project's attributes" do
@@ -137,6 +142,24 @@ describe ProjectsController do
         put :update, id: project, project: attributes_for(:project, name: nil)
         project.reload
         expect(project.name).to eq 'hrguru'
+      end
+    end
+
+    context 'archiving project' do
+      let(:memberships) { [create(:membership, :without_end), create(:membership, :without_end)] }
+      let(:project) { create(:project, memberships: memberships) }
+      let(:params) { { id: project.id, project: { archived: 'true' } } }
+
+      before do
+        expect_any_instance_of(Memberships::UpdateBooked).to_not receive(:call)
+        expect_any_instance_of(Projects::EndCurrentMemberships).to receive(:call)
+      end
+
+      it 'changes archived to true' do
+        put :update, params
+        project.reload
+        expect(project.archived).to eq true
+        expect(project.end_at.to_i).to eq Date.current.end_of_day.to_i
       end
     end
   end

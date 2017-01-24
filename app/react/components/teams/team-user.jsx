@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import UserActions from '../../actions/UserActions';
+import _ from 'lodash';
 
 class TeamUser extends React.Component {
   static get propTypes() {
@@ -54,7 +55,7 @@ class TeamUser extends React.Component {
   userRoles() {
     let userRoleIds = this.props.user.primary_role_ids;
     return this.props.roles.filter(role => {
-      return _.contains(userRoleIds, role.id);
+      return userRoleIds.includes(role.id);
     });
   }
 
@@ -74,7 +75,7 @@ class TeamUser extends React.Component {
   isBillable() {
     let userRoleIds = this.props.user.primary_role_ids;
     return this.billableRoles().filter(role => {
-      return _.contains(userRoleIds, role.id);
+      return userRoleIds.includes(role.id);
     }).length > 0;
   }
 

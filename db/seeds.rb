@@ -1,8 +1,10 @@
 require 'factory_girl'
 require 'faker'
 
+require './db/seeds/skills_and_categories'
+
 billable_roles = %w(senior developer)
-non_billable_roles = %w(junior praktykant pm junior\ pm qa junior\ qa)
+non_billable_roles = %w(junior praktykant pm junior\ pm qa junior\ qa talent)
 technical_roles = %w(junior praktykant developer senior)
 contract_types = %w(DG UoP UoD)
 locations = %w(Poznan Warsaw Gdansk Zielona\ Gora Krakow Remotely Wroclaw Bialystok).sort

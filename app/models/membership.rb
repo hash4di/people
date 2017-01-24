@@ -18,9 +18,11 @@ class Membership < ActiveRecord::Base
   after_save :check_fields
   after_update :notify_slack_on_update
 
-  scope :active, -> { where(project_potential: false, project_archived: false, booked: false) }
+  scope :non_potential, -> { where(project_potential: false) }
+  scope :non_booked, -> { where(booked: false) }
+  scope :non_archived, -> { where(project_archived: false) }
   scope :archived, -> { where(project_archived: true) }
-  scope :not_archived, -> { where(project_archived: false) }
+  scope :active, -> { non_archived.non_booked.non_potential }
   scope :potential, -> { where(project_potential: true) }
   scope :with_role, ->(role) { where(role: role) }
   scope :with_user, ->(user) { where(user: user) }
@@ -28,7 +30,7 @@ class Membership < ActiveRecord::Base
     joins(:project)
       .where(
         'COALESCE(projects.end_at, :now) >= :now AND COALESCE(memberships.ends_at, :now) >= :now',
-        now: Time.current
+        now: Date.current.beginning_of_day
       )
   end
   scope :started, -> { where('memberships.starts_at <= NOW()') }
