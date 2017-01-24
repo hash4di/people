@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
 import UserSkillHistoryLoadingState from './user_skill_history_loading_state';

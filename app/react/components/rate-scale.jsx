@@ -77,7 +77,7 @@ export default class RateScale extends React.Component {
         ></i>
       </li>
     ) : (
-      <li />
+      ''
     );
 
     return(
