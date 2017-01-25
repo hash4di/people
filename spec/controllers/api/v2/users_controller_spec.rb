@@ -5,6 +5,7 @@ describe Api::V2::UsersController do
     let(:token) { AppConfig.api_token }
     let!(:user1) { create(:user) }
     let!(:user2) { create(:user) }
+    let!(:user3) { create(:user, archived: true) }
 
     before { get :index, token: token }
 
