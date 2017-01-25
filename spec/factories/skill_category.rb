@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :skill_category do
-    name { Faker::Color.color_name.gsub(' ', '_') }
+    name { Faker::Name.name.gsub(' ', '') }
   end
 end
