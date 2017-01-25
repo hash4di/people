@@ -1,4 +1,4 @@
 export default {
-  LONG_DATE: 'Y-MM-DD',
+  LONG_DATE: 'YYYY-MM-DD',
   LONG_MONTH_DAY: 'MMMM Y'
 };
