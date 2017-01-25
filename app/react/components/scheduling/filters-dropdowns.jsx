@@ -4,7 +4,7 @@ import FiltersDropdown from './filters-dropdown';
 import SchedulingUserStore from '../../stores/SchedulingUserStore'
 import SchedulingFilterStore from '../../stores/SchedulingFilterStore'
 import RoleStore from '../../stores/RoleStore'
-import AbilityStore from '../../stores/AbilityStore'
+import SkillStore from '../../stores/SkillStore'
 import SchedulingFilterActions from '../../actions/SchedulingFilterActions';
 
 export default class FiltersDropdowns extends React.Component {
@@ -16,8 +16,8 @@ export default class FiltersDropdowns extends React.Component {
     SchedulingFilterActions.changeRoleFilter(objectIds);
   }
 
-  changeAbilityFilter(objectIds) {
-    SchedulingFilterActions.changeAbilityFilter(objectIds);
+  changeSkillFilter(objectIds) {
+    SchedulingFilterActions.changeSkillFilter(objectIds);
   }
 
   render() {
@@ -25,8 +25,8 @@ export default class FiltersDropdowns extends React.Component {
     const userFilerIds = SchedulingFilterStore.getState().userIds;
     const roles = RoleStore.getState().roles;
     const roleFilerIds = SchedulingFilterStore.getState().roleIds;
-    const abilities = AbilityStore.getState().abilities;
-    const abilityFilerIds = SchedulingFilterStore.getState().abilityIds;
+    const skills = SkillStore.getState().skills;
+    const skillFilerIds = SchedulingFilterStore.getState().skillIds;
 
     return(
       <div className="filters">
@@ -41,10 +41,10 @@ export default class FiltersDropdowns extends React.Component {
           filter_store_ids={roleFilerIds}
           changeFilterAction={this.changeRoleFilter} />
         <FiltersDropdown
-          className="abilities"
-          store_objects={abilities}
-          filter_store_ids={abilityFilerIds}
-          changeFilterAction={this.changeAbilityFilter} />
+          className="skills"
+          store_objects={skills}
+          filter_store_ids={skillFilerIds}
+          changeFilterAction={this.changeSkillFilter} />
       </div>
     );
   }

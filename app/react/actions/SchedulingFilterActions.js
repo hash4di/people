@@ -5,7 +5,7 @@ class SchedulingFilterActions {
     this.generateActions(
       'changeUserFilter',
       'changeRoleFilter',
-      'changeAbilityFilter',
+      'changeSkillFilter',
       'showAll',
       'showJuniorsAndInterns',
       'showToRotate',

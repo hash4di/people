@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import SchedulingUserStore from '../../stores/SchedulingUserStore'
 import RoleStore from '../../stores/RoleStore'
-import AbilityStore from '../../stores/AbilityStore'
+import SkillStore from '../../stores/SkillStore'
 import SchedulingFilterStore from '../../stores/SchedulingFilterStore'
 import User from './user';
 import Filters from './filters';
@@ -15,7 +15,7 @@ export default class Scheduling extends React.Component {
       stats: React.PropTypes.object.isRequired,
       currentTab: React.PropTypes.string,
       columns: React.PropTypes.array.isRequired,
-      abilities: React.PropTypes.array.isRequired
+      skills: React.PropTypes.array.isRequired
     };
   }
 
@@ -23,7 +23,7 @@ export default class Scheduling extends React.Component {
     super(props);
     SchedulingUserStore.setInitialState(this.props.users);
     RoleStore.setInitialState(this.props.roles);
-    AbilityStore.setInitialState(this.props.abilities);
+    SkillStore.setInitialState(this.props.skills);
     this.state = {
       users: SchedulingUserStore.getState().users
     }

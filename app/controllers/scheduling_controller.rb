@@ -13,10 +13,10 @@ class SchedulingController < ApplicationController
       each_serializer: RoleSerializer
     ).as_json
   end
-  expose(:abilities) do
+  expose(:skills) do
     ActiveModel::ArraySerializer.new(
-      AbilitiesRepository.new.all,
-      each_serializer: AbilitySerializer
+      SkillsRepository.new.all,
+      each_serializer: SkillFilterSerializer
     ).as_json
   end
 
