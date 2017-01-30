@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'Scheduling page', js: true do
   let(:admin_user) { create(:user, :admin, :developer) }
-  let!(:angular_ability) { create(:ability, name: 'AngularJS') }
+  let!(:angular_skill) { create(:skill, name: 'AngularJS') }
   let!(:dev_with_no_skillz) { create(:user, :developer) }
-  let!(:angular_dev) { create(:user, :developer, abilities: [angular_ability]) }
+  let!(:angular_dev) { create(:user, :developer, skills: [angular_skill]) }
   let!(:another_dev) { create(:user, :developer) }
   let!(:developer) { create(:developer_in_project, :with_project_scheduled_with_due_date) }
   let!(:pm) { create(:pm_user) }
@@ -26,11 +26,11 @@ describe 'Scheduling page', js: true do
   end
 
   describe 'filters' do
-    it 'allows to filter by abilities' do
+    it 'allows to filter by skills' do
       expect(page).to have_content angular_dev.last_name
       expect(page).to have_content dev_with_no_skillz.last_name
       wait_for_ajax
-      react_select('.abilities', 'AngularJS')
+      react_select('.skills', 'AngularJS')
       expect(page).to have_content angular_dev.last_name
       expect(page).to_not have_content dev_with_no_skillz.last_name
     end
