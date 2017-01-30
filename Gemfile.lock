@@ -443,6 +443,8 @@ GEM
       pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rabl (0.11.8)
@@ -680,6 +682,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
+  pundit
   quiet_assets
   rabl
   rack-mini-profiler

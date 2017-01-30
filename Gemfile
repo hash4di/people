@@ -40,6 +40,7 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-google-oauth2'
 gem 'pg'
+gem 'pundit'
 gem 'rabl'
 gem 'rack-mini-profiler', require: false
 gem 'render_anywhere', require: false
