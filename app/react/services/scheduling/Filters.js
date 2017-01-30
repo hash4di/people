@@ -8,12 +8,12 @@ export default class Filters {
       .filter(user => store.roleIds.indexOf(user.primary_role.id) > -1);
   }
 
-  static selectAbilities(users, store) {
+  static selectSkills(users, store) {
     return users.filter(user => {
-      let filteredUserAbilities = user
-        .ability_ids
-        .filter(id => store.abilityIds.indexOf(id) > -1);
-      return filteredUserAbilities.length > 0;
+      let filteredUserSkills = user
+        .skill_ids
+        .filter(id => store.skillIds.indexOf(id) > -1);
+      return filteredUserSkills.length > 0;
     });
   }
 }

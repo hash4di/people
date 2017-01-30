@@ -6,7 +6,7 @@ class SchedulingFilterStore {
     this.bindActions(SchedulingFilterActions);
     this.userIds = [];
     this.roleIds = [];
-    this.abilityIds = [];
+    this.skillIds = [];
   }
 
   changeUserFilter(userIds) {
@@ -17,8 +17,8 @@ class SchedulingFilterStore {
     this.setState({ roleIds: roleIds });
   }
 
-  changeAbilityFilter(abilityIds) {
-    this.setState({ abilityIds: abilityIds });
+  changeSkillFilter(skillIds) {
+    this.setState({ skillIds: skillIds });
   }
 }
 
