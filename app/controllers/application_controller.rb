@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   include Pundit
   include Flip::ControllerFilters
 
+  expose(:team_members) { fetch_team_members }
+
   protect_from_forgery with: :exception
 
   before_filter :authenticate_user!
@@ -37,6 +39,15 @@ class ApplicationController < ActionController::Base
     redirect_to(
       request.referer || root_path,
       alert: 'You are not authorized to access this section.'
+    )
+  end
+
+  def fetch_team_members
+    team = Team.find_by(user_id: current_user.id)
+
+    return [] if team.nil?
+    UserDecorator.decorate_collection(
+      TeamUsersRepository.new(team).subordinates
     )
   end
 
