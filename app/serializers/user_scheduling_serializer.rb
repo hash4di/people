@@ -9,7 +9,7 @@ class UserSchedulingSerializer < ActiveModel::Serializer
   end
 
   def primary_role
-    role = object.primary_roles[0]
+    role = object.primary_role
     { name: role.try(:name), id: role.try(:id) }
   end
 
