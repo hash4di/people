@@ -11,6 +11,8 @@ class ApplicationController < ActionController::Base
 
   before_render :message_to_js
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   decent_configuration do
     strategy DecentExposure::StrongParametersStrategy
   end
@@ -30,6 +32,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def user_not_authorized
+    redirect_to((request.referer || root_path), alert: 'You are not authorized to access this section.')
+  end
 
   def authenticate_admin!
     redirect_to root_path, alert: 'Permission denied! You have no rights to do this.'  unless current_user.admin?
