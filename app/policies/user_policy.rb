@@ -6,11 +6,25 @@ class UserPolicy
     @user = user
   end
 
-  def display_skills?
-    return true if current_user.talent?
-    return false unless current_user.leader?
+  def history?
+    return true if self? || talent?
+    return false unless leader?
 
     users = Team.find_by(user_id: current_user.id).users
     users.include? user
+  end
+
+  private
+
+  def self?
+    current_user == user
+  end
+
+  def talent?
+    current_user.talent?
+  end
+
+  def leader?
+    current_user.leader?
   end
 end

@@ -9,5 +9,5 @@ describe UserPolicy do
 
   before { team.reload }
 
-  it { expect(subject.display_skills?).to be true }
+  it { expect(subject.history?).to be true }
 end
