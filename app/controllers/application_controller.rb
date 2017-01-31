@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   before_filter :connect_github
   before_filter :set_gon_data
 
-  before_render :message_to_js
+  # before_render :message_to_js
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
