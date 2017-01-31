@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include BeforeRender
+  include Pundit
   include Flip::ControllerFilters
 
   protect_from_forgery with: :exception
