@@ -6,7 +6,7 @@ class UserSkillRatesQuery
   end
 
   def results_by_categories
-    user_skill_rates.group_by { | skill | skill.category }
+    user_skill_rates.group_by(&:category).sort_by{ |key, _| key }.to_h
   end
 
   def results_for_category(category)
@@ -18,7 +18,9 @@ class UserSkillRatesQuery
   def user_skill_rates
     UserSkillRate.joins(
       skill: :skill_category
-    ).select(select_fields).where(user_id: user.id)
+    ).select(
+      select_fields
+    ).where(user_id: user.id).order('skills.name')
   end
 
   def select_fields
