@@ -21,8 +21,8 @@
               Skills
               %b.caret
             %ul.dropdown-menu
-              %li{ class: menu_class('skills')}= link_to 'My skills', user_skill_rates_path
-              %li{ class: menu_class('skills')}= link_to 'My skills history', skills_history_user_path(current_user)
+              %li{ class: menu_class('skills') }= link_to 'My skills', user_skill_rates_path
+              %li{ class: menu_class('skills') }= link_to 'My skills history', skills_history_user_path(current_user)
               - if current_user.leader?
                 %li{ class: 'divider', role: 'separator' }
                 %li{ class: 'dropdown-header' } My team members
