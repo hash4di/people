@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   before_filter :connect_github
   before_filter :set_gon_data
 
-  # before_render :message_to_js
+  before_render :message_to_js
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -34,7 +34,10 @@ class ApplicationController < ActionController::Base
   private
 
   def user_not_authorized
-    redirect_to((request.referer || root_path), alert: 'You are not authorized to access this section.')
+    redirect_to(
+      request.referer || root_path,
+      alert: 'You are not authorized to access this section.'
+    )
   end
 
   def authenticate_admin!
@@ -52,6 +55,6 @@ class ApplicationController < ActionController::Base
       @flashMessage[name] << msg
     end
     gon.rabl template: 'app/views/layouts/flash.rabl', as: 'flash'
-    flash.clear
+    # flash.clear
   end
 end
