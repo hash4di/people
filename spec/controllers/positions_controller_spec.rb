@@ -77,4 +77,47 @@ describe PositionsController do
       expect { delete :destroy, id: position }.to change(Position, :count).by(-1)
     end
   end
+
+  describe '#toggle_primary' do
+    subject { put :toggle_primary, id: position.id }
+    let(:junior_role) { create(:role, name: 'junior', technical: true) }
+    let(:user) { create(:user, primary_role: junior_role) }
+    let(:intern_role) { create(:role, name: 'intern', technical: true) }
+
+    before { sign_in(user) }
+
+    context 'when position is not primary' do
+      let!(:position) { create(:position, user: user, role: intern_role, primary: false) }
+
+      it 'toggles position to primary' do
+        expect{ subject }.to change{ position.reload.primary }.from(false).to(true)
+      end
+
+      it 'sends mail with position change' do
+        expect(SendMailWithUserJob).to receive(
+          :perform_async
+        ).with(
+          PositionMailer,
+          :new_primary,
+          position.reload,
+          user.id
+        )
+        subject
+      end
+
+      it 'updates user primary role' do
+        expect { subject }.to change{ user.reload.primary_role.id }.from(junior_role.id).to(intern_role.id)
+      end
+    end
+
+    context 'when position is primary' do
+      let!(:position) { create(:position, user: user, role: intern_role, primary: true) }
+
+      let(:intern_role) { create(:role, name: 'intern', technical: true) }
+
+      it 'toggles position to not primary' do
+        expect{ subject }.to change{ position.reload.primary }.from(true).to(false)
+      end
+    end
+  end
 end
