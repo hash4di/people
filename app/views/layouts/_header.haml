@@ -24,8 +24,8 @@
               %li{ class: menu_class('skills')}= link_to 'My skills', user_skill_rates_path
               %li{ class: menu_class('skills')}= link_to 'My skills history', skills_history_user_path(current_user)
               - if current_user.leader?
-                %li{ class: 'dropdown-header' } My team members
                 %li{ class: 'divider', role: 'separator' }
+                %li{ class: 'dropdown-header' } My team members
                 - team_members.each do |member|
                   %li{ class: menu_class('skills') }= link_to member.name, skills_history_user_path(member)
 
