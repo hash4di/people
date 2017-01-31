@@ -18,7 +18,9 @@ class UserSkillRatesQuery
   def user_skill_rates
     UserSkillRate.joins(
       skill: :skill_category
-    ).select(select_fields).where(user_id: user.id)
+    ).select(
+      select_fields
+    ).where(user_id: user.id).order('skills.name')
   end
 
   def select_fields
