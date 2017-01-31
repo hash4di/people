@@ -16,7 +16,19 @@
           %li{ class: menu_class('dashboard') }= link_to "Projects", dashboard_index_path
           %li{ class: menu_class('teams') }= link_to "Teams", teams_path
           %li{ class: menu_class('project_info') }= link_to "Project Info", project_info_index_path
-          %li{ class: menu_class('skill_user_rates') }= link_to "Skills", user_skill_rates_path
+          %li.dropdown
+            %a.dropdown-toggle{ href: '#', 'data-toggle' => 'dropdown' }
+              Skills
+              %b.caret
+            %ul.dropdown-menu
+              %li{ class: menu_class('skills') }= link_to 'My skills', user_skill_rates_path
+              %li{ class: menu_class('skills') }= link_to 'My skills history', skills_history_user_path(current_user)
+              - if current_user.leader?
+                %li{ class: 'divider', role: 'separator' }
+                %li{ class: 'dropdown-header' } My team members history
+                - team_members.each do |member|
+                  %li{ class: menu_class('skills') }= link_to member.name, skills_history_user_path(member)
+
           - if current_user.admin?
             %li.dropdown
               %a.dropdown-toggle{ href: "#", :'data-toggle' => "dropdown" }

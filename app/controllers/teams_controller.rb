@@ -51,7 +51,7 @@ class TeamsController < ApplicationController
     params.require(:team).permit(:name, :team_leader_id, :user_id, user_ids: [], users: [])
   end
 
-  def save_team_and_respond status_code
+  def save_team_and_respond(status_code)
     if team.save
       respond_to do |format|
         format.html { redirect_to teams_path }
