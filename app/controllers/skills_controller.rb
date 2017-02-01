@@ -87,10 +87,10 @@ class SkillsController < ApplicationController
   end
 
   def set_grouped_skills
-    @skills = Skill.eager_load(:skill_category).all
+    @skills = Skill.eager_load(:skill_category).all.order(:name)
     @grouped_skills_by_category = @skills.group_by do |skill|
       skill.skill_category.name
-    end
+    end.sort_by{ |key, _| key }.to_h
   end
 
   def skip_skill_modification
