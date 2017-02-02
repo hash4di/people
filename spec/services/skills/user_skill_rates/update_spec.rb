@@ -72,5 +72,50 @@ describe ::Skills::UserSkillRates::Update do
         expect(user_skill_rate_content.rate).to eq(user_skill_rate.rate)
       end
     end
+
+    context 'when two last user_skill_rate_contents are equal' do
+      let(:params) do
+        {
+          id: user_skill_rate.id,
+          note: 'def',
+          rate: 1,
+          favorite: true
+        }
+      end
+
+      before do
+        Timecop.freeze(DateTime.now - 3.days) do
+          create(
+            :user_skill_rate_content,
+            user_skill_rate_id: user_skill_rate.id,
+            note: 'def',
+            rate: 1,
+            favorite: true
+          )
+        end
+      end
+
+      context 'when add new user_skill_rate_content' do
+        it "doesn't add new user_skill_rate_content" do
+          expect { subject.call }.to_not change { user_skill_rate.contents.count }
+        end
+      end
+
+      context 'when update last user_skill_rate_content' do
+        let!(:user_skill_rate_content) do
+          create(
+            :user_skill_rate_content,
+            user_skill_rate_id: user_skill_rate.id,
+            note: 'def',
+            rate: 1,
+            favorite: true
+          )
+        end
+
+        it "removes last user_skill_rate_content" do
+          expect { subject.call }.to change { user_skill_rate.contents.count }.by(-1)
+        end
+      end
+    end
   end
 end
