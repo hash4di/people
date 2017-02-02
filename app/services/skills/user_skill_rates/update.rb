@@ -9,6 +9,7 @@ module Skills
       def call
         update_user_skill_rate
         create_or_update_user_skill_rate_content
+        remove_last_content if last_two_contents_are_equal?
         user_skill_rate
       end
 
@@ -38,6 +39,20 @@ module Skills
 
       def update_params
         @update_params ||= params.slice(:note, :rate, :favorite)
+      end
+
+      def last_two_contents_are_equal?
+        contents = user_skill_rate.reload.contents.last(2)
+        return false if contents.length < 2
+        content_attributes(contents[0]) == content_attributes(contents[1])
+      end
+
+      def content_attributes(content)
+         content.attributes.slice('rate', 'note', 'favorite')
+      end
+
+      def remove_last_content
+        user_skill_rate.contents.last.destroy
       end
     end
   end
