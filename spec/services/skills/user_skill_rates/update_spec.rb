@@ -112,7 +112,7 @@ describe ::Skills::UserSkillRates::Update do
           )
         end
 
-        it "removes last user_skill_rate_content" do
+        it 'removes last user_skill_rate_content' do
           expect { subject.call }.to change { user_skill_rate.contents.count }.by(-1)
         end
       end
