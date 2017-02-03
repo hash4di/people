@@ -48,7 +48,7 @@ module Skills
       end
 
       def content_attributes(content)
-         content.attributes.slice('rate', 'note', 'favorite')
+        content.attributes.slice('rate', 'note', 'favorite')
       end
 
       def remove_last_content
