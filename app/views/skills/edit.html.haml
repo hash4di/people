@@ -1,7 +1,7 @@
-%h1 Editing skill
+.col-sm-8.col-sm-offset-2
+  %h1
+    %span="Create request for changes in "
+    = link_to @skill.name, skill_path(@skill)
+    %span skill
 
-= render 'form'
-
-= link_to 'Show', @skill
-\|
-= link_to 'Back', skills_path
+  = render 'form'
