@@ -1,0 +1,58 @@
+%hr
+%strong Type:
+%span.label.label-info= draft_skill.draft_type
+%strong Status:
+%span.label.label-info= draft_skill.draft_status
+%hr
+%h4 Name
+- if draft_skill.name == skill.name
+  %span= skill.name
+- else
+  %del.text-danger= skill.name
+  %span.text-success= draft_skill.name
+
+%h4 Description
+- if draft_skill.description == skill.description
+  %span= skill.description
+- else
+  %del.text-danger= skill.description
+  %span.text-success= draft_skill.description
+
+%h4 Rate type
+- if draft_skill.rate_type == skill.rate_type
+  %span= skill.rate_type
+- else
+  %del.text-danger= skill.rate_type
+  %span.text-success= draft_skill.rate_type
+
+%h4 Skill category
+- if draft_skill.skill_category == skill.skill_category
+  %span= skill.skill_category.name
+- else
+  %del.text-danger= skill.skill_category.name
+  %span.text-success= draft_skill.skill_category.name
+
+%hr
+
+%h4
+  Request explanation
+  %small
+    = distance_of_time_in_words(draft_skill.created_at, Time.now)
+    ago
+%p
+  %span
+    = link_to draft_skill.requester&.full_name, user_path(draft_skill.requester)
+  %span= draft_skill.requester_explanation
+%hr
+
+- if draft_skill.reviewer
+  %h4
+    Reviewer explanation
+    %small
+      = distance_of_time_in_words(draft_skill.updated_at, Time.now)
+      ago
+  %p
+    %span
+      = link_to draft_skill.reviewer&.full_name, user_path(draft_skill.reviewer)
+    %span= draft_skill.reviewer_explanation
+  %hr
