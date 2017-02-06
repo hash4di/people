@@ -25,6 +25,10 @@
               %li{ class: menu_class('skills') }= link_to 'My skills history', skills_history_user_path(current_user)
               - if current_user.leader?
                 %li{ class: 'divider', role: 'separator' }
+                %li{ class: 'dropdown-header' } Admin
+                %li{ class: menu_class('skills') }= link_to "All skills", skills_path
+                %li{ class: menu_class('draft_skills') }= link_to "All requested changes", draft_skills_path
+                %li{ class: 'divider', role: 'separator' }
                 %li{ class: 'dropdown-header' } My team members history
                 - team_members.each do |member|
                   %li{ class: menu_class('skills') }= link_to member.name, skills_history_user_path(member)
@@ -37,7 +41,6 @@
               %ul.dropdown-menu
                 %li{ class: menu_class('roles') }= link_to "Roles", roles_path
                 %li{ class: menu_class('abilities') }= link_to "Abilities", abilities_path
-                %li{ class: menu_class('skills') }= link_to "Skills", skills_path
                 %li= link_to "Reports", AppConfig.reports_url, target: '_blank'
           - elsif current_user.talent? || current_user.leader?
             %li.dropdown
