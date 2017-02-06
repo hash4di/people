@@ -6,9 +6,8 @@ class SkillsController < ApplicationController
   expose(:users_with_skill) do
     UsersForSkillQuery.new(skill: @skill, user: current_user).results
   end
+  expose(:skill_categories) { SkillCategory.all }
 
-  # GET /skills
-  # GET /skills.json
   def index
     respond_to do |format|
       format.html # index.html.erb
@@ -16,8 +15,6 @@ class SkillsController < ApplicationController
     end
   end
 
-  # GET /skills/1
-  # GET /skills/1.json
   def show
     respond_to do |format|
       format.html # show.html.erb
@@ -25,23 +22,19 @@ class SkillsController < ApplicationController
     end
   end
 
-  # GET /skills/new
   def new
     @skill = Skill.new
   end
 
-  # GET /skills/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /skills
-  # POST /skills.json
   def create
     @skill = Skill.new(skill_params)
 
     respond_to do |format|
-      if @skill.save
-        format.html { redirect_to @skill, notice: 'Skill was successfully created.' }
+      if @skill.valid?
+
+        format.html { redirect_to @skill, notice: 'Draft Skill was successfully created.' }
         format.json { render json: @skill, status: :created }
       else
         format.html { render action: 'new' }
@@ -50,12 +43,10 @@ class SkillsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /skills/1
-  # PATCH/PUT /skills/1.json
   def update
     respond_to do |format|
-      if @skill.update(skill_params)
-        format.html { redirect_to @skill, notice: 'Skill was successfully updated.' }
+      if ::Skills::Update.new(@skill, skill_params, current_user).call
+        format.html { redirect_to @skill, notice: 'Request for changing skill was successfully created. Ask someone to review and accept it.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -90,6 +81,9 @@ class SkillsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def skill_params
-    params.require(:skill).permit(:name, :description, :rate_type, :skill_category_id)
+    params.require(:skill).permit(
+      :name, :description, :rate_type, :skill_category_id,
+      :requester_explanation
+    )
   end
 end
