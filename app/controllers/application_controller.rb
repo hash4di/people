@@ -51,6 +51,11 @@ class ApplicationController < ActionController::Base
     )
   end
 
+  def authenticate_for_skills!
+    return if current_user.talent? || current_user.leader?
+    authenticate_admin!
+  end
+
   def authenticate_admin!
     redirect_to root_path, alert: 'Permission denied! You have no rights to do this.'  unless current_user.admin?
   end

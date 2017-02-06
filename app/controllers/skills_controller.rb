@@ -1,5 +1,6 @@
 class SkillsController < ApplicationController
-  before_filter :authenticate_admin!
+  skip_before_filter :authenticate_admin!
+  before_filter :authenticate_for_skills!
   before_action :set_skill, only: [:show, :edit, :update, :destroy]
   before_action :set_grouped_skills, only: [:index]
   expose(:users_with_skill) do
@@ -74,11 +75,6 @@ class SkillsController < ApplicationController
   end
 
   private
-
-  def authenticate_admin!
-    return if current_user.talent? || current_user.leader?
-    super
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_skill
