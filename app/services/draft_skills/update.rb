@@ -17,17 +17,27 @@ module DraftSkills
       draft_skill.assign_attributes(draft_skill_params)
       return false unless draft_skill.valid?
       if draft_skill.accepted?
-        update_skill && draft_skill.save
+        update_or_create_skill && draft_skill.save
       else
         draft_skill.save
       end
     end
 
+    def update_or_create_skill
+      draft_skill.create_type? ? create_skill : update_skill
+    end
+
+    def create_skill
+      ::Skills::CreateFromParams.new(skill_params).call
+    end
+
     def update_skill
-      draft_skill.skill.update(
-        draft_skill.attributes.slice(
-          "skill_category_id", "name", "description", "rate_type"
-        )
+      draft_skill.skill.update(skill_params)
+    end
+
+    def skill_params
+      @skill_params ||= draft_skill.attributes.slice(
+        'skill_category_id', 'name', 'description', 'rate_type'
       )
     end
   end
