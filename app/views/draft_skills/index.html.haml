@@ -1,0 +1,46 @@
+.col-sm-10.col-sm-offset-1
+  %h1 Listing draft skills
+
+  %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
+    %li
+      %h4.skills-header.text-primary Request status:
+    - grouped_draft_skills_by_status.keys.each_with_index do |draft_skill_status|
+      %li{ role: "presentation" }
+        %a{ id: "#{parameterize(draft_skill_status)}-tab", aria: { controls: parameterize(draft_skill_status), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(draft_skill_status)}", role: "tab" }= draft_skill_status
+
+  .tab-content
+    - grouped_draft_skills_by_status.each do |draft_skill_status, draft_skills|
+      .tab-pane.fade{ id: "#{parameterize(draft_skill_status)}", aria: { labelledby: "#{parameterize(draft_skill_status)}-tab" }, role: "tabpanel" }
+        %table.table.table-striped.table-condensed
+          %thead
+            %tr
+              %th
+              %th Skill name
+              %th Requester
+              %th Requester explanation
+              %th Reviewer
+              %th Reviewer explanation
+              %th Actions
+          %tbody
+            - draft_skills.each do |draft_skill|
+              %tr
+                %td
+                  %span.label.label-info.label-lg= draft_skill.draft_type
+                %td= draft_skill.name
+                %td
+                  - if draft_skill.requester
+                    = link_to draft_skill.requester&.full_name, user_path(draft_skill.requester)
+                %td= draft_skill.requester_explanation
+                %td
+                  - if draft_skill.reviewer
+                    = link_to draft_skill.reviewer&.full_name, user_path(draft_skill.reviewer)
+                %td= draft_skill.reviewer_explanation
+                %td
+                  .btn-group.skills__actions{ role: "group", aria: { label: "Actions" } }
+                    = link_to draft_skill, class: "btn btn-info", role: 'button' do
+                      %i.glyphicon.glyphicon-search
+                    - unless draft_skill.resolved?
+                      = link_to edit_draft_skill_path(draft_skill),
+                                class: "btn btn-primary",
+                                role: 'button' do
+                        %i.glyphicon.glyphicon-edit
