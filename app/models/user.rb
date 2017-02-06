@@ -178,6 +178,10 @@ class User < ActiveRecord::Base
     roles.pluck(:name).include?('talent')
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def rated_skills
     ::Skill
       .joins(user_skill_rates: :contents)
