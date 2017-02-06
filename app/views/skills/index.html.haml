@@ -8,10 +8,9 @@
       %li{ role: "presentation" }
         %a{ id: "#{parameterize(skill_category)}-tab", aria: { controls: parameterize(skill_category), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(skill_category)}", role: "tab" }= skill_category
     %li.pull-right{ role: "presentation" }
-      - if Flip.modifying_skills_allowed?
-        = link_to new_skill_path, role: 'button' do
-          %i.glyphicon.glyphicon-plus
-          %span Add new skill
+      = link_to new_skill_path, role: 'button' do
+        %i.glyphicon.glyphicon-plus
+        %span Add new skill
 
   .tab-content
     - @grouped_skills_by_category.each do |skill_category, skills|
@@ -33,14 +32,18 @@
                   .btn-group.skills__actions{ role: "group", aria: { label: "Actions" } }
                     = link_to skill, class: "btn btn-info", role: 'button' do
                       %i.glyphicon.glyphicon-search
-                    - if Flip.modifying_skills_allowed?
+                    - if skill.requested_change
+                      = link_to edit_skill_path(skill),
+                                class: "btn btn-primary disabled",
+                                role: 'button' do
+                        %i.glyphicon.glyphicon-cog
+                      = link_to edit_draft_skill_path(skill.requested_change),
+                                class: "btn btn-danger",
+                                role: 'button' do
+                        %i.glyphicon.glyphicon-comment
+                    - else
                       = link_to edit_skill_path(skill),
                                 class: "btn btn-primary",
                                 role: 'button' do
                         %i.glyphicon.glyphicon-cog
-                      = link_to skill,
-                                method: :delete,
-                                data: { confirm: 'Are you sure?' },
-                                class: "btn btn-danger ",
-                                role: 'button' do
-                        %i.glyphicon.glyphicon-trash
+
