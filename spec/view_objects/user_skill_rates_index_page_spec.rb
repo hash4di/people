@@ -14,7 +14,7 @@ describe UserSkillRatesIndexPage do
 
   describe '#initial_skill_category' do
     it 'returns proper class' do
-      expect(subject.initial_skill_category(skill_category)).to be_truthy
+      expect(subject.initial_skill_category(skill_category.name)).to be_truthy
     end
   end
 end
