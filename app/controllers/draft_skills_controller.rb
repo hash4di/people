@@ -12,6 +12,7 @@ class DraftSkillsController < ApplicationController
 
   def update
     # TODO add validation in draft_skill model to not allow requester to accept r cancel(?) request
+    # TODO: we have to change a way of passing draft_status, when there is an error template reload and status is displayed incorrectly
     respond_to do |format|
       if DraftSkills::Update.new(draft_skill, draft_skill_params).call
         format.html { redirect_to draft_skill, notice: 'Request was successfully updated.' }
