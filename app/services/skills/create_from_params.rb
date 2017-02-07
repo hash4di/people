@@ -14,16 +14,9 @@ module Skills
 
     def create
       skill = Skill.new(skill_params)
-      skill.ref_name = ref_name
+      skill.set_ref_name!
       skill.save
-    end
-
-    def ref_name
-      "#{skill_category.name}_#{skill_params['name']}".parameterize
-    end
-
-    def skill_category
-      @skill_category ||= SkillCategory.find(skill_params['skill_category_id'])
+      skill
     end
   end
 end
