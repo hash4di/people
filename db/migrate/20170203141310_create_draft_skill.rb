@@ -13,8 +13,8 @@ class CreateDraftSkill < ActiveRecord::Migration
       t.string :draft_type
       t.string :draft_status
 
-      t.string :requester_explanation
-      t.string :reviewer_explanation
+      t.string :requester_explanation, null: true
+      t.string :reviewer_explanation, null: true
 
       t.timestamps
     end
