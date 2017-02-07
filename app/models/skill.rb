@@ -7,21 +7,20 @@ class Skill < ActiveRecord::Base
     where(draft_type: 'update', draft_status: 'created')
   }, anonymous_class: DraftSkill
 
-  validates :ref_name, :name, :skill_category, :rate_type, presence: true
-  validates :ref_name, uniqueness: true
+  validates :name, :skill_category, :rate_type, :description, presence: true
+  validates :ref_name, uniqueness: true, presence: true, unless: :skip_ref_name_validation
   validates :rate_type, inclusion: { in: ::Skills::RateType.stringified_types }
-  validate :uniques, if: :new_record_or_uniques_update?
 
-  attr_accessor :requester_explanation
+  attr_accessor :requester_explanation, :skip_ref_name_validation
+
+  def set_ref_name!
+    self.ref_name = "#{skill_category.name}_#{name}".parameterize
+  end
 
   private
 
   def uniques
     return unless self.class.where(name: name, skill_category_id: skill_category_id).exists?
     errors.add('name & skill_category', 'must be uniq')
-  end
-
-  def new_record_or_uniques_update?
-    new_record? || (persisted? && (name_changed? || skill_category_id_changed?))
   end
 end
