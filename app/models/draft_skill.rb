@@ -9,6 +9,9 @@ class DraftSkill < ActiveRecord::Base
 
   validates :draft_type, inclusion: { in: TYPES }
   validates :draft_status, inclusion: { in: STATUSES }
+  validates :reviewer_explanation, presence: true, if: :update?
+  validates :requester_explanation, presence: true, if: :create?
+
   scope :since_last_30_days, -> { where('created_at > ?', Time.now - 30.days) }
 
   def resolved?
@@ -21,5 +24,15 @@ class DraftSkill < ActiveRecord::Base
 
   def create_type?
     draft_type == 'create'
+  end
+
+  private
+
+  def update?
+    !new_record?
+  end
+
+  def create?
+    new_record?
   end
 end
