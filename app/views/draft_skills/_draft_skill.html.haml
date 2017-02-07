@@ -1,0 +1,19 @@
+%hr
+%strong Type:
+%span.label{ class: draft_skill_label_type_class(draft_skill.draft_type) }= draft_skill.draft_type
+%strong Status:
+%span.label{ class: draft_skill_label_status_class(draft_skill.draft_status) }= draft_skill.draft_status
+%hr
+%h4 Name
+%span= draft_skill.name
+
+%h4 Description
+%span= draft_skill.description
+
+%h4 Rate type
+%span= draft_skill.rate_type
+
+%h4 Skill category
+%span= draft_skill.skill_category.name
+
+= render 'explanations', draft_skill: draft_skill
