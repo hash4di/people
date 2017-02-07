@@ -44,7 +44,6 @@ describe 'User skill rates page', js: true do
 
     xit 'selects two stars in the range rate' do
       star = user_skill_rates_page.skill_rate2.first
-      binding.pry
       expect(star[:class]).to_not include('selected')
       skill_rate_trigger(2, 'click')
       expect(star[:class]).to include('selected')
