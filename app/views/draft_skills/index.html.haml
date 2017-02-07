@@ -16,6 +16,7 @@
             %tr
               %th
               %th Skill name
+              %th Skill category
               %th Requester
               %th Requester explanation
               %th Reviewer
@@ -25,8 +26,11 @@
             - draft_skills.each do |draft_skill|
               %tr
                 %td
-                  %span.label.label-info.label-lg= draft_skill.draft_type
+                  %span.label.label-lg{ class: draft_skill_label_type_class(draft_skill.draft_type) }= draft_skill.draft_type
+                  = distance_of_time_in_words(draft_skill.created_at, Time.now)
+                  ago
                 %td= draft_skill.name
+                %td= draft_skill.skill_category.name
                 %td
                   - if draft_skill.requester
                     = link_to draft_skill.requester&.full_name, user_path(draft_skill.requester)
