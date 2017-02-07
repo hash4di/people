@@ -74,3 +74,10 @@ en:
         1: "I have used it once before. I know a little bit about it. I don't feel confident enough to use it on a project. I would need to re-read the documentation."
         2: "I have used it several times. I feel that my knowledge is sufficient to use it on a project (using the documentation occasionally). I understand the concept."
         3: "I have worked with the tool / methodology / language / pattern many times. I'm feeling confident I can use it on a project. I would very rarely need to check something in the documentation, if it all."
+  activerecord:
+    errors:
+      models:
+        skill:
+          attributes:
+            ref_name:
+              taken: "There is already skill with such name in this category"
