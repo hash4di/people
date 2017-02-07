@@ -16,11 +16,8 @@ module DraftSkills
     def update
       draft_skill.assign_attributes(draft_skill_params)
       return false unless draft_skill.valid?
-      if draft_skill.accepted?
-        update_or_create_skill && draft_skill.save
-      else
-        draft_skill.save
-      end
+      update_or_create_skill if draft_skill.accepted?
+      draft_skill.save
     end
 
     def update_or_create_skill
@@ -28,7 +25,8 @@ module DraftSkills
     end
 
     def create_skill
-      ::Skills::CreateFromParams.new(skill_params).call
+      skill = ::Skills::CreateFromParams.new(skill_params).call
+      draft_skill.skill = skill
     end
 
     def update_skill
