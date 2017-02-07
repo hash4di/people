@@ -30,13 +30,13 @@ class SkillsController < ApplicationController
 
   def create
     @skill = Skill.new(skill_params)
-
     respond_to do |format|
-      if @skill.valid?
-
-        format.html { redirect_to @skill, notice: 'Draft Skill was successfully created.' }
-        format.json { render json: @skill, status: :created }
+      flash.clear
+      if change_requester.request(type: 'create')
+        format.html { redirect_to change_requester.draft_skill, notice: 'Request for adding skill was successfully created. Ask someone to review and accept it.' }
+        format.json { render json: change_requester.draft_skill, status: :created }
       else
+        flash[:error] = @skill.errors[:ref_name].first if @skill.errors[:ref_name]
         format.html { render action: 'new' }
         format.json { render json: @skill.errors, status: :unprocessable_entity }
       end
