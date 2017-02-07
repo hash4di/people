@@ -11,6 +11,7 @@ class DraftSkillsController < ApplicationController
   def edit; end
 
   def update
+    # TODO add validation in draft_skill model to not allow requester to accept r cancel(?) request
     respond_to do |format|
       if DraftSkills::Update.new(draft_skill, draft_skill_params).call
         format.html { redirect_to draft_skill, notice: 'Request was successfully updated.' }
@@ -32,6 +33,7 @@ class DraftSkillsController < ApplicationController
     end
   end
 
+  # TODO add sortign to display recent one
   def grouped_draft_skills_by_status
     DraftSkill.since_last_30_days.group_by(&:draft_status)
   end

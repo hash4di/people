@@ -10,6 +10,7 @@ class SkillsController < ApplicationController
   end
   expose(:skill_categories) { SkillCategory.all }
   expose(:draft_skills) { @skill.draft_skills.last(5) }
+  # TODO add before_filter or validation on skill to not allow to create new draft_skill when last one is not resolved
 
   def index
     respond_to do |format|
