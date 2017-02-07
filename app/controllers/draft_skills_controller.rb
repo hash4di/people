@@ -33,8 +33,6 @@ class DraftSkillsController < ApplicationController
   end
 
   def grouped_draft_skills_by_status
-    DraftSkill.where(
-      'created_at > ?', Time.now - 30.days
-    ).group_by(&:draft_status)
+    DraftSkill.since_last_30_days.group_by(&:draft_status)
   end
 end

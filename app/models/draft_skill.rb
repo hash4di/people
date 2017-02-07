@@ -1,14 +1,15 @@
 class DraftSkill < ActiveRecord::Base
   belongs_to :skill
   belongs_to :skill_category
-  belongs_to :requester, foreign_key: "requester_id", class_name: "User"
-  belongs_to :reviewer, foreign_key: "reviewer_id", class_name: "User"
+  belongs_to :requester, foreign_key: 'requester_id', class_name: 'User'
+  belongs_to :reviewer, foreign_key: 'reviewer_id', class_name: 'User'
 
   STATUSES = %w(created accepted declined).freeze
   TYPES = %w(update create).freeze
 
   validates :draft_type, inclusion: { in: TYPES }
   validates :draft_status, inclusion: { in: STATUSES }
+  scope :since_last_30_days, -> { where('created_at > ?', Time.now - 30.days) }
 
   def resolved?
     draft_status != 'created'
