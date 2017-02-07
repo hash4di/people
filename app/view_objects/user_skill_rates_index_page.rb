@@ -3,8 +3,8 @@ class UserSkillRatesIndexPage
     @user = user
   end
 
-  def initial_skill_category(skill)
-    return 'js-initial-skill-category' if user_skill_category == skill
+  def initial_skill_category(skill_category_name)
+    return 'js-initial-skill-category' if user_skill_category == skill_category_name
   end
 
   private
