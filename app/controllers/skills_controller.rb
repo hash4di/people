@@ -10,14 +10,14 @@ class SkillsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.json { render json: @grouped_skills_by_category }
     end
   end
 
   def show
     respond_to do |format|
-      format.html # show.html.erb
+      format.html
       format.json { render json: @skill }
     end
   end
@@ -45,8 +45,8 @@ class SkillsController < ApplicationController
 
   def update
     respond_to do |format|
-      if ::Skills::Update.new(@skill, skill_params, current_user).call
-        format.html { redirect_to @skill, notice: 'Request for changing skill was successfully created. Ask someone to review and accept it.' }
+      if change_requester.request(type: 'update')
+        format.html { redirect_to change_requester.draft_skill, notice: 'Request for changing skill was successfully created. Ask someone to review and accept it.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -55,8 +55,6 @@ class SkillsController < ApplicationController
     end
   end
 
-  # DELETE /skills/1
-  # DELETE /skills/1.json
   def destroy
     @skill.destroy
     respond_to do |format|
@@ -67,7 +65,14 @@ class SkillsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
+  def change_requester
+    @change_requester ||= ::Skills::ChangeRequester.new(
+      skill: @skill,
+      params: skill_params,
+      user: current_user
+    )
+  end
+
   def set_skill
     @skill = Skill.find(params[:id])
   end
@@ -79,7 +84,6 @@ class SkillsController < ApplicationController
     end.sort_by{ |key, _| key }.to_h
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def skill_params
     params.require(:skill).permit(
       :name, :description, :rate_type, :skill_category_id,
