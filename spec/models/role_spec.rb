@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Role do
   subject { build(:role) }
 
-  it { should have_many :memberships }
-  it { should validate_presence_of(:name) }
-  it { should be_valid }
-  it { is_expected.to have_and_belong_to_many :skill_categories }
+  it { is_expected.to have_many :memberships }
+  it { is_expected.to validate_presence_of(:name) }
+  it { is_expected.to be_valid }
+  it { is_expected.to belong_to :skill_category }
 
   describe 'callbacks' do
     describe 'before_destroy' do
@@ -19,10 +19,10 @@ describe Role do
     end
   end
 
-  describe "#to_s" do
-    it "returns name" do
-      subject.name = "junior"
-      expect(subject.to_s).to eq("junior")
+  describe '#to_s' do
+    it 'returns name' do
+      subject.name = 'junior'
+      expect(subject.to_s).to eq('junior')
     end
   end
 end
