@@ -1,5 +1,4 @@
 class UserSkillRatesIndexPage
-
   def initialize(user:)
     @user = user
   end

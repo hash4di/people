@@ -11,8 +11,8 @@ describe 'User skill rates page', js: true do
 
   let!(:developer) { create(:user, :developer, skills: skills_range + skills_boolean) }
 
-  describe "TIMEBOMB for fixing this test" do
-    it { expect(Date.today).to be < Date.parse("10/02/2017") }
+  describe 'TIMEBOMB for fixing this test' do
+    it { expect(Date.today).to be < Date.parse('10/02/2017') }
   end
 
   context 'when user does not have any marked skills' do
