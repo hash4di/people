@@ -1,6 +1,8 @@
 = simple_form_for draft_skill do |f|
-  = render 'draft_skill_with_skill', draft_skill: draft_skill, skill: skill
-  = f.input :reviewer_explanation, as: :text, required: true
+  %p.text-info
+    %strong= "#{current_user.full_name} please provide short explanation of your decision."
+  = f.input :reviewer_explanation, as: :text, required: true, label: false
+  %hr
   .actions.pull-right
     = button_tag(type: 'submit', class: 'btn btn-success', value: 'accepted', name: 'draft_skill[draft_status]') do
       %i.glyphicon.glyphicon-ok
