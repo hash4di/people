@@ -4,7 +4,7 @@
   = f.input :rate_type, collection: ['boolean', 'range']
   = f.association :skill_category, collection: skill_categories
 
-  = f.input :requester_explanation, as: :text
+  = f.input :requester_explanation, as: :text, required: true
   .actions.pull-right
     = f.button :submit, class: 'btn-success'
     = link_to 'Back', skills_path, class: 'btn btn-default'
