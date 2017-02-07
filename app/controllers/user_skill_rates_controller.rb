@@ -1,6 +1,6 @@
 class UserSkillRatesController < ApplicationController
   expose(:user_skill_rate) { UserSkillRate.find(params[:id]) }
-  expose(:user_skill_rates_page) { UserSkillRatesPage.new(user: current_user) }
+  expose(:user_skill_rates_page) { UserSkillRatesIndexPage.new(user: current_user) }
   expose(:grouped_skills_by_category) do
     UserSkillRatesQuery.new(current_user).results_by_categories
   end
