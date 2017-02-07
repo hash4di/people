@@ -13,7 +13,7 @@ class DraftSkillsController < ApplicationController
   def update
     respond_to do |format|
       if DraftSkills::Update.new(draft_skill, draft_skill_params).call
-        format.html { redirect_to draft_skill.skill, notice: 'Skill was successfully updated.' }
+        format.html { redirect_to draft_skill, notice: 'Request was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
