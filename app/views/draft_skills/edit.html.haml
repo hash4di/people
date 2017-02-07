@@ -1,6 +1,12 @@
 .col-sm-8.col-sm-offset-2
-  %h1
-    %span= 'Review requested change for '
-    = link_to skill.name, skill_path(skill)
+  - if draft_skill.create_type?
+    %h1
+      %span= "Review request for creation new skill: #{draft_skill.name}"
+    = render 'draft_skill', draft_skill: draft_skill
+  - else
+    %h1
+      %span= 'Review request for change in '
+      = link_to skill.name, skill_path(skill)
+    = render 'draft_skill_with_skill', draft_skill: draft_skill, skill: skill
 
   = render 'form'
