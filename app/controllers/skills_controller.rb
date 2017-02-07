@@ -7,6 +7,7 @@ class SkillsController < ApplicationController
     UsersForSkillQuery.new(skill: @skill, user: current_user).results
   end
   expose(:skill_categories) { SkillCategory.all }
+  expose(:draft_skills) { @skill.draft_skills.last(5) }
 
   def index
     respond_to do |format|
