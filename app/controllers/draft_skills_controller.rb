@@ -40,7 +40,9 @@ class DraftSkillsController < ApplicationController
 
   def grouped_draft_skills_by_status
     DraftSkillDecorator.decorate_collection(
-      DraftSkill.since_last_30_days
+      DraftSkill.since_last_30_days.includes(
+        :requester, :reviewer, :skill_category
+      )
     ).group_by(&:draft_status)
   end
 end
