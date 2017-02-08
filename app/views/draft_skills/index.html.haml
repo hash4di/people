@@ -26,9 +26,8 @@
             - draft_skills.each do |draft_skill|
               %tr
                 %td
-                  %span.label.label-lg{ class: draft_skill_label_type_class(draft_skill.draft_type) }= draft_skill.draft_type
-                  = distance_of_time_in_words(draft_skill.created_at, Time.now)
-                  ago
+                  %span.label.label-lg{ class: draft_skill.label_type_class }= draft_skill.draft_type
+                  = draft_skill.humanized_request_time
                 %td= draft_skill.name
                 %td= draft_skill.skill_category.name
                 %td

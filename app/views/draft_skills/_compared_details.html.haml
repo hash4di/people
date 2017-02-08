@@ -1,9 +1,3 @@
-%hr
-%strong Type:
-%span.label{ class: draft_skill_label_type_class(draft_skill.draft_type) }= draft_skill.draft_type
-%strong Status:
-%span.label{ class: draft_skill_label_status_class(draft_skill.draft_status) }= draft_skill.draft_status
-%hr
 %h4 Name
 - if draft_skill.name == skill.name
   %span= skill.name
@@ -31,5 +25,3 @@
 - else
   %del.text-danger= skill.skill_category.name
   %span.text-success= draft_skill.skill_category.name
-
-= render 'explanations', draft_skill: draft_skill

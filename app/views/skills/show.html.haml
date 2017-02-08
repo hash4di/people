@@ -1,4 +1,4 @@
-.col-sm-8.col-sm-offset-2.col-md-10.col-md-offset-1
+.container
   %h1.text-primary= @skill.name
   %hr
   .row
@@ -13,47 +13,12 @@
         %b Skill category:
         = @skill.skill_category.name
       = link_to edit_skill_path(@skill),
-        class: "btn btn-primary",
+        class: "btn btn-primary #{request_change_btn_class(@skill)}",
         role: 'button' do
         %i.glyphicon.glyphicon-cog
         %span Request change
     - if draft_skills.present?
-      .col-xs-6
-        %h5.text-primary.text-center List of recent requests (up to last 5)
-
-        %table.table.table-condensed
-          %thead
-            %tr
-              %th Type
-              %th Status
-              %th Request time
-              %th Review time
-              %th Actions
-          %tbody
-            - draft_skills.map do |draft_skill|
-              %tr
-                %th
-                  %span.label{ class: draft_skill_label_type_class(draft_skill.draft_type) }= draft_skill.draft_type
-                %th
-                  %span.label{ class: draft_skill_label_status_class(draft_skill.draft_status) }= draft_skill.draft_status
-                %th
-                  = distance_of_time_in_words(draft_skill.created_at, Time.now)
-                  ago
-                %th
-                  - if draft_skill.resolved?
-                    = distance_of_time_in_words(draft_skill.updated_at, Time.now)
-                    ago
-                  - else
-                    %span.text-danger not resolved
-                %th
-                  .btn-group.skills__actions{ role: "group", aria: { label: "Actions" } }
-                    = link_to draft_skill, class: "btn btn-info", role: 'button' do
-                      %i.glyphicon.glyphicon-search
-                    - unless draft_skill.resolved?
-                      = link_to edit_draft_skill_path(draft_skill),
-                                class: "btn btn-primary",
-                                role: 'button' do
-                        %i.glyphicon.glyphicon-edit
+      = render 'last_5_draft_skills', draft_skills: draft_skills
 
   %hr
   %h3.text-primary List of users with their rates

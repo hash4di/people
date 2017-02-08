@@ -1,19 +1,31 @@
 %hr
 %strong Type:
-%span.label{ class: draft_skill_label_type_class(draft_skill.draft_type) }= draft_skill.draft_type
+%span.label{ class: draft_skill.label_type_class }= draft_skill.draft_type
 %strong Status:
-%span.label{ class: draft_skill_label_status_class(draft_skill.draft_status) }= draft_skill.draft_status
+%span.label{ class: draft_skill.label_status_class }= draft_skill.draft_status
 %hr
-%h4 Name
-%span= draft_skill.name
 
-%h4 Description
-%span= draft_skill.description
+- if draft_skill.create_type?
+  = render 'details', draft_skill: draft_skill
+- else
+  = render 'compared_details', skill: skill, draft_skill: draft_skill
 
-%h4 Rate type
-%span= draft_skill.rate_type
+%hr
+%h4
+  Request explanation
+  %small= draft_skill.humanized_request_time
+%p
+  %span
+    = link_to draft_skill.requester&.name, user_path(draft_skill.requester)
+  %span= draft_skill.requester_explanation
+%hr
 
-%h4 Skill category
-%span= draft_skill.skill_category.name
-
-= render 'explanations', draft_skill: draft_skill
+- if draft_skill.reviewer_explanation.present?
+  %h4
+    Reviewer explanation
+    %small= draft_skill.humanized_review_time
+  %p
+    %span
+      = link_to draft_skill.reviewer&.name, user_path(draft_skill.reviewer)
+    %span= draft_skill.reviewer_explanation
+  %hr

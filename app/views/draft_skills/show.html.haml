@@ -1,13 +1,12 @@
 .col-sm-8.col-sm-offset-2
-
   - if draft_skill.create_type?
     %h1= "Request for creation new skill: #{draft_skill.name}"
-    = render 'draft_skill', draft_skill: draft_skill
   - else
     %h1
       %span= 'Requested changes for '
       = link_to skill.name, skill_path(skill)
-    = render 'draft_skill_with_skill', draft_skill: draft_skill, skill: skill
+
+  = render 'draft_skill', draft_skill: draft_skill, skill: skill
 
   .actions.pull-right
     = link_to 'Go back to all requested changes', draft_skills_path, class: 'btn btn-default'
