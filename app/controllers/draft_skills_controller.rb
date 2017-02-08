@@ -1,7 +1,7 @@
 class DraftSkillsController < ApplicationController
   skip_before_filter :authenticate_admin!
   before_filter :authenticate_for_skills!
-  expose(:draft_skill) { DraftSkill.find(params[:id]) }
+  expose(:draft_skill) { fetch_draft_skill }
   expose(:grouped_draft_skills_by_status) { grouped_draft_skills_by_status }
   expose(:skill) { draft_skill.skill }
   expose(:skill_categories) { SkillCategory.all }
@@ -34,8 +34,13 @@ class DraftSkillsController < ApplicationController
     end
   end
 
-  # TODO add sortign to display recent one
+  def fetch_draft_skill
+    DraftSkillDecorator.new(DraftSkill.find(params[:id]))
+  end
+
   def grouped_draft_skills_by_status
-    DraftSkill.since_last_30_days.group_by(&:draft_status)
+    DraftSkillDecorator.decorate_collection(
+      DraftSkill.since_last_30_days
+    ).group_by(&:draft_status)
   end
 end

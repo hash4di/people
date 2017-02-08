@@ -10,7 +10,7 @@ class SkillsController < ApplicationController
     UsersForSkillQuery.new(skill: @skill, user: current_user).results
   end
   expose(:skill_categories) { SkillCategory.all }
-  expose(:draft_skills) { @skill.draft_skills.last(5) }
+  expose(:draft_skills) { fetch_last_5_draft_skill }
   # TODO add before_filter or validation on skill to not allow to create new draft_skill when last one is not resolved
 
   def index
@@ -87,6 +87,10 @@ class SkillsController < ApplicationController
     @grouped_skills_by_category = @skills.group_by do |skill|
       skill.skill_category.name
     end.sort_by{ |key, _| key }.to_h
+  end
+
+  def fetch_last_5_draft_skill
+    DraftSkillDecorator.decorate_collection(@skill.draft_skills.last(5).reverse)
   end
 
   def skill_params
