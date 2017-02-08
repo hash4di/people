@@ -12,7 +12,9 @@ class DraftSkill < ActiveRecord::Base
   validates :reviewer_explanation, presence: true, if: :update?
   validates :requester_explanation, presence: true, if: :create?
 
-  scope :since_last_30_days, -> { where('created_at > ?', Time.now - 30.days) }
+  scope :since_last_30_days, -> do
+    where('created_at > ?', Time.now - 30.days).order(created_at: :desc)
+  end
 
   def resolved?
     draft_status != 'created'
