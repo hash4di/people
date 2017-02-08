@@ -53,26 +53,6 @@ module ApplicationHelper
     text.parameterize('_')
   end
 
-  def draft_skill_label_status_class(status)
-    case status
-    when 'created'
-      'label-primary'
-    when 'accepted'
-      'label-success'
-    when 'declined'
-      'label-danger'
-    end
-  end
-
-  def draft_skill_label_type_class(type)
-    case type
-    when 'update'
-      'label-info'
-    when 'create'
-      'label-primary'
-    end
-  end
-
   private
 
   def icon_generator(name, icon_class, options = {})
