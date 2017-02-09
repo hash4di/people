@@ -14,6 +14,35 @@ describe Skill do
   it { is_expected.to  validate_presence_of :rate_type }
   it { is_expected.to  validate_inclusion_of(:rate_type).in_array(%w(boolean range)) }
 
+  describe 'before validation behaviour' do
+    subject { skill.valid? }
+    let(:category) { create(:skill_category, name: 'backend') }
+    let(:expected_ref_name) { 'backend_git' }
+
+    context 'when skill category and name are set' do
+      let(:skill) { build(:skill, name: 'git', skill_category: category) }
+
+      it 'sets ref_name on skill' do
+        expect(skill.ref_name).to be_nil
+        subject
+        expect(skill.ref_name).to eq expected_ref_name
+      end
+    end
+
+    context 'when skill category is not set' do
+      let(:skill) { build(:skill, name: 'foo', skill_category: nil) }
+      let(:expected_errors) do
+        ["Skill category and skill name have to be set.", "can't be blank"]
+      end
+
+      it 'add ref_name error' do
+        expect(skill.errors).to be_empty
+        subject
+        expect(skill.errors.messages[:ref_name]).to eq expected_errors
+      end
+    end
+  end
+
   describe 'uniques validation' do
     let(:category) { create(:skill_category) }
     let(:other_category) { create(:skill_category) }
