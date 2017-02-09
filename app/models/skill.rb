@@ -8,19 +8,25 @@ class Skill < ActiveRecord::Base
   }, anonymous_class: DraftSkill
 
   validates :name, :skill_category, :rate_type, :description, presence: true
-  validates :ref_name, uniqueness: true, presence: true, unless: :skip_ref_name_validation
+  validates :ref_name, uniqueness: true, presence: true
   validates :rate_type, inclusion: { in: ::Skills::RateType.stringified_types }
 
-  attr_accessor :requester_explanation, :skip_ref_name_validation
+  before_validation :set_ref_name!
 
-  def set_ref_name!
-    self.ref_name = "#{skill_category.name}_#{name}".parameterize
-  end
+  attr_accessor :requester_explanation
 
   private
 
   def uniques
     return unless self.class.where(name: name, skill_category_id: skill_category_id).exists?
     errors.add('name & skill_category', 'must be uniq')
+  end
+
+  def set_ref_name!
+    unless skill_category
+      self.errors[:ref_name] << 'Skill categor and skill name have to be set.'
+      return
+    end
+    self.ref_name = "#{skill_category.name}_#{name}".parameterize
   end
 end

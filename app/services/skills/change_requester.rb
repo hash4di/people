@@ -31,16 +31,9 @@ module Skills
     end
 
     def skill_and_draft_skill_valid?
-      skill.skip_ref_name_validation = true
       skill_validity = skill.valid?
       draft_skill_validity = draft_skill_creator.valid?
-      if skill_validity && draft_skill_validity
-        skill.set_ref_name!
-        skill.skip_ref_name_validation = false
-        skill.valid?
-      else
-        false
-      end
+      skill_validity && draft_skill_validity
     end
 
     def draft_skill_creator
