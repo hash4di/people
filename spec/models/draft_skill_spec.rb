@@ -24,4 +24,55 @@ describe DraftSkill do
       it { is_expected.to validate_presence_of :requester_explanation }
     end
   end
+
+  describe '#resolved?' do
+    subject { draft_skill.resolved? }
+
+    context 'when draft_status equals created' do
+      let(:draft_skill) { build(:draft_skill, :with_created_draft_status) }
+      it 'returns false' do
+        expect(subject).to eq false
+      end
+    end
+    context 'when draft_status has different value' do
+      let(:draft_skill) { build(:draft_skill, :with_accepted_draft_status) }
+      it 'returns true' do
+        expect(subject).to eq true
+      end
+    end
+  end
+
+  describe '#accepted?' do
+    subject { draft_skill.accepted? }
+
+    context 'when draft_status equals create' do
+      let(:draft_skill) { build(:draft_skill, :with_accepted_draft_status) }
+      it 'returns true' do
+        expect(subject).to eq true
+      end
+    end
+    context 'when draft_status has different value' do
+      let(:draft_skill) { build(:draft_skill, :with_declined_draft_status) }
+      it 'returns false' do
+        expect(subject).to eq false
+      end
+    end
+  end
+
+  describe '#create_type?' do
+    subject { draft_skill.create_type? }
+
+    context 'when draft_type equals create' do
+      let(:draft_skill) { build(:draft_skill, :with_crete_draft_type) }
+      it 'returns true' do
+        expect(subject).to eq true
+      end
+    end
+    context 'when draft_type equals update' do
+      let(:draft_skill) { build(:draft_skill, :with_update_draft_type) }
+      it 'returns false' do
+        expect(subject).to eq false
+      end
+    end
+  end
 end
