@@ -4,6 +4,7 @@ FactoryGirl.define do
     skill
     draft_type 'update'
     draft_status 'created'
+    requester_explanation { Faker::Lorem.paragraph }
 
     trait :with_crete_draft_type do
       draft_type 'create'
