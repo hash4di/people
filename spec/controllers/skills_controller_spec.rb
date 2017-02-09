@@ -45,4 +45,53 @@ describe SkillsController do
     end
   end
 
+  describe '#create' do
+    subject { post :create, params }
+    let(:params) do
+      {
+        skill: {
+          description: 'test',
+          rate_type: 'boolean',
+          skill_category_id: skill.skill_category.id,
+          requester_explanation: admin_user,
+          name: 'Ruby'
+        }
+      }
+    end
+    let(:change_requester) { instance_double('::Skills::ChangeRequester') }
+    let(:draft_skill) { create(:draft_skill) }
+
+    before do
+      allow(
+        Skills::ChangeRequester
+      ).to receive(:new).and_return(change_requester)
+    end
+
+    context 'when is valid' do
+      before do
+        allow(
+          change_requester
+        ).to receive(:request).with(type: 'create').and_return(true)
+        allow(
+          change_requester
+        ).to receive(:draft_skill).and_return(draft_skill)
+      end
+
+      it 'renders correct template' do
+        expect(subject).to redirect_to(draft_skill)
+      end
+    end
+
+    context 'when is not valid' do
+      before do
+        allow(
+          change_requester
+        ).to receive(:request).with(type: 'create').and_return(false)
+      end
+
+      it 'renders correct template' do
+        expect(subject).to render_template(:new)
+      end
+    end
+  end
 end
