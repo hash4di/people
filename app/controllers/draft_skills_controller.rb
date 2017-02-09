@@ -1,4 +1,6 @@
 class DraftSkillsController < ApplicationController
+  include SkillHelper
+
   skip_before_filter :authenticate_admin!
   before_filter :authenticate_for_skills!
   expose(:draft_skill) { fetch_draft_skill }
