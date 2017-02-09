@@ -4,6 +4,8 @@ describe Skill do
   it { is_expected.to belong_to :skill_category }
   it { is_expected.to have_many :users }
   it { is_expected.to have_many :user_skill_rates }
+  it { is_expected.to have_many :draft_skills }
+  it { is_expected.to have_one :requested_change }
 
   it { is_expected.to  validate_presence_of :ref_name }
   it { is_expected.to  validate_uniqueness_of :ref_name }
@@ -29,7 +31,7 @@ describe Skill do
       it 'ensures uniques by name & category' do
         expect(skill.valid?).to be false
         expect(skill.errors.messages)
-          .to eq :'name & skill_category' => ['must be uniq']
+          .to eq :'ref_name' => ['There is already skill with such name in this category']
       end
     end
 
@@ -42,14 +44,14 @@ describe Skill do
           persisted_skill.update(name: 'foo')
           expect(persisted_skill.valid?).to be false
           expect(persisted_skill.errors.messages)
-            .to eq :'name & skill_category' => ['must be uniq']
+            .to eq :'ref_name' => ['There is already skill with such name in this category']
         end
 
         it 'is invalid' do
           persisted_skill.update(skill_category: other_category)
           expect(persisted_skill.valid?).to be false
           expect(persisted_skill.errors.messages)
-            .to eq :'name & skill_category' => ['must be uniq']
+            .to eq :'ref_name' => ['There is already skill with such name in this category']
         end
       end
 
