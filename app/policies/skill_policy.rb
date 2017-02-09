@@ -6,7 +6,7 @@ class SkillPolicy
     @skill = skill
   end
 
-  def edit?
+  def access_request_change?
     !has_requested_change?
   end
 

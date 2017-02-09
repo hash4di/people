@@ -3,7 +3,7 @@ class SkillsController < ApplicationController
   # TODO check if message_to_js is required. If no then remove these functionality
   skip_before_render :message_to_js
   before_filter :authenticate_for_skills!
-  before_action :set_skill, only: [:show, :edit, :update, :destroy]
+  before_action :set_skill, only: [:show, :edit, :update]
   before_action :set_grouped_skills, only: [:index]
   expose(:users_with_skill) do
     UsersForSkillQuery.new(skill: @skill, user: current_user).results
@@ -30,7 +30,7 @@ class SkillsController < ApplicationController
   end
 
   def edit
-    authorize @skill
+    authorize @skill, :access_request_change?
   end
 
   def create
@@ -49,6 +49,7 @@ class SkillsController < ApplicationController
   end
 
   def update
+    authorize @skill, :access_request_change?
     respond_to do |format|
       if change_requester.request(type: 'update')
         format.html { redirect_to change_requester.draft_skill, notice: 'Request for changing skill was successfully created. Ask someone to review and accept it.' }
@@ -57,14 +58,6 @@ class SkillsController < ApplicationController
         format.html { render action: 'edit' }
         format.json { render json: @skill.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  def destroy
-    @skill.destroy
-    respond_to do |format|
-      format.html { redirect_to skills_url }
-      format.json { head :no_content }
     end
   end
 
