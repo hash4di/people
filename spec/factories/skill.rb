@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :skill do
-    ref_name { Faker::Name.name }
     sequence(:name) { |num| Faker::Name.name + num.to_s }
     description { Faker::Lorem.paragraph }
     skill_category
