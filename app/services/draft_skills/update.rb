@@ -15,9 +15,16 @@ module DraftSkills
 
     def update
       draft_skill.assign_attributes(draft_skill_params)
-      return false unless draft_skill.valid?
+      unless draft_skill.valid?
+        revert_status_to_created
+        return false
+      end
       update_or_create_skill if draft_skill.accepted?
       draft_skill.save
+    end
+
+    def revert_status_to_created
+      draft_skill.draft_status = 'created'
     end
 
     def update_or_create_skill
