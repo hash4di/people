@@ -12,5 +12,16 @@ FactoryGirl.define do
     trait :with_boolean_rate_type do
       rate_type 'boolean'
     end
+
+    trait :with_awaiting_change_request do
+      after(:create) do |skill|
+        skill.draft_skills << FactoryGirl.create(
+          :draft_skill,
+          :with_created_draft_status,
+          draft_type: 'update',
+          skill: skill
+        )
+      end
+    end
   end
 end

@@ -26,4 +26,23 @@ describe SkillsController do
       expect(subject).to render_template(:show)
     end
   end
+
+  describe '#edit' do
+    subject { get :edit, id: skill.id }
+
+    context 'when request for change already exists' do
+      let(:skill) { create(:skill, :with_awaiting_change_request) }
+
+      it 'redirects to root_path' do
+        expect(subject).to redirect_to(root_path)
+      end
+    end
+
+    context 'when request for change does not exist' do
+      it 'renders correct template' do
+        expect(subject).to render_template(:edit)
+      end
+    end
+  end
+
 end
