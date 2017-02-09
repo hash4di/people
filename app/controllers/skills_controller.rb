@@ -2,7 +2,6 @@ class SkillsController < ApplicationController
   skip_before_filter :authenticate_admin!
   # TODO check if message_to_js is required. If no then remove these functionality
   skip_before_render :message_to_js
-  # TODO move authentication to pundit
   before_filter :authenticate_for_skills!
   before_action :set_skill, only: [:show, :edit, :update, :destroy]
   before_action :set_grouped_skills, only: [:index]
@@ -11,7 +10,6 @@ class SkillsController < ApplicationController
   end
   expose(:skill_categories) { SkillCategory.all }
   expose(:draft_skills) { fetch_last_5_draft_skill }
-  # TODO add before_filter or validation on skill to not allow to create new draft_skill when last one is not resolved
 
   def index
     respond_to do |format|
@@ -31,7 +29,9 @@ class SkillsController < ApplicationController
     @skill = Skill.new
   end
 
-  def edit; end
+  def edit
+    authorize @skill
+  end
 
   def create
     @skill = Skill.new(skill_params)

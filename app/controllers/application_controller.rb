@@ -35,11 +35,10 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def user_not_authorized
-    redirect_to(
-      request.referer || root_path,
-      alert: 'You are not authorized to access this section.'
-    )
+   def user_not_authorized(exception)
+    policy_name = exception.policy.class.to_s.underscore
+    flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+    redirect_to(request.referer || root_path)
   end
 
   def fetch_team_members
@@ -52,8 +51,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_for_skills!
-    return if current_user.talent? || current_user.leader?
-    authenticate_admin!
+    authorize User, :skill_access?
   end
 
   def authenticate_admin!
