@@ -24,7 +24,7 @@ class Skill < ActiveRecord::Base
 
   def set_ref_name!
     unless skill_category
-      self.errors[:ref_name] << 'Skill categor and skill name have to be set.'
+      self.errors[:ref_name] << 'Skill category and skill name have to be set.'
       return
     end
     self.ref_name = "#{skill_category.name}_#{name}".parameterize
