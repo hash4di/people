@@ -40,7 +40,7 @@ FactoryGirl.define do
     end
 
     trait :leader do
-      after(:create) do |user, evaluator|
+      after(:create) do |user|
         create(:team_with_members, user_id: user.id, users: [user])
       end
     end

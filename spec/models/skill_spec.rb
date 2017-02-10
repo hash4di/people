@@ -32,7 +32,7 @@ describe Skill do
     context 'when skill category is not set' do
       let(:skill) { build(:skill, name: 'foo', skill_category: nil) }
       let(:expected_errors) do
-        ["Skill category and skill name have to be set.", "can't be blank"]
+        ['Skill category and skill name have to be set.', 'can\'t be blank']
       end
 
       it 'add ref_name error' do
@@ -60,7 +60,7 @@ describe Skill do
       it 'ensures uniques by name & category' do
         expect(skill.valid?).to be false
         expect(skill.errors.messages)
-          .to eq :'ref_name' => ['There is already skill with such name in this category']
+          .to eq ref_name: ['There is already skill with such name in this category']
       end
     end
 
@@ -73,14 +73,14 @@ describe Skill do
           persisted_skill.update(name: 'foo')
           expect(persisted_skill.valid?).to be false
           expect(persisted_skill.errors.messages)
-            .to eq :'ref_name' => ['There is already skill with such name in this category']
+            .to eq ref_name: ['There is already skill with such name in this category']
         end
 
         it 'is invalid' do
           persisted_skill.update(skill_category: other_category)
           expect(persisted_skill.valid?).to be false
           expect(persisted_skill.errors.messages)
-            .to eq :'ref_name' => ['There is already skill with such name in this category']
+            .to eq ref_name: ['There is already skill with such name in this category']
         end
       end
 

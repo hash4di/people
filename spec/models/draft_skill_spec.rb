@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe DraftSkill do
-
   describe 'validations' do
     let(:expected_STATUSES) { %w(created accepted declined) }
     let(:expected_TYPES) { %w(update create) }
