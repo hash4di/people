@@ -8,6 +8,8 @@ class DraftSkillsController < ApplicationController
 
   def show; end
 
+  def index; end
+
   def edit
     authorize draft_skill, :allowed_to_modify?
   end
