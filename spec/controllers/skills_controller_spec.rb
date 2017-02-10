@@ -67,6 +67,12 @@ describe SkillsController do
       ).to receive(:new).and_return(change_requester)
     end
 
+    it 'executes change requester' do
+      expect(Skills::ChangeRequester).to receive(:new)
+      expect(change_requester).to receive(:request).with(type: 'create')
+      subject
+    end
+
     context 'when is valid' do
       before do
         allow(
@@ -116,6 +122,12 @@ describe SkillsController do
       allow(
         Skills::ChangeRequester
       ).to receive(:new).and_return(change_requester)
+    end
+
+    it 'executes change requester' do
+      expect(Skills::ChangeRequester).to receive(:new)
+      expect(change_requester).to receive(:request).with(type: 'update')
+      subject
     end
 
     context 'when request for change already exists' do
