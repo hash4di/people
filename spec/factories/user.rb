@@ -34,6 +34,11 @@ FactoryGirl.define do
     trait :developer do
       positions { [create(:position, :primary, role: create(:dev_role))] }
     end
+
+    trait :talent do
+      positions { [create(:position, :primary, role: create(:talent_role))] }
+    end
+
   end
 
   factory :plain_user, class: "User" do
