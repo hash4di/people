@@ -41,4 +41,21 @@ describe UserPolicy do
       it { expect(subject.history?).to be true }
     end
   end
+
+  describe '#skill_access?' do
+    context 'when user is a leader' do
+      let(:current_user) { create(:user, :leader) }
+      it { expect(subject.skill_access?).to be true }
+    end
+
+    context 'when user is talent' do
+      let(:current_user) { create(:user, :talent) }
+      it { expect(subject.skill_access?).to be true }
+    end
+
+    context 'when user is admin' do
+      let(:current_user) { create(:user, :admin) }
+      it { expect(subject.skill_access?).to be true }
+    end
+  end
 end
