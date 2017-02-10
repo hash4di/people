@@ -49,7 +49,7 @@ FactoryGirl.define do
       technical false
     end
 
-    factory :talent do
+    factory :talent_role do
       name 'talent'
       technical false
     end
