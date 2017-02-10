@@ -26,7 +26,7 @@ module DraftSkills
 
     def initialize_draft_skill!
       @draft_skill ||= begin
-        draft_skill_attributes.merge!('skill_id' => skill.id) if skill
+        draft_skill_attributes['skill_id'] = skill.id if skill
         DraftSkill.new(draft_skill_attributes)
       end
     end
