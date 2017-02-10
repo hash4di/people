@@ -65,6 +65,10 @@ en:
     message:
       success: "Your changes for: %{skill} are saved."
       error: "Failed to save your changes for: %{skill}."
+      create:
+        success: 'Request for adding skill was successfully created. Ask someone to review and accept it.'
+      update:
+        success: 'Request for changing skill was successfully created. Ask someone to review and accept it.'
     rating:
       boolean:
         0: "I do not know the tool / methodology / language / pattern."

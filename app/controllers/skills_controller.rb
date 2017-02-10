@@ -38,7 +38,7 @@ class SkillsController < ApplicationController
     respond_to do |format|
       flash.clear
       if change_requester.request(type: 'create')
-        format.html { redirect_to change_requester.draft_skill, notice: 'Request for adding skill was successfully created. Ask someone to review and accept it.' }
+        format.html { redirect_to change_requester.draft_skill, notice: I18n.t('skills.message.create.success') }
         format.json { render json: change_requester.draft_skill, status: :created }
       else
         flash[:error] = @skill.errors[:ref_name].first if @skill.errors[:ref_name]
@@ -52,7 +52,7 @@ class SkillsController < ApplicationController
     authorize @skill, :access_request_change?
     respond_to do |format|
       if change_requester.request(type: 'update')
-        format.html { redirect_to change_requester.draft_skill, notice: 'Request for changing skill was successfully created. Ask someone to review and accept it.' }
+        format.html { redirect_to change_requester.draft_skill, notice: I18n.t('skills.message.update.success') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
