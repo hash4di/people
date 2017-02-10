@@ -1,8 +1,8 @@
 module DraftSkills
   class Create
-    attr_reader :params, :type , :user, :skill, :draft_skill
+    attr_reader :params, :type, :user, :skill, :draft_skill
 
-    def initialize(params:, type: , user:, skill: nil)
+    def initialize(params:, type:, user:, skill: nil)
       @params = params
       @type = type
       @user = user
