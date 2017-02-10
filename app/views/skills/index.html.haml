@@ -38,7 +38,7 @@
                                 role: 'button' do
                         %i.glyphicon.glyphicon-cog
                       = link_to edit_draft_skill_path(skill.requested_change),
-                                class: "btn btn-danger",
+                                class: "btn btn-danger #{update_request_btn_class(skill.requested_change, current_user)}",
                                 role: 'button' do
                         %i.glyphicon.glyphicon-comment
                     - else
