@@ -44,6 +44,6 @@
                       %i.glyphicon.glyphicon-search
                     - unless draft_skill.resolved?
                       = link_to edit_draft_skill_path(draft_skill),
-                                class: "btn btn-primary #{request_change_btn_class(draft_skill.skill)}",
+                                class: "btn btn-primary #{update_request_btn_class(draft_skill, current_user)}",
                                 role: 'button' do
                         %i.glyphicon.glyphicon-edit
