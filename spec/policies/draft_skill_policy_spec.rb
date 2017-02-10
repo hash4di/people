@@ -5,16 +5,16 @@ describe DraftSkillPolicy do
   let(:current_user) { create(:user) }
   let(:draft_skill) { create(:draft_skill, :with_created_draft_status) }
 
-  describe '#allowed_to_modifie?' do
+  describe '#allowed_to_modify?' do
     context 'when user is requester' do
       let(:draft_skill) do
         create(:draft_skill, :with_created_draft_status, requester: current_user)
       end
-      it { expect(subject.allowed_to_modifie?).to be false }
+      it { expect(subject.allowed_to_modify?).to be false }
     end
 
     context 'when user is not requester' do
-      it { expect(subject.allowed_to_modifie?).to be true }
+      it { expect(subject.allowed_to_modify?).to be true }
     end
   end
 end

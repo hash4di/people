@@ -11,11 +11,11 @@ class DraftSkillsController < ApplicationController
   def show; end
 
   def edit
-    authorize draft_skill, :allowed_to_modifie?
+    authorize draft_skill, :allowed_to_modify?
   end
 
   def update
-    authorize draft_skill, :allowed_to_modifie?
+    authorize draft_skill, :allowed_to_modify?
     respond_to do |format|
       if DraftSkills::Update.new(draft_skill, draft_skill_params).call
         format.html { redirect_to draft_skill, notice: 'Request was successfully updated.' }

@@ -6,7 +6,7 @@ class DraftSkillPolicy
     @draft_skill = draft_skill
   end
 
-  def allowed_to_modifie?
+  def allowed_to_modify?
     !requester?
   end
 
