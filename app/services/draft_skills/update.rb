@@ -32,8 +32,7 @@ module DraftSkills
     end
 
     def create_skill
-      skill = ::Skills::CreateFromParams.new(skill_params).call
-      draft_skill.skill = skill
+      draft_skill.skill = Skill.create(skill_params)
     end
 
     def update_skill
