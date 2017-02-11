@@ -1,13 +1,18 @@
 FactoryGirl.define do
   factory :draft_skill do
     skill_category
+    name { Faker::Name.name }
+    description { Faker::Lorem.paragraph }
     skill
     draft_type 'update'
     draft_status 'created'
     requester_explanation { Faker::Lorem.paragraph }
+    requester { create(:user) }
+    rate_type { %w(boolean range).sample }
 
-    trait :with_crete_draft_type do
+    trait :with_create_draft_type do
       draft_type 'create'
+      skill nil
     end
 
     trait :with_update_draft_type do

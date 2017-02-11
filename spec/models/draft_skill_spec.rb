@@ -62,7 +62,7 @@ describe DraftSkill do
     subject { draft_skill.create_type? }
 
     context 'when draft_type equals create' do
-      let(:draft_skill) { build(:draft_skill, :with_crete_draft_type) }
+      let(:draft_skill) { build(:draft_skill, :with_create_draft_type) }
       it 'returns true' do
         expect(subject).to eq true
       end
