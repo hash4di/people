@@ -114,7 +114,7 @@ describe DraftSkills::Update do
           it do
             expect{ subject }.to change{
               skill.reload.skill_category_id
-            }.to(draft_skill.skill_category_id) }
+            }.to(draft_skill.skill_category_id)
           end
         end
 
