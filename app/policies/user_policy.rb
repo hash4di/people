@@ -1,4 +1,4 @@
-class UserPolicy
+class UserPolicy < BasePolicy
   attr_reader :current_user, :user
 
   def initialize(current_user, user)
@@ -18,13 +18,5 @@ class UserPolicy
 
   def self?
     current_user == user
-  end
-
-  def talent?
-    current_user.talent?
-  end
-
-  def leader?
-    current_user.leader?
   end
 end
