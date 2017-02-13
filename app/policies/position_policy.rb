@@ -26,7 +26,7 @@ class PositionPolicy < BasePolicy
   private
 
   def leader_or_talent?
-    return true if talent? || admin?
+    return true if admin? || leader?
     return false unless leader?
 
     users = Team.include(:users).find_by(user_id: current_user.id).users

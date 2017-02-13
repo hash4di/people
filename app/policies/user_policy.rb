@@ -14,6 +14,10 @@ class UserPolicy < BasePolicy
     users.include? user
   end
 
+  def position_access?
+    admin? || talent? || leader?
+  end
+
   private
 
   def self?

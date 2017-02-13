@@ -133,7 +133,7 @@ describe PositionsController do
             PositionMailer,
             :new_primary,
             position.reload,
-            user.id
+            admin_user.id
           )
           subject
         end

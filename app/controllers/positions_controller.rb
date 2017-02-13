@@ -9,14 +9,13 @@ class PositionsController < ApplicationController
   end
   expose_decorated(:roles) { roles_repository.all_by_name }
 
-  before_filter :authenticate_admin!, except: [:new, :create, :update, :toggle_primary]
+  before_filter :authenticate_for_positions!
 
   def new
     position.user = User.find_by(id: params[:user]) || current_user
   end
 
   def create
-    authorize position
     if SavePosition.new(position).call
       SendMailWithUserJob.perform_async(
         PositionMailer, :new_position, position, current_user.id
@@ -28,7 +27,6 @@ class PositionsController < ApplicationController
   end
 
   def update
-    authorize position
     if position.save
       respond_on_success user_path(position.user)
     else
@@ -37,7 +35,6 @@ class PositionsController < ApplicationController
   end
 
   def destroy
-    authorize position
     if position.destroy
       redirect_to request.referer, notice: I18n.t('positions.success', type: 'delete')
     else
@@ -59,6 +56,10 @@ class PositionsController < ApplicationController
   end
 
   private
+
+  def authenticate_for_positions!
+    authorize User, :position_access?
+  end
 
   def position_params
     params.require(:position).permit(:starts_at, :user_id, :role_id, :primary)
