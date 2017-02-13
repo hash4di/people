@@ -15,7 +15,7 @@ class UserPolicy
   end
 
   def skill_access?
-    talent? || leader? || admin?
+    admin? || talent? || leader?
   end
 
   private
