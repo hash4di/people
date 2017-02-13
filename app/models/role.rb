@@ -16,6 +16,10 @@ class Role < ActiveRecord::Base
   scope :non_billable, -> { where(billable: false) }
   scope :technical, -> { where(technical: true) }
 
+  def skill_category
+    super || NullSkillCategory.new
+  end
+
   def to_s
     name
   end
