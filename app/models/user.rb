@@ -146,6 +146,10 @@ class User < ActiveRecord::Base
     maximum(:updated_at)
   end
 
+  def primary_role
+    super || NullRole.new
+  end
+
   def github_connected?
     gh_nick.present? || without_gh == true
   end
