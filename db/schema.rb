@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201102606) do
+ActiveRecord::Schema.define(version: 20170203141310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,27 @@ ActiveRecord::Schema.define(version: 20170201102606) do
     t.datetime "updated_at"
     t.string   "mongo_id"
   end
+
+  create_table "draft_skills", force: :cascade do |t|
+    t.integer  "requester_id"
+    t.integer  "reviewer_id"
+    t.integer  "skill_category_id"
+    t.integer  "skill_id"
+    t.string   "name"
+    t.string   "description"
+    t.string   "rate_type"
+    t.string   "draft_type"
+    t.string   "draft_status"
+    t.string   "requester_explanation"
+    t.string   "reviewer_explanation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "draft_skills", ["requester_id"], name: "index_draft_skills_on_requester_id", using: :btree
+  add_index "draft_skills", ["reviewer_id"], name: "index_draft_skills_on_reviewer_id", using: :btree
+  add_index "draft_skills", ["skill_category_id"], name: "index_draft_skills_on_skill_category_id", using: :btree
+  add_index "draft_skills", ["skill_id"], name: "index_draft_skills_on_skill_id", using: :btree
 
   create_table "features", force: :cascade do |t|
     t.string   "key"
@@ -252,6 +273,8 @@ ActiveRecord::Schema.define(version: 20170201102606) do
   add_index "users", ["location_id"], name: "index_users_on_location_id", using: :btree
   add_index "users", ["primary_role_id"], name: "index_users_on_primary_role_id", using: :btree
 
+  add_foreign_key "draft_skills", "skill_categories"
+  add_foreign_key "draft_skills", "skills"
   add_foreign_key "skills", "skill_categories"
   add_foreign_key "user_skill_rates", "skills"
   add_foreign_key "user_skill_rates", "users"
