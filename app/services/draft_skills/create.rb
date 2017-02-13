@@ -19,6 +19,7 @@ module DraftSkills
     end
 
     def errors
+      valid?
       draft_skill.errors
     end
 
