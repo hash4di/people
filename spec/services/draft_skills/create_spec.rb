@@ -116,7 +116,7 @@ describe DraftSkills::Create do
   describe 'save!' do
     context 'when is valid' do
       it 'saves draft_skill object' do
-        expect { subject.save! }.to change{ subject.draft_skill.new_record? }.from(true).to(false)
+        expect { subject.save! }.to change { subject.draft_skill.new_record? }.from(true).to(false)
       end
     end
     context 'when is invalid' do
@@ -130,7 +130,7 @@ describe DraftSkills::Create do
         }
       end
       it 'does not save draft_skill object' do
-        expect { subject.save! }.to_not change{ subject.draft_skill.new_record? }
+        expect { subject.save! }.to_not change { subject.draft_skill.new_record? }
       end
     end
   end

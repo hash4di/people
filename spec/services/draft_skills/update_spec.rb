@@ -34,7 +34,7 @@ describe DraftSkills::Update do
           let(:draft_status) { 'accepted' }
 
           it 'creates skill' do
-            expect{ subject }.to change{ Skill.count }.by(1)
+            expect { subject }.to change { Skill.count }.by(1)
           end
 
           it 'sets attributes form draft_skill to skill' do
@@ -52,7 +52,7 @@ describe DraftSkills::Update do
           let(:draft_status) { 'declined' }
 
           it 'does not create new skill' do
-            expect{ subject }.to_not change{ Skill.count }
+            expect { subject }.to_not change { Skill.count }
           end
 
           it 'sets reviewer data on draft_skill' do
@@ -98,21 +98,21 @@ describe DraftSkills::Update do
 
           include_examples 'updates draft_skill'
 
-          it do expect{ subject }.to change{
+          it do expect { subject }.to change {
             skill.reload.name }.to(draft_skill.name)
           end
           it do
-            expect{ subject }.to change{
+            expect { subject }.to change {
               skill.reload.description
             }.to(draft_skill.description)
           end
           it do
-            expect{ subject }.to change{
+            expect { subject }.to change {
               skill.reload.rate_type
             }.to(draft_skill.rate_type)
           end
           it do
-            expect{ subject }.to change{
+            expect { subject }.to change {
               skill.reload.skill_category_id
             }.to(draft_skill.skill_category_id)
           end
@@ -132,10 +132,10 @@ describe DraftSkills::Update do
             expect(draft_skill.draft_status).to eq draft_status
           end
 
-          it { expect{ subject }.to_not change{ skill.name } }
-          it { expect{ subject }.to_not change{ skill.description } }
-          it { expect{ subject }.to_not change{ skill.rate_type } }
-          it { expect{ subject }.to_not change{ skill.skill_category_id } }
+          it { expect { subject }.to_not change { skill.name } }
+          it { expect { subject }.to_not change { skill.description } }
+          it { expect { subject }.to_not change { skill.rate_type } }
+          it { expect { subject }.to_not change { skill.skill_category_id } }
         end
       end
     end
