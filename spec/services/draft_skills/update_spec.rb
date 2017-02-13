@@ -45,9 +45,9 @@ describe DraftSkills::Update do
             expect(draft_skill.skill.skill_category_id).to eq draft_skill.skill_category_id
           end
 
-        include_examples 'updates draft_skill'
-
+          include_examples 'updates draft_skill'
         end
+
         context 'when draft_status equals declined' do
           let(:draft_status) { 'declined' }
 
