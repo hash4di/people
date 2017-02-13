@@ -3,6 +3,7 @@ class PositionsController < ApplicationController
   include Shared::RespondsController
 
   expose(:position, attributes: :position_params)
+
   expose_decorated(:users) do
     current_user.admin? ? users_repository.all_by_name : [current_user]
   end
@@ -15,6 +16,7 @@ class PositionsController < ApplicationController
   end
 
   def create
+    authorize position
     if SavePosition.new(position).call
       SendMailWithUserJob.perform_async(
         PositionMailer, :new_position, position, current_user.id
@@ -26,6 +28,7 @@ class PositionsController < ApplicationController
   end
 
   def update
+    authorize position
     if position.save
       respond_on_success user_path(position.user)
     else
@@ -34,6 +37,7 @@ class PositionsController < ApplicationController
   end
 
   def destroy
+    authorize position
     if position.destroy
       redirect_to request.referer, notice: I18n.t('positions.success', type: 'delete')
     else
@@ -43,6 +47,7 @@ class PositionsController < ApplicationController
 
   def toggle_primary
     position = Position.find(params[:id])
+    authorize position
     position.toggle!(:primary)
     if position.primary?
       position.user.update(primary_role: position.role)
