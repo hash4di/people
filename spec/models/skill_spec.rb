@@ -4,6 +4,8 @@ describe Skill do
   it { is_expected.to belong_to :skill_category }
   it { is_expected.to have_many :users }
   it { is_expected.to have_many :user_skill_rates }
+  it { is_expected.to have_many :draft_skills }
+  it { is_expected.to have_one :requested_change }
 
   it { is_expected.to  validate_presence_of :ref_name }
   it { is_expected.to  validate_uniqueness_of :ref_name }
@@ -11,6 +13,35 @@ describe Skill do
   it { is_expected.to  validate_presence_of :skill_category }
   it { is_expected.to  validate_presence_of :rate_type }
   it { is_expected.to  validate_inclusion_of(:rate_type).in_array(%w(boolean range)) }
+
+  describe 'before validation behaviour' do
+    subject { skill.valid? }
+    let(:category) { create(:skill_category, name: 'backend') }
+    let(:expected_ref_name) { 'backend_git' }
+
+    context 'when skill category and name are set' do
+      let(:skill) { build(:skill, name: 'git', skill_category: category) }
+
+      it 'sets ref_name on skill' do
+        expect(skill.ref_name).to be_nil
+        subject
+        expect(skill.ref_name).to eq expected_ref_name
+      end
+    end
+
+    context 'when skill category is not set' do
+      let(:skill) { build(:skill, name: 'foo', skill_category: nil) }
+      let(:expected_errors) do
+        ['Skill category and skill name have to be set.', 'can\'t be blank']
+      end
+
+      it 'add ref_name error' do
+        expect(skill.errors).to be_empty
+        subject
+        expect(skill.errors.messages[:ref_name]).to eq expected_errors
+      end
+    end
+  end
 
   describe 'uniques validation' do
     let(:category) { create(:skill_category) }
@@ -29,7 +60,7 @@ describe Skill do
       it 'ensures uniques by name & category' do
         expect(skill.valid?).to be false
         expect(skill.errors.messages)
-          .to eq :'name & skill_category' => ['must be uniq']
+          .to eq ref_name: ['There is already skill with such name in this category']
       end
     end
 
@@ -42,14 +73,14 @@ describe Skill do
           persisted_skill.update(name: 'foo')
           expect(persisted_skill.valid?).to be false
           expect(persisted_skill.errors.messages)
-            .to eq :'name & skill_category' => ['must be uniq']
+            .to eq ref_name: ['There is already skill with such name in this category']
         end
 
         it 'is invalid' do
           persisted_skill.update(skill_category: other_category)
           expect(persisted_skill.valid?).to be false
           expect(persisted_skill.errors.messages)
-            .to eq :'name & skill_category' => ['must be uniq']
+            .to eq ref_name: ['There is already skill with such name in this category']
         end
       end
 

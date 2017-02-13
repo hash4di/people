@@ -1,0 +1,13 @@
+= simple_form_for draft_skill do |f|
+  %p.text-info
+    %strong= "#{current_user.full_name} please provide short explanation of your decision."
+  = f.input :reviewer_explanation, as: :text, required: true, label: false
+  %hr
+  .actions.pull-right
+    = button_tag(type: 'submit', class: 'btn btn-success', value: 'accepted', name: 'draft_skill[draft_status]') do
+      %i.glyphicon.glyphicon-ok
+      %span Accept
+
+    = button_tag(type: 'submit', class: 'btn btn-danger', value: 'declined', name: 'draft_skill[draft_status]') do
+      %i.glyphicon.glyphicon-remove
+      %span Cancel

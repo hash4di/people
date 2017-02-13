@@ -14,10 +14,18 @@ class UserPolicy
     users.include? user
   end
 
+  def skill_access?
+    admin? || talent? || leader?
+  end
+
   private
 
   def self?
     current_user == user
+  end
+
+  def admin?
+    current_user.admin?
   end
 
   def talent?
