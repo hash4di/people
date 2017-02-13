@@ -9,7 +9,7 @@ class SkillsController < ApplicationController
     UsersForSkillQuery.new(skill: @skill, user: current_user).results
   end
   expose(:skill_categories) { SkillCategory.all }
-  expose(:draft_skills) { fetch_last_5_draft_skill }
+  expose(:draft_skills) { fetch_last_5_draft_skills }
 
   def index
     respond_to do |format|
@@ -82,7 +82,7 @@ class SkillsController < ApplicationController
     end.sort_by{ |key, _| key }.to_h
   end
 
-  def fetch_last_5_draft_skill
+  def fetch_last_5_draft_skills
     DraftSkillDecorator.decorate_collection(@skill.draft_skills.last(5).reverse)
   end
 
