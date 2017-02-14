@@ -20,7 +20,7 @@ class GoogleUserBuilder
 
   def create_user
     user = User.create!(new_user_attributes)
-    BaseSkillRatesGeneratorJob.perform_async(user_id: user.id) if user.present?
+    CreateRatesForUserJob.perform_async(user_id: user.id) if user.present?
     user
   end
 
