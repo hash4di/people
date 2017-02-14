@@ -17,8 +17,8 @@ module Skills
 
     def generate_for_skill(skill_id:, user_id:)
       ::Skills::UserSkillRates::Create.new(
-          user_id: user_id, skill_id: skill_id
-        ).call
+        user_id: user_id, skill_id: skill_id
+      ).call
     end
 
     def skills
