@@ -31,6 +31,12 @@ describe DraftSkills::Update do
         let(:draft_skill) { create(:draft_skill, :with_create_draft_type) }
 
         context 'when draft_status equals accepted' do
+          before do
+            allow(
+              CreateRatesForSkillJob
+            ).to receive(:perform_async).and_return(true)
+          end
+
           let(:draft_status) { 'accepted' }
 
           it 'creates skill' do
@@ -43,6 +49,13 @@ describe DraftSkills::Update do
             expect(draft_skill.skill.description).to eq draft_skill.description
             expect(draft_skill.skill.rate_type).to eq draft_skill.rate_type
             expect(draft_skill.skill.skill_category_id).to eq draft_skill.skill_category_id
+          end
+
+          it 'generates base user_skill_rates' do
+            expect(
+              CreateRatesForSkillJob
+            ).to receive(:perform_async).and_return(true)
+            subject
           end
 
           include_examples 'updates draft_skill'

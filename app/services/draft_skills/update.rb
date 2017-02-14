@@ -32,7 +32,9 @@ module DraftSkills
     end
 
     def create_skill
-      draft_skill.skill = Skill.create(skill_params)
+      skill = Skill.create(skill_params)
+      draft_skill.skill = skill
+      CreateRatesForSkillJob.perform_async(skill_id: skill.id)
     end
 
     def update_skill
