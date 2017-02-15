@@ -43,26 +43,20 @@ class PositionsController < ApplicationController
   end
 
   def toggle_primary
-    binding.pry
-    # puts "shieeet"
-    # binding.pry
-    #
-    # position = Position.find(params[:id])
-    # # authorize position
-    # position.toggle!(:primary)
-    # if position.primary?
-    #   position.user.update(primary_role: position.role)
-    #   SendMailWithUserJob.perform_async(
-    #     PositionMailer, :new_primary, position, current_user.id
-    #   )
-    # end
-    # redirect_to user_path(position.user)
+    position = Position.find(params[:id])
+    position.toggle!(:primary)
+    if position.primary?
+      position.user.update(primary_role: position.role)
+      SendMailWithUserJob.perform_async(
+        PositionMailer, :new_primary, position, current_user.id
+      )
+    end
+    redirect_to user_path(position.user)
   end
 
   private
 
   def authenticate_for_positions!
-    binding.pry
     authorize User, :position_access?
   end
 
