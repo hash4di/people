@@ -15,7 +15,11 @@ class UserPolicy < BasePolicy
   end
 
   def position_access?
-    admin? || talent? || leader?
+    from_management?
+  end
+
+  def skill_access?
+    from_management?
   end
 
   private

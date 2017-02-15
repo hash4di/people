@@ -9,7 +9,9 @@ class SlackNotifier
     return unless (webhook_url = AppConfig.slack.webhook_url).present?
     return unless (message = notification.message).present?
 
-    Slack::Notifier.new(webhook_url, options).ping(message)
+    unless Rails.env.development?
+      Slack::Notifier.new(webhook_url, options).ping(message)
+    end
   end
 
   private

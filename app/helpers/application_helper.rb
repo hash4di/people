@@ -60,10 +60,11 @@ module ApplicationHelper
   end
 
   def get_alert_class(type)
+    type = type.to_s
     case type
-    when :alert
+    when 'alert'
       "warning"
-    when :error
+    when 'error'
       "danger"
     else
       "success"

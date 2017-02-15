@@ -12,4 +12,8 @@ class BasePolicy
   def leader?
     @current_user.leader?
   end
+
+  def from_management?
+    admin? || talent? || leader?
+  end
 end

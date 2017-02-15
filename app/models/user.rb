@@ -175,7 +175,7 @@ class User < ActiveRecord::Base
   end
 
   def leader?
-    Team.any? { |team| team.leader == self }
+    Team.includes(:leader).any? { |team| team.leader == self }
   end
 
   def talent?

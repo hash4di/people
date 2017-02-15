@@ -9,7 +9,9 @@ describe UsersForSkillQuery do
   let(:skill) {  create(:skill, rate_type: 'range') }
   let(:team) { create(:team, user_id: team_leader.id) }
   let(:team_leader) { create(:user, first_name: 'Andrzej', last_name: 'Lewandowski') }
-  let(:talent_position) { create(:position, user: create(:user), role: create(:talent)) }
+  let(:talent_position) do
+    create(:position, user: create(:user), role: create(:talent_role))
+  end
   let(:talent_user) { talent_position.user }
 
   let!(:user_skill_rate_favorite_rate_2) do

@@ -1,20 +1,26 @@
-%p#notice= notice
-
-.jumbotron
-  %h2.text-primary= @skill.name
-  %p
-    %b Description:
-    = @skill.description
-  %p
-    %b Rate type:
-    = @skill.rate_type
-  %p
-    %b Skill category:
-    = @skill.skill_category.name
-
-  = link_to 'Back', skills_path, class: 'btn btn-primary btn-lg'
-
 .container
+  %h1.text-primary= @skill.name
+  %hr
+  .row
+    .col-xs-6
+      %p
+        %b Description:
+        = @skill.description
+      %p
+        %b Rate type:
+        = @skill.rate_type
+      %p
+        %b Skill category:
+        = @skill.skill_category.name
+      = link_to edit_skill_path(@skill),
+        class: "btn btn-primary #{request_change_btn_class(@skill)}",
+        role: 'button' do
+        %i.glyphicon.glyphicon-cog
+        %span Request change
+    - if draft_skills.present?
+      = render 'last_5_draft_skills', draft_skills: draft_skills
+
+  %hr
   %h3.text-primary List of users with their rates
 
   %table.table.table-striped.table-condensed
