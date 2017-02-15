@@ -24,7 +24,7 @@ gem 'google-analytics-rails'
 gem 'google-api-client', require: 'google/api_client'
 gem 'haml-rails'
 gem 'haml_coffee_assets', github: 'netzpirat/haml_coffee_assets'
-gem "i18n-js", ">= 3.0.0.rc11"
+gem 'i18n-js', '>= 3.0.0.rc11'
 gem 'jquery-cookie-rails'
 gem 'jquery-rails'
 gem 'jquery-tablesorter'
@@ -44,6 +44,7 @@ gem 'pundit'
 gem 'rabl'
 gem 'rack-mini-profiler', require: false
 gem 'render_anywhere', require: false
+gem 'restforce'
 gem 'rollbar'
 gem 'sass-rails'
 gem 'searchlight'

@@ -34,6 +34,14 @@ defaults: &defaults
     webhook_url:          webhook_url
     username:             PeopleApp
 
+  salesforce:
+    client_id: client_id
+    client_secret: client_secret
+    username: username
+    password: password
+    security_token: security_token
+    host: host
+
 development:
   <<: *defaults
   domain: people.dev
