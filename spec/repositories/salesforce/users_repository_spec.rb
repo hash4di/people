@@ -36,5 +36,16 @@ RSpec.describe Salesforce::UsersRepository do
   end
 
   context 'user was synced before' do
+    let(:user) { make_user(salesforce_id: 'sf_id') }
+
+    it 'updates entry in Salesforce' do
+      set_salesforce_expectation(:update, true, Name: 'John Smith', Id: 'sf_id')
+      repository.sync(user)
+    end
+
+    it 'raises error on failed update' do
+      set_salesforce_expectation(:update, false, Id: 'sf_id', Name: 'John Smith')
+      expect { repository.sync(user) }.to raise_error Salesforce::UsersRepository::SyncFailed, /id=42/
+    end
   end
 end
