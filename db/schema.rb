@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170203141310) do
+ActiveRecord::Schema.define(version: 20170215145226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,11 +223,11 @@ ActiveRecord::Schema.define(version: 20170203141310) do
   create_table "user_skill_rates", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
+    t.integer  "rate",       default: 0
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.string   "note",       default: ""
     t.boolean  "favorite",   default: false
-    t.integer  "rate",       default: 0
   end
 
   add_index "user_skill_rates", ["skill_id"], name: "index_user_skill_rates_on_skill_id", using: :btree
@@ -266,6 +266,7 @@ ActiveRecord::Schema.define(version: 20170203141310) do
     t.integer  "role_id"
     t.boolean  "admin",              default: false
     t.integer  "commitment"
+    t.string   "salesforce_id"
   end
 
   add_index "users", ["contract_type_id"], name: "index_users_on_contract_type_id", using: :btree
