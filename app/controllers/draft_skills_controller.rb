@@ -1,5 +1,4 @@
 class DraftSkillsController < ApplicationController
-  skip_before_filter :authenticate_admin!
   before_filter :authenticate_for_skills!
   expose(:draft_skill) { fetch_draft_skill }
   expose(:grouped_draft_skills_by_status) { grouped_draft_skills_by_status }
