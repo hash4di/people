@@ -1,0 +1,25 @@
+.container
+  %h1
+    %i.glyphicon.notification__item__icon.notification__item__icon--lg{ class: notification.icon_class }
+    = notification.notification_type.humanize
+    %small= notification.humanized_sent_time
+  %hr
+
+  %b Notification message:
+  %p= raw notification.message
+
+  %hr
+
+  %b Name:
+  %p= notification.notifiable.name
+  %b Description:
+  %p= notification.notifiable.description
+  %b Rate type:
+  %p= notification.notifiable.rate_type
+  %b Skill category:
+  %p= notification.notifiable.skill_category.name
+
+  %hr
+  %h3= "#{current_user.full_name} update or set your rating"
+  %hr
+  = react_component('notification_skill_rate', user_skill_rate)
