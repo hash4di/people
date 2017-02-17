@@ -28,4 +28,10 @@ describe 'Skills page', js: true do
     skills_new_page.create_skill.click
     expect(draft_skills_page).to have_content I18n.t('skills.message.create.success')
   end
+
+  it 'tries to add new skill without mandatory fields' do
+    skills_page.add_new_skill.click
+    skills_new_page.create_skill.click
+    expect(skills_page).to have_content 'Skill category and skill name have to be set.'
+  end
 end
