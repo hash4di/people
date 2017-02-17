@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :memberships, -> { order(:ends_at) }, dependent: :destroy
   has_many :notes
+  has_many :notifications, foreign_key: :receiver_id
   has_many :positions
   has_many :projects, through: :memberships
   has_many :roles, through: :positions
