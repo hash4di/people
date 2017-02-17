@@ -50,4 +50,16 @@ class App < SitePrism::Page
   def user_skill_rates_page
     UserSkillRatesPage.new
   end
+
+  def skills_page
+    SkillsPage.new
+  end
+
+  def skills_new_page
+    SkillsNewPage.new
+  end
+
+  def draft_skills_page
+    DraftSkillsPage.new
+  end
 end
