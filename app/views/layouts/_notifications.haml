@@ -1,0 +1,10 @@
+%li.dropdown
+  %a.dropdown-toggle.notification__btn{ href: '#', data: { toggle: 'dropdown' } }
+    %i.glyphicon.glyphicon-inbox.notification__btn__icon
+    - if notifications.count > 0
+      .notification__btn__count= notifications.count
+  %ul.dropdown-menu.notification__container
+    = render partial: 'layouts/notification', collection: notifications
+    %li.notification__item
+      = link_to notifications_path, class: 'notification__link text-center' do
+        %u.small All notifications
