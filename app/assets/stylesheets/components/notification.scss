@@ -8,15 +8,15 @@
       }
     }
     &__icon {
-      font-size: 19px;
+      font-size: 21px;
       color: $color-white;
       line-height: 26px;
     }
     &__count {
       position: absolute;
-      top: 50%;
-      right: 5px;
-      background: $color-light-blue;
+      top: 17%;
+      right: 9px;
+      background: $color-red;
       padding: 3px 5px;
       line-height: 10px;
       font-size: 11px;
@@ -29,11 +29,12 @@
   &__container {
     top: 45px;
     padding: 0;
+    border: 0;
 
     &:before {
       content: '';
-      top: -4px;
-      right: 7px;
+      top: -3px;
+      right: 19px;
       position: absolute;
       width: 0;
       height: 0;
