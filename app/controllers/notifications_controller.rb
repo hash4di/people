@@ -8,10 +8,10 @@ class NotificationsController < ApplicationController
     authorize notification
     respond_to do |format|
       if notification.update(notification_params)
-        format.html { redirect_to redirect_update_path, notice: 'notification marked as notified.' }
+        format.html { redirect_to notification_path(notification.id) }
         format.json { head :no_content }
       else
-        format.html { redirect redirect_update_path, error: 'Unexpected error occured. notification is not marked as notified.' }
+        format.html { redirect notification_path(notification.id), error: 'Unexpected error occured. notification is not marked as notified.' }
         format.json { render json: notification.errors, status: :unprocessable_entity }
       end
     end
@@ -24,13 +24,6 @@ class NotificationsController < ApplicationController
   end
 
   private
-
-  def redirect_update_path
-    case notification.notification_type
-    when 'skill_created', 'skill_updated'
-      notification_path(id: notification.notifiable_id)
-    end
-  end
 
   def notification_params
     @notification_params ||= params.require(
