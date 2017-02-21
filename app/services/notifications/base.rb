@@ -42,26 +42,26 @@ module Notifications
     end
 
     def notification_type
-      fail NotificationTypeNotFound, "Please define notification_type method to your notification service"
+      fail NotificationTypeNotFound, 'Please define notification_type method to your notification service'
     end
 
     def notifiable_type
-      fail NotifiableTypeNotFound, "Please define notifiable_type method to your notification service"
+      fail NotifiableTypeNotFound, 'Please define notifiable_type method to your notification service'
     end
 
     def receivers
-      fail ReceiversNotFound, "Please define receivers method to your notification service"
+      fail ReceiversNotFound, 'Please define receivers method to your notification service'
     end
 
     def validate_notification_status
       unless Notification::STATUSES.include? notification_status
-        fail ReceiversNotFound, "Notifications status: #{notification_status} is not allowed. Allowed statuses: #{Notification::STATUSES}"
+        fail UnexpectedStatusType, "Notifications status: #{notification_status} is not allowed. Allowed statuses: #{Notification::STATUSES}"
       end
     end
 
     def validate_notification_type
       unless Notification::TYPES.include? notification_type
-        fail ReceiversNotFound, "Notifications type: #{notification_type} is not allowed. Allowed statuses: #{Notification::TYPES}"
+        fail UnexpectedType, "Notifications type: #{notification_type} is not allowed. Allowed statuses: #{Notification::TYPES}"
       end
     end
   end
