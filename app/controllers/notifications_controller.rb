@@ -1,5 +1,4 @@
 class NotificationsController < ApplicationController
-  before_filter :authenticate_for_skills!
   expose(:grouped_notifications_by_type) { fetch_all_notifications }
   expose(:notification) { fetch_notification }
   expose(:user_skill_rate) { fetch_user_skill_rate }
