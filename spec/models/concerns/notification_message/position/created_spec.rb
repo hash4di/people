@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Notification::Position::Created do
+describe NotificationMessage::Position::Created do
   let(:role) { build(:dev_role) }
   let(:user) { build(:user, :developer) }
   let(:position) { build(:position, role: role, user: user) }

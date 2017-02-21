@@ -1,4 +1,4 @@
-module Notification::Position
+module NotificationMessage::Position
   class Created
     attr_reader :position
 
