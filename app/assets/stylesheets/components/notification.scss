@@ -1,7 +1,6 @@
 .notification {
   &__btn {
-    height: 100%;
-    width: 100%;
+    @include size(100%);
     &:hover, &:focus {
       .notification__btn__icon {
         color: $color-orange;
@@ -31,9 +30,8 @@
 
     &:before {
       @include position(absolute, -3px 19px null null);
+      @include size(0);
       content: '';
-      width: 0;
-      height: 0;
       margin-left: 2px;
       vertical-align: middle;
       border-bottom: 4px solid $color-white;
