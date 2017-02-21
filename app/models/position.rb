@@ -23,10 +23,10 @@ class Position < ActiveRecord::Base
   private
 
   def notify_slack_on_create
-    SlackNotifier.new.ping(Notification::Position::Created.new(self))
+    SlackNotifier.new.ping(NotificationMessage::Position::Created.new(self))
   end
 
   def notify_slack_on_update
-    SlackNotifier.new.ping(Notification::Position::Updated.new(self))
+    SlackNotifier.new.ping(NotificationMessage::Position::Updated.new(self))
   end
 end

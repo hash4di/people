@@ -1,0 +1,16 @@
+.row
+  .col-xs-12.col-md-4.col-md-offset-1
+    %h4.text-center Skill details
+
+    %b Name:
+    %p= notification.notifiable.name
+    %b Description:
+    %p= notification.notifiable.description
+    %b Rate type:
+    %p= notification.notifiable.rate_type
+    %b Skill category:
+    %p= notification.notifiable.skill_category.name
+  .col-xs-12.col-md-4.col-md-offset-2
+    %h4.text-center Your rating
+
+    = react_component('notification_skill_rate', user_skill_rate)

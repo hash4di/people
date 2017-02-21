@@ -13,6 +13,10 @@ class UserSkillRatesQuery
     user_skill_rates.where(skill_categories: {name: category})
   end
 
+  def results_for_skill(skill_id:)
+    user_skill_rates.where(skill_id: skill_id).first
+  end
+
   private
 
   def user_skill_rates

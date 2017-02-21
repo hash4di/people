@@ -91,3 +91,6 @@ en:
       edit?: 'Skill you want to request change, has already one unresolved request. Take a look on it or ask someone else to do it.'
     skill_draft_policy:
       allowed_to_modifie?: 'You can not accept or decline your requests. Ask someone else to do it.'
+  notifications:
+    skill_created: 'We have new skill onboard: <strong>%{notifiable_name}</strong>. Take a look and maybe rate it.'
+    skill_updated: 'Skill <strong>%{notifiable_name}</strong> was changed. Please check if your rate is still correct.'

@@ -1,5 +1,6 @@
 class Skill < ActiveRecord::Base
   belongs_to :skill_category
+  has_many :notifications, as: :notifiable
   has_many :user_skill_rates
   has_many :users, through: :user_skill_rates
   has_many :draft_skills, -> { order(created_at: :asc) }

@@ -115,6 +115,6 @@ class Project < ActiveRecord::Base
   end
 
   def notify_if_dates_changed
-    SlackNotifier.new.ping(Notification::Project::DatesChanged.new(self))
+    SlackNotifier.new.ping(NotificationMessage::Project::DatesChanged.new(self))
   end
 end

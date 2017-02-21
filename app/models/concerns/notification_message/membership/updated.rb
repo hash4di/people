@@ -1,4 +1,4 @@
-module Notification::Membership
+module NotificationMessage::Membership
   class Updated
     attr_reader :membership
 

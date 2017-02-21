@@ -1,4 +1,4 @@
-module Notification::Project
+module NotificationMessage::Project
   class DatesChanged
     attr_reader :project
 

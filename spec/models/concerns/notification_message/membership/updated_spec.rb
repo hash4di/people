@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Notification::Membership::Updated do
+describe NotificationMessage::Membership::Updated do
   let(:user) { create(:user, :developer) }
   let(:project) { create(:project) }
   let(:membership) { create(:membership, user: user, project: project) }
