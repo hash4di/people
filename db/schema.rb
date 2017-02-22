@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170215155051) do
+ActiveRecord::Schema.define(version: 20170222095944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -198,8 +198,10 @@ ActiveRecord::Schema.define(version: 20170215155051) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.string   "ref_name"
+    t.string   "salesforce_id"
   end
 
+  add_index "skills", ["salesforce_id"], name: "index_skills_on_salesforce_id", using: :btree
   add_index "skills", ["skill_category_id"], name: "index_skills_on_skill_category_id", using: :btree
 
   create_table "teams", force: :cascade do |t|
