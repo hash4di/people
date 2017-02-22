@@ -13,7 +13,7 @@ export default class Filters {
       let filteredUserSkills = user
         .rated_skill_ids
         .filter(id => store.skillIds.indexOf(id) > -1);
-      return filteredUserSkills.length > 0;
+      return filteredUserSkills.length == store.skillIds.length;
     });
   }
 }
