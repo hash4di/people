@@ -5,7 +5,7 @@ module Salesforce
     def call
       User.find_each do |user|
         repository.sync(user)
-        Rails.logger.info("User(email=#{user.email} exported to salesforce)")
+        Rails.logger.info("User(email=#{ user.email }) exported to Salesforce")
       end
     end
 

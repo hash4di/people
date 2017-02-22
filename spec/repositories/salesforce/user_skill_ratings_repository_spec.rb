@@ -1,0 +1,26 @@
+require 'spec_helper'
+
+RSpec.describe Salesforce::UserSkillRatingsRepository do
+  it_behaves_like "generic salesforce repository" do
+    let(:local_resource) do
+      UserSkillRate.new(
+        id: 42,
+        user: User.new(salesforce_id: "foo"),
+        skill: Skill.new(salesforce_id: "bar"),
+        favorite: false,
+        note: "A few words",
+        rate: 4,
+      )
+    end
+    let(:salesforce_resource_name) { "DeveloperSkillRating__c" }
+    let(:expected_salesforce_attributes) do
+      {
+        Developer__c: "foo",
+        DeveloperSkill__c: "bar",
+        Favorite__c: false,
+        Note__c: "A few words",
+        Rating__c: 4,
+      }
+    end
+  end
+end

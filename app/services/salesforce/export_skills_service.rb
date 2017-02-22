@@ -5,7 +5,7 @@ module Salesforce
     def call
       Skill.find_each do |skill|
         repository.sync(skill)
-        Rails.logger.info("Skill(name=#{skill.name} exported to Salesforce")
+        Rails.logger.info("Skill(name=#{ skill.name }) exported to Salesforce")
       end
     end
 
