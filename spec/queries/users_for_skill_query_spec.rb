@@ -3,12 +3,18 @@ require 'spec_helper'
 # TODO: require modification with scope
 describe UsersForSkillQuery do
   let(:admin_user) { create(:user, :admin) }
-  let(:user) { create(:user, first_name: 'Bogdan', last_name: 'Mazur') }
-  let(:user_1) { create(:user, first_name: 'Janusz', last_name:  'Kowalski') }
+  let(:technical_user) do
+    create(:user, :technical, first_name: 'Bogdan', last_name: 'Mazur')
+  end
+  let(:technical_user_1) do
+    create(:user, :technical, first_name: 'Janusz', last_name:  'Kowalski')
+  end
   let(:user_2) { create(:user, first_name: 'Mirek', last_name:  'Nowak') }
   let(:skill) {  create(:skill, rate_type: 'range') }
   let(:team) { create(:team, user_id: team_leader.id) }
-  let(:team_leader) { create(:user, first_name: 'Andrzej', last_name: 'Lewandowski') }
+  let(:team_leader) do
+    create(:user, first_name: 'Andrzej', last_name: 'Lewandowski')
+  end
   let(:talent_position) do
     create(:position, user: create(:user), role: create(:talent_role))
   end
@@ -17,7 +23,7 @@ describe UsersForSkillQuery do
   let!(:user_skill_rate_favorite_rate_2) do
     create(
       :user_skill_rate,
-      user: user,
+      user: technical_user,
       skill: skill,
       rate: 2,
       favorite: true
@@ -26,7 +32,7 @@ describe UsersForSkillQuery do
   let!(:user_skill_rate_not_favorite_rate_2) do
     create(
       :user_skill_rate,
-      user: user_1,
+      user: technical_user_1,
       skill: skill,
       rate: 2,
       favorite: false
@@ -59,7 +65,7 @@ describe UsersForSkillQuery do
 
   context 'for team leader' do
     subject { UsersForSkillQuery.new(skill: skill, user: team_leader) }
-    before { team.users << [user, user_1] }
+    before { team.users << [technical_user, technical_user_1] }
 
     it 'returns correct ordered team users', :aggregate_failures do
       expect(results[0].user_skill_rate_id).to eq(
