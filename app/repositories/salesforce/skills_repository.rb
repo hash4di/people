@@ -1,6 +1,6 @@
 module Salesforce
   class SkillsRepository
-    SALESFORCE_OBJECT_NAME = 'DeveloperSkill_c'.freeze
+    SALESFORCE_OBJECT_NAME = 'DeveloperSkill__c'.freeze
 
     SyncFailed = Class.new(StandardError)
 
@@ -37,8 +37,12 @@ module Salesforce
       end
     end
 
-    def raise_sync_error(skill)
-      fail SyncFailed, "couldn't sync Skill(id=#{skill.id})"
+    def map_to_salesforce(skill)
+      { Name: skill.name }
+    end
+
+    def raise_sync_failed(skill)
+      raise SyncFailed, "couldn't sync Skill(id=#{skill.id})"
     end
 
     def get_salesforce_id(skill)
