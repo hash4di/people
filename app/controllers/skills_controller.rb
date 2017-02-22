@@ -1,5 +1,4 @@
 class SkillsController < ApplicationController
-<<<<<<< HEAD
   # TODO: check if message_to_js is required. If no then remove these functionality
   skip_before_render :message_to_js
   before_filter :authenticate_for_skills!

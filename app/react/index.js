@@ -17,9 +17,6 @@ registerComponent('teams', Teams);
 registerComponent('projects', Projects);
 registerComponent('users', Users);
 registerComponent('user_skill_rates', UserSkillRates);
-<<<<<<< HEAD
 registerComponent('user_skill_history', UserSkillHistory);
-=======
->>>>>>> origin/salesforce-integration
 registerComponent('scheduling', Scheduling);
 registerComponent('notification_skill_rate', NotificationSkillRate);
