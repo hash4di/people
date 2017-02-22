@@ -6,9 +6,6 @@ shared_examples 'returns correct results' do
     expect(results[1].user_skill_rate_id).to eq(
       user_skill_rate_not_favorite_rate_2.id
     )
-    expect(results[2].user_skill_rate_id).to eq(
-      user_skill_rate_favorite_rate_1.id
-    )
   end
 
   it 'returns user with required attributes', :aggregate_failures do
