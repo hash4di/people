@@ -45,6 +45,7 @@
                 %li= link_to "Reports", AppConfig.reports_url, target: '_blank'
       - if signed_in?
         %ul.nav.navbar-nav.navbar-right.user-profile
+          = render 'layouts/notifications', notifications: notifications
           %li.dropdown
             %a.dropdown-toggle{ href: '#', data: { toggle: 'dropdown' } }
               = current_user.gravatar_image size: :circle, class: 'img-rectangle'

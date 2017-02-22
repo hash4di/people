@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20170215145226) do
+=======
+ActiveRecord::Schema.define(version: 20170215155051) do
+>>>>>>> master
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +116,19 @@ ActiveRecord::Schema.define(version: 20170215145226) do
 
   add_index "notes", ["project_id"], name: "index_notes_on_project_id", using: :btree
   add_index "notes", ["user_id"], name: "index_notes_on_user_id", using: :btree
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "notifiable_id"
+    t.string   "notifiable_type"
+    t.string   "notification_type"
+    t.string   "notification_status"
+    t.integer  "receiver_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "notifications", ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id", using: :btree
+  add_index "notifications", ["receiver_id"], name: "index_notifications_on_receiver_id", using: :btree
 
   create_table "positions", force: :cascade do |t|
     t.integer  "user_id"

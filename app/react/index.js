@@ -10,6 +10,7 @@ import Users from './components/users/users';
 import UserSkillRates from './components/skills/user_skill_rates';
 import UserSkillHistory from './components/skills/user_skill_history';
 import Scheduling from './components/scheduling/scheduling';
+import NotificationSkillRate from './components/notifications/notification_skill_rate';
 
 registerComponent('statistics', Statistics);
 registerComponent('teams', Teams);
@@ -18,3 +19,4 @@ registerComponent('users', Users);
 registerComponent('user_skill_rates', UserSkillRates);
 registerComponent('user_skill_history', UserSkillHistory);
 registerComponent('scheduling', Scheduling);
+registerComponent('notification_skill_rate', NotificationSkillRate);

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Notification::Project::DatesChanged do
+describe NotificationMessage::Project::DatesChanged do
   let(:project) { create(:project) }
 
   describe '#message' do

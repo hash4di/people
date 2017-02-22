@@ -1,0 +1,81 @@
+.notification {
+  &__btn {
+    @include size(100%, 100%);
+    &:hover, &:focus {
+      .notification__btn__icon {
+        color: $color-orange;
+      }
+    }
+    &__icon {
+      font-size: 21px;
+      line-height: 26px;
+      color: $color-white;
+    }
+    &__count {
+      @include position(absolute, 17% 9px null null);
+      padding: 3px 5px;
+      font-size: 11px;
+      font-weight: bold;
+      line-height: 10px;
+      color: $color-white;
+      border-radius: 13px;
+      background: $color-red;
+    }
+  }
+
+  &__container {
+    top: 45px;
+    padding: 0;
+    border: 0;
+
+    &:before {
+      @include position(absolute, -3px 19px null null);
+      @include size(0, 0);
+      content: '';
+      margin-left: 2px;
+      vertical-align: middle;
+      border-bottom: 4px solid $color-white;
+      border-right: 4px solid transparent;
+      border-left: 4px solid transparent;
+    }
+  }
+  &__item {
+    border-bottom: 1px solid $color-grey;
+
+    &:hover {
+      color: $color-orange;
+    }
+
+    &__icon {
+      margin: 0 10px 0 5px;
+      padding: 5px;
+      font-size: 10px;
+      vertical-align: top;
+      border: 1px solid $color-dark-grey;
+      border-radius: 13px;
+      background-color: $color-white;
+
+      &.glyphicon-plus {
+        color: $color-green
+      }
+
+      &.glyphicon-pencil {
+        color: $color-light-blue;
+      }
+
+      &--lg {
+        padding: 10px;
+        margin: 0;
+        font-size: 16px;
+        border-radius: 25px;
+      }
+    }
+    &__message {
+      vertical-align: text-top;
+    }
+  }
+}
+
+.dropdown-menu > li > .notification__link {
+  padding: 13px 10px;
+}

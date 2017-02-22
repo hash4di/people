@@ -1,4 +1,4 @@
-module Notification::Membership
+module NotificationMessage::Membership
   class Created
     attr_reader :membership
 
