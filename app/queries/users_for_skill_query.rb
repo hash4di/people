@@ -32,7 +32,7 @@ class UsersForSkillQuery
 
   def query_scope
     if user_is_admin_or_talent
-      User.all.pluck(:id)
+      User.technical.active.pluck(:id)
     elsif user_has_team?
       team.users.pluck(:id)
     end
