@@ -7,7 +7,47 @@ body.users {
       @extend .col-sm-12;
       padding-bottom: 4px;
     }
+
+    .skill {
+      &__hr {
+        margin: 10px 0;
+      }
+      &__icon {
+        color: $color-red;
+        font-size: 10px;
+      }
+    }
+
+    .skill-label {
+      margin: 5px 5px 0 0;
+      padding-right: 7px;
+      display: inline-block;
+      &--green {
+        background-color: $color-green;
+        .badge {
+          color: $color-green;
+        }
+      }
+      &--yellow {
+        background-color: $color-yellow;
+        .badge {
+          color: $color-yellow;
+        }
+      }
+      &--orange {
+        background-color: $color-sunset;
+        .badge {
+          color: $color-sunset;
+        }
+      }
+
+      .badge {
+        padding: 2px 3px;
+        background-color: $color-white;
+      }
+    }
   }
+
   &.index {
 
     #filters {
