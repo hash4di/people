@@ -39,7 +39,7 @@ class UsersController < ApplicationController
     )
   end
   expose(:grouped_skills_by_category) do
-    UserSkillRatesQuery.new(current_user).rated_skills
+    UserSkillRatesQuery.new(user).rated_skills
   end
 
   def update
