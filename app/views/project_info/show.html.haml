@@ -95,6 +95,11 @@
         %p Time zone:
       .col-sm-6
         %p= project_info[:time_zone]
+    .col-sm-6.col-sm-6
+      .col-sm-6.project-label
+        %p Non-disclosure agreement:
+      .col-sm-6
+        %span{ class: "glyphicon glyphicon-#{bool_to_glyph(project_info[:nda])}" }
   %hr
   .row
     %p Documentation
