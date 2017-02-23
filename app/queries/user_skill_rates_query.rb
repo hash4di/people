@@ -9,6 +9,10 @@ class UserSkillRatesQuery
     user_skill_rates.group_by(&:category).sort_by{ |key, _| key }.to_h
   end
 
+  def rated_skills
+    user_skill_rates.where('rate > 0').group_by(&:category).sort_by{ |key, _| key }.to_h
+  end
+
   def results_for_category(category)
     user_skill_rates.where(skill_categories: {name: category})
   end
