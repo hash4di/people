@@ -12,6 +12,7 @@ body.users {
       &__hr {
         margin: 10px 0;
       }
+
       &__icon {
         color: $color-red;
         font-size: 10px;
@@ -19,9 +20,9 @@ body.users {
     }
 
     .skill-label {
+      display: inline-block;
       margin: 5px 5px 0 0;
       padding-right: 7px;
-      display: inline-block;
 
       &--green {
         background-color: $color-green;
