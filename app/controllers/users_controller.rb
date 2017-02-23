@@ -38,6 +38,9 @@ class UsersController < ApplicationController
       user_roles_repository: user_roles_repository
     )
   end
+  expose(:grouped_skills_by_category) do
+    UserSkillRatesQuery.new(current_user).rated_skills
+  end
 
   def update
     if UpdateUser.new(user, user_params, current_user).call

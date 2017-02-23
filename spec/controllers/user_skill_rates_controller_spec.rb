@@ -82,9 +82,9 @@ describe UserSkillRatesController do
         create(:user_skill_rate, note: 'abc', rate: 0, favorite: false, user: different_user)
       end
 
-      it 'responds unprocessable entity' do
+      it 'responds with 302' do
         subject
-        expect(response.status).to eq(422)
+        expect(response.status).to eq(302)
       end
     end
   end
