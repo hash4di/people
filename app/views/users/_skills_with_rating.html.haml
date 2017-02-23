@@ -1,0 +1,19 @@
+%h4.list-group-item-heading
+  Skills
+  - if user == current_user
+    %small= link_to 'Edit', user_skill_rates_path
+.list-group
+  - grouped_skills.each do |category, skills|
+    .list-group-item
+      %h5.list-group-item-heading= category
+      - skills.each do |skill|
+        %span.label.skill-label{ class: skill_label_class(skill) }
+          - if skill.rate_type == 'range'
+            %span.badge
+              = skill.rate
+              - if skill.favorite
+                %i.glyphicon.glyphicon-heart.skill__icon
+          - elsif skill.favorite
+            %span.badge
+              %i.glyphicon.glyphicon-heart.skill__icon
+          = "#{skill.name}"
