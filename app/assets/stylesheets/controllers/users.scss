@@ -23,6 +23,7 @@ body.users {
       display: inline-block;
       margin: 5px 5px 0 0;
       padding-right: 7px;
+      line-height: 16px;
 
       &--green {
         background-color: $color-green;
@@ -50,7 +51,6 @@ body.users {
 
       .badge {
         padding: 2px 3px;
-        line-height: 16px;
         background-color: $color-white;
       }
     }
