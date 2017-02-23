@@ -22,18 +22,21 @@ body.users {
       margin: 5px 5px 0 0;
       padding-right: 7px;
       display: inline-block;
+
       &--green {
         background-color: $color-green;
         .badge {
           color: $color-green;
         }
       }
+
       &--yellow {
         background-color: $color-yellow;
         .badge {
           color: $color-yellow;
         }
       }
+
       &--orange {
         background-color: $color-sunset;
         .badge {

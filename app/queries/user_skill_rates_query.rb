@@ -6,7 +6,7 @@ class UserSkillRatesQuery
   end
 
   def results_by_categories
-    user_skill_rates.group_by(&:category).sort_by{ |key, _| key }.to_h
+    user_skill_rates.group_by(&:category).sort_by { |key, _| key }.to_h
   end
 
   def rated_skills
