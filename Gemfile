@@ -51,6 +51,7 @@ gem 'render_anywhere', require: false
 gem 'restforce'
 gem 'rollbar'
 gem 'sass-rails'
+gem 'savon'
 gem 'searchlight'
 gem 'selectize-rails'
 gem 'simple_form'
