@@ -25,6 +25,7 @@ body.users {
 
       &--green {
         background-color: $color-green;
+
         .badge {
           color: $color-green;
         }
@@ -32,6 +33,7 @@ body.users {
 
       &--yellow {
         background-color: $color-yellow;
+
         .badge {
           color: $color-yellow;
         }
@@ -39,6 +41,7 @@ body.users {
 
       &--orange {
         background-color: $color-sunset;
+
         .badge {
           color: $color-sunset;
         }
