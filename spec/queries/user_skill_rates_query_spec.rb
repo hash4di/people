@@ -14,7 +14,7 @@ describe UserSkillRatesQuery do
       user: user,
       skill: skill_backend,
       rate: 1
-      )
+    )
   end
   let!(:user_skill_rate_frontend) do
     create(
@@ -83,7 +83,7 @@ describe UserSkillRatesQuery do
   end
 
   describe '#rated_skills' do
-    let(:expected_results){ { "backend" => [user_skill_rate_backend] } }
+    let(:expected_results) { { "backend" => [user_skill_rate_backend] } }
     let(:result_object) { subject.rated_skills }
 
     it 'returns only rated user_skill_rate' do
