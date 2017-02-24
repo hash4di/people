@@ -74,4 +74,21 @@ describe DraftSkill do
       end
     end
   end
+
+  describe '#update_type?' do
+    subject { draft_skill.update_type? }
+
+    context 'when draft_type equals update' do
+      let(:draft_skill) { build(:draft_skill, :with_update_draft_type) }
+      it 'returns true' do
+        expect(subject).to eq true
+      end
+    end
+    context 'when draft_type equals create' do
+      let(:draft_skill) { build(:draft_skill, :with_create_draft_type) }
+      it 'returns false' do
+        expect(subject).to eq false
+      end
+    end
+  end
 end
