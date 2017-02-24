@@ -48,12 +48,12 @@
   .row
     %p Project status
   .row
-    .col-sm-6
+    .col-sm-6.col-sm-6
       .col-sm-6.project-label
         %p Last project status report:
       .col-sm-6
         %p= project_info[:last_project_status_report]
-    .col-sm-6
+    .col-sm-6.col-sm-6
       .col-sm-6.project-label
         %p Days since last project status update:
       .col-sm-6
@@ -95,7 +95,7 @@
         %p Time zone:
       .col-sm-6
         %p= project_info[:time_zone]
-    .col-sm-6.col-sm-6
+    .col-sm-6
       .col-sm-6.project-label
         %p Non-disclosure agreement:
       .col-sm-6
@@ -129,45 +129,45 @@
   .row
     %p Tools
   .row
-    .col-md-6
+    .col-sm-6
       .col-sm-6.project-label
         %p Staging 1:
       .col-sm-6
         %p= project_info[:staging_1]
-    .col-md-6
+    .col-sm-6
       .col-sm-6.project-label
         %p Rollbar:
       .col-sm-6
         %p= api_link(project_info[:rollbar])
   .row
-    .col-md-6
+    .col-sm-6
       .col-sm-6.project-label
         %p Staging 2:
       .col-sm-6
         %p= project_info[:staging_2]
-    .col-md-6
+    .col-sm-6
       .col-sm-6.project-label
         %p Codebeat:
       .col-sm-6
         %p= api_link(project_info[:code_climate])
   .row
-    .col-md-6
+    .col-sm-6
       .col-sm-6.project-label
         %p Other stagings:
       .col-sm-6
         %p= api_link(project_info[:other_stagings])
-    .col-md-6
+    .col-sm-6
       .col-sm-6.project-label
         %p New Relic:
       .col-sm-6
         %p= api_link(project_info[:new_relic])
   .row
-    .col-md-6
+    .col-sm-6
       .col-sm-6.project-label
         %p JIRA:
       .col-sm-6
         %p= api_link(project_info[:jira_link])
-    .col-md-6
+    .col-sm-6
       .col-sm-6.project-label
         %p Calibre:
       .col-sm-6
