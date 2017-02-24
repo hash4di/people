@@ -48,6 +48,10 @@ FactoryGirl.define do
         create(:team_with_members, user_id: user.id, users: [user])
       end
     end
+
+    trait :with_primary_role do
+      primary_role { create(:role) }
+    end
   end
 
   factory :plain_user, class: "User" do

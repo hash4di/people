@@ -7,7 +7,7 @@ class UserPolicy
   end
 
   def history?
-    return true if self? || talent?
+    return true if self? || talent? || admin?
     return false unless leader?
 
     users = Team.find_by(user_id: current_user.id).users

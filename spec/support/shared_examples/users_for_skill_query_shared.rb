@@ -15,7 +15,8 @@ shared_examples 'returns correct results' do
       'favorite' => user_skill_rate_favorite_rate_2.favorite,
       'user_id' => user_skill_rate_favorite_rate_2.user_id,
       'first_name' => user_skill_rate_favorite_rate_2.user.first_name,
-      'last_name' => user_skill_rate_favorite_rate_2.user.last_name
+      'last_name' => user_skill_rate_favorite_rate_2.user.last_name,
+      'role_name' => user_skill_rate_favorite_rate_2.user.primary_role.name
     )
   end
 end

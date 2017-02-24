@@ -40,6 +40,11 @@ describe UserPolicy do
       let(:current_user) { create(:user, :talent) }
       it { expect(subject.history?).to be true }
     end
+
+    context 'when user is admin' do
+      let(:current_user) { create(:user, :admin) }
+      it { expect(subject.history?).to be true }
+    end
   end
 
   describe '#skill_access?' do

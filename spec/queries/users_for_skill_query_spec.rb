@@ -4,10 +4,10 @@ require 'spec_helper'
 describe UsersForSkillQuery do
   let(:admin_user) { create(:user, :admin) }
   let(:technical_user) do
-    create(:user, :technical, first_name: 'Bogdan', last_name: 'Mazur')
+    create(:user, :technical, :with_primary_role, first_name: 'Bogdan', last_name: 'Mazur')
   end
   let(:technical_user_1) do
-    create(:user, :technical, first_name: 'Janusz', last_name:  'Kowalski')
+    create(:user, :technical, :with_primary_role, first_name: 'Janusz', last_name:  'Kowalski')
   end
   let(:user_2) { create(:user, first_name: 'Mirek', last_name:  'Nowak') }
   let(:skill) {  create(:skill, rate_type: 'range') }
