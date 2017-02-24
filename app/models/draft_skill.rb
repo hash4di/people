@@ -1,4 +1,6 @@
 class DraftSkill < ActiveRecord::Base
+  serialize :original_skill_details, DraftSkill::SkillDetails
+
   belongs_to :skill
   belongs_to :skill_category
   belongs_to :requester, foreign_key: 'requester_id', class_name: 'User'
