@@ -23,4 +23,12 @@ class Notification < ActiveRecord::Base
   def notified?
     notification_status == 'notified'
   end
+
+  def skill_created?
+    notification_type == 'skill_created'
+  end
+
+  def skill_updated?
+    notification_type == 'skill_updated'
+  end
 end
