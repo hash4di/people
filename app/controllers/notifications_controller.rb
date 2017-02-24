@@ -1,7 +1,7 @@
 class NotificationsController < ApplicationController
+  include Notifications::SkillsConcern
   expose(:grouped_notifications_by_type) { fetch_all_notifications }
   expose(:notification) { fetch_notification }
-  expose(:user_skill_rate) { fetch_user_skill_rate }
 
   def update
     authorize notification
@@ -38,11 +38,5 @@ class NotificationsController < ApplicationController
 
   def fetch_notification
     NotificationDecorator.new(Notification.find(params[:id]))
-  end
-
-  def fetch_user_skill_rate
-    UserSkillRatesQuery.new(current_user).results_for_skill(
-      skill_id: notification.notifiable.id
-    )
   end
 end
