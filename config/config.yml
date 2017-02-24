@@ -53,5 +53,5 @@ staging:
 production:
   <<: *heroku_settings
   salesforce:
-    soap_login:     soap_login: https://login.salesforce.com/services/Soap/u/38.0
+    soap_login: https://login.salesforce.com/services/Soap/u/38.0
   profile_api_url:        some_stag_url
