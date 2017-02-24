@@ -4,7 +4,7 @@ module Notifications
       private
 
       def notifiable_type
-        'Skill'
+        'DraftSkill'
       end
     end
   end
