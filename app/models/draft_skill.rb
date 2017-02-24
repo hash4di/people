@@ -28,6 +28,10 @@ class DraftSkill < ActiveRecord::Base
     draft_type == 'create'
   end
 
+  def update_type?
+    draft_type == 'update'
+  end
+
   private
 
   def update?
