@@ -23,5 +23,14 @@ module Salesforce::Requests
     def file_name
       self.class.name.demodulize.underscore
     end
+
+    private
+
+    def update_node(field, value)
+      nodes = @request_body.xpath("//#{field}")
+      raise NodeAbsent, "Node=#{field} couldn't be found in xml file." if nodes.empty?
+
+      nodes[0].content = value
+    end
   end
 end
