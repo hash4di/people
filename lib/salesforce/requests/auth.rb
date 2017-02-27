@@ -3,12 +3,15 @@ module Salesforce
     class Auth < Salesforce::Requests::Base
       base_uri 'test.salesforce.com:443'
 
-      ConnectionError = Class.new(StandardError)
-
       def connect
-        Retriable.retriable on: Timeout::Error, tries: 3, base_interval: 1 do
-          @response = self.class.post("/services/Soap/u/#{API_VERSION}", options)
-          @response = @response["Envelope"]["Body"]["loginResponse"]["result"]
+        begin
+          Retriable.retriable on: Timeout::Error, tries: 3, base_interval: 1 do
+            @response = self.class.post("/services/Soap/u/#{API_VERSION}", options)
+            @response = @response["Envelope"]["Body"]["loginResponse"]["result"]
+          end
+        rescue NoMethodError, TypeError => e
+          @response['serverUrl'] = :not_received
+          @response['sessionId'] = :not_received
         end
 
         {
