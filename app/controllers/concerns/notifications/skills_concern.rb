@@ -4,6 +4,8 @@ module Notifications
 
     included do
       expose(:user_skill_rate) { fetch_user_skill_rate }
+      expose(:last_notification) { fetch_last_notification }
+      expose(:last_accepted_change) { fetch_last_change }
 
       private
 
@@ -16,6 +18,14 @@ module Notifications
       def notifiable_id
         return notification.notifiable.skill.id if notification.skill?
         notification.notifiable.id
+      end
+
+      def fetch_last_notification
+        Notification.last_notification(current_user.id, last_accepted_change.id)
+      end
+
+      def fetch_last_change
+        DraftSkill.last_accepted(notification.notifiable.skill.id)
       end
     end
   end

@@ -18,6 +18,10 @@ class DraftSkill < ActiveRecord::Base
     where('created_at > ?', Time.now - 30.days).order(created_at: :desc)
   end
 
+  scope :last_accepted, -> (skill_id) {
+    where(skill_id: skill_id, draft_status: 'accepted').last
+  }
+
   def resolved?
     draft_status != 'created'
   end
