@@ -2,5 +2,5 @@
 <jobInfo xmlns="http://www.force.com/2009/06/asyncapi/dataload">
     <operation>insert</operation>
     <object>Contact</object>
-    <contentType>CSV</contentType>
+    <contentType>JSON</contentType>
 </jobInfo>
