@@ -1,13 +1,13 @@
 module Salesforce::Requests
   NodeAbsent = Class.new(StandardError)
+
   SF = AppConfig.salesforce
   FILE = :provide_file_name
-  API_VERSION = '38.0'
+  API_VERSION = '38.0'.freeze
 
   class Base
     attr_reader :request_body
     include HTTParty
-
 
     def initialize
       initialize_request_body

@@ -18,7 +18,8 @@ module Salesforce
     private
 
     def authorize!
-      @session_id, @server_url = Salesforce::Requests::Auth.new.connect
+      puts "authorized"
+      # @session_id, @server_url = Salesforce::Requests::Auth.new.connect
     end
   end
 end
