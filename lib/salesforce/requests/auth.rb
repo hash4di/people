@@ -1,10 +1,21 @@
 module Salesforce
   module Requests
     class Auth < Salesforce::Requests::Base
-      base_uri SF.soap_login
+      base_uri 'test.salesforce.com:443'
+
+      ConnectionError = Class.new(StandardError)
 
       def connect
-        self.class.post("services/Soap/u/#{API_VERSION}", options)
+        Retriable.retriable on: Timeout::Error, tries: 3, base_interval: 1 do
+          @response = self.class.post("/services/Soap/u/#{API_VERSION}", options)
+          @response = @response["Envelope"]["Body"]["loginResponse"]["result"]
+        end
+
+        {
+          server_url: @response['serverUrl'],
+          session_id: @response['sessionId'],
+          valid_until: Time.zone.now + 2.hours
+        }
       end
 
       private
