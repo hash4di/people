@@ -33,4 +33,32 @@ describe Notification do
       it { expect(subject).to eq true }
     end
   end
+
+  describe '#skill_created?' do
+    subject { notification.skill_created? }
+
+    context 'when notificaiton type equals skill_updated' do
+      let(:notification) { build(:notification, :skill_updated) }
+      it { expect(subject).to eq false }
+    end
+
+    context 'when notificaiton type equals skill_created' do
+      let(:notification) { build(:notification, :skill_created) }
+      it { expect(subject).to eq true }
+    end
+  end
+
+  describe '#skill_updated?' do
+    subject { notification.skill_updated? }
+
+    context 'when notificaiton type equals skill_created' do
+      let(:notification) { build(:notification, :skill_created) }
+      it { expect(subject).to eq false }
+    end
+
+    context 'when notificaiton type equals skill_updated' do
+      let(:notification) { build(:notification, :skill_updated) }
+      it { expect(subject).to eq true }
+    end
+  end
 end

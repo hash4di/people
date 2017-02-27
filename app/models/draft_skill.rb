@@ -1,4 +1,6 @@
 class DraftSkill < ActiveRecord::Base
+  serialize :original_skill_details, DraftSkill::SkillDetails
+
   belongs_to :skill
   belongs_to :skill_category
   belongs_to :requester, foreign_key: 'requester_id', class_name: 'User'
@@ -16,6 +18,10 @@ class DraftSkill < ActiveRecord::Base
     where('created_at > ?', Time.now - 30.days).order(created_at: :desc)
   end
 
+  scope :last_accepted, -> (skill_id) {
+    where(skill_id: skill_id, draft_status: 'accepted').last
+  }
+
   def resolved?
     draft_status != 'created'
   end
@@ -26,6 +32,10 @@ class DraftSkill < ActiveRecord::Base
 
   def create_type?
     draft_type == 'create'
+  end
+
+  def update_type?
+    draft_type == 'update'
   end
 
   private

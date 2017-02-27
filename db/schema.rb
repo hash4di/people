@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170215155051) do
+ActiveRecord::Schema.define(version: 20170224081119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "abilities", force: :cascade do |t|
     t.string   "name"
@@ -56,6 +57,7 @@ ActiveRecord::Schema.define(version: 20170215155051) do
     t.string   "reviewer_explanation"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.hstore   "original_skill_details"
   end
 
   add_index "draft_skills", ["requester_id"], name: "index_draft_skills_on_requester_id", using: :btree

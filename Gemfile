@@ -54,6 +54,7 @@ gem 'sucker_punch'
 gem 'therubyracer'
 gem 'uglifier'
 gem 'versionist'
+gem 'virtus'
 gem 'whenever', require: false
 gem 'httparty'
 gem 'active_model_serializers'
