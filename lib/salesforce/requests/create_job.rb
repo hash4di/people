@@ -1,33 +1,34 @@
 module Salesforce
   module Requests
     class CreateJob
-      base_uri 'test.salesforce.com:443'
-
-      attr_reader :item, :session
+      attr_reader :item, :session, :request_body
 
       def initialize(item, session)
         @item = item
         @session = session
-        super
       end
 
       def create
         begin
           Retriable.retriable on: Timeout::Error, tries: 3,
           base_interval: 1 do
-            response = self.class.post("/services/async/#{API_VERSION}/job")
+            @response = HTTParty.post(url, options)
           end
         end
       end
 
       private
 
+      def url
+        @url ||= "https://#{session.server_url.host}/services/async/#{API_VERSION}/job"
+      end
+
       def options
         { headers: headers, body: request_body.to_s }
       end
 
       def headers
-        { 'Content-Type' => 'application/json', 'charset' => 'UTF-8', 'X-SFDC'}
+        { 'Content-Type' => 'application/json', 'charset' => 'UTF-8', 'X-SFDC' => session[:session_id] }
       end
 
       def initalize_request_body
