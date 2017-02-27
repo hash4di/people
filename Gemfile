@@ -49,6 +49,7 @@ gem 'rake-progressbar'
 gem 'react_webpack_rails'
 gem 'render_anywhere', require: false
 gem 'restforce'
+gem 'retriable'
 gem 'rollbar'
 gem 'sass-rails'
 gem 'searchlight'
