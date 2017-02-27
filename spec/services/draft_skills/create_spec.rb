@@ -71,8 +71,6 @@ describe DraftSkills::Create do
         expect(expected_draft_skill.skill_id).to eq(skill.id)
         expect(expected_draft_skill.draft_type).to eq(draft_type)
         expect(expected_draft_skill.draft_status).to eq(draft_status)
-
-
         expect(
           expected_draft_skill.original_skill_details.name
         ).to eq(expected_draft_skill.skill.name)
