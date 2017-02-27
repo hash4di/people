@@ -8,7 +8,7 @@ module Notifications
       end
 
       def receivers
-        @receivers ||= User.active
+        @receivers ||= User.technical_active
       end
     end
   end
