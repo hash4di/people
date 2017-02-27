@@ -16,7 +16,6 @@ module Salesforce::Requests
     end
 
     def file_name
-      binding.pry
       self.class.name.demodulize.underscore
     end
   end
