@@ -24,5 +24,17 @@ describe TeamUsersRepository do
     it 'retrieves all users except leader' do
       expect(subject.subordinates).not_to include user
     end
+
+    context 'with archived users' do
+      let(:archived_user) { create(:user, archived: true) }
+
+      before do
+        team.users << archived_user
+      end
+
+      it 'retrieves all users except archived team members' do
+        expect(subject.subordinates).not_to include archived_user
+      end
+    end
   end
 end
