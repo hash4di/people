@@ -13,8 +13,8 @@ export default class FilteringService {
     if(store.roleIds.length !== 0) {
       usersToView = Filters.selectRoles(usersToView, store);
     }
-    if(store.abilityIds.length !== 0) {
-      usersToView = Filters.selectAbilities(usersToView, store);
+    if(store.skillIds.length !== 0) {
+      usersToView = Filters.selectSkills(usersToView, store);
     }
 
     return usersToView;

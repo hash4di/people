@@ -36,7 +36,7 @@ describe GoogleUserBuilder do
     context 'when user does not exists' do
       before do
         allow(
-          BaseSkillRatesGeneratorJob
+          CreateRatesForUserJob
         ).to receive(:perform_async).and_return(true)
       end
 
@@ -46,7 +46,7 @@ describe GoogleUserBuilder do
 
       it 'generates base user_skill_rates' do
         expect(
-          BaseSkillRatesGeneratorJob
+          CreateRatesForUserJob
         ).to receive(:perform_async).and_return(true)
         subject.call
       end

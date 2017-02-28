@@ -3,30 +3,30 @@ require 'spec_helper'
 describe User do
   subject { create(:user) }
 
-  it { should have_many :memberships }
-  it { should have_many :notes }
-  it { should have_many :positions }
-  it { should belong_to :contract_type }
-  it { should belong_to :location }
-  it { should belong_to :primary_role }
-  it { should have_and_belong_to_many :abilities }
-  it { should have_and_belong_to_many :teams }
+  it { is_expected.to have_many :memberships }
+  it { is_expected.to have_many :notes }
+  it { is_expected.to have_many :positions }
+  it { is_expected.to belong_to :contract_type }
+  it { is_expected.to belong_to :location }
+  it { is_expected.to belong_to :primary_role }
+  it { is_expected.to have_and_belong_to_many :abilities }
+  it { is_expected.to have_and_belong_to_many :teams }
   it { is_expected.to have_many :skills }
 
   context 'validation' do
-    it { should be_valid }
-    it { should validate_numericality_of(:commitment).is_less_than_or_equal_to(40) }
+    it { is_expected.to be_valid }
+    it { is_expected.to validate_numericality_of(:commitment).is_less_than_or_equal_to(40) }
 
     describe 'employment hours' do
 
       context 'with employment greater than 0 and less than 200' do
         before { subject.employment = 160 }
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
 
       context 'with employment greater than 200' do
         before { subject.employment = 250 }
-        it { should_not be_valid }
+        it { is_expected.to_not be_valid }
       end
 
     end
@@ -35,37 +35,37 @@ describe User do
 
       context 'with length less or equal than 16' do
         before { subject.phone = '123412341234' }
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
 
       context 'with length greater than 16' do
         before { subject.phone = '12341234444412345' }
-        it { should_not be_valid }
+        it { is_expected.to_not be_valid }
       end
 
       context "with '-'" do
         before { subject.phone = '111-222-333' }
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
 
       context 'with letters' do
         before { subject.phone = '123412a' }
-        it { should_not be_valid }
+        it { is_expected.to_not be_valid }
       end
 
       context 'with spaces' do
         before { subject.phone = '111 222 333' }
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
 
       context 'with brackets' do
         before { subject.phone = '+48 111 222 333' }
-        it { should be_valid }
+        it { is_expected.to be_valid }
       end
 
       context "with more spaces ot '-' next to each other" do
         before { subject.phone = '11--111  1' }
-        it { should_not be_valid }
+        it { is_expected.to_not be_valid }
       end
     end
 
@@ -125,6 +125,14 @@ describe User do
       end
     end
 
+  end
+
+  describe '#primary_role' do
+    context 'when not present, loads null object' do
+      before { subject.update_attribute(:primary_role, nil) }
+
+      it { expect(subject.primary_role.name).to eq 'No Role' }
+    end
   end
 
   describe '#get_from_api' do

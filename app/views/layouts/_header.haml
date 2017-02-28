@@ -16,7 +16,24 @@
           %li{ class: menu_class('dashboard') }= link_to "Projects", dashboard_index_path
           %li{ class: menu_class('teams') }= link_to "Teams", teams_path
           %li{ class: menu_class('project_info') }= link_to "Project Info", project_info_index_path
-          %li{ class: menu_class('skill_user_rates') }= link_to "Skills", user_skill_rates_path
+          %li.dropdown
+            %a.dropdown-toggle{ href: '#', 'data-toggle' => 'dropdown' }
+              Skills
+              %b.caret
+            %ul.dropdown-menu
+              %li{ class: menu_class('user_skill_rates') }= link_to 'My skills', user_skill_rates_path
+              %li{ class: menu_class('user_skill_rates', 'users') }= link_to 'My skills history', skills_history_user_path(current_user)
+              - if policy(current_user).skill_access?
+                %li.divider{ role: 'separator' }
+                %li.dropdown-header Admin
+                %li{ class: menu_class('skills') }= link_to "All skills", skills_path
+                %li{ class: menu_class('draft_skills') }= link_to "All requested changes", draft_skills_path
+                - if current_user.leader?
+                  %li.divider{ role: 'separator' }
+                  %li.dropdown-header My team members history
+                  - team_members.each do |member|
+                    %li= link_to member.name, skills_history_user_path(member)
+
           - if current_user.admin?
             %li.dropdown
               %a.dropdown-toggle{ href: "#", :'data-toggle' => "dropdown" }
@@ -25,17 +42,10 @@
               %ul.dropdown-menu
                 %li{ class: menu_class('roles') }= link_to "Roles", roles_path
                 %li{ class: menu_class('abilities') }= link_to "Abilities", abilities_path
-                %li{ class: menu_class('skills') }= link_to "Skills", skills_path
                 %li= link_to "Reports", AppConfig.reports_url, target: '_blank'
-          - elsif current_user.talent? || current_user.leader?
-            %li.dropdown
-              %a.dropdown-toggle{ href: "#", :'data-toggle' => "dropdown" }
-                Other
-                %b.caret
-              %ul.dropdown-menu
-                %li{ class: menu_class('skills') }= link_to "Skills", skills_path
       - if signed_in?
         %ul.nav.navbar-nav.navbar-right.user-profile
+          = render 'layouts/notifications', notifications: notifications
           %li.dropdown
             %a.dropdown-toggle{ href: '#', data: { toggle: 'dropdown' } }
               = current_user.gravatar_image size: :circle, class: 'img-rectangle'

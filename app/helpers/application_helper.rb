@@ -13,8 +13,9 @@ module ApplicationHelper
     value ? 'ok' : 'remove'
   end
 
-  def menu_class(name)
-    'active' if name == controller_name
+  def menu_class(name, namespace = nil)
+    full_name = namespace.present? ? "#{namespace}/#{name}" : name
+    return 'active' if full_name == controller_path
   end
 
   def project_type_class(names)
@@ -60,10 +61,11 @@ module ApplicationHelper
   end
 
   def get_alert_class(type)
+    type = type.to_s
     case type
-    when :alert
+    when 'alert'
       "warning"
-    when :error
+    when 'error'
       "danger"
     else
       "success"

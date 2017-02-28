@@ -10,8 +10,9 @@ export default class NewNoteForm extends React.Component {
   }
 
   saveNote() {
+    // TODO: Handle failder response
     const failedToSaveNote = () => {
-      debugger;
+      false;
     };
 
     $.ajax({

@@ -1,0 +1,9 @@
+body.notifications {
+  &.show {
+    .skill {
+      &__rating {
+        margin: 5px 0 0 -25px;
+      }
+    }
+  }
+}

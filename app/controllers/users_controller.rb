@@ -38,6 +38,9 @@ class UsersController < ApplicationController
       user_roles_repository: user_roles_repository
     )
   end
+  expose(:grouped_skills_by_category) do
+    UserSkillRatesQuery.new(user).rated_skills
+  end
 
   def update
     if UpdateUser.new(user, user_params, current_user).call
@@ -69,7 +72,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:first_name, :last_name, :employment,
       :commitment, :phone, :user_notes, :admin, :archived, :skype,
       :primary_role_id, :leader_team_id, :location_id, :contract_type_id, :team_id,
-      :team_ids, team_ids: [], ability_ids: [], role_ids: [])
+      :team_ids, team_ids: [], ability_ids: [], skill_ids: [], rated_skill_ids: [], role_ids: [])
   end
 
   def generate_errors

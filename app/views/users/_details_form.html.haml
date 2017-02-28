@@ -3,13 +3,6 @@
     .list-group-item
       = f.input :contract_type_id, collection: details_page.contract_types
     .list-group-item
-      = f.label :ability_ids, 'Skills & technologies'
-      = f.input :ability_ids,
-        as: :select,
-        collection: details_page.abilities,
-        input_html: { multiple: true, id: 'js-user-abilities'},
-        label: false
-    .list-group-item
       = f.label :user_notes, 'Notes'
       = f.input :user_notes, as: :text, label: false, input_html: { rows: 5 }
       = f.button :submit, class: 'btn-success'

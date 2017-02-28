@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::Base
   include BeforeRender
+  include Pundit
   include Flip::ControllerFilters
+
+  expose(:team_members) { fetch_team_members }
+  expose(:notifications) { fetch_unread_notificaitons }
 
   protect_from_forgery with: :exception
 
@@ -9,6 +13,8 @@ class ApplicationController < ActionController::Base
   before_filter :set_gon_data
 
   before_render :message_to_js
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   decent_configuration do
     strategy DecentExposure::StrongParametersStrategy
@@ -30,6 +36,31 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def user_not_authorized(exception)
+    policy_name = exception.policy.class.to_s.underscore
+    flash[:alert] = t "#{policy_name}.#{exception.query}", scope: 'pundit', default: :default
+    redirect_to(request.referer || root_path)
+  end
+
+  def fetch_team_members
+    team = Team.find_by(user_id: current_user.id)
+
+    return [] if team.nil?
+    UserDecorator.decorate_collection(
+      TeamUsersRepository.new(team).subordinates
+    )
+  end
+
+  def fetch_unread_notificaitons
+    NotificationDecorator.decorate_collection(
+      current_user.notifications.unread
+    )
+  end
+
+  def authenticate_for_skills!
+    authorize User, :skill_access?
+  end
+
   def authenticate_admin!
     redirect_to root_path, alert: 'Permission denied! You have no rights to do this.'  unless current_user.admin?
   end
@@ -45,6 +76,6 @@ class ApplicationController < ActionController::Base
       @flashMessage[name] << msg
     end
     gon.rabl template: 'app/views/layouts/flash.rabl', as: 'flash'
-    flash.clear
+    # flash.clear
   end
 end

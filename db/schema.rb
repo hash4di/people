@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219135648) do
+ActiveRecord::Schema.define(version: 20170224081119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "abilities", force: :cascade do |t|
     t.string   "name"
@@ -41,6 +42,28 @@ ActiveRecord::Schema.define(version: 20161219135648) do
     t.datetime "updated_at"
     t.string   "mongo_id"
   end
+
+  create_table "draft_skills", force: :cascade do |t|
+    t.integer  "requester_id"
+    t.integer  "reviewer_id"
+    t.integer  "skill_category_id"
+    t.integer  "skill_id"
+    t.string   "name"
+    t.string   "description"
+    t.string   "rate_type"
+    t.string   "draft_type"
+    t.string   "draft_status"
+    t.string   "requester_explanation"
+    t.string   "reviewer_explanation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.hstore   "original_skill_details"
+  end
+
+  add_index "draft_skills", ["requester_id"], name: "index_draft_skills_on_requester_id", using: :btree
+  add_index "draft_skills", ["reviewer_id"], name: "index_draft_skills_on_reviewer_id", using: :btree
+  add_index "draft_skills", ["skill_category_id"], name: "index_draft_skills_on_skill_category_id", using: :btree
+  add_index "draft_skills", ["skill_id"], name: "index_draft_skills_on_skill_id", using: :btree
 
   create_table "features", force: :cascade do |t|
     t.string   "key"
@@ -92,6 +115,19 @@ ActiveRecord::Schema.define(version: 20161219135648) do
   add_index "notes", ["project_id"], name: "index_notes_on_project_id", using: :btree
   add_index "notes", ["user_id"], name: "index_notes_on_user_id", using: :btree
 
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "notifiable_id"
+    t.string   "notifiable_type"
+    t.string   "notification_type"
+    t.string   "notification_status"
+    t.integer  "receiver_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "notifications", ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id", using: :btree
+  add_index "notifications", ["receiver_id"], name: "index_notifications_on_receiver_id", using: :btree
+
   create_table "positions", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "role_id"
@@ -128,24 +164,19 @@ ActiveRecord::Schema.define(version: 20161219135648) do
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.string   "color"
-    t.integer  "priority",      default: 1
-    t.boolean  "billable",      default: false
-    t.boolean  "technical",     default: false
-    t.boolean  "show_in_team",  default: true
+    t.integer  "priority",          default: 1
+    t.boolean  "billable",          default: false
+    t.boolean  "technical",         default: false
+    t.boolean  "show_in_team",      default: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "mongo_id"
-    t.integer  "element_order", default: 0,     null: false
-    t.integer  "user_ids",      default: [],                 array: true
+    t.integer  "element_order",     default: 0,     null: false
+    t.integer  "user_ids",          default: [],                 array: true
+    t.integer  "skill_category_id"
   end
 
-  create_table "roles_skill_categories", force: :cascade do |t|
-    t.integer "role_id"
-    t.integer "skill_category_id"
-  end
-
-  add_index "roles_skill_categories", ["role_id"], name: "index_roles_skill_categories_on_role_id", using: :btree
-  add_index "roles_skill_categories", ["skill_category_id"], name: "index_roles_skill_categories_on_skill_category_id", using: :btree
+  add_index "roles", ["skill_category_id"], name: "index_roles_on_skill_category_id", using: :btree
 
   create_table "roles_users", id: false, force: :cascade do |t|
     t.integer "user_id"
@@ -207,11 +238,11 @@ ActiveRecord::Schema.define(version: 20161219135648) do
   create_table "user_skill_rates", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
-    t.integer  "rate",       default: 0
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.string   "note",       default: ""
     t.boolean  "favorite",   default: false
+    t.integer  "rate",       default: 0
   end
 
   add_index "user_skill_rates", ["skill_id"], name: "index_user_skill_rates_on_skill_id", using: :btree
@@ -257,8 +288,8 @@ ActiveRecord::Schema.define(version: 20161219135648) do
   add_index "users", ["location_id"], name: "index_users_on_location_id", using: :btree
   add_index "users", ["primary_role_id"], name: "index_users_on_primary_role_id", using: :btree
 
-  add_foreign_key "roles_skill_categories", "roles"
-  add_foreign_key "roles_skill_categories", "skill_categories"
+  add_foreign_key "draft_skills", "skill_categories"
+  add_foreign_key "draft_skills", "skills"
   add_foreign_key "skills", "skill_categories"
   add_foreign_key "user_skill_rates", "skills"
   add_foreign_key "user_skill_rates", "users"

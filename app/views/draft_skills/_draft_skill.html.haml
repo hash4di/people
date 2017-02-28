@@ -1,0 +1,31 @@
+%hr
+%strong Type:
+%span.label{ class: draft_skill.label_type_class }= draft_skill.draft_type
+%strong Status:
+%span.label{ class: draft_skill.label_status_class }= draft_skill.draft_status
+%hr
+
+- if draft_skill.create_type?
+  = render 'details', draft_skill: draft_skill
+- else
+  = render 'compared_details', draft_skill: draft_skill
+
+%hr
+%h4
+  Request explanation
+  %small= draft_skill.humanized_request_time
+%p
+  %span
+    = link_to draft_skill.requester&.full_name, user_path(draft_skill.requester)
+  %span= draft_skill.requester_explanation
+%hr
+
+- if draft_skill.reviewer_explanation.present?
+  %h4
+    Reviewer explanation
+    %small= draft_skill.humanized_review_time
+  %p
+    %span
+      = link_to draft_skill.reviewer&.full_name, user_path(draft_skill.reviewer)
+    %span= draft_skill.reviewer_explanation
+  %hr

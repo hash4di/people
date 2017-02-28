@@ -1,0 +1,27 @@
+%h4 Name
+- if draft_skill.name == draft_skill.original_skill_details.name
+  %span= draft_skill.original_skill_details.name
+- else
+  %del.text-danger= draft_skill.original_skill_details.name
+  %span.text-success= draft_skill.name
+
+%h4 Description
+- if draft_skill.description == draft_skill.original_skill_details.description
+  %span= draft_skill.original_skill_details.description
+- else
+  %del.text-danger= draft_skill.original_skill_details.description
+  %span.text-success= draft_skill.description
+
+%h4 Rate type
+- if draft_skill.rate_type == draft_skill.original_skill_details.rate_type
+  %span= draft_skill.original_skill_details.rate_type
+- else
+  %del.text-danger= draft_skill.original_skill_details.rate_type
+  %span.text-success= draft_skill.rate_type
+
+%h4 Skill category
+- if draft_skill.skill_category == draft_skill.original_skill_details.skill_category
+  %span= draft_skill.original_skill_details.skill_category.name
+- else
+  %del.text-danger= draft_skill.original_skill_details.skill_category.name
+  %span.text-success= draft_skill.skill_category.name

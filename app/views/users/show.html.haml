@@ -6,6 +6,9 @@
           = user_show_page.user_gravatar
         = user_show_page.user.name
       = mail_to user.email, "send email"
+    .list-group
+      .list-group-item
+        = render 'skills_with_rating', grouped_skills: grouped_skills_by_category
     = render 'details_form', details_page: user_details_page
 
   .col-sm-6
