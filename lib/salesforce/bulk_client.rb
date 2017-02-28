@@ -43,7 +43,6 @@ module Salesforce
         server_url: response[:server_url],
         valid_until: response[:valid_until]
       }
-      @session_id  = response[:session_id]]
 
       raise AuthorizationError, "Connection to Salesforce was established, however we couldn't receive data. Investigate request." if session[:token].eql? :not_received
     end
