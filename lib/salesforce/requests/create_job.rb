@@ -14,6 +14,7 @@ module Salesforce
         base_interval: 1 do
           @response = Nokogiri::XML(HTTParty.post(url, options))
         end
+
         result
       end
 
