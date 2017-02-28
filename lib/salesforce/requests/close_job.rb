@@ -14,7 +14,6 @@ module Salesforce::Requests
       end
 
       result
-      end
     end
 
     private
@@ -28,7 +27,7 @@ module Salesforce::Requests
     end
 
     def url
-      @url ||= "https://#{session.server_url.host}/services/async/#{API_VERSION}/job"
+      @url ||= "https://#{session.server_url.host}/services/async/#{API_VERSION}/job/#{item.salesforce_id}"
     end
 
     def options
