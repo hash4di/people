@@ -10,13 +10,9 @@ module Salesforce
       end
 
       def create
-        begin
-          Retriable.retriable on: Timeout::Error, tries: 3,
-          base_interval: 1 do
-            @response = HTTParty.post(url, options)
-          end
-        rescue e
-          errors.push e.message
+        Retriable.retriable on: Timeout::Error, tries: 3,
+        base_interval: 1 do
+          @response = Nokogiri::XML(HTTParty.post(url, options))
         end
 
         result

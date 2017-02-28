@@ -17,12 +17,12 @@ module Salesforce
       end
     end
 
-    def find_job(item)
-      authorize! if session_expired?
-    end
-
     def close_job(item)
       authorize! if session_expired?
+
+      if SFR::CloseJob.new(item, session).close
+        extend_token_validity!
+      end
     end
 
     private
