@@ -1,10 +1,11 @@
 module Salesforce
   module Requests
     class CreateJob
-      attr_reader :item, :session, :request_body
+      attr_reader :item, :session, :request_body, :errors
 
       def initialize(item, session)
         @item = item
+        @errors = []
         @session = session
       end
 
@@ -14,10 +15,22 @@ module Salesforce
           base_interval: 1 do
             @response = HTTParty.post(url, options)
           end
+        rescue e
+          errors.push e.message
         end
+
+        result
       end
 
       private
+
+      def result
+        !errors? && @response.xpath('//jobInfo').present?
+      end
+
+      def errors?
+        errors.any?
+      end
 
       def url
         @url ||= "https://#{session.server_url.host}/services/async/#{API_VERSION}/job"
@@ -28,7 +41,7 @@ module Salesforce
       end
 
       def headers
-        { 'Content-Type' => 'application/json', 'charset' => 'UTF-8', 'X-SFDC' => session[:session_id] }
+        { 'Content-Type' => 'application/json', 'charset' => 'UTF-8', 'X-SFDC' => session[:token] }
       end
 
       def initalize_request_body
