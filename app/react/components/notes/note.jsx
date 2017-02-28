@@ -12,8 +12,9 @@ export default class Note extends React.Component {
       let noteId = this.props.note.id;
       this.props.noteRemovedCallback(noteId);
     };
+    // TODO: Handle failder response
     const failedToUpdate = () => {
-      debugger;
+      false;
     };
     $.ajax({
       url: Routes.note_path(this.props.note.id),
@@ -28,8 +29,9 @@ export default class Note extends React.Component {
       note.open = !note.open;
       this.props.changeNoteCallback(note);
     };
+    // TODO: Handle failder response
     const failedToUpdate = () => {
-      debugger;
+      false;
     };
     $.ajax({
       url: Routes.note_path(this.props.note.id),
