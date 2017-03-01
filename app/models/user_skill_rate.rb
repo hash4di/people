@@ -7,6 +7,8 @@ class UserSkillRate < ActiveRecord::Base
   validates :user, :skill, presence: true
   validates :skill, uniqueness: { scope: :user }
 
+  scope :rated, -> { where('rate > 0') }
+
   def content
     contents.order('user_skill_rate_contents.created_at asc').last
   end
