@@ -34,15 +34,17 @@ module Salesforce
       def initialize_request_body
         super
 
-        update_node('username', SF.username)
-        update_node('password', SF.password + SF.security_token)
+        update_node xml_arguments('username', SF.username)
+        update_node xml_arguments('password', SF.password + SF.security_token)
       end
 
-      def update_node(field, value)
-        nodes = @request_body.xpath("//n1:#{field}", n1: 'urn:partner.soap.sforce.com')
-        raise NodeAbsent, "Node=#{field} couldn't be found in xml file." if nodes.empty?
-
-        nodes[0].content = value
+      def xml_arguments(field, value)
+        {
+          field: field,
+          value: value,
+          shortcut: 'n1',
+          xmlns: 'urn:partner.soap.sforce.com'
+        }
       end
     end
   end

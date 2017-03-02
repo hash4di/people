@@ -1,7 +1,6 @@
 module Salesforce
   class BulkClient
     AuthorizationError = Class.new(StandardError)
-    SFR = Salesforce::Requests
 
     attr_reader :session, :server
 
@@ -11,17 +10,21 @@ module Salesforce
 
     def create_job(item)
       authorize! if session_expired?
+      request = Salesforce::Requests::CreateJob.new(item, session)
 
-      if SFR::CreateJob.new(item, session).create
+      if request.create
         extend_token_validity!
+        yield(request.response)
       end
     end
 
     def close_job(item)
       authorize! if session_expired?
+      request = Salesforce::Requests::CloseJob.new(item, session)
 
-      if SFR::CloseJob.new(item, session).close
+      if request.close
         extend_token_validity!
+        yield(request.response)
       end
     end
 
@@ -36,7 +39,7 @@ module Salesforce
     end
 
     def authorize!
-      response = SFR::Auth.new.connect
+      response = Salesforce::Requests::Auth.new.connect
 
       @session = {
         token: response[:session_id],

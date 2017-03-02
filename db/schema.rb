@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227074221) do
+ActiveRecord::Schema.define(version: 20170302095508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -191,7 +191,7 @@ ActiveRecord::Schema.define(version: 20170227074221) do
     t.string "object",        null: false
     t.string "content_type",  null: false
     t.string "salesforce_id", null: false
-    t.string "status",        null: false
+    t.string "state",         null: false
   end
 
   add_index "salesforce_jobs", ["salesforce_id"], name: "index_salesforce_jobs_on_salesforce_id", using: :btree
