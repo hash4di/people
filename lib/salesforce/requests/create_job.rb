@@ -6,7 +6,6 @@ module Salesforce
       def initialize(item, session)
         @item = item
         @session = session
-
         super()
       end
 
@@ -19,14 +18,6 @@ module Salesforce
       end
 
       private
-
-      def result
-        true
-      end
-
-      def errors?
-        errors.any?
-      end
 
       def url
         @url ||= "https://#{session[:server_url].host}/services/async/#{API_VERSION}/job"
