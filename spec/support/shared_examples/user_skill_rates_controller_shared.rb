@@ -4,7 +4,9 @@ shared_examples 'returns correct hash and response is 200' do
   it 'returns correct hash', :aggregate_failures do
     skill_rates = json_response['user_skill_rates']
     expect(skill_rates).to be_a(Array)
-    expect(skill_rates).to eq(expected_array)
+    expected_array.map do |expected_hash|
+      expect(skill_rates).to include(expected_hash)
+    end
   end
 end
 
