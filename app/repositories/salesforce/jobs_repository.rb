@@ -21,5 +21,10 @@ module Salesforce
         item.update_attribute('state', 'closed')
       end
     end
+
+    def add_batch(job, items)
+      salesforce_client.add_batch(job, items) do |response|
+      end
+    end
   end
 end

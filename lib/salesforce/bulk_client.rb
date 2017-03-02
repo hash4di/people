@@ -9,26 +9,29 @@ module Salesforce
     end
 
     def create_job(item)
-      authorize! if session_expired?
-      request = Salesforce::Requests::CreateJob.new(item, session)
-
-      if request.create
-        extend_token_validity!
-        yield(request.response)
-      end
+      send_request Salesforce::Requests::CreateJob.new(item, session)
     end
 
     def close_job(item)
-      authorize! if session_expired?
-      request = Salesforce::Requests::CloseJob.new(item, session)
+      send_request Salesforce::Requests::CloseJob.new(item, session)
+    end
 
-      if request.close
-        extend_token_validity!
-        yield(request.response)
-      end
+    def add_batch(job, items)
+      send_request Salesforce::Requests::AddBatch.new(job, items, session)
     end
 
     private
+
+    def send_request(request)
+      authorize! if session_expired?
+
+      if request.call
+        extend_token_validity!
+        request.response
+      else
+        false
+      end
+    end
 
     def session_expired?
       session[:valid_until] > Time.zone.now - 3.seconds
@@ -39,15 +42,16 @@ module Salesforce
     end
 
     def authorize!
-      response = Salesforce::Requests::Auth.new.connect
+      response = Salesforce::Requests::Auth.new.call
 
+      raise AuthorizationError, "Connection to Salesforce couldn't be established. Investigate request." if response
+
+      credentials = response["Envelope"]["Body"]["loginResponse"]["result"]
       @session = {
-        token: response[:session_id],
-        server_url: response[:server_url],
-        valid_until: response[:valid_until]
+        token: credentials["sessionId"],
+        server_url: URI.parse(credentials["serverUrl"]),
+        valid_until: Time.zone.now + 2.hours
       }
-
-      raise AuthorizationError, "Connection to Salesforce was established, however we couldn't receive data. Investigate request." if session[:token].eql? :not_received
     end
   end
 end
