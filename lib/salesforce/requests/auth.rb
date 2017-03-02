@@ -2,14 +2,6 @@ module Salesforce
   module Requests
     class Auth < Salesforce::Requests::Base
 
-        {
-          server_url: URI.parse(@response['serverUrl']),
-          session_id: @response['sessionId'],
-          valid_until: Time.zone.now + 2.hours
-        }
-
-      end
-
       private
 
       def url
