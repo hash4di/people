@@ -60,6 +60,7 @@ gem 'sucker_punch'
 gem 'therubyracer'
 gem 'uglifier'
 gem 'versionist'
+gem 'virtus'
 gem 'whenever', require: false
 
 group :development do

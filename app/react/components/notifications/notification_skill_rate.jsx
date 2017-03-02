@@ -6,7 +6,6 @@ import _ from 'lodash';
 export default class NotificationSkillRate extends React.Component {
   constructor(props) {
     super(props);
-    debugger
     this.state = {
       favorite: props.favorite,
       note: props.note,

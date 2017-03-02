@@ -16,7 +16,7 @@ describe NotificationPolicy do
     end
   end
 
-  describe '#update?' do
+  describe '#show?' do
     context 'when user is receiver' do
       let(:notification) { create(:notification, receiver: current_user) }
       it { expect(subject.show?).to be true }

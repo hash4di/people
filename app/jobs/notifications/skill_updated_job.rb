@@ -2,9 +2,9 @@ module Notifications
   class SkillUpdatedJob
     include SuckerPunch::Job
 
-    def perform(skill_id:)
+    def perform(draft_skill_id:)
       ::Notifications::Skill::Updated.new(
-        notifiable_id: skill_id
+        notifiable_id: draft_skill_id
       ).notify
     end
   end

@@ -35,13 +35,15 @@ module DraftSkills
       skill = Skill.create(skill_params)
       draft_skill.skill = skill
       CreateRatesForSkillJob.perform_async(skill_id: skill.id)
-      Notifications::SkillCreatedJob.perform_async(skill_id: skill.id)
+      Notifications::SkillCreatedJob.perform_async(
+        draft_skill_id: draft_skill.id
+      )
     end
 
     def update_skill
       draft_skill.skill.update(skill_params)
       Notifications::SkillUpdatedJob.perform_async(
-        skill_id: draft_skill.skill.id
+        draft_skill_id: draft_skill.id
       )
     end
 

@@ -10,12 +10,13 @@ module Skills
 
     def request(type:)
       @type = type
+      initialize_draft_skill_creator!
       validate_type
       request_change
     end
 
     def draft_skill
-      draft_skill_creator.draft_skill
+      @draft_skill_creator.draft_skill
     end
 
     private
@@ -23,7 +24,7 @@ module Skills
     def request_change
       skill.assign_attributes(params)
       if skill_and_draft_skill_valid?
-        draft_skill_creator.save!
+        @draft_skill_creator.save!
       else
         collect_and_set_errors
         false
@@ -32,11 +33,11 @@ module Skills
 
     def skill_and_draft_skill_valid?
       skill_validity = skill.valid?
-      draft_skill_validity = draft_skill_creator.valid?
+      draft_skill_validity = @draft_skill_creator.valid?
       skill_validity && draft_skill_validity
     end
 
-    def draft_skill_creator
+    def initialize_draft_skill_creator!
       @draft_skill_creator ||= ::DraftSkills::Create.new(
         params: params,
         type: type,
@@ -46,7 +47,7 @@ module Skills
     end
 
     def collect_and_set_errors
-      explanation_error = draft_skill_creator.errors[:requester_explanation]
+      explanation_error = @draft_skill_creator.errors[:requester_explanation]
       if explanation_error.present?
         skill.errors[:requester_explanation] << explanation_error.first
       end

@@ -32,6 +32,10 @@ class NotificationDecorator < Draper::Decorator
   private
 
   def notifiable_name
-    object.notifiable.name
+    if object.skill?
+      object.notifiable.original_skill_details.name || object.notifiable.name
+    else
+      object.notifiable.name
+    end
   end
 end

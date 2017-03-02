@@ -11,6 +11,10 @@ export default class RateScale extends React.Component {
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onRateChange = this.onRateChange.bind(this);
+    this.icons = {
+      range: { checked: 'glyphicon-star', unchecked: 'glyphicon-star-empty' },
+      boolean: { checked: 'glyphicon-check', unchecked: 'glyphicon-unchecked' }
+    }
   }
 
   componentDidMount() {
@@ -19,12 +23,16 @@ export default class RateScale extends React.Component {
 
   rateStarClass(elementNumber) {
     if(elementNumber <= this.state.hoverNumber) {
-      return "glyphicon-star hovered";
+      return `${this.iconClass('checked')} hovered`;
     }else if(elementNumber <= this.state.rate){
-      return "glyphicon-star selected";
+      return `${this.iconClass('checked')} selected`;
     }else{
-      return "glyphicon-star-empty";
+      return this.iconClass('unchecked');
     }
+  }
+
+  iconClass(type) {
+    return this.icons[this.props.rateType][type]
   }
 
   onMouseEnter(event) {
@@ -53,7 +61,7 @@ export default class RateScale extends React.Component {
     const iconElements = _.map(this.scaleSize(), (index) =>
       <li>
         <i
-          className={`glyphicon skill__rate ${this.rateStarClass(index)}`}
+          className={`glyphicon skill__rate skill__rate--${this.props.rateType} ${this.rateStarClass(index)}`}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
           onClick={this.onRateChange}
@@ -81,7 +89,7 @@ export default class RateScale extends React.Component {
     );
 
     return(
-      <ul className="list-inline skill__rating">
+      <ul className={`list-inline skill__rating skill__rating--${this.props.rateType}`}>
         {resetElement}
         {iconElements}
       </ul>

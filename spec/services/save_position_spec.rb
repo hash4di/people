@@ -6,7 +6,7 @@ describe SavePosition do
 
   subject { described_class.new(position).call }
 
-  context 'valid position' do
+  context 'when position is valid' do
     it 'creates a new position' do
       expect { subject }.to change(Position, :count).by 1
     end
@@ -14,9 +14,17 @@ describe SavePosition do
     it 'returns true' do
       expect(subject).to be true
     end
+
+    context 'when position is primary' do
+      let(:position) { build(:position, :primary, user: user) }
+
+      it 'sets new primary_role for user' do
+        expect { subject }.to change { user.primary_role }.to(position.role)
+      end
+    end
   end
 
-  context 'invalid position' do
+  context 'when position is invalid' do
     before { position.user = nil }
 
     it 'does not create a new position' do

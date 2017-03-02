@@ -28,6 +28,7 @@
       %tr
         %th First name
         %th Last name
+        %th Primary role
         %th Favorite
         %th Rate
         %th History of all skills
@@ -36,6 +37,7 @@
         %tr
           %th= user_skill_rate.first_name
           %th= user_skill_rate.last_name
+          %th= user_skill_rate.role_name
           %th= user_skill_rate.favorite
           %th= user_skill_rate.rate
           %th= link_to 'Skills history', skills_history_user_path(user_skill_rate.user_id), class: 'btn btn-xs btn-default'

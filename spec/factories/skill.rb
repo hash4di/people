@@ -23,5 +23,16 @@ FactoryGirl.define do
         )
       end
     end
+
+    trait :with_awaiting_create_request do
+      after(:create) do |skill|
+        skill.draft_skills << FactoryGirl.create(
+          :draft_skill,
+          :with_created_draft_status,
+          draft_type: 'create',
+          skill: skill
+        )
+      end
+    end
   end
 end

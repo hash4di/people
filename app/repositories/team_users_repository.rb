@@ -14,6 +14,6 @@ class TeamUsersRepository
   end
 
   def subordinates
-    team.users.where.not(id: leader.id)
+    team.users.active.where.not(id: leader.id)
   end
 end

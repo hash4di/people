@@ -28,6 +28,7 @@ describe DraftSkills::Create do
     context 'when type is create' do
       let(:draft_type) { 'create' }
       let(:expected_draft_skill) { subject.draft_skill }
+      let(:skill) { nil }
 
       it 'initializez draft_skill with correct attributes' do
         expect(expected_draft_skill).to be_present
@@ -44,7 +45,7 @@ describe DraftSkills::Create do
         ).to eq(params[:requester_explanation])
 
         expect(expected_draft_skill.requester_id).to eq(user.id)
-        expect(expected_draft_skill.skill_id).to eq(skill.id)
+        expect(expected_draft_skill.skill_id).to be_nil
         expect(expected_draft_skill.draft_type).to eq(draft_type)
         expect(expected_draft_skill.draft_status).to eq(draft_status)
       end
@@ -52,9 +53,8 @@ describe DraftSkills::Create do
     context 'when type is update' do
       let(:draft_type) { 'update' }
       let(:expected_draft_skill) { subject.draft_skill }
-      let(:skill) { nil }
 
-      it 'initializez draft_skill with correct attributes' do
+      it 'initializes draft_skill with correct attributes' do
         expect(expected_draft_skill).to be_present
         expect(expected_draft_skill.new_record?).to eq(true)
         expect(expected_draft_skill.name).to eq(params[:name])
@@ -68,9 +68,21 @@ describe DraftSkills::Create do
         ).to eq(params[:requester_explanation])
 
         expect(expected_draft_skill.requester_id).to eq(user.id)
-        expect(expected_draft_skill.skill_id).to be_nil
+        expect(expected_draft_skill.skill_id).to eq(skill.id)
         expect(expected_draft_skill.draft_type).to eq(draft_type)
         expect(expected_draft_skill.draft_status).to eq(draft_status)
+        expect(
+          expected_draft_skill.original_skill_details.name
+        ).to eq(expected_draft_skill.skill.name)
+        expect(
+          expected_draft_skill.original_skill_details.description
+        ).to eq(expected_draft_skill.skill.description)
+        expect(
+          expected_draft_skill.original_skill_details.rate_type
+        ).to eq(expected_draft_skill.skill.rate_type)
+        expect(
+          expected_draft_skill.original_skill_details.skill_category_id
+        ).to eq(expected_draft_skill.skill.skill_category_id)
       end
     end
   end

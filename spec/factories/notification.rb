@@ -12,5 +12,13 @@ FactoryGirl.define do
     trait :unread do
       notification_status 'unread'
     end
+
+    trait :skill_updated do
+      notification_type 'skill_updated'
+    end
+
+    trait :skill_created do
+      notification_type 'skill_created'
+    end
   end
 end
