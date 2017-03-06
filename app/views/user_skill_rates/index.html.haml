@@ -5,11 +5,28 @@
 
   %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
     %li
+      .btn.btn-info.btn-info--modal.btn-xs{ data: { target: '#categoryModal', toggle: 'modal' }, type: 'button' }
+        %i.glyphicon.glyphicon-question-sign
+    %li
       %h4.skills-header.text-primary Skill categories:
     - grouped_skills_by_category.keys.each_with_index do |skill_category|
       %li{ class: "#{user_skill_rates_page.initial_skill_category(skill_category)}",
            role: "presentation" }
         %a{ id: "#{parameterize(skill_category)}-tab", aria: { controls: parameterize(skill_category), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(skill_category)}", role: "tab" }= skill_category
+
+  #categoryModal.modal.fade{ aria: { labelledby: 'categoryModalLabel' }, role: 'dialog', tabindex: '-1' }
+    .modal-dialog{ role: 'document' }
+      .modal-content
+        .modal-header
+          %button.close{ aria: { label: 'Close' }, data: { dismiss: 'modal' }, type: 'button' }
+            %span{ aria: { hidden: 'true' } } ×
+          %h4#categoryModalLabel.modal-title Skill categories
+        .modal-body
+          %span Skill categories represents different sections at Netguru. Each section collets skills which we want to have as a company. We have one more special category.
+          %b Shared
+          %span which contains similar skills for couple categories.
+        .modal-footer
+          %button.btn.btn-primary{ data: { dismiss: 'modal' }, type: 'button' } Got it!
 
   .tab-content
     - grouped_skills_by_category.each do |skill_category, skills|
