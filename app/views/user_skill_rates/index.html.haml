@@ -8,7 +8,7 @@
       .btn.btn-info.btn-info--modal.btn-xs{ data: { target: '#categoryModal', toggle: 'modal' }, type: 'button' }
         %i.glyphicon.glyphicon-question-sign
     %li
-      %h4.skills-header.text-primary Skill categories:
+      %h4.table__header.text-primary Skill categories:
     - grouped_skills_by_category.keys.each_with_index do |skill_category|
       %li{ class: "#{user_skill_rates_page.initial_skill_category(skill_category)}",
            role: "presentation" }

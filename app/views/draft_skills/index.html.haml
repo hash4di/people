@@ -3,7 +3,7 @@
 
   %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
     %li
-      %h4.skills-header.text-primary Request status:
+      %h4.table__header.text-primary Request status:
     - grouped_draft_skills_by_status.keys.each_with_index do |draft_skill_status|
       %li{ role: "presentation" }
         %a{ id: "#{parameterize(draft_skill_status)}-tab", aria: { controls: parameterize(draft_skill_status), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(draft_skill_status)}", role: "tab" }= draft_skill_status
