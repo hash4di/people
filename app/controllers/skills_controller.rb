@@ -75,7 +75,7 @@ class SkillsController < ApplicationController
   end
 
   def set_grouped_skills
-    @skills = Skill.eager_load(:skill_category).all.order(:name)
+    @skills = Skill.eager_load(:skill_category, :requested_change).all.order(:name)
     @grouped_skills_by_category = @skills.group_by do |skill|
       skill.skill_category.name
     end.sort_by{ |key, _| key }.to_h
