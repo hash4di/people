@@ -1,11 +1,12 @@
 .container
+  = render 'shared/notifications_modal'
   %h1
     All your notifications
     %small from last 30 days
 
   %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
     %li
-      %h4.text-primary Notification types:
+      %h4.table__header.text-primary Notification types:
     - grouped_notifications_by_type.keys.each_with_index do |notification_type|
       %li{ role: "presentation" }
         %a{ id: "#{parameterize(notification_type)}-tab", aria: { controls: parameterize(notification_type), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(notification_type)}", role: "tab" }= notification_type.humanize

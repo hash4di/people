@@ -1,9 +1,10 @@
 .container
+  = render 'shared/categories_modal'
   %h1 Listing skills
 
   %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
     %li
-      %h4.skills-header.text-primary Skill categories:
+      %h4.table__header.text-primary Skill categories:
     - @grouped_skills_by_category.keys.each_with_index do |skill_category|
       %li{ role: "presentation" }
         %a{ id: "#{parameterize(skill_category)}-tab", aria: { controls: parameterize(skill_category), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(skill_category)}", role: "tab" }= skill_category
