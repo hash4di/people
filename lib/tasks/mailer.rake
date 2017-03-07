@@ -30,6 +30,23 @@ namespace :mailer do
     end
   end
 
+  desc 'Email about users that have some unread notifications'
+  task users_with_unread_notifications: :environment do
+    unread_notifications_count = %((select count(*) FROM notifications WHERE notifications.receiver_id = users.id AND notifications.notification_status = 'unread'))
+
+    users = User.active.joins(
+      :notifications
+    ).select(
+      'users.*', "#{unread_notifications_count} AS unread_notifications_count"
+    ).group(:id).having(
+      "#{unread_notifications_count} > 0"
+    )
+
+    users.each do |user|
+      SendMailJob.perform_async(UserMailer, :notify_unread_notifications, user)
+    end
+  end
+
   desc 'Email about users that miss primary role in their profiles'
   task users_without_primary_role: :environment do
     user_ids_with_primary = Position.select(:user_id).primary.distinct.pluck(:user_id)
