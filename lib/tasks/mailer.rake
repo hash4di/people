@@ -43,7 +43,7 @@ namespace :mailer do
     )
 
     users.each do |user|
-      SendMailJob.perform_async(UserMailer, :notify_unread_notifications, user, user.unread_notifications_count)
+      SendMailJob.perform_async(UserMailer, :notify_unread_notifications, user)
     end
   end
 

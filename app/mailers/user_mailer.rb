@@ -19,10 +19,10 @@ class UserMailer < BaseMailer
     mail(to: to, subject: "#{user.first_name} #{user.last_name} updated.")
   end
 
-  def notify_unread_notifications(user, unread_notifications_count)
-    @unread_notifications_count = unread_notifications_count
-    @notification_text = 'notification'.pluralize(unread_notifications_count)
-    subject = "#{user.first_name} #{user.last_name} has #{unread_notifications_count} unread notifications."
+  def notify_unread_notifications(user)
+    @unread_notifications_count = user.unread_notifications_count
+    @notification_text = 'notification'.pluralize(@unread_notifications_count)
+    subject = "#{user.first_name} #{user.last_name} has #{@unread_notifications_count} unread #{@notification_text}."
     mail(to: user.email, subject: subject)
   end
 
