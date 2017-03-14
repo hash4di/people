@@ -35,14 +35,14 @@
                   - else
                     %span.text-danger Not marked as read
                 %td
-                  .btn-group.skills__actions{ role: "group", aria: { label: "Actions" } }
+                  .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Display notification details' }
                     - if notification.notified?
                       = link_to notification_path(notification),
-                        class: "btn btn-default", role: 'button' do
+                        class: 'btn btn-default', role: 'button' do
                         %i.glyphicon.glyphicon-search
                     - else
                       = link_to notification_path(notification,
                         notification: {notification_status: 'notified'}),
                         method: :put,
-                        class: "btn btn-primary", role: 'button' do
+                        class: 'btn btn-primary', role: 'button' do
                         %i.glyphicon.glyphicon-search
