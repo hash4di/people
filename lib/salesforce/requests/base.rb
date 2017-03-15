@@ -3,7 +3,7 @@ module Salesforce::Requests
 
   SF = AppConfig.salesforce
   FILE = :provide_file_name
-  API_VERSION = '38.0'.freeze
+  API_VERSION = '39.0'.freeze
 
   class Base
     attr_reader :request_body, :response
@@ -16,14 +16,13 @@ module Salesforce::Requests
       Retriable.retriable on: Timeout::Error, tries: 3, base_interval: 1 do
         @response = HTTParty.post(url, options)
       end
-
       success?
     end
 
     private
 
     def url
-      ""
+      ''
     end
 
     def headers
