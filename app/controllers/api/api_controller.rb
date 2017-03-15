@@ -12,7 +12,9 @@ module Api
     private
 
     def authenticate_api!
-      unauthorized! unless params[:token] == AppConfig.api_token
+      if current_user.blank? && params[:token] != AppConfig.api_token
+        unauthorized!
+      end
     end
 
     def authenticate_admin!
