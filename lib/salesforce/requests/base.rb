@@ -35,12 +35,12 @@ module Salesforce::Requests
     end
 
     def success?
-      response.code.between? 200...300
+      response.code.between?(200, 299)
     end
 
     def initialize_request_body
       @request_body = File.open("./lib/salesforce/files/#{file_name}.xml") do |f|
-        Nokogiri::XML(f) { |c| c.noblanks }
+        Nokogiri::XML(f, &:noblanks)
       end
     end
 
