@@ -2,14 +2,14 @@ module Salesforce
   class BulkClient
     AuthorizationError = Class.new(StandardError)
 
-    attr_reader :session, :server
+    attr_reader :session, :server, :last_response
 
     def initialize
       authorize!
     end
 
-    def create_job(item)
-      send_request Salesforce::Requests::CreateJob.new(item, session)
+    def create_job(params)
+      send_request Salesforce::Requests::CreateJob.new(session, params)
     end
 
     def close_job(item)
@@ -17,17 +17,19 @@ module Salesforce
     end
 
     def add_batch(job, items)
-      send_request Salesforce::Requests::AddBatch.new(job, items, session)
+      send_request Salesforce::Requests::AddBatch.new(job, session)
     end
 
     private
 
     def send_request(request)
       authorize! if session_expired?
+      success= request.call
+      @last_response = request.response
 
-      if request.call
+      if success
         extend_token_validity!
-        request.response
+        last_response
       else
         false
       end
@@ -42,14 +44,13 @@ module Salesforce
     end
 
     def authorize!
-      response = Salesforce::Requests::Auth.new.call
+      auth_request = Salesforce::Requests::Auth.new
+      raise AuthorizationError, "Connection to Salesforce couldn't be established. Investigate request." unless auth_request.call
 
-      raise AuthorizationError, "Connection to Salesforce couldn't be established. Investigate request." if response
-
-      credentials = response["Envelope"]["Body"]["loginResponse"]["result"]
+      credentials = auth_request.response['Envelope']['Body']['loginResponse']['result']
       @session = {
-        token: credentials["sessionId"],
-        server_url: URI.parse(credentials["serverUrl"]),
+        token: credentials['sessionId'],
+        server_url: URI.parse(credentials['serverUrl']),
         valid_until: Time.zone.now + 2.hours
       }
     end
