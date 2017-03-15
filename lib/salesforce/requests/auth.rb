@@ -1,11 +1,10 @@
 module Salesforce
   module Requests
     class Auth < Salesforce::Requests::Base
-
       private
 
       def url
-        "https://test.salesforce.com/services/Soap/u/#{}"
+        "https://test.salesforce.com/services/Soap/u/#{API_VERSION}"
       end
 
       def options
