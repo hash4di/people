@@ -12,14 +12,14 @@ RSpec.describe Salesforce::UserSkillRatingsRepository do
         rate: 4,
       )
     end
-    let(:salesforce_resource_name) { "DeveloperSkillRating__c" }
+    let(:salesforce_resource_name) { "ContactSkillRating__c" }
     let(:expected_salesforce_attributes) do
       {
-        Developer__c: "foo",
-        DeveloperSkill__c: "bar",
+        Contact__c: "foo",
+        ContactSkill__c: "bar",
         Favorite__c: false,
         Note__c: "A few words",
-        Rating__c: 4,
+        Rate__c: 4,
       }
     end
   end

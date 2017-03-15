@@ -1,7 +1,7 @@
 module Salesforce
   class UsersRepository < GenericRepository
     def salesforce_object_name
-      'Developer__c'
+      'Contact__c'
     end
 
     def map_to_salesforce(user)
