@@ -1,15 +1,18 @@
 module Salesforce::Requests
   class CloseJob < Salesforce::Requests::Base
-    attr_reader :item, :session
+    attr_reader :job_id, :session
 
-    def initailize(item, session)
-      @item = item
+    def initialize(job_id, session)
+      @job_id = job_id
       @session = session
+
+      super()
     end
 
+    private
 
     def url
-      "https://#{session.server_url.host}/services/async/#{API_VERSION}/job/#{item.salesforce_id}"
+      "https://#{session.fetch(:server_url).host}/services/async/#{API_VERSION}/job/#{job_id}"
     end
 
     def options
@@ -17,7 +20,11 @@ module Salesforce::Requests
     end
 
     def headers
-      { 'Content-Type' => 'application/json', 'charset' => 'UTF-8', 'X-SFDC' => session[:token] }
+      {
+        'Content-Type' => 'application/xml',
+        'charset' => 'UTF-8',
+        'X-SFDC-Session' => session.fetch(:token)
+      }
     end
   end
 end

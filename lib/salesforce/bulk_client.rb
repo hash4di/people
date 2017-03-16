@@ -12,12 +12,14 @@ module Salesforce
       send_request Salesforce::Requests::CreateJob.new(session, params)
     end
 
-    def close_job(item)
-      send_request Salesforce::Requests::CloseJob.new(item, session)
+    def close_job(job_id)
+      send_request Salesforce::Requests::CloseJob.new(job_id, session)
+
+      binding.pry
     end
 
-    def add_batch(job, items)
-      send_request Salesforce::Requests::AddBatch.new(job, session)
+    def add_batch(job_id, items)
+      send_request Salesforce::Requests::AddBatch.new(job_id, items, session)
     end
 
     private
