@@ -1,6 +1,6 @@
 module Salesforce
   class UserSkillRateSerializer < ActiveModel::Serializer
-    attributes :Contact__c, :DeveloperSkill__c, :Favorite__c, :Note__c, :Rate__c
+    attributes :Contact__c, :DeveloperSkill__c, :Favorite__c, :Note__c, :Rate__c, :IDD__c
 
     self.root = false
 
@@ -22,6 +22,10 @@ module Salesforce
 
     def Rate__c
       object.rate
+    end
+
+    def IDD__c
+      object.id
     end
   end
 end
