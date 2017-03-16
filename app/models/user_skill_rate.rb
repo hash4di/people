@@ -1,4 +1,11 @@
 class UserSkillRate < ActiveRecord::Base
+  SALESFORCE = {
+    external_id: 'IDD__c',
+    object: 'ContactSkillRating__c'
+  }.freeze
+
+  scope :with_skills_and_users, -> { includes(:skills, :users) }
+
   belongs_to :user
   belongs_to :skill
 
