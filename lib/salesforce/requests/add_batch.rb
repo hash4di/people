@@ -1,18 +1,18 @@
 module Salesforce
   module Requests
     class AddBatch < Salesforce::Requests::Base
-      attr_reader :job_id, :items, :session
+      attr_reader :job_id, :session
 
-      def initialize(items, session, job_id)
+      def initialize(request_body, session, job_id)
         @job_id = job_id
-        @items = items
+        @request_body= request_body
         @session = session
       end
 
       private
 
       def options
-        { headers: headers, body: request_body.to_s }
+        { headers: headers, body: request_body.to_s  }
       end
 
       def url

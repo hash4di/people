@@ -6,7 +6,7 @@ module Salesforce
       OperationTypeError = Class.new(StandardError)
 
       # There are more types, but not supported by this code ATM.
-      # For more details please check JobInfo on Salesforce Bulk API.
+      # For more details please check JobInfo in Salesforce Bulk API documentation.
       OPERATION_TYPES = %w(insert upsert delete).freeze
 
       def initialize(session, operation:, sf_object:, external_id_field_name: 'none')
@@ -36,10 +36,10 @@ module Salesforce
         super
         update_node xml_arguments('operation', operation)
         update_node xml_arguments('object', sf_object)
-        add_external_field_on_upsert
+        add_external_id_field_on_upsert
       end
 
-      def add_external_field_on_upsert
+      def add_external_id_field_on_upsert
         return unless operation.eql? 'upsert'
 
         request_body.root.children[1].add_next_sibling "<externalIdFieldName>#{external_id_field_name}</externalIdFieldName>"
