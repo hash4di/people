@@ -1,11 +1,12 @@
 .container
+  = render 'shared/categories_modal'
   %h1
     %span Your skills
     = link_to 'History', skills_history_user_path(current_user), class: 'btn btn-xs btn-default'
 
   %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
     %li
-      %h4.skills-header.text-primary Skill categories:
+      %h4.table__header.text-primary Skill categories:
     - grouped_skills_by_category.keys.each_with_index do |skill_category|
       %li{ class: "#{user_skill_rates_page.initial_skill_category(skill_category)}",
            role: "presentation" }

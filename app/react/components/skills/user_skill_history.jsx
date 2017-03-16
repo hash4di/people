@@ -87,7 +87,6 @@ export default class UserSkillHistory extends Component {
       dataType: 'json',
       data: {
         category,
-        token: this.props.api_token,
         user_id: this.props.user_id,
         start_date: Moment(startDate).format(),
         end_date: Moment(endDate).format()

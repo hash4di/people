@@ -61,6 +61,11 @@ CarrierWave.configure do |config|
   config.enable_processing = false
 end
 
+# we have problems with geckodriver and newest version of firefox(52) new configuration is added to circle.yml in dependencies: pre: state
+if ENV['CI']
+  Selenium::WebDriver::Firefox::Binary.path = '/home/ubuntu/people/firefox/firefox'
+end
+
 Capybara.default_max_wait_time = 5
 
 Capybara.register_driver :selenium do |app|

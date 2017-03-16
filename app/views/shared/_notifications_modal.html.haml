@@ -1,0 +1,20 @@
+.btn.btn-info.btn-info--modal.btn-xs{ data: { target: '#categoryModal', toggle: 'modal' }, type: 'button' }
+  %i.glyphicon.glyphicon-question-sign
+#categoryModal.modal.fade{ aria: { labelledby: 'categoryModalLabel' }, role: 'dialog', tabindex: '-1' }
+  .modal-dialog{ role: 'document' }
+    .modal-content
+      .modal-header
+        %button.close{ aria: { label: 'Close' }, data: { dismiss: 'modal' }, type: 'button' }
+          %span{ aria: { hidden: 'true' } } ×
+        %h4#categoryModalLabel.modal-title Notifications
+      .modal-body
+        %span On this page you can see list of notifications from 30 days. We have two different types of notifications:
+        %ul
+          %li
+            %b.text-info Skill updated
+            %span - you receive it when skill you have rated have been edited.
+          %li
+            %b.text-success Skill created
+            %span - you receive it when new skill have been added.
+      .modal-footer
+        %button.btn.btn-primary{ data: { dismiss: 'modal' }, type: 'button' } Got it!
