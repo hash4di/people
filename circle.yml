@@ -2,7 +2,7 @@ machine:
   ruby:
     version: 2.3.0
   node:
-    version: 4.3.1
+    version: 6.10.0
 
 deployment:
   master:
@@ -27,7 +27,7 @@ dependencies:
     - . ~/.bashrc
   post:
     - sudo apt-get update && sudo apt-get install libpango1.0-0
-    - npm install webpack -g
-    - webpack
+    - npm rebuild
+    - npm run build
   cache_directories:
     - "node_modules"
