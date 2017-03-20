@@ -31,7 +31,3 @@ dependencies:
     - npm run build
   cache_directories:
     - "node_modules"
-
-test:
-  override:
-    - echo "ok"
