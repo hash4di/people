@@ -28,6 +28,7 @@ dependencies:
   post:
     - sudo apt-get update && sudo apt-get install libpango1.0-0
     - npm install webpack -g
+    - npm rebuild
     - webpack
   cache_directories:
     - "node_modules"
