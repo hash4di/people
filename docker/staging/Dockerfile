@@ -28,6 +28,7 @@ ADD . $APP_HOME/
 ADD docker/staging/entrypoint.sh /entrypoint.sh
 
 RUN npm rebuild
+RUN npm install
 RUN npm run build
 
 EXPOSE 3000
