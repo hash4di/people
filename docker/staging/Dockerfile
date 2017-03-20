@@ -4,7 +4,11 @@ RUN /opt/passenger/install
 RUN /opt/node/install
 
 # bundle dependencies
-RUN apt-get update && apt-get install -y libpq-dev imagemagick
+RUN apt-get update
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+RUN apt-get install -y libpq-dev
+RUN apt-get install -y imagemagick
+RUN apt-get install -y nodejs
 
 # set timezone
 RUN echo "Europe/Warsaw" > /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
