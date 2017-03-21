@@ -56,11 +56,11 @@ export default class EditMembershipModal extends React.Component {
     Modal.setAppElement('body');
     const modalStyles = {
       content : {
-        top                   : '20%',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
+        top: '20%',
+        left: '50%',
+        marginRight: '-50%',
+        'background-color': 'white',
+        border: '1px solid grey',
       }
     };
 
