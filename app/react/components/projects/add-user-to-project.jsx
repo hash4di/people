@@ -9,7 +9,7 @@ export default class AddUserToProject extends React.Component {
     this.createMembership = this.createMembership.bind(this);
   }
 
-  createMembership(userId) {
+  createMembership({ value: userId }) {
     const user = ProjectUsersStore.getUser(userId);
     const billableRole = user.primary_roles[0].billable;
     let params = {

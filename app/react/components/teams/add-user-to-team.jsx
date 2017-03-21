@@ -31,7 +31,7 @@ class AddUserToTeam extends React.Component {
     });
   }
 
-  selectedUser(userId) {
+  selectedUser({ value: userId }) {
     UserActions.addToTeam({ userId: userId, teamId: this.props.team.id});
   }
 
