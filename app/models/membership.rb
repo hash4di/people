@@ -109,10 +109,10 @@ class Membership < ActiveRecord::Base
   end
 
   def notify_slack_on_create
-    SlackNotifier.new.ping(Notification::Membership::Created.new(self))
+    SlackNotifier.new.ping(NotificationMessage::Membership::Created.new(self))
   end
 
   def notify_slack_on_update
-    SlackNotifier.new.ping(Notification::Membership::Updated.new(self))
+    SlackNotifier.new.ping(NotificationMessage::Membership::Updated.new(self))
   end
 end

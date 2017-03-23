@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import UserSkillHistoryFilter from './user_skill_history_filter';
 import UserSkillHistoryTimeline from './user_skill_history_timeline';
 import UserSkillHistoryLoadingState from './user_skill_history_loading_state';
@@ -87,7 +87,6 @@ export default class UserSkillHistory extends Component {
       dataType: 'json',
       data: {
         category,
-        token: this.props.api_token,
         user_id: this.props.user_id,
         start_date: Moment(startDate).format(),
         end_date: Moment(endDate).format()

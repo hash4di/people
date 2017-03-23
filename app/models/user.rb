@@ -6,11 +6,17 @@ class User < ActiveRecord::Base
 
   has_many :memberships, -> { order(:ends_at) }, dependent: :destroy
   has_many :notes
+  has_many :notifications, foreign_key: :receiver_id
   has_many :positions
   has_many :projects, through: :memberships
   has_many :roles, through: :positions
   has_many :user_skill_rates
   has_many :skills, through: :user_skill_rates
+  has_many :rated_skills, -> {
+    where.not(
+      user_skill_rates: { rate: 0 }
+    )
+  }, through: :user_skill_rates, source: :skill
   belongs_to :contract_type
   belongs_to :location
   belongs_to :primary_role, class_name: 'Role'

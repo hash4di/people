@@ -21,8 +21,8 @@
               Skills
               %b.caret
             %ul.dropdown-menu
-              %li{ class: menu_class('skills') }= link_to 'My skills', user_skill_rates_path
-              %li{ class: menu_class('skills') }= link_to 'My skills history', skills_history_user_path(current_user)
+              %li{ class: menu_class('user_skill_rates') }= link_to 'My skills', user_skill_rates_path
+              %li{ class: menu_class('user_skill_rates', 'users') }= link_to 'My skills history', skills_history_user_path(current_user)
               - if policy(current_user).skill_access?
                 %li.divider{ role: 'separator' }
                 %li.dropdown-header Admin
@@ -32,7 +32,7 @@
                   %li.divider{ role: 'separator' }
                   %li.dropdown-header My team members history
                   - team_members.each do |member|
-                    %li{ class: menu_class('skills') }= link_to member.name, skills_history_user_path(member)
+                    %li= link_to member.name, skills_history_user_path(member)
 
           - if current_user.admin?
             %li.dropdown
@@ -45,6 +45,7 @@
                 %li= link_to "Reports", AppConfig.reports_url, target: '_blank'
       - if signed_in?
         %ul.nav.navbar-nav.navbar-right.user-profile
+          = render 'layouts/notifications', notifications: notifications
           %li.dropdown
             %a.dropdown-toggle{ href: '#', data: { toggle: 'dropdown' } }
               = current_user.gravatar_image size: :circle, class: 'img-rectangle'

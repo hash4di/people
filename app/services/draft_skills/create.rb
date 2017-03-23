@@ -8,6 +8,7 @@ module DraftSkills
       @user = user
       @skill = skill
       initialize_draft_skill!
+      dump_original_skill_details if @draft_skill.update_type?
     end
 
     def save!
@@ -24,6 +25,14 @@ module DraftSkills
     end
 
     private
+
+    def dump_original_skill_details
+      @draft_skill.original_skill_details = original_skill_details
+    end
+
+    def original_skill_details
+      @original_skill_details ||= skill.attributes.slice('name', 'description', 'rate_type', 'skill_category_id')
+    end
 
     def initialize_draft_skill!
       @draft_skill ||= begin

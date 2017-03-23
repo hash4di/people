@@ -11,9 +11,9 @@ export default class Filters {
   static selectSkills(users, store) {
     return users.filter(user => {
       let filteredUserSkills = user
-        .skill_ids
+        .rated_skill_ids
         .filter(id => store.skillIds.indexOf(id) > -1);
-      return filteredUserSkills.length > 0;
+      return filteredUserSkills.length == store.skillIds.length;
     });
   }
 }

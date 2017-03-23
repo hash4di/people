@@ -24,9 +24,9 @@ class ProjectStore {
       }
       this.setState({ projects: projects });
     };
-
+    // TODO: Handle failder response
     const failedToUpdate = () => {
-      debugger;
+      false;
     };
     ProjectSource.update(params).done(projectUpdated).fail(failedToUpdate);
     return false;

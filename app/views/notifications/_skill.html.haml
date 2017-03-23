@@ -1,0 +1,17 @@
+.row
+  .col-xs-12.col-md-5
+    %h4.text-center Skill details
+    - if notification.skill_created?
+      = render 'draft_skills/details', draft_skill: notification.notifiable
+    - elsif notification.skill_updated?
+      = render 'draft_skills/compared_details', draft_skill: notification.notifiable
+
+  .col-xs-12.col-md-5.col-md-offset-2
+    - if notification == last_notification
+      %h4.text-center Your rating
+
+      = react_component('notification_skill_rate', user_skill_rate)
+    - else
+      %h4.text-center
+        = link_to notification_path(last_notification, notification: {notification_status: 'notified'}), method: :put do
+          Take a look at the latest change for this skill

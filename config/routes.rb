@@ -2,6 +2,7 @@ Hrguru::Application.routes.draw do
   resources :user_skill_rates, only: [:index, :update]
   resources :skills
   resources :draft_skills
+  resources :notifications, only: [:show, :index, :update]
   devise_for(
     :users,
     controllers: {
@@ -42,7 +43,9 @@ Hrguru::Application.routes.draw do
     end
 
     namespace :v2 do
-      resources :users, only: [:index]
+      resources :users, only: [:index] do
+        get 'all', on: :collection
+      end
       resources :statistics, only: [:index]
       resources :skills, only: [:index]
       resources :user_skill_rates, only: [:index]

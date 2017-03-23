@@ -1,0 +1,5 @@
+%li.notification__item
+  = link_to notification_path(notification, notification: {notification_status: 'notified'}), method: :put, class: 'notification__link' do
+    %i.glyphicon.notification__item__icon{ class: notification.icon_class }
+    %span.notification__item__message
+      = raw notification.message

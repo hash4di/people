@@ -7,14 +7,9 @@ class UsersForSkillQuery
   end
 
   def results
-    skill.user_skill_rates.joins(:user).where(
+    skill.user_skill_rates.joins(user: :primary_role).where(
       'user_id IN (?)', query_scope
-    ).select(
-      selected_fields
-    ).order(
-      rate: :desc,
-      favorite: :desc
-    )
+    ).select(selected_fields).order(rate: :desc,favorite: :desc)
   end
 
   private
@@ -24,15 +19,16 @@ class UsersForSkillQuery
       user_skill_rates.id as user_skill_rate_id,
       rate,
       favorite,
-      user_id,
-      users.first_name as first_name,
-      users.last_name as last_name
+      user_skill_rates.user_id,
+      users.first_name,
+      users.last_name,
+      roles.name as role_name
     "
   end
 
   def query_scope
     if user_is_admin_or_talent
-      User.all.pluck(:id)
+      User.technical.active.pluck(:id)
     elsif user_has_team?
       team.users.pluck(:id)
     end

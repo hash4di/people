@@ -1,0 +1,12 @@
+.container
+  %h1
+    %i.glyphicon.notification__item__icon.notification__item__icon--lg{ class: notification.icon_class }
+    = notification.notification_type.humanize
+    %small= notification.humanized_sent_time
+  %hr
+
+  %p= raw notification.message
+
+  %hr
+  - if notification.skill?
+    = render 'skill'

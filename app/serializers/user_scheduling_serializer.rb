@@ -1,5 +1,5 @@
 class UserSchedulingSerializer < ActiveModel::Serializer
-  attributes :id, :gravatar, :primary_role, :name, :user_notes, :skill_ids, :rotation_class
+  attributes :id, :gravatar, :primary_role, :name, :user_notes, :skill_ids, :rated_skill_ids, :rotation_class
   has_many :current_memberships, embed: :objects, serializer: MembershipSchedulingSerializer
   has_many :next_memberships, embed: :objects, serializer: MembershipSchedulingSerializer
   has_many :booked_memberships, embed: :objects, serializer: MembershipSchedulingSerializer

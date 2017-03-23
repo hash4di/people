@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include Flip::ControllerFilters
 
   expose(:team_members) { fetch_team_members }
+  expose(:notifications) { fetch_unread_notificaitons }
 
   protect_from_forgery with: :exception
 
@@ -47,6 +48,12 @@ class ApplicationController < ActionController::Base
     return [] if team.nil?
     UserDecorator.decorate_collection(
       TeamUsersRepository.new(team).subordinates
+    )
+  end
+
+  def fetch_unread_notificaitons
+    NotificationDecorator.decorate_collection(
+      current_user.notifications.unread
     )
   end
 

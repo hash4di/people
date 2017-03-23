@@ -2,9 +2,20 @@ require 'spec_helper'
 
 describe 'Scheduling page', js: true do
   let(:admin_user) { create(:user, :admin, :developer) }
-  let!(:angular_skill) { create(:skill, name: 'AngularJS') }
-  let!(:dev_with_no_skillz) { create(:user, :developer) }
-  let!(:angular_dev) { create(:user, :developer, skills: [angular_skill]) }
+  let!(:dev_without_skills) { create(:user, :developer) }
+  let(:dev_with_two_skills) { create(:user, :developer) }
+  let(:ember_dev) { create(:user, :developer) }
+  let(:angular_skill) { create(:skill, name: 'AngularJS') }
+  let!(:user_skill_rate1) do
+    create(:user_skill_rate, user: dev_with_two_skills, skill: angular_skill, rate: 1)
+  end
+  let(:ember_skill) { create(:skill, name: 'EmberJS') }
+  let!(:user_skill_rate2) do
+    create(:user_skill_rate, user: dev_with_two_skills, skill: ember_skill, rate: 1)
+  end
+  let!(:user_skill_rate3) do
+    create(:user_skill_rate, user: ember_dev, skill: ember_skill, rate: 1)
+  end
   let!(:another_dev) { create(:user, :developer) }
   let!(:developer) { create(:developer_in_project, :with_project_scheduled_with_due_date) }
   let!(:pm) { create(:pm_user) }
@@ -17,7 +28,6 @@ describe 'Scheduling page', js: true do
              project: next_project
            })
   end
-
   let!(:scheduling_page) { App.new.scheduling_page }
 
   before do
@@ -27,12 +37,18 @@ describe 'Scheduling page', js: true do
 
   describe 'filters' do
     it 'allows to filter by skills' do
-      expect(page).to have_content angular_dev.last_name
-      expect(page).to have_content dev_with_no_skillz.last_name
+      expect(page).to have_content dev_with_two_skills.last_name
+      expect(page).to have_content dev_without_skills.last_name
+      expect(page).to have_content ember_dev.last_name
       wait_for_ajax
+      react_select('.skills', 'EmberJS')
+      expect(page).to have_content dev_with_two_skills.last_name
+      expect(page).to_not have_content dev_without_skills.last_name
+      expect(page).to have_content ember_dev.last_name
       react_select('.skills', 'AngularJS')
-      expect(page).to have_content angular_dev.last_name
-      expect(page).to_not have_content dev_with_no_skillz.last_name
+      expect(page).to have_content dev_with_two_skills.last_name
+      expect(page).to_not have_content ember_dev.last_name
+      expect(page).to_not have_content dev_without_skills.last_name
     end
   end
 

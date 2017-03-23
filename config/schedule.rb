@@ -17,6 +17,10 @@ every 1.month, at: '8 am' do
   rake 'slack:users_with_rotation_need'
 end
 
+every 1.month, at: 'start of the month at 8am' do
+  rake 'mailer:users_with_unread_notifications'
+end
+
 every 1.day, at: '8 am' do
   rake 'people:gravatars_download'
   rake 'mailer:users_without_primary_role'
