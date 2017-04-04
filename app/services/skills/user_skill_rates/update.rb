@@ -19,8 +19,15 @@ module Skills
       attr_reader :user_skill_rate_id, :params
 
       def sync_with_salesforce(user_skill_rate)
-        return unless Flip.salesforce_skills_sync?
-        sf_skill_rates_repository.sync(user_skill_rate)
+        return unless Flip.on?(:salesforce_skills_sync)
+        if user_skill_rates.errors.any?
+          message = "SF_SYNC:FAIL -- UserSkillRate=#{user_skill_rate.id}"
+        else
+          message = "SF_SYNC:OK -- UserSkillRate=#{user_skill_rate.id}"
+          sf_skill_rates_repository.sync(user_skill_rate)
+        end
+
+        Rails.logger.info message
       end
 
       def sf_skill_rates_repository
