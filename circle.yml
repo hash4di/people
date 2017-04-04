@@ -27,7 +27,7 @@ dependencies:
     - . ~/.bashrc
   post:
     - sudo apt-get update && sudo apt-get install libpango1.0-0
-    - npm install webpack -g
-    - webpack
+    - npm rebuild
+    - npm run build
   cache_directories:
     - "node_modules"

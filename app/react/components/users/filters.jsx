@@ -90,6 +90,7 @@ export default class Filters extends React.Component {
           <div className="users">
             <Select name="users" placeholder="Filter users..." type="text"
               multi={true}
+              simpleValue={true}
               options={userFilterOptions}
               value={userSelectValue}
               onChange={this.handleFilterUserChange} />
@@ -97,6 +98,7 @@ export default class Filters extends React.Component {
           <div className="roles">
             <Select name="roles" placeholder="Filter roles..." type="text"
               multi={true}
+              simpleValue={true}
               options={roleFilterOptions}
               value={roleSelectValue}
               onChange={this.handleFilterRoleChange} />
@@ -104,6 +106,7 @@ export default class Filters extends React.Component {
           <div className="projects">
             <Select name="projects-current" placeholder="Filter by current projects..." type="text"
               multi={true}
+              simpleValue={true}
               options={projectFilterOptions}
               value={currentProjectsSelectValue}
               onChange={this.handleFilterCurrentProjectsChange} />
@@ -111,6 +114,7 @@ export default class Filters extends React.Component {
           <div className="projects">
             <Select name="projects-old" placeholder="Filter by previous projects..." type="text"
               multi={true}
+              simpleValue={true}
               options={projectFilterOptions}
               value={previousProjectsSelectValue}
               onChange={this.handleFilterPreviousProjectsChange} />

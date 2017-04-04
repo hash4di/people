@@ -45,6 +45,7 @@ export default class FiltersDropdown extends React.Component {
               name={"filter-" + className}
               placeholder={"Filter " + className + "..."}
               multi={true}
+              simpleValue={true}
               value={selectValue}
               options={filterOptions}
               onChange={this.handleFilterChange} />

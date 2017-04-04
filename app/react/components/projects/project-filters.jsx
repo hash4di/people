@@ -93,6 +93,7 @@ export default class ProjectFilters extends React.Component {
               name="filter-roles"
               placeholder="Filter roles..."
               multi={true}
+              simpleValue={true}
               value={roleSelectValue}
               options={roleFilterOptions}
               onChange={this.handleFilterRoleChange} />
@@ -102,6 +103,7 @@ export default class ProjectFilters extends React.Component {
               name="filter-projects"
               placeholder="Filter projects..."
               multi={true}
+              simpleValue={true}
               value={projectSelectValue}
               options={projectFilterOptions}
               onChange={this.handleFilterProjectChange} />
@@ -111,6 +113,7 @@ export default class ProjectFilters extends React.Component {
               name="filter-users"
               placeholder="Filter users..."
               multi={true}
+              simpleValue={true}
               value={userSelectValue}
               options={userFilterOptions}
               onChange={this.handleFilterUserChange} />

@@ -1,12 +1,10 @@
-export default {
-  YELLOW: '#FFC300',
-  RED: '#FF2D0E',
-  SUNSET: '#E87200',
-  GREEN: '#57B80F',
-  GREY: '#d6dade',
-  LIGHT_GREY: '#f2f4f5',
-  LIGHT_BLUE: '#23a9db',
-  DARK_BLUE: '#084F73',
-  BLACK: 'black',
-  WHITE: 'white'
-};
+export const YELLOW = '#FFC300';
+export const RED = '#FF2D0E';
+export const SUNSET = '#E87200';
+export const GREEN = '#57B80F';
+export const GREY = '#d6dade';
+export const LIGHT_GREY = '#f2f4f5';
+export const LIGHT_BLUE = '#23a9db';
+export const DARK_BLUE = '#084F73';
+export const BLACK = 'black';
+export const WHITE = 'white';

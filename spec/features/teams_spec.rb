@@ -68,34 +68,6 @@ describe 'Team view', js: true do
     end
   end
 
-  describe "'edit team' button" do
-    before { teams_page.edit_team_icons.first.click }
-
-    let(:new_team_name) { 'Relatively OK team' }
-
-    it 'shows edit form' do
-      expect(teams_page).to have_edit_team_modal
-    end
-
-    # TODO find out why this won't work on CircleCI
-    xit 'updates team name' do
-      teams_page.new_name_input.set new_team_name
-      teams_page.save_button.click
-      wait_for_ajax
-      expect(team.reload.name).to eq new_team_name
-    end
-
-    it 'does not close the modal when new name is not given' do
-      teams_page.save_button.click
-      expect(teams_page).to have_edit_team_modal
-    end
-
-    it 'closes edit form' do
-      teams_page.edit_team_modal.cancel_button.click
-      expect(teams_page).to have_no_edit_team_modal
-    end
-  end
-
   describe "'add user to team' dropdown" do
     context 'when current_user is not an admin' do
       it 'is not visible' do

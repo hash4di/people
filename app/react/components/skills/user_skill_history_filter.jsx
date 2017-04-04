@@ -1,7 +1,9 @@
+import React from 'react';
+
 export default (props) => {
   const {
+    listItems = [],
     cssNamespace,
-    listItems,
     listPrimaryText,
     onItemClick,
     setDateRange,
