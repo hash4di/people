@@ -1,7 +1,7 @@
 module Salesforce
   module Synchroniser
     class UserSkillRates
-      def sync(skill_ids:, user_ids:)
+      def upsert(skill_ids:, user_ids:)
         user_skill_rates(user_ids, skill_ids).find_in_batches(batch_size: 5000) do |rates_group|
           client.add_batch job["id"], serialized(rates_group)
         end

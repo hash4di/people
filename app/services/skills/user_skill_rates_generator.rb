@@ -20,10 +20,8 @@ module Skills
     private
 
     def sync_with_salesforce(skill_ids:, user_ids:)
-      return true # temporary flag
-
-      Salesforce::Synchroniser::UserSkillRates.new.sync(
-        skill_ids: skill_ids
+      Salesforce::Synchroniser::UserSkillRates.new.upsert(
+        skill_ids: skill_ids,
         user_ids: user_ids
       )
     end

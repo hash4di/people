@@ -14,8 +14,6 @@ module Salesforce
 
     def close_job(job_id)
       send_request Salesforce::Requests::CloseJob.new(job_id, session)
-
-      binding.pry
     end
 
     def add_batch(job_id, items)
@@ -26,7 +24,7 @@ module Salesforce
 
     def send_request(request)
       authorize! if session_expired?
-      success= request.call
+      success = request.call
       @last_response = request.response
 
       if success
@@ -38,11 +36,11 @@ module Salesforce
     end
 
     def session_expired?
-      session[:valid_until] > Time.zone.now - 3.seconds
+      session[:valid_until] > Time.zone.now - 1.minute
     end
 
     def extend_token_validity!
-      session[:valid_until] += 2.hours
+      session[:valid_until] = Time.zone.now + 2.hours
     end
 
     def authorize!
