@@ -12,7 +12,7 @@ RSpec.describe Salesforce::SkillsRepository do
         skill_category: SkillCategory.new(name: 'backend'),
       )
     end
-    let(:salesforce_resource_name) { "DeveloperSkill__c" }
+    let(:salesforce_resource_name) { "Skill__c" }
     let(:expected_salesforce_attributes) do
       {
         Name: "Debugging",

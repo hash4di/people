@@ -1,7 +1,7 @@
 module Salesforce
   class SkillsRepository < GenericRepository
     def salesforce_object_name
-      'DeveloperSkill__c'
+      'Skill__c'
     end
 
     def map_to_salesforce(skill)
