@@ -36,3 +36,7 @@ end
 
 FactoryGirl.create_list(:user, 50) if Rails.env.development?
 
+# Flip features
+Feature.find_or_create_by(key: 'salesforce_skills_sync') do |flag|
+  flag.enabled = Rails.env.production?
+end
