@@ -1,33 +1,38 @@
-module Salesforce::Synchroniser::UserSkillRates
-  BATCH_SIZE = 5000
-
-  class << self
+module Salesforce::Synchroniser
+  class UserSkillRates < Salesforce::Synchroniser::Base
     def upsert(skill_ids:, user_ids:)
-      job = create_job('upsert')
+      job = create_job('upsert', UserSkillRate)
+
       user_skill_rates(user_ids, skill_ids).find_in_batches(batch_size: BATCH_SIZE) do |rates_group|
+        binding.pry
         bulk_client.add_batch job["id"], serialized(rates_group)
       end
 
-      close job
+      close_job job
     end
 
     def mass_delete!
-      job = create_job('delete')
       entries = restforce_client.query("select id from SkillRating__c").entries
+      return if entries.blank?
+
+      job = create_job('delete', UserSkillRate)
 
       entries.each_slice(BATCH_SIZE) do |batch|
-        json_batch = batch.map { |r| r.slice("id") }.to_json
+        json_batch = batch.map { |r| r.slice("Id") }.to_json
         bulk_client.add_batch job["id"], json_batch
       end
 
-      close job
+      close_job job
+    end
+
+    def mass_upsert!
+      upsert(
+        user_ids: User.active.pluck(:id),
+        skill_ids: Skill.pluck(:id)
+      )
     end
 
     private
-
-    def close(job)
-      bulk_client.close_job(job['id'])
-    end
 
     def serialized(usr)
       ActiveModel::ArraySerializer.new(
@@ -39,22 +44,6 @@ module Salesforce::Synchroniser::UserSkillRates
       @user_skill_rates ||= UserSkillRate
         .includes(:user, :skill)
         .where(user_id: user_ids, skill_id: skill_ids)
-    end
-
-    def bulk_client
-      @client ||= Salesforce::BulkClient.new
-    end
-
-    def restforce_client
-      @rclient ||= Restforce.new
-    end
-
-    def create_job(operation)
-      bulk_client.create_job(
-        external_id_field_name: UserSkillRate::SALESFORCE.fetch(:external_id),
-        sf_object: UserSkillRate::SALESFORCE.fetch(:object),
-        operation: operation
-      )["jobInfo"]
     end
   end
 end
