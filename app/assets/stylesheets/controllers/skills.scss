@@ -2,10 +2,7 @@ body.skills {
   &.index {
     .skills__actions {
       min-width: 120px;
-    }
-
-    .skills-header {
-      margin-top: 15px;
+      z-index: 10;
     }
   }
 }

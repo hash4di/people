@@ -17,9 +17,17 @@ deployment:
 dependencies:
   pre:
     - cp config/sec_config.yml.sample config/sec_config.yml
+    - sudo pip install mozdownload mozinstall
+    - mozdownload --version 51.0.1 --destination firefox.tar.bz2
+    - mozinstall firefox.tar.bz2
+    - wget https://github.com/mozilla/geckodriver/releases/download/v0.13.0/geckodriver-v0.13.0-linux64.tar.gz
+    - tar -xvzf geckodriver*
+    - chmod +x geckodriver
+    - export PATH=$PATH:/home/ubuntu/people/geckodriver
+    - . ~/.bashrc
   post:
-    - sudo apt-get update && sudo apt-get install libpango1.0-0 && sudo apt-get install firefox
-    - npm install webpack -g
-    - webpack
+    - sudo apt-get update && sudo apt-get install libpango1.0-0
+    - npm rebuild
+    - npm run build
   cache_directories:
     - "node_modules"

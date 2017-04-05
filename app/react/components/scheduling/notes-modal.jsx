@@ -21,13 +21,11 @@ export default class NotesModal extends React.Component {
 
     const modalStyles = {
       content : {
-        top                   : '35%',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)',
-        padding               : '0'
+        top: '20%',
+        left: '0',
+        width: '50%',
+        'background-color': 'white',
+        border: '1px solid grey',
       }
     };
 

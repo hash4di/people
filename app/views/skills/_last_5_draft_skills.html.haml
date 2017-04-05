@@ -23,11 +23,13 @@
             - else
               %span.text-danger not resolved
           %th
-            .btn-group.skills__actions{ role: "group", aria: { label: "Actions" } }
-              = link_to draft_skill, class: "btn btn-info", role: 'button' do
-                %i.glyphicon.glyphicon-search
+            .skills__actions
+              .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Display request details for change' }
+                = link_to draft_skill, class: "btn btn-info", role: 'button' do
+                  %i.glyphicon.glyphicon-search
               - unless draft_skill.resolved?
-                = link_to edit_draft_skill_path(draft_skill),
-                          class: "btn btn-primary",
-                          role: 'button' do
-                  %i.glyphicon.glyphicon-edit
+                .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Review request details for change' }
+                  = link_to edit_draft_skill_path(draft_skill),
+                            class: "btn btn-primary #{update_request_btn_class(draft_skill, current_user)}",
+                            role: 'button' do
+                    %i.glyphicon.glyphicon-edit

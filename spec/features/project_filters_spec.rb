@@ -28,7 +28,6 @@ describe 'Project dashboard filters', js: true do
     end
   end
 
-
   describe 'users filter' do
     it 'returns only matched projects when user name provided' do
       react_select('.filter.users', 'Developer Daisy')
@@ -62,12 +61,6 @@ describe 'Project dashboard filters', js: true do
     it 'shows all projects when empty string provided' do
       expect(projects_page).to have_text('zztop')
       expect(projects_page).to have_text('test')
-    end
-
-    it 'shows only matched projects when project name provided' do
-      react_select('.filter.projects', 'zztop')
-      expect(projects_page).to have_text('zztop')
-      expect(projects_page).not_to have_text('test')
     end
   end
 end

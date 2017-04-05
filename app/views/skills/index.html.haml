@@ -1,9 +1,10 @@
 .container
+  = render 'shared/categories_modal'
   %h1 Listing skills
 
   %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
     %li
-      %h4.skills-header.text-primary Skill categories:
+      %h4.table__header.text-primary Skill categories:
     - @grouped_skills_by_category.keys.each_with_index do |skill_category|
       %li{ role: "presentation" }
         %a{ id: "#{parameterize(skill_category)}-tab", aria: { controls: parameterize(skill_category), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(skill_category)}", role: "tab" }= skill_category
@@ -29,20 +30,24 @@
                 %td= skill.description
                 %td= skill.rate_type
                 %td
-                  .btn-group.skills__actions{ role: "group", aria: { label: "Actions" } }
-                    = link_to skill, class: "btn btn-info", role: 'button' do
-                      %i.glyphicon.glyphicon-search
+                  .skills__actions
+                    .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Display skill details' }
+                      = link_to skill, class: 'btn btn-info', role: 'button' do
+                        %i.glyphicon.glyphicon-search
                     - if skill.requested_change
-                      = link_to edit_skill_path(skill),
-                                class: "btn btn-primary disabled",
-                                role: 'button' do
-                        %i.glyphicon.glyphicon-cog
-                      = link_to edit_draft_skill_path(skill.requested_change),
-                                class: "btn btn-danger #{update_request_btn_class(skill.requested_change, current_user)}",
-                                role: 'button' do
-                        %i.glyphicon.glyphicon-comment
+                      .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Access denied because there already is request for change' }
+                        = link_to edit_skill_path(skill),
+                          class: 'btn btn-primary disabled',
+                          role: 'button' do
+                          %i.glyphicon.glyphicon-cog
+                      .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Review request details for change' }                          
+                        = link_to edit_draft_skill_path(skill.requested_change),
+                          class: "btn btn-danger #{update_request_btn_class(skill.requested_change, current_user)}",
+                          role: 'button' do
+                          %i.glyphicon.glyphicon-comment
                     - else
-                      = link_to edit_skill_path(skill),
-                                class: "btn btn-primary",
-                                role: 'button' do
-                        %i.glyphicon.glyphicon-cog
+                      .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Click to edit skill' }                    
+                        = link_to edit_skill_path(skill),
+                          class: 'btn btn-primary',
+                          role: 'button' do
+                          %i.glyphicon.glyphicon-cog

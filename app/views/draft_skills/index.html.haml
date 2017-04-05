@@ -1,9 +1,10 @@
 .container
-  %h1 Listing draft skills
+  = render 'shared/requested_changes_modal'
+  %h1 Listing requested changes
 
   %ul.js-skills-tab.nav.nav-tabs{ role: "tablist" }
     %li
-      %h4.skills-header.text-primary Request status:
+      %h4.table__header.text-primary Request status:
     - grouped_draft_skills_by_status.keys.each_with_index do |draft_skill_status|
       %li{ role: "presentation" }
         %a{ id: "#{parameterize(draft_skill_status)}-tab", aria: { controls: parameterize(draft_skill_status), expanded: "false"}, data: { toggle: "tab" }, href: "##{parameterize(draft_skill_status)}", role: "tab" }= draft_skill_status
@@ -39,11 +40,13 @@
                     = link_to draft_skill.reviewer&.full_name, user_path(draft_skill.reviewer)
                 %td= draft_skill.reviewer_explanation
                 %td
-                  .btn-group.skills__actions{ role: "group", aria: { label: "Actions" } }
-                    = link_to draft_skill, class: "btn btn-info", role: 'button' do
-                      %i.glyphicon.glyphicon-search
+                  .skills__actions
+                    .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Display request details for change' }
+                      = link_to draft_skill, class: "btn btn-info", role: 'button' do
+                        %i.glyphicon.glyphicon-search
                     - unless draft_skill.resolved?
-                      = link_to edit_draft_skill_path(draft_skill),
-                                class: "btn btn-primary #{update_request_btn_class(draft_skill, current_user)}",
-                                role: 'button' do
-                        %i.glyphicon.glyphicon-edit
+                      .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Show request details for change' }
+                        = link_to edit_draft_skill_path(draft_skill),
+                          class: "btn btn-primary #{update_request_btn_class(draft_skill, current_user)}",
+                          role: 'button' do
+                          %i.glyphicon.glyphicon-edit

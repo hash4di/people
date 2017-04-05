@@ -6,9 +6,33 @@ describe 'User skill rates page', js: true do
   let(:skill_category_1) { create :skill_category, name: 'backend' }
   let(:skill_category_2) { create :skill_category, name: 'ios' }
 
-  let(:skills_range) { create_list :skill, 2, :with_range_rate_type, skill_category: skill_category_1 }
-  let(:skills_boolean) { create_list :skill, 2, :with_boolean_rate_type, skill_category: skill_category_2 }
+  let(:skills_range) { [range_skill_1, range_skill_2] }
+  let!(:range_skill_1) do
+    create(:skill, :with_range_rate_type,
+      skill_category: skill_category_1,
+      name: 'a skill'
+    )
+  end
+  let!(:range_skill_2) do
+    create(:skill, :with_range_rate_type,
+      skill_category: skill_category_1,
+      name: 'b skill'
+    )
+  end
 
+  let!(:boolean_skill_1) do
+    create(:skill, :with_boolean_rate_type,
+      skill_category: skill_category_2,
+      name: 'c skill'
+    )
+  end
+  let!(:boolean_skill_2) do
+    create(:skill, :with_boolean_rate_type,
+      skill_category: skill_category_2,
+      name: 'd skill'
+    )
+  end
+  let(:skills_boolean) { [boolean_skill_1, boolean_skill_2] }
   let!(:developer) { create(:user, :developer, skills: skills_range + skills_boolean) }
 
   context 'when user does not have any marked skills' do
