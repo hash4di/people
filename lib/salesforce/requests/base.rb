@@ -1,5 +1,6 @@
 module Salesforce::Requests
   NodeAbsent = Class.new(StandardError)
+  NotImplemented = Class.new(StandardError)
 
   SF = AppConfig.salesforce
   FILE = :provide_file_name
@@ -22,15 +23,15 @@ module Salesforce::Requests
     private
 
     def url
-      ''
+      raise NotImplemented
     end
 
     def headers
-     {}
+     raise NotImplemented
     end
 
     def options
-      { headers: {}, body: :none }
+      raise NotImplemented
     end
 
     def success?
