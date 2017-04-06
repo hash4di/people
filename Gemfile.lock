@@ -460,6 +460,7 @@ GEM
     rabl (0.11.8)
       activesupport (>= 2.3.14)
     rack (1.6.4)
+    rack-cors (0.4.1)
     rack-mini-profiler (0.9.8)
       rack (>= 1.1.3)
     rack-test (0.6.3)
@@ -700,6 +701,7 @@ DEPENDENCIES
   pundit
   quiet_assets
   rabl
+  rack-cors
   rack-mini-profiler
   rack_session_access
   rails (~> 4.2)
@@ -730,4 +732,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.13.6
+   1.14.5

@@ -48,7 +48,7 @@ describe Api::V3::MembershipsController do
     it 'returns correct values' do
       expect(json_response).to be_kind_of(Array)
       expect(json_response.first.keys).to contain_exactly(
-        'project_name', 'user_name', 'user_email', 'user_role'
+        'id', 'project_name', 'user_name', 'user_email', 'user_role'
       )
     end
   end

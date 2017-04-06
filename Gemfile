@@ -60,6 +60,7 @@ gem 'httparty'
 gem 'active_model_serializers'
 gem 'react_webpack_rails'
 gem 'rake-progressbar'
+gem 'rack-cors', require: 'rack/cors'
 
 group :development do
   gem 'better_errors'

@@ -1,7 +1,7 @@
 module Api
   module V3
     class MembershipsHistorySerializer < ActiveModel::Serializer
-      attributes :project_name, :user_name, :user_email, :user_role
+      attributes :project_name, :user_name, :user_email, :user_role, :id
 
       def project_name
         object.project.name
