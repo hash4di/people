@@ -12,4 +12,5 @@ describe Api::V3::MembershipsHistorySerializer do
   it { expect(subject[:user_role]).to eq(role.name) }
   it { expect(subject[:user_name]).to eq(user_full_name) }
   it { expect(subject[:user_email]).to eq(user.email) }
+  it { expect(subject[:id]).to eq(object.id) }
 end
