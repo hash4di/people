@@ -28,7 +28,12 @@ module Hrguru
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
         origins '*'
-        resource '*', headers: :any, methods: [:get]
+        resource(
+          '*',
+          headers: :any,
+          methods: [:get],
+          if: proc { |env| env['PATH_INFO'].start_with? "/api" }
+        )
       end
     end
 
