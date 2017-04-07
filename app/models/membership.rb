@@ -24,8 +24,21 @@ class Membership < ActiveRecord::Base
   scope :archived, -> { where(project_archived: true) }
   scope :active, -> { non_archived.non_booked.non_potential }
   scope :potential, -> { where(project_potential: true) }
-  scope :with_role, ->(role) { where(role: role) }
-  scope :with_user, ->(user) { where(user: user) }
+  scope :with_role, -> (role) { where(role: role) }
+  scope :with_user, -> (user) { where(user: user) }
+  scope :without_user, -> (user) { where('user_id != ?', user.id) }
+  scope :overlaps, -> (starts_at, ends_at) do
+    where(
+      '(
+        (starts_at, ends_at) overlaps (:starts_at, :ends_at)
+        OR
+        (starts_at < :starts_at AND ends_at is NULL)
+        OR
+        (starts_at > :starts_at AND starts_at < ends_at AND ends_at is NULL)
+      )',
+      starts_at: starts_at, ends_at: ends_at
+    )
+  end
   scope :unfinished, -> do
     joins(:project)
       .where(
