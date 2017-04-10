@@ -29,14 +29,8 @@ class Membership < ActiveRecord::Base
   scope :without_user, -> (user) { where('user_id != ?', user.id) }
   scope :overlaps, -> (starts_at, ends_at) do
     where(
-      '(
-        (starts_at, ends_at) overlaps (:starts_at, :ends_at)
-        OR
-        (starts_at < :starts_at AND ends_at is NULL)
-        OR
-        (starts_at > :starts_at AND starts_at < ends_at AND ends_at is NULL)
-      )',
-      starts_at: starts_at, ends_at: ends_at
+      '(starts_at, COALESCE(ends_at, :now)) overlaps (:starts_at, :ends_at)',
+      starts_at: membership.starts_at, ends_at: membership.ends_at, now: Time.zone.now
     )
   end
   scope :unfinished, -> do
