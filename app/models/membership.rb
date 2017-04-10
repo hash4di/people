@@ -32,7 +32,7 @@ class Membership < ActiveRecord::Base
   scope :overlaps, -> (starts_at, ends_at) do
     where(
       '(starts_at, COALESCE(ends_at, :now)) overlaps (:starts_at, :ends_at)',
-      starts_at: membership.starts_at, ends_at: membership.ends_at, now: Time.zone.now
+      starts_at: starts_at, ends_at: ends_at, now: Time.zone.now
     )
   end
   scope :unfinished, -> do
