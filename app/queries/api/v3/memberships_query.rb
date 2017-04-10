@@ -14,7 +14,8 @@ module Api
       private
 
       def overlapped_with(membership)
-        ends_at = membership.ends_at || Time.zone.now + 1.month
+        date_in_future = Time.zone.now + 1.month
+        ends_at = membership.ends_at || date_in_future
         Membership.only_active_user.without_user(
           user
         ).with_project(membership.project).overlaps(
