@@ -24,7 +24,9 @@ module Api
       end
 
       def all_user_memberhips
-        @all_user_memberhips ||= Membership.with_user(user).overlaps(
+        @all_user_memberhips ||= Membership.with_user(user).without_project(
+          'Internals'
+        ).overlaps(
           filter_params[:f2f_date], Time.zone.now
         )
       end
