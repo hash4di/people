@@ -57,6 +57,8 @@ Hrguru::Application.routes.draw do
         get :technical, on: :collection
       end
       resources :memberships, only: [:index]
+      resources :teams, only: [:index]
+      resources :team_members, only: [:index]
     end
   end
 
