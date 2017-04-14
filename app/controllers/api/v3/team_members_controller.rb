@@ -1,7 +1,7 @@
 module Api
   module V3
     class TeamMembersController < Api::ApiController
-      expose(:team_members) { team.users }
+      expose(:team_members) { team.users.active }
       expose(:team) do
         Team.where(name: team_members_params['team_name']).first
       end
