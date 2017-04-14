@@ -20,14 +20,18 @@ describe 'Skills page', js: true do
     skills_page.load
   end
 
+  def skill_form(page)
+    page.skill_name.set 'capybara'
+    page.skill_description.set 'test test test'
+    page.skill_rate_type.select 'range'
+    page.skill_category.select 'backend'
+    page.requester_explanation.set 'test test test'
+    page.create_skill.click
+  end
+
   it 'adds new skill' do
     skills_page.add_new_skill.click
-    skills_new_page.skill_name.set 'capybara'
-    skills_new_page.skill_description.set 'test test test'
-    skills_new_page.skill_rate_type.select 'range'
-    skills_new_page.skill_category.select 'backend'
-    skills_new_page.requester_explanation.set 'test test test'
-    skills_new_page.create_skill.click
+    skill_form(skills_new_page)
     expect(draft_skills_page).to have_content I18n.t('skills.message.create.success')
   end
 
@@ -39,12 +43,7 @@ describe 'Skills page', js: true do
 
   it 'edits skill' do
     skills_page.edit_skill.first.click
-    skill_edit_page.skill_name.set "test 2 test"
-    skill_edit_page.skill_description.set 'test test test'
-    skill_edit_page.skill_rate_type.select 'range'
-    skill_edit_page.skill_category.select 'backend'
-    skill_edit_page.requester_explanation.set 'test test test'
-    skill_edit_page.create_skill.click
+    skill_form(skill_edit_page)
     expect(draft_skills_page).to have_content I18n.t('skills.message.update.success')
   end
 end
