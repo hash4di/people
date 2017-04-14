@@ -8,11 +8,12 @@ describe Api::V3::TeamMembersController do
       create(
         :team,
         name: 'alpha',
-        users: [team_member_1, team_member_2]
+        users: [team_member_1, team_member_2, team_member_3]
       )
     end
     let(:team_member_1) { create(:user) }
     let(:team_member_2) { create(:user) }
+    let(:team_member_3) { create(:user, :archived) }
 
     let(:token) { AppConfig.api_token }
     let(:params) do
