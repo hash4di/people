@@ -1,0 +1,11 @@
+.row
+  .col-sm-8.col-sm-offset-2
+    %h2 Account settings
+%hr
+.row
+  .col-sm-8.col-sm-offset-2
+    %p
+      %b Your People API integration token:
+    %p= user.api_token
+    = link_to 'Generate new token', generate_account_settings_path, class: 'btn btn-primary'
+%hr
