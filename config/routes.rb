@@ -3,6 +3,9 @@ Hrguru::Application.routes.draw do
   resources :skills
   resources :draft_skills
   resources :notifications, only: [:show, :index, :update]
+  resources :account_settings, only: [:index] do
+    get :generate, on: :collection
+  end
   devise_for(
     :users,
     controllers: {
@@ -55,6 +58,7 @@ Hrguru::Application.routes.draw do
       resources :user_skill_rates, only: :index
       resources :users, only: [] do
         get :technical, on: :collection
+        get :sign_in, on: :collection
       end
       resources :memberships, only: [:index]
       resources :teams, only: [:index]

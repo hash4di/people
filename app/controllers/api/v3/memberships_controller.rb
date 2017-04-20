@@ -1,6 +1,6 @@
 module Api
   module V3
-    class MembershipsController < Api::ApiController
+    class MembershipsController < Api::V3::BaseController
       expose(:memberships) do
         Api::V3::MembershipsQuery.new.all_overlapped(filter_params)
       end
