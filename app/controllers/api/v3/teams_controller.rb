@@ -1,6 +1,6 @@
 module Api
   module V3
-    class TeamsController < Api::ApiController
+    class TeamsController < Api::V3::BaseController
       expose(:teams) { Team.all }
 
       def index

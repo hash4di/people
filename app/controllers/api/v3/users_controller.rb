@@ -1,6 +1,6 @@
 module Api
   module V3
-    class UsersController < Api::ApiController
+    class UsersController < Api::V3::BaseController
       expose(:technical_users) { ScheduledUsersRepository.new.all }
 
       def technical
