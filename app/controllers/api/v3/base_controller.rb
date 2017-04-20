@@ -10,8 +10,8 @@ module Api
       end
 
       def user_authenticated?
-        email = request.headers["email"]
-        api_token = request.headers["api_token"]
+        email = request.headers["X-Email"]
+        api_token = request.headers["X-Api-Token"]
         return false if email.blank? || api_token.blank?
         User.where(email: email, api_token: api_token).active.exists?
       end

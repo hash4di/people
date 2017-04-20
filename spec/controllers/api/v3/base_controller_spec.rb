@@ -40,8 +40,8 @@ describe Api::V3::BaseController do
 
       context 'when current_user does not exist' do
         before do
-          request.headers["email"] = email
-          request.headers["api_token"] = api_token
+          request.headers["X-Email"] = email
+          request.headers["X-Api-Token"] = api_token
           get :index
         end
         let(:user) { create(:user) }
