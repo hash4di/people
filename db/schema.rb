@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224081119) do
+ActiveRecord::Schema.define(version: 20170419143859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -281,6 +281,7 @@ ActiveRecord::Schema.define(version: 20170224081119) do
     t.integer  "role_id"
     t.boolean  "admin",              default: false
     t.integer  "commitment"
+    t.string   "api_token"
   end
 
   add_index "users", ["contract_type_id"], name: "index_users_on_contract_type_id", using: :btree
