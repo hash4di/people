@@ -23,20 +23,19 @@ class Membership < ActiveRecord::Base
   scope :non_archived, -> { where(project_archived: false) }
   scope :archived, -> { where(project_archived: true) }
   scope :active, -> { non_archived.non_booked.non_potential }
+  scope :only_active_user, -> { joins(:user).where(users: { archived: false } ) }
   scope :potential, -> { where(project_potential: true) }
   scope :with_role, -> (role) { where(role: role) }
   scope :with_user, -> (user) { where(user: user) }
   scope :without_user, -> (user) { where('user_id != ?', user.id) }
+  scope :without_project, -> (project_name) do
+    joins(:project).where.not(projects: { name: project_name })
+  end
+  scope :with_project, -> (project) { where(project: project) }
   scope :overlaps, -> (starts_at, ends_at) do
     where(
-      '(
-        (starts_at, ends_at) overlaps (:starts_at, :ends_at)
-        OR
-        (starts_at < :starts_at AND ends_at is NULL)
-        OR
-        (starts_at > :starts_at AND starts_at < ends_at AND ends_at is NULL)
-      )',
-      starts_at: starts_at, ends_at: ends_at
+      '(memberships.starts_at, COALESCE(ends_at, :now)) overlaps (:starts_at, :ends_at)',
+      starts_at: starts_at, ends_at: ends_at, now: Time.zone.now
     )
   end
   scope :unfinished, -> do

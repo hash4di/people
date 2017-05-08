@@ -21,6 +21,10 @@ module Api
       unauthorized! unless current_user.try(:admin?)
     end
 
+    def authorized!
+      render(nothing: true, status: 200)
+    end
+
     def unauthorized!
       render(nothing: true, status: 403)
     end
