@@ -5,6 +5,7 @@ describe 'Skills page', js: true do
   let(:skills_new_page) { App.new.skills_new_page }
   let(:draft_skills_page) { App.new.draft_skills_page }
   let(:skill_edit_page) { App.new.skill_edit_page }
+  let(:draft_skill_edit_page) { App.new.draft_skill_edit_page }
 
 
   let(:skill_category_1) { create :skill_category, name: 'backend' }
@@ -17,33 +18,66 @@ describe 'Skills page', js: true do
 
   before do
     log_in_as admin_user
-    skills_page.load
   end
 
-  def skill_form(page)
-    page.skill_name.set 'capybara'
-    page.skill_description.set 'test test test'
-    page.skill_rate_type.select 'range'
-    page.skill_category.select 'backend'
-    page.requester_explanation.set 'test test test'
-    page.create_skill.click
+  context 'when Admin is working on his skills' do
+
+    before do
+      skills_page.load
+    end
+
+    def skill_form(page)
+      page.skill_name.set 'capybara'
+      page.skill_description.set 'test test test'
+      page.skill_rate_type.select 'range'
+      page.skill_category.select 'backend'
+      page.requester_explanation.set 'test test test'
+      page.create_skill.click
+    end
+
+    it 'adds new skill' do
+      skills_page.add_new_skill.click
+      skill_form(skills_new_page)
+      expect(draft_skills_page).to have_content I18n.t('skills.message.create.success')
+    end
+
+    it 'tries to add new skill without mandatory fields' do
+      skills_page.add_new_skill.click
+      skills_new_page.create_skill.click
+      expect(skills_page).to have_content 'Skill category and skill name have to be set.'
+    end
+
+    it 'edits skill' do
+      skills_page.edit_skill.first.click
+      skill_form(skill_edit_page)
+      expect(draft_skills_page).to have_content I18n.t('skills.message.update.success')
+    end
   end
 
-  it 'adds new skill' do
-    skills_page.add_new_skill.click
-    skill_form(skills_new_page)
-    expect(draft_skills_page).to have_content I18n.t('skills.message.create.success')
-  end
+  context 'when Admin is working on requested changes' do
+    let!(:draft_skill1) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1 }
 
-  it 'tries to add new skill without mandatory fields' do
-    skills_page.add_new_skill.click
-    skills_new_page.create_skill.click
-    expect(skills_page).to have_content 'Skill category and skill name have to be set.'
-  end
+    before do
+      draft_skills_page.load
+    end
 
-  it 'edits skill' do
-    skills_page.edit_skill.first.click
-    skill_form(skill_edit_page)
-    expect(draft_skills_page).to have_content I18n.t('skills.message.update.success')
+    it 'accepts draft skill' do
+      draft_skills_page.edit_skill.first.click
+      draft_skill_edit_page.reviewer_explanation.set 'test reason'
+      draft_skill_edit_page.accept_button.click
+      expect(draft_skills_page).to have_content 'Request was successfully updated.'
+      visit '/skills'
+      expect(skills_page).to have_content draft_skill1.name
+    end
+
+    it 'rejects draft skill' do
+      draft_skills_page.edit_skill.first.click
+      draft_skill_edit_page.reviewer_explanation.set 'test reason'
+      draft_skill_edit_page.cancel_button.click
+      expect(draft_skills_page).to have_content 'Request was successfully updated.'
+      visit '/skills'
+      expect(skills_page).to_not have_content draft_skill1.name
+    end
+
   end
 end
