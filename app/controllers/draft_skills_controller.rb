@@ -17,7 +17,7 @@ class DraftSkillsController < ApplicationController
     authorize draft_skill, :allowed_to_modify?
     respond_to do |format|
       if DraftSkills::Update.new(draft_skill, draft_skill_params).call
-        format.html { redirect_to draft_skill, notice: 'Request was successfully updated.' }
+        format.html { redirect_to draft_skill, notice: I18n.t('drafts.message.update.success') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
