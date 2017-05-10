@@ -63,6 +63,10 @@ class App < SitePrism::Page
     DraftSkillsPage.new
   end
 
+  def draft_skill_edit_page
+    DraftSkillEditPage.new
+  end
+
   def skill_edit_page
     SkillEditPage.new
   end
