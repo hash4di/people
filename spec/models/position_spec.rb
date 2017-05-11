@@ -29,7 +29,7 @@ describe Position do
 
   describe '#validate chronology' do
     let(:juniorRole) { create(:role, name: 'junior', technical: true, priority: 3) }
-    let!(:seniorRole) { create(:role, name: 'senior', technical: true, priority: 1) }
+    let!(:seniorRole) { create(:role, name: 'senior', technical: true, priority: 4) }
     let!(:user) { create(:user, primary_role: juniorRole) }
     let!(:juniorPos) do
       create(:position,

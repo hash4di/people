@@ -15,16 +15,16 @@ class Position
         next_positions_have_greater_or_equal_priority?(positions, position)
     end
 
-    def previous_positions_have_less_or_equal_priority?(positions, position)
-      positions.select do |p|
-        p[0] < position.starts_at
-      end.all? { |p| p[1] >= position.role.priority }
+    def previous_positions_have_less_or_equal_priority?(positions, new_position)
+      positions.select do |position|
+        position[0] < new_position.starts_at
+      end.all? { |previous_position| previous_position[1] <= new_position.role.priority }
     end
 
-    def next_positions_have_greater_or_equal_priority?(positions, position)
-      positions.select do |p|
-        p[0] > position.starts_at
-      end.all? { |p| p[1] <= position.role.priority }
+    def next_positions_have_greater_or_equal_priority?(positions, new_position)
+      positions.select do |position|
+        position[0] > new_position.starts_at
+      end.all? { |next_position| next_position[1] >= new_position.role.priority }
     end
   end
 end
