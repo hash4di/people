@@ -233,7 +233,7 @@
               %th Min dev's number of commits
               %th No of tickets added after sprint start
           %tbody
-            - project_info[:kpi].sort_by { |kpi| kpi[:end_date] }.reverse.first(12).each do |kpi|
+            - project_kpi.each do |kpi|
               %tr
                 %td= kpi[:end_date]
                 %td= kpi[:sprint_realization]
