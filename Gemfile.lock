@@ -108,6 +108,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-screenshot (1.0.14)
+      capybara (>= 1.0, < 3)
+      launchy
     capybara-webkit (1.8.0)
       capybara (>= 2.3.0, < 2.7.0)
       json
@@ -651,6 +654,7 @@ DEPENDENCIES
   capistrano-docker!
   capistrano-rvm
   capybara
+  capybara-screenshot
   capybara-webkit
   carrierwave
   codeclimate-test-reporter
@@ -732,4 +736,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.14.5
+   1.14.6
