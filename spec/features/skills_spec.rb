@@ -7,7 +7,6 @@ describe 'Skills page', js: true do
   let(:skill_edit_page) { App.new.skill_edit_page }
   let(:draft_skill_edit_page) { App.new.draft_skill_edit_page }
 
-
   let(:skill_category_1) { create :skill_category, name: 'backend' }
   let(:skill_category_2) { create :skill_category, name: 'ios' }
 
@@ -16,15 +15,10 @@ describe 'Skills page', js: true do
 
   let!(:admin_user) { create(:user, :admin, skills: skills_range + skills_boolean) }
 
-  before do
-    log_in_as admin_user
-  end
+  before { log_in_as admin_user }
 
   context 'when Admin is working on his skills' do
-
-    before do
-      skills_page.load
-    end
+    before { skills_page.load }
 
     def skill_form(page)
       page.skill_name.set 'capybara'
@@ -56,7 +50,7 @@ describe 'Skills page', js: true do
 
   context 'when Admin is working on requested changes' do
     context 'created with another user' do
-      let!(:draft_skill1) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1 }
+      let!(:draft_skill_1) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1 }
       let(:success_message) { I18n.t('drafts.message.update.success') }
 
       before do
@@ -69,7 +63,7 @@ describe 'Skills page', js: true do
         draft_skill_edit_page.accept_button.click
         expect(draft_skills_page).to have_content success_message
         visit '/skills'
-        expect(skills_page).to have_content draft_skill1.name
+        expect(skills_page).to have_content draft_skill_1.name
       end
 
       it 'rejects draft skill' do
@@ -77,7 +71,7 @@ describe 'Skills page', js: true do
         draft_skill_edit_page.cancel_button.click
         expect(draft_skills_page).to have_content success_message
         visit '/skills'
-        expect(skills_page).to_not have_content draft_skill1.name
+        expect(skills_page).to_not have_content draft_skill_1.name
       end
 
       it 'tries to accept skill without reviewer explanation' do
@@ -87,11 +81,14 @@ describe 'Skills page', js: true do
     end
 
     context 'created by him' do
-      let!(:draft_skill2) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1, requester: admin_user }
-
-      before do
-        draft_skills_page.load
+      let!(:draft_skill_2) do
+        create :draft_skill,
+          :with_create_draft_type,
+          skill_category: skill_category_1,
+          requester: admin_user
       end
+
+      before { skills_page.load }
 
       it 'tries to edit skill' do
         expect(draft_skills_page.edit_skill.first[:class]).to include 'disabled'

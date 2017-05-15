@@ -14,7 +14,6 @@ describe 'Navbar', js: true do
     let(:user) { leader }
 
     it 'sees his team members history' do
-
       team = leader.teams.first
       users = team.users
       users_without_leader = users - [leader]
