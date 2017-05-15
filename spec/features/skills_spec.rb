@@ -55,33 +55,47 @@ describe 'Skills page', js: true do
   end
 
   context 'when Admin is working on requested changes' do
-    let!(:draft_skill1) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1 }
-    let(:success_message) { I18n.t('drafts.message.update.success') }
+    context 'created with another user' do
+      let!(:draft_skill1) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1 }
+      let(:success_message) { I18n.t('drafts.message.update.success') }
 
-    before do
-      draft_skills_page.load
-      draft_skills_page.edit_skill.first.click
+      before do
+        draft_skills_page.load
+        draft_skills_page.edit_skill.first.click
+      end
+
+      it 'accepts draft skill' do
+        draft_skill_edit_page.reviewer_explanation.set 'test reason'
+        draft_skill_edit_page.accept_button.click
+        expect(draft_skills_page).to have_content success_message
+        visit '/skills'
+        expect(skills_page).to have_content draft_skill1.name
+      end
+
+      it 'rejects draft skill' do
+        draft_skill_edit_page.reviewer_explanation.set 'test reason'
+        draft_skill_edit_page.cancel_button.click
+        expect(draft_skills_page).to have_content success_message
+        visit '/skills'
+        expect(skills_page).to_not have_content draft_skill1.name
+      end
+
+      it 'tries to accept skill without reviewer explanation' do
+        draft_skill_edit_page.cancel_button.click
+        expect(draft_skill_edit_page).to have_content 'can\'t be blank'
+      end
     end
 
-    it 'accepts draft skill' do
-      draft_skill_edit_page.reviewer_explanation.set 'test reason'
-      draft_skill_edit_page.accept_button.click
-      expect(draft_skills_page).to have_content success_message
-      visit '/skills'
-      expect(skills_page).to have_content draft_skill1.name
-    end
+    context 'created by him' do
+      let!(:draft_skill2) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1, requester: admin_user }
 
-    it 'rejects draft skill' do
-      draft_skill_edit_page.reviewer_explanation.set 'test reason'
-      draft_skill_edit_page.cancel_button.click
-      expect(draft_skills_page).to have_content success_message
-      visit '/skills'
-      expect(skills_page).to_not have_content draft_skill1.name
-    end
+      before do
+        draft_skills_page.load
+      end
 
-    it 'tries to accept skill without reviewer explanation' do
-      draft_skill_edit_page.cancel_button.click
-      expect(draft_skill_edit_page).to have_content 'can\'t be blank'
+      it 'tries to edit skill' do
+        expect(draft_skills_page.edit_skill.first[:class]).to include 'disabled'
+      end
     end
   end
 end
