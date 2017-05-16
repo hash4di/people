@@ -29,19 +29,19 @@ describe 'Skills page', js: true do
       page.create_skill.click
     end
 
-    it 'adds new skill' do
+    scenario 'he can add new skill' do
       skills_page.add_new_skill.click
       skill_form(skills_new_page)
       expect(draft_skills_page).to have_content I18n.t('skills.message.create.success')
     end
 
-    it 'tries to add new skill without mandatory fields' do
+    scenario 'he can NOT add new skill without mandatory fields' do
       skills_page.add_new_skill.click
       skills_new_page.create_skill.click
       expect(skills_page).to have_content 'Skill category and skill name have to be set.'
     end
 
-    it 'edits skill' do
+    scenario 'he can edit skill' do
       skills_page.edit_skill.first.click
       skill_form(skill_edit_page)
       expect(draft_skills_page).to have_content I18n.t('skills.message.update.success')
@@ -49,8 +49,10 @@ describe 'Skills page', js: true do
   end
 
   context 'when Admin is working on requested changes' do
-    context 'created with another user' do
-      let!(:draft_skill_1) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1 }
+    let(:success_message) { I18n.t('drafts.message.update.success') }
+
+    context 'created by another user' do
+      let!(:draft_skill) { create :draft_skill, :with_create_draft_type, skill_category: skill_category_1 }
       let(:success_message) { I18n.t('drafts.message.update.success') }
 
       before do
@@ -58,40 +60,66 @@ describe 'Skills page', js: true do
         draft_skills_page.edit_skill.first.click
       end
 
-      it 'accepts draft skill' do
+      scenario 'he can accept draft skill' do
         draft_skill_edit_page.reviewer_explanation.set 'test reason'
         draft_skill_edit_page.accept_button.click
         expect(draft_skills_page).to have_content success_message
         visit '/skills'
-        expect(skills_page).to have_content draft_skill_1.name
+        expect(skills_page).to have_content draft_skill.name
       end
 
-      it 'rejects draft skill' do
+      scenario 'he can reject draft skill' do
         draft_skill_edit_page.reviewer_explanation.set 'test reason'
         draft_skill_edit_page.cancel_button.click
         expect(draft_skills_page).to have_content success_message
         visit '/skills'
-        expect(skills_page).to_not have_content draft_skill_1.name
+        expect(skills_page).to_not have_content draft_skill.name
       end
 
-      it 'tries to accept skill without reviewer explanation' do
+      scenario 'he can NOT accept skill without reviewer explanation' do
         draft_skill_edit_page.cancel_button.click
         expect(draft_skill_edit_page).to have_content 'can\'t be blank'
       end
     end
 
     context 'created by him' do
-      let!(:draft_skill_2) do
+      let!(:draft_skill) do
         create :draft_skill,
           :with_create_draft_type,
           skill_category: skill_category_1,
           requester: admin_user
       end
 
-      before { skills_page.load }
+      before { draft_skills_page.load }
 
-      it 'tries to edit skill' do
+      scenario 'he can NOT edit skill' do
         expect(draft_skills_page.edit_skill.first[:class]).to include 'disabled'
+      end
+    end
+
+    context 'edited by another user' do
+      let(:skill) { create :skill, skill_category_id: skill_category_1.id }
+      let!(:draft_skill) do
+        create :draft_skill,
+          :with_update_draft_type,
+          original_skill_details: original_skill_details,
+          skill: skill
+      end
+      let(:original_skill_details) do
+        {
+          name: skill.name,
+          description: skill.description,
+          rate_type: skill.rate_type,
+          skill_category_id: skill.skill_category_id
+        }
+      end
+
+      scenario 'he can accept edited skill' do
+        draft_skills_page.load
+        draft_skills_page.edit_skill.first.click
+        draft_skill_edit_page.reviewer_explanation.set 'test reason'
+        draft_skill_edit_page.accept_button.click
+        expect(draft_skills_page).to have_content success_message
       end
     end
   end
