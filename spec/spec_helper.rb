@@ -5,6 +5,7 @@ end
 
 require 'sucker_punch/testing/inline'
 require 'capybara/rspec'
+require 'capybara-screenshot/rspec'
 require 'rack_session_access/capybara'
 require 'database_cleaner'
 require 'selenium-webdriver'
@@ -73,3 +74,5 @@ Capybara.register_driver :selenium do |app|
 end
 
 Capybara.javascript_driver = :selenium
+
+Capybara.save_path = ENV.fetch('CIRCLE_ARTIFACTS', Rails.root.join('tmp/capybara'))

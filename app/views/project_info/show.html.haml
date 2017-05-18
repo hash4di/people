@@ -214,3 +214,34 @@
         %p Intensity:
       .col-sm-6
         %p= project_info[:intensity]
+  - if project_info[:kpi].present?
+    %hr
+    .row
+      %p Project KPI
+      .col-xs-12
+        %table.table
+          %thead
+            %tr
+              %th End date
+              %th Sprint realization (%)
+              %th Points Delivered (week)
+              %th Avg business hours in waiting for pr
+              %th Avg business hours in waiting for qa
+              %th Tickets rejected by qa
+              %th Bugs reported
+              %th Commits / dev / week
+              %th Min dev's number of commits
+              %th No of tickets added after sprint start
+          %tbody
+            - project_kpi.each do |kpi|
+              %tr
+                %td= kpi[:end_date]
+                %td= kpi[:sprint_realization]
+                %td= kpi[:points_delivered_week]
+                %td= kpi[:avg_business_hours_in_waiting_for_pr]
+                %td= kpi[:avg_business_hours_in_waiting_for_qa]
+                %td= kpi[:tickets_rejected_by_qa].to_i
+                %td= kpi[:bugs_reported].to_i
+                %td= kpi[:commits_dev_week]
+                %td= kpi[:min_dev_s_number_of_commits].to_i
+                %td= kpi[:no_of_tickets_added_after_sprint_start].to_i
