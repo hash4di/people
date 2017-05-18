@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302095508) do
+ActiveRecord::Schema.define(version: 20170419143859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -250,11 +250,11 @@ ActiveRecord::Schema.define(version: 20170302095508) do
   create_table "user_skill_rates", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
-    t.integer  "rate",          default: 0
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.string   "note",          default: ""
     t.boolean  "favorite",      default: false
+    t.integer  "rate",          default: 0
     t.string   "salesforce_id"
   end
 
@@ -294,6 +294,7 @@ ActiveRecord::Schema.define(version: 20170302095508) do
     t.integer  "role_id"
     t.boolean  "admin",              default: false
     t.integer  "commitment"
+    t.string   "api_token"
     t.string   "salesforce_id"
   end
 
