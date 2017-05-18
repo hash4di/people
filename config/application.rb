@@ -26,6 +26,18 @@ module Hrguru
       g.orm :active_record
     end
 
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins '*'
+        resource(
+          '*',
+          headers: :any,
+          methods: [:get],
+          if: proc { |env| env['PATH_INFO'].start_with? "/api" }
+        )
+      end
+    end
+
     config.i18n.default_locale = :en
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
     config.assets.initialize_on_precompile = true # required by i18n-js

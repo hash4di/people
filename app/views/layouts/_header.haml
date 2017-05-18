@@ -54,5 +54,6 @@
               %b.caret
             %ul.dropdown-menu
               %li= link_to 'Profile', user_path(current_user)
+              %li= link_to 'Account settings', account_settings_path
               %li
                 %a{ href: sign_out_path, data: { method: 'delete' } } Sign out

@@ -62,6 +62,11 @@ gem 'uglifier'
 gem 'versionist'
 gem 'virtus'
 gem 'whenever', require: false
+gem 'httparty'
+gem 'active_model_serializers'
+gem 'react_webpack_rails'
+gem 'rake-progressbar'
+gem 'rack-cors', require: 'rack/cors'
 
 group :development do
   gem 'better_errors'
@@ -88,6 +93,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'capybara-webkit'
   gem 'codeclimate-test-reporter', require: false
   gem 'database_cleaner'

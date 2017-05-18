@@ -1,6 +1,7 @@
 class ProjectInfoController < ApplicationController
   expose(:project_infos) { list_all_projects }
   expose(:project_info) { show_project_info project_params }
+  expose(:project_kpi) { project_info[:kpi].sort_by { |kpi| kpi[:end_date] }.reverse.first(12) }
 
   def show; end
 
