@@ -59,6 +59,10 @@ class App < SitePrism::Page
     SkillsNewPage.new
   end
 
+  def skill_details_page
+    SkillDetailsPage.new
+  end
+
   def draft_skills_page
     DraftSkillsPage.new
   end
