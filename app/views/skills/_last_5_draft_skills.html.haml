@@ -1,7 +1,7 @@
 .col-xs-6
   %h5.text-primary.text-center List of recent requests (up to last 5)
 
-  %table.table.table-condensed
+  %table.table.table-condensed.request-history
     %thead
       %tr
         %th Type
@@ -11,7 +11,7 @@
         %th Actions
     %tbody
       - draft_skills.map do |draft_skill|
-        %tr
+        %tr.request-row
           %th
             %span.label{ class: draft_skill.label_type_class }= draft_skill.draft_type
           %th
@@ -25,11 +25,11 @@
           %th
             .skills__actions
               .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Display request details for change' }
-                = link_to draft_skill, class: "btn btn-info", role: 'button' do
+                = link_to draft_skill, class: "btn btn-info request-details", role: 'button' do
                   %i.glyphicon.glyphicon-search
               - unless draft_skill.resolved?
                 .tooltip-container{ data: { toggle: 'tooltip', placement: 'top' }, title: 'Review request details for change' }
                   = link_to edit_draft_skill_path(draft_skill),
-                            class: "btn btn-primary #{update_request_btn_class(draft_skill, current_user)}",
+                            class: "btn btn-primary review-request #{update_request_btn_class(draft_skill, current_user)}",
                             role: 'button' do
                     %i.glyphicon.glyphicon-edit
