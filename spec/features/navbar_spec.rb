@@ -13,7 +13,7 @@ describe 'Navbar', js: true do
     let(:leader) { create :user, :leader }
     let(:user) { leader }
 
-    it 'sees his team members history' do
+    scenario 'he sees his team members history' do
       team = leader.teams.first
       users = team.users
       users_without_leader = users - [leader]
@@ -28,7 +28,7 @@ describe 'Navbar', js: true do
   context 'when user is normal user' do
     let(:user) { create(:user, :developer) }
 
-    it 'does not see any team members' do
+    scenario 'he does not see any team members' do
       expect(home_page.menu).to have_no_team_members
     end
   end
@@ -36,7 +36,7 @@ describe 'Navbar', js: true do
   context 'when user is an admin' do
     let(:user) { create(:user, :admin) }
 
-    it 'has access to the admin section' do
+    scenario 'he has access to the admin section' do
       expect(home_page.menu).to have_admin_section
     end
   end
