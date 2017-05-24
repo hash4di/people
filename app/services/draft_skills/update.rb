@@ -42,7 +42,8 @@ module DraftSkills
     end
 
     def update_skill
-      draft_skill.skill.update(skill_params)
+      skill = draft_skill.skill
+      skill.update(skill_params)
       sf_skills_repository.sync(skill)
       Notifications::SkillUpdatedJob.perform_async(
         draft_skill_id: draft_skill.id

@@ -18,13 +18,13 @@ RSpec.shared_examples "generic salesforce repository" do
 
   context "local resource wasn't synced before" do
     it "creates new entry in Salesforce" do
-      set_salesforce_expectation(:create, "sf_id", expected_salesforce_attributes)
+      set_salesforce_expectation(:create, "sf_id", expected_salesforce_create_attributes)
       expect(local_resource).to receive(:update_column).with(:salesforce_id, "sf_id")
       repository.sync(local_resource)
     end
 
     it "raises error if couldn't be created" do
-      set_salesforce_expectation(:create, false, expected_salesforce_attributes)
+      set_salesforce_expectation(:create, false, expected_salesforce_create_attributes)
       expect do
         repository.sync(local_resource)
       end.to raise_error described_class::SyncFailed, /id=#{ local_resource.id }/
@@ -37,12 +37,12 @@ RSpec.shared_examples "generic salesforce repository" do
     end
 
     it "updates old entry in Salesforce" do
-      set_salesforce_expectation(:update, true, expected_salesforce_attributes.merge(Id: "sf_id"))
+      set_salesforce_expectation(:update, true, expected_salesforce_update_attributes.merge(Id: "sf_id"))
       repository.sync(local_resource)
     end
 
     it "raises error if couldn't be updated" do
-      set_salesforce_expectation(:update, false, expected_salesforce_attributes.merge(Id: "sf_id"))
+      set_salesforce_expectation(:update, false, expected_salesforce_update_attributes.merge(Id: "sf_id"))
       expect do
         repository.sync(local_resource)
       end.to raise_error described_class::SyncFailed, /id=#{ local_resource.id }/

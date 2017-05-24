@@ -13,7 +13,7 @@ RSpec.describe Salesforce::SkillsRepository do
       )
     end
     let(:salesforce_resource_name) { "Skill__c" }
-    let(:expected_salesforce_attributes) do
+    let(:expected_salesforce_create_attributes) do
       {
         Name: "Debugging",
         Description__c: "Squashing bugs",
@@ -21,6 +21,9 @@ RSpec.describe Salesforce::SkillsRepository do
         RefName__c: 'backend_debugging',
         CategoryName__c: 'backend',
       }
+    end
+    let(:expected_salesforce_update_attributes) do
+      expected_salesforce_create_attributes
     end
   end
 end
