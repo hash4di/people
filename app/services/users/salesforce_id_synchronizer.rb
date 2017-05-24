@@ -3,7 +3,7 @@ module Users
     attr_reader :errors, :sf_users, :users
 
     def initialize(user_ids)
-      @users = User.where(id: user_ids)
+      @users = User.where(id: user_ids, salesforce_id: nil)
       @sf_users = Apiguru::ListUsers.new.call
       @errors = []
     end
