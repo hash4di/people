@@ -91,11 +91,6 @@ describe 'User skill rates page', js: true do
       expect(heart[:class]).to include('selected')
     end
 
-    # Timebomb for test on line 76.
-    it 'TIMEBOMB: Fix spec \'adds note\'' do
-      expect(Date.parse('14/03/2017')).to be > Date.today
-    end
-
     # FIXME: This test fails randomly, fix it.
     xit 'adds note' do
       skill_rate = developer.user_skill_rates.first
