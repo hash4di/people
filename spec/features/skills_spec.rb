@@ -13,7 +13,7 @@ describe 'Skills page', js: true do
   let(:skills_range) { create_list :skill, 2, :with_range_rate_type, skill_category: skill_category_1 }
   let(:skills_boolean) { create_list :skill, 2, :with_boolean_rate_type, skill_category: skill_category_2 }
 
-  let!(:admin_user) { create(:user, :admin, skills: skills_range + skills_boolean) }
+  let(:admin_user) { create(:user, :admin, skills: skills_range + skills_boolean) }
 
   before { log_in_as admin_user }
 

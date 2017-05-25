@@ -34,7 +34,7 @@ describe 'Skill details page', js: true do
       skill: skill
   end
 
-  let!(:admin_user) { create(:user, :admin) }
+  let(:admin_user) { create(:user, :admin) }
 
   before { log_in_as admin_user }
 
