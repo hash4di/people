@@ -1,7 +1,6 @@
 RSpec.shared_examples 'generic salesforce repository' do
   let(:local_resource) { fail 'you need to override :local_resource' }
   let(:salesforce_resource_name) { fail 'you need to override :salesforce_resource_name' }
-  end
   let(:expected_salesforce_attributes) do
     fail 'you need to override :expected_salesforce_attributes'
   end
