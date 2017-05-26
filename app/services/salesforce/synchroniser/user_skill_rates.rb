@@ -2,7 +2,7 @@ module Salesforce::Synchroniser
   class UserSkillRates < Salesforce::Synchroniser::Base
     def upsert(skill_ids:, user_ids:)
       users_sync_result = check_users_salesforce_ids(user_ids)
-      return users_sync_result if users_sync_result != true
+      return users_sync_result unless users_sync_result == true
       job = create_job('upsert', UserSkillRate)
       user_skill_rates(user_ids, skill_ids).find_in_batches(batch_size: BATCH_SIZE) do |rates_group|
         bulk_client.add_batch job["id"], serialized(rates_group)

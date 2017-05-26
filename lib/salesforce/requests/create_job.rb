@@ -41,8 +41,7 @@ module Salesforce
 
       def add_external_id_field_on_upsert
         return unless operation.eql? 'upsert'
-
-        request_body.root.children[1].add_next_sibling "<externalIdFieldName>#{external_id_field_name}</externalIdFieldName>"
+        request_body.css('object').first.add_next_sibling "<externalIdFieldName>#{external_id_field_name}</externalIdFieldName>"
       end
 
       def check_operation_type
@@ -52,4 +51,3 @@ module Salesforce
     end
   end
 end
-

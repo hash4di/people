@@ -2,14 +2,13 @@ require 'spec_helper'
 
 describe GroupUserSkillRatesBySkillCategoriesQuery do
   let(:user) { create(:user) }
-  subject { GroupUserSkillRatesBySkillCategoriesQuery.new(user) }
-
   let(:skill_category_backend) { create(:skill_category, name: 'backend') }
   let(:skill_category_frontend) { create(:skill_category, name: 'frontend') }
   let(:skill_backend) { create(:skill, skill_category: skill_category_backend) }
   let(:skill_frontend) { create(:skill, skill_category: skill_category_frontend) }
   let!(:user_skill_rate_backend) { create(:user_skill_rate, user: user, skill: skill_backend ) }
   let!(:user_skill_rate_frontend) { create(:user_skill_rate, user: user, skill: skill_frontend ) }
+  let(:result_object) { subject.results['backend'].first }
 
   let(:expected_results) do
     {
@@ -18,7 +17,8 @@ describe GroupUserSkillRatesBySkillCategoriesQuery do
     }
   end
 
-  let(:result_object) { subject.results['backend'].first }
+  subject { GroupUserSkillRatesBySkillCategoriesQuery.new(user) }
+
 
   it "returns all user_skill_rates grouped by categories" do
     expect(subject.results).to eq(expected_results)

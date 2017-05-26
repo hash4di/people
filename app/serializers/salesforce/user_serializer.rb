@@ -1,4 +1,3 @@
 module Salesforce
-  class UserSerializer < ActiveModel::Serializers
-  end
+  class UserSerializer < ActiveModel::Serializers; end
 end

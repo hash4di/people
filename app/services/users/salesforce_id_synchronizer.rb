@@ -16,18 +16,16 @@ module Users
         next if no_matches?(user, sf_matched_users)
         update(user, sf_matched_users)
       end
-      errors.empty? ? true : errors
+      return errors if errors.present?
+      true
     end
 
     private
 
     def no_matches?(user, sf_matched_users)
-      if sf_matched_users.empty?
-        errors << UserSyncError.new(user).not_found
-        true
-      else
-        false
-      end
+      return false if sf_matched_users.present?
+      errors << UserSyncError.new(user).not_found
+      true
     end
 
     def update(user, sf_matched_users)

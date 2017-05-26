@@ -7,9 +7,9 @@ defaults: &defaults
   github_client_id:       go_to_github_settings_and_add_new_app
   github_secret:          and_paste_config_here
   apiguru:
-    projects_url:   projects_url
-    users_url:   users_url
-    token: token
+    projects_url:         projects_url
+    users_url:            users_url
+    token:                token
   api_token:              miamiamia
   secret_token_key:       miaaaaamia
   company_name:           Company
