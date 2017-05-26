@@ -1,6 +1,5 @@
 common: &default_settings
   app_name: hrguru
-  license_key: '0797ce8b6b2f8930a5f136ff0d6379dd6a53ec65'
   monitor_mode: true
   developer_mode: false
   log_level: info

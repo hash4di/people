@@ -6,6 +6,7 @@ AppConfig = Konf.new(
   %w{
     ../config.yml
     ../sec_config.yml
+    ../newrelic_lic_config.yml
   }.inject({}) do |config_hash, file_path|
     config_hash.deep_merge(
       begin
