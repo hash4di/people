@@ -92,6 +92,7 @@ describe 'User skill rates page', js: true do
     end
 
     # FIXME: This test fails randomly, fix it.
+    # https://netguru.atlassian.net/browse/RD-221
     xit 'adds note' do
       skill_rate = developer.user_skill_rates.first
       expect do
