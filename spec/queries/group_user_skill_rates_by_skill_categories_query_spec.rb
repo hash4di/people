@@ -12,19 +12,18 @@ describe GroupUserSkillRatesBySkillCategoriesQuery do
 
   let(:expected_results) do
     {
-      "backend" => [user_skill_rate_backend],
-      "frontend" => [user_skill_rate_frontend]
+      'backend' => [user_skill_rate_backend],
+      'frontend' => [user_skill_rate_frontend]
     }
   end
 
   subject { GroupUserSkillRatesBySkillCategoriesQuery.new(user) }
 
-
-  it "returns all user_skill_rates grouped by categories" do
+  it 'returns all user_skill_rates grouped by categories' do
     expect(subject.results).to eq(expected_results)
   end
 
-  it "returns user_skill_rate with requried attributes" do
+  it 'returns user_skill_rate with requried attributes' do
     expect(result_object.serializable_hash).to include(
       'name' => skill_backend.name,
       'description' => skill_backend.description,
