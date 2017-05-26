@@ -214,6 +214,12 @@
         %p Intensity:
       .col-sm-6
         %p= project_info[:intensity]
+  .row
+    .col-sm-6
+      .col-sm-6.project-label
+        %p Last modified date:
+      .col-sm-6
+        %p= project_info[:last_modified_date].to_datetime.to_formatted_s(:long)
   - if project_info[:kpi].present?
     %hr
     .row
