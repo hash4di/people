@@ -186,6 +186,16 @@ ActiveRecord::Schema.define(version: 20170419143859) do
   add_index "roles_users", ["role_id"], name: "index_roles_users_on_role_id", using: :btree
   add_index "roles_users", ["user_id"], name: "index_roles_users_on_user_id", using: :btree
 
+  create_table "salesforce_jobs", force: :cascade do |t|
+    t.string "operation",     null: false
+    t.string "object",        null: false
+    t.string "content_type",  null: false
+    t.string "salesforce_id", null: false
+    t.string "state",         null: false
+  end
+
+  add_index "salesforce_jobs", ["salesforce_id"], name: "index_salesforce_jobs_on_salesforce_id", using: :btree
+
   create_table "skill_categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -200,8 +210,10 @@ ActiveRecord::Schema.define(version: 20170419143859) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.string   "ref_name"
+    t.string   "salesforce_id"
   end
 
+  add_index "skills", ["salesforce_id"], name: "index_skills_on_salesforce_id", using: :btree
   add_index "skills", ["skill_category_id"], name: "index_skills_on_skill_category_id", using: :btree
 
   create_table "teams", force: :cascade do |t|
@@ -238,11 +250,12 @@ ActiveRecord::Schema.define(version: 20170419143859) do
   create_table "user_skill_rates", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "skill_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.string   "note",       default: ""
-    t.boolean  "favorite",   default: false
-    t.integer  "rate",       default: 0
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "note",          default: ""
+    t.boolean  "favorite",      default: false
+    t.integer  "rate",          default: 0
+    t.string   "salesforce_id"
   end
 
   add_index "user_skill_rates", ["skill_id"], name: "index_user_skill_rates_on_skill_id", using: :btree
@@ -282,6 +295,7 @@ ActiveRecord::Schema.define(version: 20170419143859) do
     t.boolean  "admin",              default: false
     t.integer  "commitment"
     t.string   "api_token"
+    t.string   "salesforce_id"
   end
 
   add_index "users", ["contract_type_id"], name: "index_users_on_contract_type_id", using: :btree

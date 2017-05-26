@@ -32,6 +32,7 @@ describe 'Authentication', js: true do
       before do
         visit root_path
         click_link_or_button 'Sign up with Google'
+        allow_any_instance_of(Apiguru::ListUsers).to receive(:call).and_return []
       end
 
       it { should have_content('Now please connect your GitHub account.') }

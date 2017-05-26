@@ -91,7 +91,9 @@ describe 'User skill rates page', js: true do
       expect(heart[:class]).to include('selected')
     end
 
-    it 'adds note' do
+    # FIXME: This test fails randomly, fix it.
+    # https://netguru.atlassian.net/browse/RD-221
+    xit 'adds note' do
       skill_rate = developer.user_skill_rates.first
       expect do
         user_skill_rates_page.skill_note.first.set 'test note'
