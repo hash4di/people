@@ -17,6 +17,7 @@ RSpec.describe Salesforce::UserSkillRatingsRepository do
       {
         Contact__c: "foo",
         Skill__c: "bar",
+        IDD__c: 42,
         Favorite__c: false,
         Note__c: "A few words",
         Rate__c: 4,
@@ -24,6 +25,7 @@ RSpec.describe Salesforce::UserSkillRatingsRepository do
     end
     let(:expected_salesforce_update_attributes) do
       {
+        IDD__c: 42,
         Favorite__c: false,
         Note__c: "A few words",
         Rate__c: 4,
