@@ -1,3 +1,3 @@
 module Salesforce
-  class SkillCategorySerializer < ActiveModel::Serializers; end
+  class SkillCategorySerializer < ActiveModel::Serializer; end
 end
