@@ -18,7 +18,6 @@ module Salesforce
         Contact__c: rating.user.salesforce_id,
         Skill__c: rating.skill.salesforce_id,
         Favorite__c: rating.favorite,
-        IDD__c: rating.id,
         Note__c: rating.note,
         Rate__c: rating.rate,
       }
