@@ -16,6 +16,11 @@ module Salesforce
       end
     end
 
+    def delete(item)
+      salesforce_client.destroy(salesforce_object_name, item.salesforce_id)
+      item.update_attribute :salesforce_id, nil
+    end
+
     private
 
     def create(item)

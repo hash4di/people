@@ -2,10 +2,23 @@ module Salesforce
   ExportFailed = Class.new(StandardError)
 
   class ExportUserSkillRatingsService
-    def call
-      UserSkillRate.find_each do |rating|
+    def all_rated
+      UserSkillRate.where('rate > 0 OR favorite = true').find_each { |rating| sync(rating) }
+    end
+
+    def one(skill_rating_id)
+      rating = UserSkillRate.find(skill_rating_id)
+      sync(rating)
+    end
+
+    private
+
+    def sync(rating)
+      if rating.rate.positive? || rating.favorite
         repository.sync(rating)
         Rails.logger.info("UserSkillRating(id=#{ rating.id }) exported to Salesforce")
+      else
+        repository.delete(rating)
       end
     end
 
