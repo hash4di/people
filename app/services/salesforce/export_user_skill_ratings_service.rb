@@ -14,12 +14,9 @@ module Salesforce
     private
 
     def sync(rating)
-      if rating.rate.positive? || rating.favorite
-        repository.sync(rating)
-        Rails.logger.info("UserSkillRating(id=#{ rating.id }) exported to Salesforce")
-      else
-        repository.delete(rating)
-      end
+      repository.delete(rating) && return unless rating.rate.positive? || rating.favorite
+      repository.sync(rating)
+      Rails.logger.info("UserSkillRating(id=#{ rating.id }) exported to Salesforce")
     end
 
     def repository

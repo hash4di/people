@@ -2,7 +2,7 @@ module Skills
   class UserSkillRatesGenerator
     def generate_all_for_user(user_id:)
       skills.each do |skill|
-        generate_for_skill(skill_ids: skill.id, user_id: user_id)
+        generate_for_skill(skill_id: skill.id, user_id: user_id)
       end
     end
 
