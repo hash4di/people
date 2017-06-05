@@ -36,9 +36,7 @@ class UserSkillRatesController < ApplicationController
   end
 
   def sync_skill_rate_with_salesforce
-    Salesforce::Synchroniser::UserSkillRates
-      .new
-      .upsert skill_ids: user_skill_rate.skill_id, user_ids: user_skill_rate.user_id
+    Salesforce::ExportUserSkillRatingsService.new.one user_skill_rate.id
   end
 
   def user_skill_rate_params
