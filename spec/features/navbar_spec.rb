@@ -10,13 +10,11 @@ describe 'Navbar', js: true do
   end
 
   context 'when user is a leader' do
-    let(:leader) { create :user, :leader }
-    let(:user) { leader }
+    let(:user) { create :user, :leader }
 
     scenario 'he sees his team members history' do
-      team = leader.teams.first
-      users = team.users
-      users_without_leader = users - [leader]
+      team = user.teams.first
+      users_without_leader = team.users.where.not(id: user)
 
       users_without_leader.each do |user|
         user_name = "#{user.last_name} #{user.first_name}"

@@ -51,7 +51,6 @@ describe 'Skills page', js: true do
   context 'when Admin is working on requested changes' do
     let(:success_message) { I18n.t('drafts.message.update.success') }
 
-    # SHARED EXAMPLES ----------------------------------------
     shared_examples 'updating skill' do
       before do
         draft_skills_page.load
@@ -90,9 +89,9 @@ describe 'Skills page', js: true do
     context 'created by him' do
       let!(:draft_skill) do
         create :draft_skill,
-          :with_create_draft_type,
-          skill_category: skill_category_1,
-          requester: admin_user
+               :with_create_draft_type,
+               skill_category: skill_category_1,
+               requester: admin_user
       end
 
       before { draft_skills_page.load }
@@ -106,9 +105,9 @@ describe 'Skills page', js: true do
       let(:skill) { create :skill, skill_category_id: skill_category_1.id }
       let!(:draft_skill) do
         create :draft_skill,
-          :with_update_draft_type,
-          original_skill_details: original_skill_details,
-          skill: skill
+               :with_update_draft_type,
+               original_skill_details: original_skill_details,
+               skill: skill
       end
       let(:original_skill_details) do
         {

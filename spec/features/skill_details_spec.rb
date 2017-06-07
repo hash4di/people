@@ -15,23 +15,23 @@ describe 'Skill details page', js: true do
 
   let!(:accepted_draft_skill) do
     create :draft_skill,
-      :with_accepted_draft_status,
-      original_skill_details: original_skill_details,
-      skill: skill
+           :with_accepted_draft_status,
+           original_skill_details: original_skill_details,
+           skill: skill
   end
 
   let!(:declined_draft_skill) do
     create :draft_skill,
-      :with_declined_draft_status,
-      original_skill_details: original_skill_details,
-      skill: skill
+           :with_declined_draft_status,
+           original_skill_details: original_skill_details,
+           skill: skill
   end
 
   let!(:pending_draft_skill) do
     create :draft_skill,
-      :with_update_draft_type,
-      original_skill_details: original_skill_details,
-      skill: skill
+           :with_update_draft_type,
+           original_skill_details: original_skill_details,
+           skill: skill
   end
 
   let(:admin_user) { create(:user, :admin) }
