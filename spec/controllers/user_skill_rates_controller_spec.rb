@@ -3,7 +3,10 @@ require 'spec_helper'
 describe UserSkillRatesController do
   let(:user) { create(:user) }
 
-  before { sign_in(user) }
+  before do
+    sign_in(user)
+    allow_any_instance_of(UserSkillRatesController).to receive(:sync_skill_rate_with_salesforce)
+  end
 
   describe '#index' do
     let(:skill_category_backend) { create(:skill_category, name: 'backend') }

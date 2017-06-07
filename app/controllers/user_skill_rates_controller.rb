@@ -16,6 +16,7 @@ class UserSkillRatesController < ApplicationController
     authorize user_skill_rate
     respond_to do |format|
       if update_user_skill_rate
+        sync_skill_rate_with_salesforce
         format.html { redirect_to user_skill_rate, notice: 'Skill was successfully updated.' }
         format.json { head :no_content }
       else
@@ -32,6 +33,10 @@ class UserSkillRatesController < ApplicationController
       user_skill_rate_id: params[:id],
       params: user_skill_rate_params
     ).call
+  end
+
+  def sync_skill_rate_with_salesforce
+    Salesforce::ExportUserSkillRatingsService.new.one user_skill_rate.id
   end
 
   def user_skill_rate_params

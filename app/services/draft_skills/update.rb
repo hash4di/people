@@ -34,6 +34,7 @@ module DraftSkills
     def create_skill
       skill = Skill.create(skill_params)
       draft_skill.skill = skill
+      sf_skills_repository.sync(skill)
       CreateRatesForSkillJob.perform_async(skill_id: skill.id)
       Notifications::SkillCreatedJob.perform_async(
         draft_skill_id: draft_skill.id
@@ -41,7 +42,9 @@ module DraftSkills
     end
 
     def update_skill
-      draft_skill.skill.update(skill_params)
+      skill = draft_skill.skill
+      skill.update(skill_params)
+      sf_skills_repository.sync(skill)
       Notifications::SkillUpdatedJob.perform_async(
         draft_skill_id: draft_skill.id
       )
@@ -51,6 +54,10 @@ module DraftSkills
       @skill_params ||= draft_skill.attributes.slice(
         'skill_category_id', 'name', 'description', 'rate_type'
       )
+    end
+
+    def sf_skills_repository
+      @salesforce_skills_repository ||= Salesforce::SkillsRepository.new(Restforce.new)
     end
   end
 end

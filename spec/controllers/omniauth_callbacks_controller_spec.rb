@@ -24,6 +24,7 @@ describe OmniauthCallbacksController do
         }
       )
       request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:google_oauth2]
+      allow_any_instance_of(Apiguru::ListUsers).to receive(:call).and_return []
     end
 
     context 'user is internal' do

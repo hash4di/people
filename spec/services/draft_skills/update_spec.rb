@@ -4,6 +4,10 @@ describe DraftSkills::Update do
   subject { described_class.new(draft_skill, draft_skill_params).call }
   let(:user) { create(:user) }
 
+  before do
+    allow_any_instance_of(Salesforce::GenericRepository).to receive(:sync)
+  end
+
   shared_examples 'updates draft_skill' do
     it 'sets reviewer data' do
       subject

@@ -14,3 +14,16 @@ set :docker_volumes, [
 
 set :docker_dockerfile, "docker/staging/Dockerfile"
 
+Rake::Task["docker:deploy:default:tag"].clear_actions
+
+namespace :docker do
+  namespace :deploy do
+    namespace :default do
+      task :tag do
+        on roles(fetch(:docker_role)) do
+          execute :docker, "tag #{fetch(:docker_image_full)} #{fetch(:docker_image)}:latest"
+        end
+      end
+    end
+  end
+end
