@@ -14,6 +14,7 @@ module Salesforce
     private
 
     def sync(rating)
+      Users::SalesforceIdSynchronizer.new(rating.user.id).call && rating.reload if rating.user.salesforce_id.nil?
       repository.delete(rating) && return unless rating.rate.positive? || rating.favorite
       repository.sync(rating)
       Rails.logger.info("UserSkillRating(id=#{ rating.id }) exported to Salesforce")
