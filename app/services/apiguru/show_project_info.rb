@@ -11,7 +11,11 @@ module Apiguru
     private
 
     def storage
-      Apiguru::Client.client
+      Apiguru::Client.client(url)
+    end
+
+    def url
+      AppConfig.apiguru.projects_url
     end
   end
 end

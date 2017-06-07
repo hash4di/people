@@ -35,8 +35,15 @@ heroku_settings: &heroku_settings
     new_available_view: <%= ENV['AVAILABLE_VIEW'] %>
   profile_api_url:        some_dev_url
 
+development:
+  <<: *heroku_settings
+  salesforce:
+    soap_login: https://test.salesforce.com/
+
 staging:
   <<: *heroku_settings
+  salesforce:
+    soap_login: https://test.salesforce.com/
   profile_api_url:        some_stag_url
   profile_staging_auth:   some_profile_stag_auth
   slack:
@@ -45,4 +52,6 @@ staging:
 
 production:
   <<: *heroku_settings
+  salesforce:
+    soap_login: https://login.salesforce.com/
   profile_api_url:        some_stag_url

@@ -1,7 +1,7 @@
 module Apiguru
   class Client
     class << self
-      def client
+      def client(url)
         Rails.cache.fetch(url, expires_in: 12.hours) do
           response = HTTParty.get(url, query: { token: token })
           JSON.parse(response.body, symbolize_names: true)
@@ -9,10 +9,6 @@ module Apiguru
       end
 
       private
-
-      def url
-        AppConfig.apiguru.url
-      end
 
       def token
         AppConfig.apiguru.token
