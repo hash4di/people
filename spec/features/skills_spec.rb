@@ -15,7 +15,10 @@ describe 'Skills page', js: true do
 
   let(:admin_user) { create(:user, :admin, skills: skills_range + skills_boolean) }
 
-  before { log_in_as admin_user }
+  before do
+    log_in_as admin_user
+    allow_any_instance_of(Salesforce::SkillsRepository).to receive(:sync)
+  end
 
   context 'when Admin is working on his skills' do
     before { skills_page.load }
