@@ -1,6 +1,6 @@
 module Users
   class UserSyncError
-    attr_accessor :user
+    attr_reader :user
 
     def initialize(user)
       @user = user

@@ -3,7 +3,9 @@ module Salesforce
 
   class ExportUserSkillRatingsService
     def all_rated
-      UserSkillRate.where('rate > 0 OR favorite = true').find_each { |rating| sync(rating) }
+      UserSkillRate.joins(:user)
+                   .where('users.archived = ?', false)
+                   .where('rate > 0 OR favorite = ?', true).find_each { |rating| sync(rating) }
     end
 
     def one(skill_rating_id)
