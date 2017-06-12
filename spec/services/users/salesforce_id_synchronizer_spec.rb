@@ -98,7 +98,7 @@ describe Users::SalesforceIdSynchronizer do
       let!(:user) { create :user, first_name: 'Jon', last_name: 'Snow', email: 'bastard666@thug.life' }
 
       it 'returns proper errors' do
-        expect(subject.first.class).to be Users::UserSyncError
+        expect(subject.first).to be_instance_of(Users::UserSyncError)
       end
     end
   end
