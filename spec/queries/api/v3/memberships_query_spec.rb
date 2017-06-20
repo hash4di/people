@@ -52,7 +52,7 @@ describe Api::V3::MembershipsQuery do
       end
 
       context 'when didin\'t work in the same time' do
-        context 'when he worked before requested user' do
+        context 'when he had worked before the requested user worked' do
           let!(:membership_3) do
             create(
               :membership,
@@ -70,7 +70,7 @@ describe Api::V3::MembershipsQuery do
           end
         end
 
-        context 'when he worked when requested user had left the project' do
+        context 'when he worked after the requested user had left the project' do
           let!(:membership_3) do
             create(
               :membership,
