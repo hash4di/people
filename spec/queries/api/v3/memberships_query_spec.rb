@@ -44,7 +44,7 @@ describe Api::V3::MembershipsQuery do
   describe '#all_overlapped' do
     context 'when worked in the same project' do
       context 'when worked in the same time' do
-        it 'returns correct memberships' do
+        it 'returns correct memberships', :aggregate_failures do
           expect(subject).to_not include(membership_1)
           expect(subject).to include(membership_2)
           expect(subject).to include(membership_3)
@@ -63,7 +63,7 @@ describe Api::V3::MembershipsQuery do
             )
           end
 
-          it 'returns correct membership' do
+          it 'returns correct membership', :aggregate_failures do
             expect(subject).to_not include(membership_1)
             expect(subject).to include(membership_2)
             expect(subject).to_not include(membership_3)
@@ -81,7 +81,7 @@ describe Api::V3::MembershipsQuery do
             )
           end
 
-          it 'returns correct membership' do
+          it 'returns correct membership', :aggregate_failures do
             expect(subject).to_not include(membership_1)
             expect(subject).to include(membership_2)
             expect(subject).to_not include(membership_3)
@@ -102,7 +102,7 @@ describe Api::V3::MembershipsQuery do
         )
       end
 
-      it 'returns correct membership' do
+      it 'returns correct membership', :aggregate_failures do
         expect(subject).to_not include(membership_1)
         expect(subject).to include(membership_2)
         expect(subject).to_not include(membership_3)
