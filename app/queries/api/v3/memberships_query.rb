@@ -14,12 +14,12 @@ module Api
       private
 
       def overlapped_with(membership)
-        date_in_future = Time.zone.now + 1.month
-        ends_at = membership.ends_at || date_in_future
+        starts_at = filter_params[:f2f_date]
+        ends_at = membership.ends_at || 1.month.from_now
         Membership.only_active_user.without_user(
           user
         ).with_project(membership.project).overlaps(
-          membership.starts_at, ends_at
+          starts_at, ends_at
         )
       end
 
