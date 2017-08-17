@@ -6,6 +6,8 @@ class DraftSkill < ActiveRecord::Base
   belongs_to :requester, foreign_key: 'requester_id', class_name: 'User'
   belongs_to :reviewer, foreign_key: 'reviewer_id', class_name: 'User'
 
+  has_many :notifications, as: :notifiable
+
   STATUSES = %w(created accepted declined).freeze
   TYPES = %w(update create).freeze
 
