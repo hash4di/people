@@ -182,7 +182,7 @@ SKILLS_AND_CATEGORIES = [
 {:ref_name=>"android_solid-principles", :name=>"SOLID principles", :rating=>"boolean", :description=>"Basic principles of object-oriented programming and design.", :category=>"android"},
 {:ref_name=>"android_jni", :name=>"JNI", :rating=>"int", :description=>"Programming framework that enables Java code runnning in JVM to call and be called by native applications and libraries written in other languages.", :category=>"android"},
 {:ref_name=>"android_kotlin", :name=>"Kotlin", :rating=>"int", :description=>"Statically typed programming language for the JVM, Android and the browser.", :category=>"android"},
-{:ref_name=>"android_c-c", :name=>"C/C++", :rating=>"int", :description=>"General-purpose programming languages.", :category=>"android"},
+{:ref_name=>"android_android-ndk", :name=>"Android NDK", :rating=>"int", :description=>"The Android NDK is a toolset that lets you implement parts of your app in native code, using languages such as C and C++. For certain types of apps, this can help you reuse code libraries written in those languages.", :category=>"android"},
 {:ref_name=>"android_opengl", :name=>"OpenGL", :rating=>"int", :description=>"Cross-language, cross-platform API for rendering 2D and 3D vector graphics.", :category=>"android"},
 {:ref_name=>"android_gradle", :name=>"Gradle", :rating=>"int", :description=>"Open-source build automation tool.", :category=>"android"},
 {:ref_name=>"android_mvp", :name=>"MVP", :rating=>"boolean", :description=>"Architectural pattern.", :category=>"android"},
