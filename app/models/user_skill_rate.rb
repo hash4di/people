@@ -9,7 +9,7 @@ class UserSkillRate < ActiveRecord::Base
   belongs_to :user
   belongs_to :skill
 
-  has_many :contents, class_name: '::UserSkillRate::Content'
+  has_many :contents, class_name: '::UserSkillRate::Content', dependent: :destroy
 
   validates :user, :skill, presence: true
   validates :skill, uniqueness: { scope: :user }

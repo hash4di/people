@@ -1,8 +1,8 @@
 class Skill < ActiveRecord::Base
   belongs_to :skill_category
-  has_many :user_skill_rates
+  has_many :user_skill_rates, dependent: :destroy
   has_many :users, through: :user_skill_rates
-  has_many :draft_skills, -> { order(created_at: :asc) }
+  has_many :draft_skills, -> { order(created_at: :asc) }, dependent: :destroy
   has_one :requested_change, -> {
     where(draft_type: 'update', draft_status: 'created')
   }, anonymous_class: DraftSkill
