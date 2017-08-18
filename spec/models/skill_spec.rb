@@ -101,4 +101,20 @@ describe Skill do
       end
     end
   end
+
+  context 'when destroyed' do
+    let!(:skill) do
+      FactoryGirl.create(:skill, :with_awaiting_create_request, :with_user_skill_rate)
+    end
+
+    subject { skill.destroy }
+
+    it 'destroys associated UserSkillRates' do
+      expect { subject }.to change { UserSkillRate.count }.from(1).to(0)
+    end
+
+    it 'destroys associated DraftSkills' do
+      expect { subject }.to change { DraftSkill.count }.from(1).to(0)
+    end
+  end
 end

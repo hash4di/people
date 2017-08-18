@@ -36,4 +36,16 @@ describe UserSkillRate do
       expect(user_skill_rate.content).to eq(newest_user_skill_rate_content)
     end
   end
+
+  context 'when destroyed' do
+    let!(:user_skill_rate) do
+      FactoryGirl.create(:user_skill_rate, :with_content)
+    end
+
+    subject { user_skill_rate.destroy }
+
+    it 'destroys associated Contents' do
+      expect { subject }.to change { UserSkillRate::Content.count }.from(1).to(0)
+    end
+  end
 end
