@@ -31,6 +31,10 @@ class App < SitePrism::Page
     SchedulingPage.new
   end
 
+  def scheduling_juniors_inters_page
+    SchedulingJuniorsIntersPage.new
+  end
+
   def statistics_page
     StatisticsPage.new
   end
