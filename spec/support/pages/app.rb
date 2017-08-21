@@ -35,6 +35,10 @@ class App < SitePrism::Page
     SchedulingJuniorsIntersPage.new
   end
 
+  def scheduling_to_rotate_page
+    SchedulingToRotatePage.new
+  end
+
   def statistics_page
     StatisticsPage.new
   end
