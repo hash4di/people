@@ -12,6 +12,7 @@ class Skill < ActiveRecord::Base
   validates :rate_type, inclusion: { in: ::Skills::RateType.stringified_types }
 
   before_validation :set_ref_name!
+  around_destroy :delete_from_sf!
 
   attr_accessor :requester_explanation
 
@@ -28,5 +29,10 @@ class Skill < ActiveRecord::Base
       return
     end
     self.ref_name = "#{skill_category.name}_#{name}".parameterize
+  end
+
+  def delete_from_sf!
+    Salesforce::DestroyObjectService.new.call('Skill__c', salesforce_id)
+    yield
   end
 end
