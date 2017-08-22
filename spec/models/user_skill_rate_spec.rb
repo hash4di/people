@@ -44,8 +44,20 @@ describe UserSkillRate do
 
     subject { user_skill_rate.destroy }
 
-    it 'destroys associated Contents' do
-      expect { subject }.to change { UserSkillRate::Content.count }.from(1).to(0)
+    context 'user_skill_rate has been successfully deleted from salesforce' do
+      before { allow(user_skill_rate).to receive(:delete_from_sf!) { true } }
+
+      it 'destroys associated Contents' do
+        expect { subject }.to change { UserSkillRate::Content.count }.from(1).to(0)
+      end
+    end
+
+    context 'skill has not been successfully deleted from salesforce' do
+      before { allow(user_skill_rate).to receive(:delete_from_sf!) { false } }
+
+      it 'does not destroy associated Contents' do
+        expect { subject }.to_not change { UserSkillRate::Content.count }
+      end
     end
   end
 end
