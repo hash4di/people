@@ -34,11 +34,7 @@ class Skill < ActiveRecord::Base
   end
 
   def delete_from_sf!
-    Salesforce::DestroyObjectService.new.call(
-      api_name: SF_API_NAME,
-      object: self,
-      notify: true
-    )
+    Salesforce::DestroyObjectService.new.call(api_name: SF_API_NAME, object: self)
     yield
   end
 end

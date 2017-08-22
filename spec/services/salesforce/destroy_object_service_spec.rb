@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Salesforce::DestroyObjectService do
-  let(:object) { double(salesforce_id: salesforce_id) }
+  let(:object) { double(salesforce_id: sf_id) }
   subject { described_class.new }
 
   describe '#call' do
@@ -13,7 +13,7 @@ describe Salesforce::DestroyObjectService do
     before { allow(subject).to receive(:sf_client).and_return(sf_client) }
 
     context 'when salesforce_id is nil' do
-      let(:salesforce_id) { nil }
+      let(:sf_id) { nil }
 
       it 'returns false' do
         expect(call).to be false
@@ -21,11 +21,24 @@ describe Salesforce::DestroyObjectService do
     end
 
     context 'when salesforce_id is invalid' do
-      let(:salesforce_id) { 'asidjfioej' }
+      let(:sf_id) { 'asidjfioej' }
       let(:error) { Faraday::ClientError.new('error message') }
+      let(:error_params) { { error: error, api_name: api_name, object: object } }
+      let(:rollbar_params) do
+        [
+          error,
+          'Unable to delete SF record',
+          { api_name: api_name, object: object }
+        ]
+      end
+      let(:notification) { double(message: 'bla') }
+      let(:slack_notifier) { double }
 
       before do
-        allow(sf_client).to receive(:find).with(api_name, salesforce_id).and_raise(error)
+        allow(sf_client).to receive(:find).with(api_name, sf_id).and_raise(error)
+        allow(subject).to receive(:slack_notifier).and_return(slack_notifier)
+        allow(slack_notifier).to receive(:ping).with(notification)
+        allow(NotificationMessage::Skill::UnableToDelete).to receive(:new).with(error_params).and_return(notification)
       end
 
       it 'suppresses faraday error' do
@@ -36,35 +49,19 @@ describe Salesforce::DestroyObjectService do
         expect(call).to be false
       end
 
-      context 'when notifications are enabled' do
-        let(:call_params) { { api_name: api_name, object: object, notify: true } }
-        let(:rollbar_params) do
-          [
-            error,
-            'Unable to delete SF record',
-            { api_name: api_name, object: object }
-          ]
-        end
-        let(:error_params) { { error: error, api_name: api_name, object: object } }
-        let(:notification) { double(message: 'bla') }
-        let(:slack_notifier) { double }
+      it 'sends rollbar notification' do
+        expect(Rollbar).to receive(:error).with(*rollbar_params)
+        call
+      end
 
-        it 'sends rollbar notification' do
-          expect(Rollbar).to receive(:error).with(*rollbar_params)
-          call
-        end
-
-        it 'sends slack notification' do
-          allow(subject).to receive(:slack_notifier).and_return(slack_notifier)
-          allow(slack_notifier).to receive(:ping).with(notification)
-          expect(NotificationMessage::Skill::UnableToDelete).to receive(:new).with(error_params).and_return(notification)
-          call
-        end
+      it 'sends slack notification' do
+        expect(slack_notifier).to receive(:ping).with(notification)
+        call
       end
     end
 
     context 'when salesforce_id is valid' do
-      let(:salesforce_id) { 'a067E000009SXNuQAO' }
+      let(:sf_id) { 'a067E000009SXNuQAO' }
       let(:sf_object) { double(destroy: true) }
       let(:sf_client) { double(find: sf_object) }
 
