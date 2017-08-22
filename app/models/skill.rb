@@ -1,4 +1,6 @@
 class Skill < ActiveRecord::Base
+  SF_API_NAME = 'Skill__c'.freeze
+
   belongs_to :skill_category
   has_many :user_skill_rates, dependent: :destroy
   has_many :users, through: :user_skill_rates
@@ -32,7 +34,11 @@ class Skill < ActiveRecord::Base
   end
 
   def delete_from_sf!
-    Salesforce::DestroyObjectService.new.call('Skill__c', salesforce_id)
+    Salesforce::DestroyObjectService.new.call(
+      api_name: SF_API_NAME,
+      object: self,
+      notify: true
+    )
     yield
   end
 end

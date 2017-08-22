@@ -22,7 +22,10 @@ class UserSkillRate < ActiveRecord::Base
   end
 
   def delete_from_sf!
-    Salesforce::DestroyObjectService.new.call('SkillRating__c', salesforce_id)
+    Salesforce::DestroyObjectService.new.call(
+      api_name: SALESFORCE[:object],
+      object: self
+    )
     yield
   end
 end
