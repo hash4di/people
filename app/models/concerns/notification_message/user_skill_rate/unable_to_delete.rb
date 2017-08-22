@@ -1,5 +1,5 @@
 module NotificationMessage
-  module Skill
+  module UserSkillRate
     class UnableToDelete
       attr_reader :api_name, :object, :error
 
@@ -10,8 +10,8 @@ module NotificationMessage
       end
 
       def message
-        "Unable to delete Skill from Salesforce "\
-        "(`skill_id: #{object.id}, sf_id: #{object.salesforce_id}, api_name: #{api_name}`)"\
+        "Unable to delete UserSkillRate from Salesforce "\
+        "(`user_skill_rate_id: #{object.id}, sf_id: #{object.salesforce_id}, api_name: #{api_name}`)"\
         "\nError message: `#{error.message}`"
       end
     end

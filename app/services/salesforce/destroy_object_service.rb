@@ -41,9 +41,9 @@ module Salesforce
     end
 
     def slack_notification(error_params)
-      slack_notifier.ping(
-        NotificationMessage::Skill::UnableToDelete.new(error_params)
-      )
+      object_class = error_params[:object].class
+      notification_message = "NotificationMessage::#{object_class}::UnableToDelete".constantize
+      slack_notifier.ping(notification_message.new(error_params))
     end
   end
 end
