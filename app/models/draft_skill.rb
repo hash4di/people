@@ -16,8 +16,8 @@ class DraftSkill < ActiveRecord::Base
   validates :reviewer_explanation, presence: true, if: :update?
   validates :requester_explanation, presence: true, if: :create?
 
-  scope :since_last_30_days, -> do
-    where('created_at > ?', Time.now - 30.days).order(created_at: :desc)
+  scope :not_accepted_or_since_last_30_days, -> do
+    where("draft_status = 'created' OR created_at > ?", Time.now - 30.days).order(created_at: :desc)
   end
 
   scope :last_accepted, -> (skill_id) {
