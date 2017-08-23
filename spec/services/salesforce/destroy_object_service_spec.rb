@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Salesforce::DestroyObjectService do
-  let(:object) { double(salesforce_id: sf_id, class: 'Skill') }
+  let(:object) { double(salesforce_id: sf_id) }
   subject { described_class.new }
 
   describe '#call' do
@@ -33,12 +33,11 @@ describe Salesforce::DestroyObjectService do
       end
       let(:notification) { double(message: 'bla') }
       let(:slack_notifier) { double }
-      let(:notification_message) { "NotificationMessage::#{object.class}::UnableToDelete".constantize }
 
       before do
         allow(sf_client).to receive(:find).with(api_name, sf_id).and_raise(error)
         allow(subject).to receive(:slack_notifier).and_return(slack_notifier)
-        allow(notification_message).to receive(:new).with(error_params).and_return(notification)
+        allow(NotificationMessage::UnableToDelete).to receive(:new).with(error_params).and_return(notification)
         allow(slack_notifier).to receive(:ping).with(notification)
       end
 
