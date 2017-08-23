@@ -44,7 +44,7 @@ describe UserSkillRate do
 
     subject { user_skill_rate.destroy }
 
-    context 'user_skill_rate has been successfully deleted from salesforce' do
+    context 'has been successfully deleted from salesforce' do
       before { allow(user_skill_rate).to receive(:delete_from_sf!) { true } }
 
       it 'destroys associated Contents' do
@@ -52,7 +52,7 @@ describe UserSkillRate do
       end
     end
 
-    context 'skill has not been successfully deleted from salesforce' do
+    context 'has not been successfully deleted from salesforce' do
       before { allow(user_skill_rate).to receive(:delete_from_sf!) { false } }
 
       it 'does not destroy associated Contents' do

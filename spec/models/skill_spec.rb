@@ -109,7 +109,7 @@ describe Skill do
 
     subject { skill.destroy }
 
-    context 'skill has been successfully deleted from salesforce' do
+    context 'has been successfully deleted from salesforce' do
       before { allow(skill).to receive(:delete_from_sf!) { true } }
 
       it 'destroys associated UserSkillRates' do
@@ -121,7 +121,7 @@ describe Skill do
       end
     end
 
-    context 'skill has not been successfully deleted from salesforce' do
+    context 'has not been successfully deleted from salesforce' do
       before { allow(skill).to receive(:delete_from_sf!) { false } }
 
       it 'does not destroy associated UserSkillRates' do
