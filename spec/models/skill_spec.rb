@@ -106,22 +106,17 @@ describe Skill do
     let!(:skill) do
       FactoryGirl.create(:skill, :with_awaiting_create_request, :with_user_skill_rate)
     end
-    let(:user_skill_rate) { skill.user_skill_rates.first }
 
     subject { skill.destroy }
-
-    before { allow(user_skill_rate).to receive(:delete_from_sf!) { true } }
 
     context 'skill has been successfully deleted from salesforce' do
       before { allow(skill).to receive(:delete_from_sf!) { true } }
 
       it 'destroys associated UserSkillRates' do
-        binding.pry
         expect { subject }.to change { UserSkillRate.count }.from(1).to(0)
       end
 
       it 'destroys associated DraftSkills' do
-        binding.pry
         expect { subject }.to change { DraftSkill.count }.from(1).to(0)
       end
     end

@@ -4,7 +4,7 @@ module Salesforce
 
     def call(api_name:, object:, notify: true)
       sf_id = object.salesforce_id
-      return false if sf_id.nil?
+      return true if sf_id.nil?
 
       begin
         sf_object = sf_client.find(api_name, sf_id)

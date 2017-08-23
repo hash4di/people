@@ -4,8 +4,8 @@ class Skill < ActiveRecord::Base
   before_destroy :delete_from_sf!
 
   belongs_to :skill_category
-  has_many :draft_skills, -> { order(created_at: :asc) }, dependent: :destroy
   has_many :user_skill_rates, dependent: :destroy
+  has_many :draft_skills, -> { order(created_at: :asc) }, dependent: :destroy
   has_many :users, through: :user_skill_rates
   has_one :requested_change, -> {
     where(draft_type: 'update', draft_status: 'created')
