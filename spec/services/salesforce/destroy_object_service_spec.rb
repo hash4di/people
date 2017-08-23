@@ -38,8 +38,8 @@ describe Salesforce::DestroyObjectService do
       before do
         allow(sf_client).to receive(:find).with(api_name, sf_id).and_raise(error)
         allow(subject).to receive(:slack_notifier).and_return(slack_notifier)
-        allow(slack_notifier).to receive(:ping).with(notification)
         allow(notification_message).to receive(:new).with(error_params).and_return(notification)
+        allow(slack_notifier).to receive(:ping).with(notification)
       end
 
       it 'suppresses faraday error' do
