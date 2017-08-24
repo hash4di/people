@@ -6,6 +6,7 @@ gem 'active_model_serializers'
 gem 'acts_as_list'
 gem 'airbrussh', require: false
 gem 'animate-scss'
+gem 'attr_extras'
 gem 'autoprefixer-rails'
 gem 'capistrano'
 gem 'capistrano-docker', github: 'netguru/capistrano-docker', tag: 'v0.2.5'

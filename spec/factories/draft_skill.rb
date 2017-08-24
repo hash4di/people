@@ -30,5 +30,14 @@ FactoryGirl.define do
     trait :with_created_draft_status do
       draft_status 'created'
     end
+
+    trait :with_notification do
+      after(:create) do |draft_skill|
+        draft_skill.notifications << FactoryGirl.create(
+          :notification,
+          notifiable: draft_skill
+        )
+      end
+    end
   end
 end

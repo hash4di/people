@@ -66,6 +66,7 @@ GEM
       sass
     arel (6.0.3)
     ast (2.2.0)
+    attr_extras (5.2.0)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
       extlib (>= 0.9.15)
@@ -654,6 +655,7 @@ DEPENDENCIES
   acts_as_list
   airbrussh
   animate-scss
+  attr_extras
   autoprefixer-rails
   awesome_print
   better_errors

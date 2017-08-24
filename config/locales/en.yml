@@ -50,6 +50,7 @@ en:
         none: No potential memberships
         stays_checked: stays checked
         stays_unchecked: stays unchecked
+  notification_message: "Unable to delete %{class} from Salesforce (`%{type}_id: %{id}, sf_id: %{sf_id}, api_name: %{api_name}`)\nError message: `%{message}`"
   messages:
     success: "%{object_name} %{type}d!"
     error:  'Something went wrong. %{type} unsuccessful'

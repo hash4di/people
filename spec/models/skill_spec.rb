@@ -101,4 +101,36 @@ describe Skill do
       end
     end
   end
+
+  context 'when destroyed' do
+    let!(:skill) do
+      FactoryGirl.create(:skill, :with_awaiting_create_request, :with_user_skill_rate)
+    end
+
+    subject { skill.destroy }
+
+    context 'has been successfully deleted from salesforce' do
+      before { allow(skill).to receive(:delete_from_sf!) { true } }
+
+      it 'destroys associated UserSkillRates' do
+        expect { subject }.to change { UserSkillRate.count }.from(1).to(0)
+      end
+
+      it 'destroys associated DraftSkills' do
+        expect { subject }.to change { DraftSkill.count }.from(1).to(0)
+      end
+    end
+
+    context 'has not been successfully deleted from salesforce' do
+      before { allow(skill).to receive(:delete_from_sf!) { false } }
+
+      it 'does not destroy associated UserSkillRates' do
+        expect { subject }.to_not change { UserSkillRate.count }
+      end
+
+      it 'does not destroy associated DraftSkills' do
+        expect { subject }.to_not change { DraftSkill.count }
+      end
+    end
+  end
 end
