@@ -15,7 +15,7 @@ describe Salesforce::DestroyObjectService do
     context 'when salesforce_id is nil' do
       let(:sf_id) { nil }
 
-      it 'returns false' do
+      it 'returns true' do
         expect(call).to be true
       end
     end
