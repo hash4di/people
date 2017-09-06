@@ -26,7 +26,9 @@
     "babel-loader": "5.4.2",
     "classnames": "2.2.5",
     "css-loader": "0.22.0",
+    "enzyme-to-json": "1.5.1",
     "extract-text-webpack-plugin": "0.8.2",
+    "jquery": "3.2.1",
     "lodash": "4.17.4",
     "moment": "2.17.1",
     "node-sass": "3.13.1",
@@ -52,7 +54,11 @@
     "node": ">= 0.10"
   },
   "jest": {
-    "testEnvironment": "node",
-    "testPathDirs": ["app/react"]
+    "testPathDirs": [
+      "app/react"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }
