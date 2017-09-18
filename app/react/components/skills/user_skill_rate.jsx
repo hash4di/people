@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import UserSkillRateSource from '../../sources/UserSkillRateSource';
 import RateScale from '../rate-scale';
 import _ from 'lodash';
+const I18n = require('i18n-js');
 
 export default class UserSkillRate extends React.Component {
   constructor(props) {
@@ -85,7 +86,7 @@ export default class UserSkillRate extends React.Component {
         <td>
           {rateStars}
         </td>
-        <td onClick={this.onFavoriteChange}>
+        <td className="skill__row__favorite-btn" onClick={this.onFavoriteChange}>
           <i
             className={favoriteClass}
             data-toggle="tooltip"
