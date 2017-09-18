@@ -26,29 +26,21 @@ describe('RateScale', () => {
       expect(subject).toMatchSnapshot();
     });
 
-    test('clicks on rate element change displayed elements', () => {
+    test('clicks on rate updates rate in state', () => {
       const subject = shallow(testingComponent);
-      expect(subject.find('.skill__clear_rate')).toHaveLength(0);
-      expect(subject.find('.glyphicon-star-empty')).toHaveLength(3);
-      expect(subject.find('.glyphicon-star')).toHaveLength(0);
-
-      subject.find('li').children().first().simulate('click', { currentTarget: { dataset: { rate: 1 } } })
-
-      expect(subject.find('.skill__clear_rate')).toHaveLength(1);
-      expect(subject.find('.glyphicon-star-empty')).toHaveLength(2);
-      expect(subject.find('.glyphicon-star')).toHaveLength(1);
+      expect(subject.state().rate).toBe(0);
+      subject.find('li').children().first().simulate('click', { currentTarget: { dataset: { rate: 1 } } });
+      expect(subject.state().rate).toBe(1);
     });
 
-    test('hover on rate element toggle css classes', () => {
+    test('hover on rate element updates hoverNumber in state', () => {
       const subject = shallow(testingComponent);
-
-      expect(subject.find('.hovered')).toHaveLength(0);
-      subject.find('li').children().first().simulate('mouseEnter', { currentTarget: { dataset: { rate: 3 } } })
-      expect(subject.find('.hovered')).toHaveLength(3);
-      subject.find('li').children().first().simulate('mouseLeave')
-      expect(subject.find('.hovered')).toHaveLength(0);
+      expect(subject.state().hoverNumber).toBe(-1);
+      subject.find('li').children().first().simulate('mouseEnter', { currentTarget: { dataset: { rate: 3 } } });
+      expect(subject.state().hoverNumber).toBe(3);
+      subject.find('li').children().first().simulate('mouseLeave');
+      expect(subject.state().hoverNumber).toBe(-1);
     });
-
   });
 
   describe('when rate type is boolean', () => {
