@@ -12,6 +12,11 @@ describe('RateScale', () => {
         }
       }
     }
+    window.I18n = {
+      t: function(value) {
+        return {1: 'a'}
+      }
+    };
   });
 
   describe('when rate type is range', () => {

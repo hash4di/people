@@ -41,7 +41,7 @@ exports[`UserSkillRate component structure match snapshot 1`] = `
               onClick={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
-              title="m" />
+              title="a" />
           </li>
           <li>
             <i
@@ -51,8 +51,7 @@ exports[`UserSkillRate component structure match snapshot 1`] = `
               data-toggle="tooltip"
               onClick={[Function]}
               onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              title="i" />
+              onMouseLeave={[Function]} />
           </li>
           <li>
             <i
@@ -62,8 +61,7 @@ exports[`UserSkillRate component structure match snapshot 1`] = `
               data-toggle="tooltip"
               onClick={[Function]}
               onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              title="s" />
+              onMouseLeave={[Function]} />
           </li>
         </ul>
       </RateScale>

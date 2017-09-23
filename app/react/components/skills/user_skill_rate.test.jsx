@@ -12,6 +12,11 @@ describe('UserSkillRate', () => {
         }
       }
     }
+    window.I18n = {
+      t: function(value) {
+        return {1: 'a'}
+      }
+    };
   });
 
   const testingComponent = <UserSkillRate

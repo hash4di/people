@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
 import _ from 'lodash';
-const I18n = require('i18n-js');
 
 export default class RateScale extends React.Component {
   constructor(props) {
