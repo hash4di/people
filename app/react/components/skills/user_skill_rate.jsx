@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import UserSkillRateSource from '../../sources/UserSkillRateSource';
 import RateScale from '../rate-scale';
 import _ from 'lodash';
-const I18n = require('i18n-js');
 
 export default class UserSkillRate extends React.Component {
   constructor(props) {

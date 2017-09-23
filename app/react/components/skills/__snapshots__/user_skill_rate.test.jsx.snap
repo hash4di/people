@@ -73,14 +73,22 @@ exports[`UserSkillRate component structure match snapshot 1`] = `
         className="skill__favorite glyphicon glyphicon-heart selected"
         data-placement="top"
         data-toggle="tooltip"
-        title="[missing \"en.skills.favorite\" translation]" />
+        title={
+          Object {
+            "1": "a",
+          }
+        } />
     </td>
     <td>
       <textarea
         className="skill__note form-control"
         cols="30"
         onChange={[Function]}
-        placeholder="[missing \"en.skills.add_note\" translation]"
+        placeholder={
+          Object {
+            "1": "a",
+          }
+        }
         rows="1"
         value="test note" />
     </td>
