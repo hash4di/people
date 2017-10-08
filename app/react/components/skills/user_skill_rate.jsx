@@ -85,7 +85,7 @@ export default class UserSkillRate extends React.Component {
         <td>
           {rateStars}
         </td>
-        <td onClick={this.onFavoriteChange}>
+        <td className="skill__row__favorite-btn" onClick={this.onFavoriteChange}>
           <i
             className={favoriteClass}
             data-toggle="tooltip"

@@ -1,0 +1,97 @@
+exports[`UserSkillRate component structure match snapshot 1`] = `
+<UserSkillRate
+  description="test skill description"
+  favorite={true}
+  id={12}
+  name="test skill name"
+  note="test note"
+  rate={1}
+  rate_type="range">
+  <tr
+    className="skill__row">
+    <td>
+      test skill name
+    </td>
+    <td>
+      test skill description
+    </td>
+    <td>
+      <RateScale
+        onRateChange={[Function]}
+        rate={1}
+        rateType="range">
+        <ul
+          className="list-inline skill__rating skill__rating--range">
+          <li
+            className="skill__clear_rate">
+            <i
+              className="glyphicon glyphicon-remove"
+              data-placement="top"
+              data-rate="0"
+              data-toggle="tooltip"
+              onClick={[Function]}
+              title="Click to reset your rating" />
+          </li>
+          <li>
+            <i
+              className="glyphicon skill__rate skill__rate--range glyphicon-star selected"
+              data-placement="top"
+              data-rate={1}
+              data-toggle="tooltip"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              title="a" />
+          </li>
+          <li>
+            <i
+              className="glyphicon skill__rate skill__rate--range glyphicon-star-empty"
+              data-placement="top"
+              data-rate={2}
+              data-toggle="tooltip"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]} />
+          </li>
+          <li>
+            <i
+              className="glyphicon skill__rate skill__rate--range glyphicon-star-empty"
+              data-placement="top"
+              data-rate={3}
+              data-toggle="tooltip"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]} />
+          </li>
+        </ul>
+      </RateScale>
+    </td>
+    <td
+      className="skill__row__favorite-btn"
+      onClick={[Function]}>
+      <i
+        className="skill__favorite glyphicon glyphicon-heart selected"
+        data-placement="top"
+        data-toggle="tooltip"
+        title={
+          Object {
+            "1": "a",
+          }
+        } />
+    </td>
+    <td>
+      <textarea
+        className="skill__note form-control"
+        cols="30"
+        onChange={[Function]}
+        placeholder={
+          Object {
+            "1": "a",
+          }
+        }
+        rows="1"
+        value="test note" />
+    </td>
+  </tr>
+</UserSkillRate>
+`;
