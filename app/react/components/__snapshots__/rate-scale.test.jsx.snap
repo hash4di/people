@@ -15,7 +15,7 @@ exports[`RateScale when rate type is boolean component structure match snapshot 
         onClick={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
-        title="a" />
+        title="skills.rating.boolean" />
     </li>
   </ul>
 </RateScale>
@@ -38,7 +38,7 @@ exports[`RateScale when rate type is range component structure match snapshot 1`
         onClick={[Function]}
         onMouseEnter={[Function]}
         onMouseLeave={[Function]}
-        title="a" />
+        title="skills.rating.range" />
     </li>
     <li>
       <i

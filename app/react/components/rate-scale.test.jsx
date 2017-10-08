@@ -14,7 +14,7 @@ describe('RateScale', () => {
     }
     window.I18n = {
       t: function(value) {
-        return {1: 'a'}
+        return {1: value}
       }
     };
   });
