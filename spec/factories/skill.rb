@@ -34,5 +34,14 @@ FactoryGirl.define do
         )
       end
     end
+
+    trait :with_user_skill_rate do
+      after(:create) do |skill|
+        skill.user_skill_rates << FactoryGirl.create(
+          :user_skill_rate,
+          skill: skill
+        )
+      end
+    end
   end
 end

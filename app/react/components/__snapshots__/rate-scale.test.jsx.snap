@@ -1,0 +1,65 @@
+exports[`RateScale when rate type is boolean component structure match snapshot 1`] = `
+<RateScale
+  onRateChange={[Function]}
+  rate={0}
+  rateType="boolean">
+  <ul
+    className="list-inline skill__rating skill__rating--boolean">
+    <li />
+    <li>
+      <i
+        className="glyphicon skill__rate skill__rate--boolean glyphicon-unchecked"
+        data-placement="top"
+        data-rate={1}
+        data-toggle="tooltip"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        title="skills.rating.boolean" />
+    </li>
+  </ul>
+</RateScale>
+`;
+
+exports[`RateScale when rate type is range component structure match snapshot 1`] = `
+<RateScale
+  onRateChange={[Function]}
+  rate={0}
+  rateType="range">
+  <ul
+    className="list-inline skill__rating skill__rating--range">
+    <li />
+    <li>
+      <i
+        className="glyphicon skill__rate skill__rate--range glyphicon-star-empty"
+        data-placement="top"
+        data-rate={1}
+        data-toggle="tooltip"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        title="skills.rating.range" />
+    </li>
+    <li>
+      <i
+        className="glyphicon skill__rate skill__rate--range glyphicon-star-empty"
+        data-placement="top"
+        data-rate={2}
+        data-toggle="tooltip"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]} />
+    </li>
+    <li>
+      <i
+        className="glyphicon skill__rate skill__rate--range glyphicon-star-empty"
+        data-placement="top"
+        data-rate={3}
+        data-toggle="tooltip"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]} />
+    </li>
+  </ul>
+</RateScale>
+`;

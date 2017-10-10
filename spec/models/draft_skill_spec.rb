@@ -91,4 +91,16 @@ describe DraftSkill do
       end
     end
   end
+
+  context 'when destroyed' do
+    let!(:draft_skill) do
+      FactoryGirl.create(:draft_skill, :with_notification)
+    end
+
+    subject { draft_skill.destroy }
+
+    it 'destroys associated Notifications' do
+      expect { subject }.to change { Notification.count }.from(1).to(0)
+    end
+  end
 end
