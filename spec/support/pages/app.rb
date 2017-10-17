@@ -59,6 +59,10 @@ class App < SitePrism::Page
     SchedulingUnavailablePage.new
   end
 
+  def scheduling_not_scheduled_page
+    SchedulingNotScheduledPage.new
+  end
+
   def statistics_page
     StatisticsPage.new
   end
