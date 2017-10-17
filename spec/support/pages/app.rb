@@ -43,6 +43,10 @@ class App < SitePrism::Page
     SchedulingInInternalsPage.new
   end
 
+  def scheduling_in_rotations_page
+    SchedulingInRotationsPage.new
+  end
+
   def statistics_page
     StatisticsPage.new
   end
