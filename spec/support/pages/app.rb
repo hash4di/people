@@ -47,6 +47,10 @@ class App < SitePrism::Page
     SchedulingInRotationsPage.new
   end
 
+  def scheduling_projects_with_due_date_page
+    SchedulingProjectsWithDueDatePage.new
+  end
+
   def statistics_page
     StatisticsPage.new
   end
