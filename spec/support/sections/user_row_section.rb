@@ -5,6 +5,7 @@ class UserRowSection < SitePrism::Section
   section :current_project, '.projects-region' do
     element :name, '.project-name'
     element :internal_label, '.project-label', text: 'INTERNAL'
+    element :nonbillable_sign, '.project-label', text: 'NON-BILLABLE'
   end
   section :next_project, '.next_projects-region' do
     element :name, '.project-name'
