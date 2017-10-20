@@ -19,4 +19,8 @@ describe 'Scheduling juniors/inters page', js: true do
     expect(user_row.first.profile.name).to have_content junior.last_name
     expect(user_row.second.profile.name).to have_content intern.last_name
   end
+
+  it 'displays a non-billable label in the project column' do
+    expect(user_row.first.current_project).to have_nonbillable_sign
+  end
 end
