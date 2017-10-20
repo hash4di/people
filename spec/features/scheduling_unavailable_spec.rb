@@ -12,6 +12,7 @@ describe 'Scheduling unavailable page', js: true do
             project: project
   end
   let!(:scheduling_unavailable_page) { App.new.scheduling_unavailable_page }
+  let(:user_row) { scheduling_unavailable_page.user_rows.first }
 
   before do
     log_in_as admin_user
@@ -19,6 +20,6 @@ describe 'Scheduling unavailable page', js: true do
   end
 
   it 'displays unavailable technical users' do
-    expect(page).to have_content developer.last_name
+    expect(user_row.profile.name).to have_content developer.last_name
   end
 end
