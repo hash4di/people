@@ -8,7 +8,7 @@ describe 'Scheduling juniors/inters page', js: true do
   let!(:junior_membership) { create(:membership, user: junior, project: project) }
   let!(:intern_membership) { create(:membership, user: intern, project: project) }
   let!(:scheduling_juniors_inters_page) { App.new.scheduling_juniors_inters_page }
-  let(:user_row) { scheduling_juniors_inters_page.user_rows}
+  let(:user_row) { scheduling_juniors_inters_page.user_rows }
 
   before do
     log_in_as admin_user

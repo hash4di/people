@@ -13,7 +13,7 @@ describe 'Scheduling in commercial projects with due date page', js: true do
       project: project
     )
   end
-  let!(:scheduling_projects_with_due_date_page) { App.new.scheduling_projects_with_due_date_page}
+  let!(:scheduling_projects_with_due_date_page) { App.new.scheduling_projects_with_due_date_page }
   let(:user_row) { scheduling_projects_with_due_date_page.user_rows.first }
 
   before do
