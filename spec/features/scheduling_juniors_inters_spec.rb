@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Scheduling juniors/inters page', js: true do
   let(:admin_user) { create(:user, :admin) }
   let!(:junior) { create(:user, :junior) }
-  let!(:intern) { create(:user, :intern)}
+  let!(:intern) { create(:user, :intern) }
   let!(:project) { create(:project, starts_at: DateTime.now, end_at: nil) }
   let!(:junior_membership) { create(:membership, user: junior, project: project) }
   let!(:intern_membership) { create(:membership, user: intern, project: project) }

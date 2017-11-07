@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Scheduling in internals page', js: true do
   let(:admin_user) { create(:user, :admin) }
-  let!(:developer) { create(:user, :developer)}
+  let!(:developer) { create(:user, :developer) }
   let!(:project) { create(:project, :internal, starts_at: DateTime.now) }
   let!(:dev_membership) { create(:membership, user: developer, project: project) }
   let!(:scheduling_in_internals_page) { App.new.scheduling_in_internals_page }
