@@ -31,6 +31,38 @@ class App < SitePrism::Page
     SchedulingPage.new
   end
 
+  def scheduling_juniors_inters_page
+    SchedulingJuniorsIntersPage.new
+  end
+
+  def scheduling_to_rotate_page
+    SchedulingToRotatePage.new
+  end
+
+  def scheduling_in_internals_page
+    SchedulingInInternalsPage.new
+  end
+
+  def scheduling_in_rotations_page
+    SchedulingInRotationsPage.new
+  end
+
+  def scheduling_projects_with_due_date_page
+    SchedulingProjectsWithDueDatePage.new
+  end
+
+  def scheduling_booked_page
+    SchedulingBookedPage.new
+  end
+
+  def scheduling_unavailable_page
+    SchedulingUnavailablePage.new
+  end
+
+  def scheduling_not_scheduled_page
+    SchedulingNotScheduledPage.new
+  end
+
   def statistics_page
     StatisticsPage.new
   end
