@@ -20,6 +20,13 @@ describe DraftSkills::Update do
       expect(draft_skill.draft_status).to eq draft_status
     end
   end
+  
+  shared_examples 'does not update the skill' do
+    it { expect { subject }.to_not change { skill.name } }
+    it { expect { subject }.to_not change { skill.description } }
+    it { expect { subject }.to_not change { skill.rate_type } }
+    it { expect { subject }.to_not change { skill.skill_category_id } }
+  end
 
   describe '#call' do
     context 'when params are valid' do
@@ -153,6 +160,45 @@ describe DraftSkills::Update do
           it { expect { subject }.to_not change { skill.description } }
           it { expect { subject }.to_not change { skill.rate_type } }
           it { expect { subject }.to_not change { skill.skill_category_id } }
+        end
+      end
+
+      context 'when draft_skill is delete type' do
+        let!(:skill) { create(:skill, marked_for_delete: true) }
+        let(:draft_skill) do
+          create(
+            :draft_skill,
+            draft_status: 'created',
+            draft_type: 'delete',
+            marked_for_delete: true,
+            skill_id: skill.id
+          )
+        end
+
+        context 'when draft_status equals accepted' do
+          let(:draft_status) { 'accepted' }
+
+          it 'destroys draft skill\'s association with the skill' do
+            subject
+            expect(draft_skill.skill).to eq nil
+          end
+
+          it 'deletes the skill' do
+            expect { subject }.to change { Skill.count }.by(-1)
+          end
+
+          include_examples 'updates draft_skill'
+        end
+
+        context 'when draft_status equals declined' do
+          let(:draft_status) { 'declined' }
+
+          it 'does not delete the skill' do
+            expect { subject }.not_to change { Skill.count }
+          end
+
+          include_examples 'updates draft_skill'
+          include_examples 'does not update the skill'
         end
       end
     end

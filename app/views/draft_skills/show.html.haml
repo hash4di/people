@@ -1,9 +1,9 @@
 .container
-  - if draft_skill.create_type?
-    %h1= "Request for creation new skill: #{draft_skill.name}"
+  - if draft_skill.create_type? || draft_skill.delete_type?
+    %h1= "Requested #{draft_skill.draft_type} of skill: #{draft_skill.name}"
   - else
     %h1
-      %span= 'Requested changes for '
+      %span= "Requested update of skill "
       = link_to skill.name, skill_path(skill)
 
   = render 'draft_skill', draft_skill: draft_skill, skill: skill

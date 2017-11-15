@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170419143859) do
+ActiveRecord::Schema.define(version: 20171108101539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20170419143859) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.hstore   "original_skill_details"
+    t.boolean  "marked_for_delete",      default: false
   end
 
   add_index "draft_skills", ["requester_id"], name: "index_draft_skills_on_requester_id", using: :btree
@@ -207,10 +208,11 @@ ActiveRecord::Schema.define(version: 20170419143859) do
     t.string   "description"
     t.string   "rate_type"
     t.integer  "skill_category_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "ref_name"
     t.string   "salesforce_id"
+    t.boolean  "marked_for_delete", default: false
   end
 
   add_index "skills", ["salesforce_id"], name: "index_skills_on_salesforce_id", using: :btree

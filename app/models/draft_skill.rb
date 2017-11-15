@@ -9,7 +9,7 @@ class DraftSkill < ActiveRecord::Base
   has_many :notifications, as: :notifiable, dependent: :destroy
 
   STATUSES = %w(created accepted declined).freeze
-  TYPES = %w(update create).freeze
+  TYPES = %w(update create delete).freeze
 
   validates :draft_type, inclusion: { in: TYPES }
   validates :draft_status, inclusion: { in: STATUSES }
@@ -38,6 +38,10 @@ class DraftSkill < ActiveRecord::Base
 
   def update_type?
     draft_type == 'update'
+  end
+
+  def delete_type?
+    draft_type == 'delete'
   end
 
   private

@@ -31,6 +31,8 @@ class DraftSkillDecorator < Draper::Decorator
       'label-info'
     when 'create'
       'label-primary'
+    when 'delete'
+      'label-danger'
     end
   end
 end

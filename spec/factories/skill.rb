@@ -34,6 +34,18 @@ FactoryGirl.define do
         )
       end
     end
+    
+    trait :with_awaiting_delete_request do
+      marked_for_delete true
+      after(:create) do |skill|
+        skill.draft_skills << FactoryGirl.create(
+          :draft_skill,
+          :with_created_draft_status,
+          draft_type: 'delete',
+          skill: skill
+        )
+      end
+    end
 
     trait :with_user_skill_rate do
       after(:create) do |skill|
