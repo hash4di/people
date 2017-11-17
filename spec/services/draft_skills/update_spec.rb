@@ -156,10 +156,7 @@ describe DraftSkills::Update do
             expect(draft_skill.draft_status).to eq draft_status
           end
 
-          it { expect { subject }.to_not change { skill.name } }
-          it { expect { subject }.to_not change { skill.description } }
-          it { expect { subject }.to_not change { skill.rate_type } }
-          it { expect { subject }.to_not change { skill.skill_category_id } }
+          include_examples 'does not update the skill'
         end
       end
 
