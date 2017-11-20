@@ -5,10 +5,10 @@
 %span.label{ class: draft_skill.label_status_class }= draft_skill.draft_status
 %hr
 
-- if draft_skill.create_type? || draft_skill.delete_type?
-  = render 'details', draft_skill: draft_skill
-- elsif draft_skill.update_type?
+- if draft_skill.update_type?
   = render 'compared_details', draft_skill: draft_skill
+- else
+  = render 'details', draft_skill: draft_skill
 
 %hr
 %h4
