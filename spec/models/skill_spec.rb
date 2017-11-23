@@ -6,6 +6,7 @@ describe Skill do
   it { is_expected.to have_many :user_skill_rates }
   it { is_expected.to have_many :draft_skills }
   it { is_expected.to have_one :requested_change }
+  it { is_expected.to have_one :requested_delete }
 
   it { is_expected.to  validate_presence_of :ref_name }
   it { is_expected.to  validate_uniqueness_of :ref_name }

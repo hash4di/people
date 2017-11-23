@@ -10,6 +10,9 @@ class Skill < ActiveRecord::Base
   has_one :requested_change, -> {
     where(draft_type: 'update', draft_status: 'created')
   }, anonymous_class: DraftSkill
+  has_one :requested_delete, -> {
+    where(draft_type: 'delete', draft_status: 'created')
+  }, anonymous_class: DraftSkill
 
   validates :name, :skill_category, :rate_type, :description, presence: true
   validates :ref_name, uniqueness: true, presence: true

@@ -13,6 +13,6 @@ class SkillPolicy
   private
 
   def has_requested_change?
-    skill.requested_change.present?
+    skill.requested_change.present? || skill.requested_delete.present?
   end
 end

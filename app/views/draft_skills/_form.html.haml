@@ -4,10 +4,16 @@
   = f.input :reviewer_explanation, as: :text, required: true, label: false
   %hr
   .actions.pull-right
-    = button_tag(type: 'submit', class: 'btn btn-success', value: 'accepted', name: 'draft_skill[draft_status]') do
-      %i.glyphicon.glyphicon-ok
-      %span Accept
+    - if draft_skill.marked_for_delete?
+      %p Warning! This will delete the skill!
+      = button_tag(type: 'submit', class: 'btn btn-danger', value: 'accepted', name: 'draft_skill[draft_status]') do
+        %i.glyphicon.glyphicon-trash
+        %span Delete
+    - else
+      = button_tag(type: 'submit', class: 'btn btn-success', value: 'accepted', name: 'draft_skill[draft_status]') do
+        %i.glyphicon.glyphicon-ok
+        %span Accept
 
-    = button_tag(type: 'submit', class: 'btn btn-danger', value: 'declined', name: 'draft_skill[draft_status]') do
+    = button_tag(type: 'submit', class: 'btn btn-warning', value: 'declined', name: 'draft_skill[draft_status]') do
       %i.glyphicon.glyphicon-remove
       %span Cancel

@@ -49,9 +49,10 @@ class SkillsController < ApplicationController
 
   def update
     authorize @skill, :access_request_change?
+    update_type = set_update_type
     respond_to do |format|
-      if change_requester.request(type: 'update')
-        format.html { redirect_to change_requester.draft_skill, notice: I18n.t('skills.message.update.success') }
+      if change_requester.request(type: update_type)
+        format.html { redirect_to change_requester.draft_skill, notice: I18n.t("skills.message.#{update_type}.success") }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -61,6 +62,14 @@ class SkillsController < ApplicationController
   end
 
   private
+
+  def set_update_type
+    marked_for_delete? ? 'delete' : 'update'
+  end
+
+  def marked_for_delete?
+    skill_params[:marked_for_delete] == '1'
+  end
 
   def change_requester
     @change_requester ||= ::Skills::ChangeRequester.new(
@@ -88,7 +97,7 @@ class SkillsController < ApplicationController
   def skill_params
     params.require(:skill).permit(
       :name, :description, :rate_type, :skill_category_id,
-      :requester_explanation
+      :requester_explanation, :marked_for_delete
     )
   end
 end

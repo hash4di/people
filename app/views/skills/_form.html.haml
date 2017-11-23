@@ -3,6 +3,7 @@
   = f.input :description, as: :text
   = f.input :rate_type, collection: ['boolean', 'range']
   = f.association :skill_category, collection: skill_categories
+  = f.input :marked_for_delete, wrapper: :vertical_boolean, label: 'Mark for delete'
   %hr
   %p.text-info
     %strong= "#{current_user.full_name} please provide short explanation why we need this change."

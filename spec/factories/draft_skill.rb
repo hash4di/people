@@ -19,6 +19,10 @@ FactoryGirl.define do
       draft_type 'update'
     end
 
+    trait :with_delete_draft_type do
+      draft_type 'delete'
+    end
+
     trait :with_declined_draft_status do
       draft_status 'declined'
     end

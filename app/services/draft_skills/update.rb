@@ -19,7 +19,9 @@ module DraftSkills
         revert_status_to_created
         return false
       end
-      update_or_create_skill if draft_skill.accepted?
+      if draft_skill.accepted?
+        draft_skill.marked_for_delete? ? destroy_skill : update_or_create_skill
+      end
       draft_skill.save
     end
 
@@ -48,6 +50,11 @@ module DraftSkills
       Notifications::SkillUpdatedJob.perform_async(
         draft_skill_id: draft_skill.id
       )
+    end
+
+    def destroy_skill
+      skill = draft_skill.skill
+      draft_skill.update(skill_id: nil) && skill.destroy
     end
 
     def skill_params
